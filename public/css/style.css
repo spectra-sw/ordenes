@@ -1,0 +1,18 @@
+.cajaAzul{
+    background-color: #F0FFFF;
+    color : darkBlue;
+    border: solid darkBlue thin;
+    padding-left: 25px;
+    text-align:center;
+}
+.red{
+    color:red;
+    font-size:20px;
+    font-weight: bold;
+}
+#formulario{
+    margin: 2%;
+}
+#datos,#dias{
+    display: none;
+}

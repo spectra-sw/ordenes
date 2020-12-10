@@ -21,4 +21,18 @@ Route::get('/', function () {
     return view('ordenes');
 });
 */
-Route::get('/',[PagesController::class, 'ordenes']);
+Route::get('/ordenes',[PagesController::class, 'ordenes']);
+Route::get('/getConsec',[PagesController::class, 'getConsec']);
+Route::get('/agregarp',[PagesController::class, 'agregarp']);
+Route::get('/agregare',[PagesController::class, 'agregare']);
+Route::get('/agregarh',[PagesController::class, 'agregarh']);
+Route::get('/agregardia',[PagesController::class, 'agregardia']);
+Route::get('/almdia',[PagesController::class, 'almdia']);
+Route::get('/admin',[PagesController::class, 'admin']);
+Route::get('/consultas',[PagesController::class, 'consultas']);
+
+
+/*
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');*/

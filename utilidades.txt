@@ -1,1 +1,2 @@
 ./cloud_sql_proxy -instances=ordenes-spectra:us-east1:ordenesdb=tcp:3306
+gcloud beta app deploy --no-cache
