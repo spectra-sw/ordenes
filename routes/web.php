@@ -32,7 +32,3 @@ Route::get('/admin',[PagesController::class, 'admin']);
 Route::get('/consultas',[PagesController::class, 'consultas']);
 
 
-/*
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');*/
