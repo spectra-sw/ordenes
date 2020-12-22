@@ -9,4 +9,8 @@ class Orden extends Model
 {
     use HasFactory;
     protected $table = 'ordenes';
+    protected $fillable = [
+        'proyecto', 'fecha_inicio','fecha_final','responsable','cliente',
+        'area_trabajo','contacto','tipo','objeto','observaciones'
+    ];
 }

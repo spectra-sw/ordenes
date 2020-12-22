@@ -9,6 +9,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="{{ URL::asset('css/style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.7/dist/latest/bootstrap-autocomplete.min.js"></script>
+    
+   
     <style>
         
       
@@ -16,7 +21,7 @@
 </head>
 <body>
 <div id="formulario">
-    <form>
+    <form id="f1">
     <div class="row">
         <div class="col-12 col-md-4">
             <img src="{{ URL::asset('img/logo.png') }}" class="img-responsive center-block">
@@ -36,15 +41,21 @@
     <div id="datos">
         <div class="row">
             <div class="col-6 col-md-2 cajaAzul">Proyecto</div>
-            <div class="col-6 col-md-2 "><input type="text" name="proyecto" id="proyecto" class="form-control"></div>
+            <div class="col-6 col-md-2 "><input type="text" name="proyecto" id="proyecto" class="form-control basicAutoComplete" data-url="autocomplete" placeholder="buscar..."></div>
             <div class="col-6 col-md-2 cajaAzul">Fecha Inicio</div>
             <div class="col-6 col-md-2 "><input type="date" name="fechaInicio" id="fechaInicio" class="form-control"></div>
             <div class="col-6 col-md-2 cajaAzul">Fecha Final</div>
-            <div class="col-6 col-md-2 "><input type="date" name="fechaFinal" id="fechaInicio" class="form-control"></div>
+            <div class="col-6 col-md-2 "><input type="date" name="fechaFinal" id="fechaFinal" class="form-control"></div>
         </div>
         <div class="row">
             <div class="col-6 col-md-2 cajaAzul">Responsable</div>
-            <div class="col-6 col-md-10"><input type="text" name="responsable" id="responsable" class="form-control" ></div>
+            <div class="col-6 col-md-10">
+                <!--<input type="text" name="responsable" id="responsable" class="form-control basicAutoComplete" data-url="autoemp" >
+                <input type="hidden" name="cc" id="cc">-->
+                <select class="form-control basicAutoSelect" name="responsable" id="responsable"
+    placeholder="buscar..."
+    data-url="autoemp" autocomplete="off"></select>
+            </div>
         </div>
         <div class="row">
             <div class="col-6 col-md-2 cajaAzul">Cliente</div>
@@ -133,7 +144,10 @@
             <br>
             <div class="row">
                 <div class="col-6 col-md-2 cajaAzul">Trabajador</div>
-                <div class="col-6 col-md-1 "><input type="text" name="trabajador" id="trabajador" class="form-control"></div>
+                <div class="col-6 col-md-10 ">
+                    <select class="form-control basicAutoSelect" name="trabajador" id="trabajador" placeholder="buscar..." data-url="autoemp" autocomplete="off"></select>
+                    <input type="hidden" name="cct" id="cct">
+                </div>
                 <div class="col-4 col-md-1 cajaAzul">Hi</div>
                 <div class="col-4 col-md-1 "><input type="number" name="hi" id="hi" min="0" max="24" class="form-control"></div>
                 <div class="col-4 col-md-1 "><input type="number" name="mi" id="mi" min="0" max="59" class="form-control"></div>
@@ -163,11 +177,39 @@
             <div class="col-12 col-md-12"><textarea rows="10" name="observacionesg" id="observacionesg" class="form-control"></textarea></div>
         </div>
         <div class="row">
-            <div class="col-12"><button class="btn btn-primary btn-block" type="submit">Finalizar orden</button></div>
+            <div class="col-12"><button class="btn btn-primary btn-block" type="button" onclick="enviarorden()">Finalizar orden</button></div>
         </div>
     </div>
     </form>
 </div>
+<script type="text/javascript">
+    $('.basicAutoComplete').autoComplete();
+    $('#proyecto').on('autocomplete.select', function (evt, item) {
+        //alert(JSON.stringify(item))
+        codigo = JSON.stringify(item);
+		url = '/consproyecto'
+        data = {codigo : codigo}
+        $.ajax({
+              url: url,
+              type:'GET',
+              data: data,
+              success: function(data) {
+                  console.log(data.descripcion)
+                  $("#cliente").val(data.descripcion);
+                  $("#contacto").val(data.responsable);
+        }
+    });   
+    });
+    $('#responsable').autoComplete();
+    $('#responsable').on('autocomplete.select', function (evt, item) {   
+        $("#cc").val(item.value);
+    });
+    $('#trabajador').autoComplete();
+    $('#trabajador').on('autocomplete.select', function (evt, item) {   
+        $("#cct").val(item.value);
+    });
+
+</script>
 </body>
 </html>
 <script src="{{asset('js/scripts.js')}}"></script>

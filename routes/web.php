@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\LoadController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\FilesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,6 +24,9 @@ Route::get('/', function () {
     return view('ordenes');
 });
 */
+
+//Pages
+
 Route::get('/ordenes',[PagesController::class, 'ordenes']);
 Route::get('/getConsec',[PagesController::class, 'getConsec']);
 Route::get('/agregarp',[PagesController::class, 'agregarp']);
@@ -30,5 +36,17 @@ Route::get('/agregardia',[PagesController::class, 'agregardia']);
 Route::get('/almdia',[PagesController::class, 'almdia']);
 Route::get('/admin',[PagesController::class, 'admin']);
 Route::get('/consultas',[PagesController::class, 'consultas']);
+Route::get('/saveorden',[PagesController::class, 'saveorden']);
+Route::get('/verorden/{id}',[PagesController::class,'verorden']);
+
+//Load
+Route::get('/load/{tipo}',[LoadController::class,'load']);
+
+//Search
+Route::get('autocomplete', [SearchController::class, 'autocomplete'])->name('autocomplete');
+Route::get('autoemp', [SearchController::class, 'autoemp'])->name('autoemp');
+Route::get('consproyecto',[SearchController::class, 'consproyecto'])->name('consproyecto');
+Route::get('getordenes',[SearchController::class,'getordenes'])->name("getordenes");
+Route::get('archivon',[FilesController::class,'archivon'])->name("archivon");
 
 

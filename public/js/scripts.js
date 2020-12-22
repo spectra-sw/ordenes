@@ -53,7 +53,7 @@ function agregarh(){
     mf = parseInt($("#mf").val());
     ht = parseFloat($("#th").val());
     id=parseInt($("#id").val());
-    trabajador = $("#trabajador").val();
+    trabajador = $("#cct").val();
     diaid=parseInt($("#diaid").val());
     url = '/agregarh'
     data = {hi: hi,mi:mi, hf:hf, mf:mf, ht:ht , trabajador: trabajador, id:id,diaid:diaid}
@@ -110,4 +110,46 @@ function almdia(){
                 $("#dias").css('display','none');
               }
     });   
+}
+function enviarorden(){
+    data=$( "#f1" ).serialize(); 
+    url = '/saveorden'
+    $.ajax({
+              url: url,
+              type:'GET',
+              data: data,
+              success: function(data) {
+                  alert(data)            
+              }
+    });   
+}
+function consultar(){
+    data=$( "#formConsulta" ).serialize(); 
+    url = '/getordenes'
+    $.ajax({
+              url: url,
+              type:'GET',
+              data: data,
+              success: function(data) {
+                $data = $(data);
+                $("#tablao").html($data);
+              }
+    });   
+}
+function archivo(){
+    data=$( "#formConsulta" ).serialize(); 
+    url = '/archivon'
+    $.ajax({
+              url: url,
+              type:'GET',
+              data: data,
+              success: function(data) {
+                $data = $(data);
+                $("#tablao").html($data);
+              }
+    }); 
+}
+function verorden(id){
+    url='verorden/'+id;
+    window.open(url,'_blank');
 }

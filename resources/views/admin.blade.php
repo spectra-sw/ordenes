@@ -18,8 +18,8 @@
     <div id="menu">
         <div class="card">
             <div class="card-header"><img src="{{ URL::asset('img/logo.png') }}" class="img-responsive center-block"></div>
-            <div class="card-body"><button type="button" class="btn btn-primary" onclick="window.open('consultas','_blank')">CONSULTAS</button></div>
-            <div class="card-body"><button type="button" class="btn btn-primary" onclick="window.open('bases','_blank')">>BASES DE DATOS</button></div>
+            <div class="card-body"><button type="button" class="btn btn-primary" onclick="window.open('consultas','_blank')">CONSULTAS</button>
+            <button type="button" class="btn btn-primary" onclick="window.open('bases','_blank')">BASES DE DATOS</button></div>
         </div>
     </div>
 </body>
