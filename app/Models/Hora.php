@@ -11,6 +11,6 @@ class Hora extends Model
     protected $table = 'horas';
     public $timestamps = false;
     protected $fillable = [
-        'ordenes_id', 'dias_id','hi','hf','ht','trabajador',
+        'ordenes_id', 'dias_id','hi','hf','ht','trabajador','ha'
     ];
 }

@@ -11,6 +11,6 @@ class Orden extends Model
     protected $table = 'ordenes';
     protected $fillable = [
         'proyecto', 'fecha_inicio','fecha_final','responsable','cliente',
-        'area_trabajo','contacto','tipo','objeto','observaciones'
+        'area_trabajo','contacto','tipo','objeto','observaciones','autorizada_por','creada_por'
     ];
 }

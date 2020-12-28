@@ -49,4 +49,6 @@ Route::get('consproyecto',[SearchController::class, 'consproyecto'])->name('cons
 Route::get('getordenes',[SearchController::class,'getordenes'])->name("getordenes");
 Route::get('archivon',[FilesController::class,'archivon'])->name("archivon");
 
-
+//utilities
+Route::get('autorizadas',[PagesController::class, 'autorizadas'])->name('autorizadas');
+Route::get('delete',[PagesController::class,'del'])->name('del');

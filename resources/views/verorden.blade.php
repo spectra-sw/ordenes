@@ -154,7 +154,7 @@
             <div class="row">
                 <div class="col-6 col-md-2 cajaAzul">Horas</div>
                 <div class="col-12">
-                    <div id="tablah">
+                    <div id="tablah{{ $d['id'] }}">
                         <table class="table table-bordered table-sm">
                             <thead>
                             <tr>
@@ -172,12 +172,14 @@
                                 <td>{{ $dato['Hi'] }}</td>
                                 <td>{{ $dato['Hf'] }}</td>
                                 <td>{{ $dato['Ht'] }}</td>
-                                <td><input type="number"  name="ha" id="ha" min="0" max="24" size="1" class="form-control"></td>
+                                <td>{{ $dato['Ha'] }}</td>
+                                <td><input type="number"  name="ha{{ $dato['id'] }}" id="ha{{ $dato['id'] }}" min="0" max="24" size="1" class="form-control"></td>
+                                <td><button type="button" class="btn btn-primary btn-sm" onclick="auto({{ $dato['id'] }},{{ $d['id'] }})" >Ok</button></td>
                             </tr>
                             @endforeach 
                             </tbody>
                         </table>
-                        <button type="button" class="btn btn-primary btn-sm" >Guardar</button>
+                        
                     </div>
                 </div>
             </div>

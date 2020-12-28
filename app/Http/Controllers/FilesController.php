@@ -28,7 +28,7 @@ class FilesController extends Controller
                 foreach($horas as $h){
                     //dd($h['trabajador']);
                     $emp=Empleado::where('cc',$h['trabajador'])->first();
-                    $auxilio=round((($emp->auxilio)/240)*$h['ht'],1);
+                    $auxilio=round((($emp->auxilio)/240)*$h['ha'],1);
 
                     //horas
                     $linea=collect([]);
@@ -38,7 +38,7 @@ class FilesController extends Controller
                     $linea->put('centro de operacion', $centro->centro_operacion);
                     $linea->put('centro de costo', $centro->codigo);
                     $linea->put('fecha movimiento', $d->fecha);
-                    $linea->put('horas', $h['ht']);
+                    $linea->put('horas', $h['ha']);
                     $linea->put('valor', '');
                     $linea->put('cantidad', '');
                     $linea->put('proyecto', '');

@@ -52,6 +52,7 @@ class PagesController extends Controller
         
     }
     public function agregarp(Request $request){
+        //dd($request->cant);
         $p = Planificacion::create([
             'ordenes_id' => $request->id,
             'dias_id' => $request->diaid,
@@ -84,12 +85,14 @@ class PagesController extends Controller
     public function agregarh(Request $request){
         $hi = $request->hi.":".$request->mi;
         $hf = $request->hf.":".$request->mf;
+        $ha = 0;
         $h = Hora::create([
             'ordenes_id' => $request->id,
             'dias_id' => $request->diaid,
             'hi' => $hi,
             'hf' => $hf,
             'ht' => $request->ht,
+            'ha' => 0,
             'trabajador' => $request->trabajador
         ]);
         $datos = Hora::where('ordenes_id',$request->id)->where('dias_id',$request->diaid)->get();
@@ -169,7 +172,9 @@ class PagesController extends Controller
             'contacto' => $request->contacto,
             'tipo' => $tipo,
             'objeto' => $objeto,
-            'observaciones' => $request->observacionesg     
+            'observaciones' => $request->observacionesg  ,
+            'autorizada_por' => 0,
+            'creada_por' => 0   
         ]);
 
         return "Orden de trabajo almacenada";
@@ -187,16 +192,19 @@ class PagesController extends Controller
             foreach($dias as $d){
                 //dd($d);
                 $dia = collect([]);
+                $dia->put('id',$d['id']);
                 $dia->put('fecha',$d['fecha']);
                 $dia->put('observacion',$d['observacion']);
                 $horas = Hora::where('ordenes_id',$o['id'])->where('dias_id',$d['id'])->get();      
                 $horast=collect([]);
                 foreach($horas as $h){
                     $horasc=collect([]);
+                    $horasc->put('id',$h->id);
                     $horasc->put('Trabajador',$h->trabajador);
                     $horasc->put('Hi',$h->hi);
                     $horasc->put('Hf',$h->hf);
                     $horasc->put('Ht',$h->ht);
+                    $horasc->put('Ha',$h->ha);
                     $horast->push($horasc);
                 }
                 $pl= Planificacion::where('ordenes_id',$o['id'])->where('dias_id',$d['id'])->get();      
@@ -231,5 +239,57 @@ class PagesController extends Controller
             'dias' => $diasc,
         ]
         );
+    }
+    public function autorizadas(Request $request){
+        $datos = Hora::where('id', $request->id) ->first();
+        
+        $h=Hora::where('id', $request->id) 
+          ->update(['ha' => $request->valor]);
+
+          $dia = collect([]);
+          $horas = Hora::where('ordenes_id',$datos->ordenes_id)->where('dias_id',$datos->dias_id)->get();      
+          $horast=collect([]);
+          foreach($horas as $h){
+              $horasc=collect([]);
+              $horasc->put('id',$h->id);
+              $horasc->put('Trabajador',$h->trabajador);
+              $horasc->put('Hi',$h->hi);
+              $horasc->put('Hf',$h->hf);
+              $horasc->put('Ht',$h->ht);
+              $horasc->put('Ha',$h->ha);
+              $horast->push($horasc);
+          }
+          $dia->put('Horas',$horast);
+        //dd($dia);
+        return view('tablah2',[
+            'dia' => $dia, 
+            'ndia' => $datos->dias_id
+        ]);
+    }
+    public function del(Request $request){
+        if ($request->tipo == 1){
+            $orden = Planificacion::where('id',$request->id)->first()->ordenes_id;
+            $p=Planificacion::where('id',$request->id)->delete();
+            $datos = Planificacion::where('ordenes_id',$orden)->get();
+            return view('tablap',[
+                'datos' => $datos
+            ]);
+        }
+        if ($request->tipo == 2){
+            $orden = Ejecucion::where('id',$request->id)->first()->ordenes_id;
+            $e=Ejecucion::where('id',$request->id)->delete();
+            $datos = Ejecucion::where('ordenes_id',$orden)->get();
+            return view('tablae',[
+                'datos' => $datos
+            ]);
+        }
+        if ($request->tipo == 3){
+            $orden = Hora::where('id',$request->id)->first()->ordenes_id;
+            $h=Hora::where('id',$request->id)->delete();
+            $datos = Hora::where('ordenes_id',$orden)->get();
+            return view('tablah',[
+                'datos' => $datos
+            ]);
+        }
     }
 }

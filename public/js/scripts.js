@@ -52,11 +52,12 @@ function agregarh(){
     hf = parseInt($("#hf").val());
     mf = parseInt($("#mf").val());
     ht = parseFloat($("#th").val());
+    ha =0;
     id=parseInt($("#id").val());
     trabajador = $("#cct").val();
     diaid=parseInt($("#diaid").val());
     url = '/agregarh'
-    data = {hi: hi,mi:mi, hf:hf, mf:mf, ht:ht , trabajador: trabajador, id:id,diaid:diaid}
+    data = {hi: hi,mi:mi, hf:hf, mf:mf, ht:ht , trabajador: trabajador, id:id,diaid:diaid, ha:ha}
     $.ajax({
               url: url,
               type:'GET',
@@ -77,6 +78,9 @@ function nuevodia(){
               data: data,
               success: function(data) {
                 $('#diaid').val(data);
+                $("#tablap").html("");
+                $("#tablae").html("");
+                $("#tablah").html("");
                 $("#dias").css('display','block');
               }
     });   
@@ -97,7 +101,7 @@ function calchoras(){
 function almdia(){
     diaid=parseInt($("#diaid").val());
     observaciond=$("#observaciond").val();
-    alert(observaciond);
+    //alert(observaciond);
     fecha=$("#fecha").val();
     url = '/almdia'
     data = {diaid:diaid, observaciond : observaciond, fecha:fecha}
@@ -152,4 +156,42 @@ function archivo(){
 function verorden(id){
     url='verorden/'+id;
     window.open(url,'_blank');
+}
+function auto(id,dia){
+    url = '/autorizadas'
+    selector= "#ha" + id
+    sdia = "#tablah" + dia
+    valor = $(selector).val();
+    data = { valor: valor , id:id}
+    $.ajax({
+        url: url,
+        type:'GET',
+        data: data,
+        success: function(data) {
+          $data = $(data);
+          $(sdia).html($data);
+        }
+    }); 
+}
+function del(tipo,id){
+    if (tipo==1){
+        sel = "#tablap"
+    }
+    if (tipo==2){
+        sel = "#tablae"
+    }
+    if (tipo==3){
+        sel = "#tablah"
+    }
+    url = 'delete'
+    data = { tipo : tipo , id : id}
+    $.ajax({
+        url: url,
+        type:'GET',
+        data: data,
+        success: function(data) {
+          $data = $(data);
+          $(sel).html($data);
+        }
+    }); 
 }
