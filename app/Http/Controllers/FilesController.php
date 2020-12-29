@@ -12,7 +12,11 @@ class FilesController extends Controller
 {
     //
     public function archivon(Request $request){
-        $ordenes=Orden::orderBy('created_at','desc')->get();
+        $inicio= $request->fechaInicio." 00:00:00";
+        $fin =$request->fechaFinal." 11:59:59";
+        //dd($fin);
+        $ordenes=Orden::where('fecha_inicio','>=',$inicio)
+                ->where('fecha_final','<=',$fin)->orderBy('created_at','desc')->get();
         
         $datos = collect([]);
 

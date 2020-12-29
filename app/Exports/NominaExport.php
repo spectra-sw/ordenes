@@ -27,14 +27,21 @@ class NominaExport implements FromCollection, WithHeadings, ShouldAutoSize
     public function headings(): array
     {
         return [
-            'Código','Concepto',
-            'Centro de op',
-            'Centro de costo',
-            'Fecha',
-            'Horas',
-            'Valor',
-            '','','','',
-            'Unidad'
+            'CÓDIGO DEL EMPLEADO',
+            'SUCURSAL',
+            'CÓDIGO DEL CONCEPTO',
+            'CENTRO DE OPERACIÓN',
+            'CENTRO DE COSTO',
+            'FECHA MOVIMIENTO',
+            'HORAS',
+            'VALOR',
+            'CANTIDAD',
+            'PROYECTO',
+            'NUMERO DE CONTRATO DEL EMPLEADO',
+            'UNIDAD DE NEGOCIO',
+            'FECHA DE CAUSACIÓN',
+            'NUMERO DE CUOTA',
+            'NOTAS'
             
         ];
     }

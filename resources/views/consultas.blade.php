@@ -29,7 +29,7 @@
                     <div class="col-6 col-md-2 cajaAzul">Fecha Inicio</div>
                     <div class="col-6 col-md-2 "><input type="date" name="fechaInicio" id="fechaInicio" class="form-control"></div>
                     <div class="col-6 col-md-2 cajaAzul">Fecha Final</div>
-                    <div class="col-6 col-md-2 "><input type="date" name="fechaFinal" id="fechaInicio" class="form-control"></div>
+                    <div class="col-6 col-md-2 "><input type="date" name="fechaFinal" id="fechaFinal" class="form-control"></div>
                 </div>
                 <div class="row">
                     <div class="col-6 col-md-2 cajaAzul">Responsable</div>

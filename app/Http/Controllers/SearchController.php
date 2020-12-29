@@ -63,7 +63,12 @@ class SearchController extends Controller
         return response()->json($data);
     }
     public function getordenes(Request $request){
-        $o=Orden::orderBy('created_at','desc')->get();
+        //$o=Orden::orderBy('created_at','desc')->get();
+        $inicio= $request->fechaInicio." 00:00:00";
+        $fin =$request->fechaFinal." 11:59:59";
+        //dd($fin);
+        $o=Orden::where('fecha_inicio','>=',$inicio)
+                ->where('fecha_final','<=',$fin)->orderBy('created_at','desc')->get();
         return view('tablao',[
             'datos' => $o
         ]);
