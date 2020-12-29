@@ -19,6 +19,9 @@ use App\Models\Dia;
 class PagesController extends Controller
 {
     //
+    public function inicio(){
+        return view('menu');
+    }
     public function admin(){
         return view('admin');
     }

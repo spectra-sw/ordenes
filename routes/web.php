@@ -27,7 +27,7 @@ Route::get('/', function () {
 */
 
 //Pages
-
+Route::get('/',[PagesController::class, 'inicio']);
 Route::get('/ordenes',[PagesController::class, 'ordenes']);
 Route::get('/getConsec',[PagesController::class, 'getConsec']);
 Route::get('/agregarp',[PagesController::class, 'agregarp']);
