@@ -18,10 +18,11 @@
 </head>
 <body>
     <div id="menu">
+        <form id="formConsulta" action="exportReporte" method="get" target="_blank">
         <div class="card">
             <div class="card-header"><img src="{{ URL::asset('img/logo.png') }}" class="img-responsive center-block"></div>
             <div class="card-body">
-                <form id="formConsulta">
+                
                 <div class="row">
                     <div class="col-6 col-md-2 cajaAzul">Proyecto</div>
                     <div class="col-6 col-md-2 "><input type="text" name="proyecto" id="proyecto" class="form-control"></div>
@@ -46,12 +47,13 @@
                     <button type="button" class="btn btn-primary" onclick="consultar()">Consultar</button>&nbsp;
                     <button type="button" class="btn btn-primary" onclick="archivo()">Archivo Nómina</button>
                 </div>
-                </form>
+                
             </div>
             <div id="tablao">
             </div>
             
         </div>
+        </form>
     </div>
 </body>
 <script src="{{asset('js/scripts.js')}}"></script>

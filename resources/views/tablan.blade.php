@@ -26,3 +26,4 @@
     @endforeach 
     </tbody>
 </table>
+<button type="submit" class="btn btn-success">Exportar</button>

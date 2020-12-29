@@ -6,6 +6,7 @@ use App\Http\Controllers\PagesController;
 use App\Http\Controllers\LoadController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\FilesController;
+use App\Http\Controllers\ExcelController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -52,3 +53,6 @@ Route::get('archivon',[FilesController::class,'archivon'])->name("archivon");
 //utilities
 Route::get('autorizadas',[PagesController::class, 'autorizadas'])->name('autorizadas');
 Route::get('delete',[PagesController::class,'del'])->name('del');
+
+//Excel
+Route::get('exportReporte', [ExcelController::class, 'export'])->name('export');
