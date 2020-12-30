@@ -15,12 +15,23 @@ use App\Models\Planificacion;
 use App\Models\Ejecucion;
 use App\Models\Hora;
 use App\Models\Dia;
+use App\Models\Empleado;
+use App\Models\Cdc;
 
 class PagesController extends Controller
 {
     //
     public function inicio(){
+        
         return view('menu');
+    }
+    public function bases(){
+        $emp = Empleado::orderBy('apellido1','asc')->get();
+        $cdc = Cdc::all();
+        return view('bases',[
+            'emp' => $emp,
+            'cdc' => $cdc
+        ]);
     }
     public function admin(){
         return view('admin');

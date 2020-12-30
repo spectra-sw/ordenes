@@ -36,6 +36,7 @@ Route::get('/agregarh',[PagesController::class, 'agregarh']);
 Route::get('/agregardia',[PagesController::class, 'agregardia']);
 Route::get('/almdia',[PagesController::class, 'almdia']);
 Route::get('/admin',[PagesController::class, 'admin']);
+Route::get('/bases',[PagesController::class, 'bases']);
 Route::get('/consultas',[PagesController::class, 'consultas']);
 Route::get('/saveorden',[PagesController::class, 'saveorden']);
 Route::get('/verorden/{id}',[PagesController::class,'verorden']);
