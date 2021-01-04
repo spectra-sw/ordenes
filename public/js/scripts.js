@@ -195,3 +195,30 @@ function del(tipo,id){
         }
     }); 
 }
+function login(){
+    email = $("#email").val();
+    pwd = $("#pwd").val();
+
+    if ((email =="")||(pwd=="")){
+        $("#mensaje").html("* Debe ingresar todos los campos");
+        $("#alerta").css('display','block');
+    }
+    else{
+        url = 'validar'
+        data = { email : email , pwd : pwd}
+        $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) {
+                if (data == "ok"){
+                    window.open('menu');
+                }
+                else{
+                    $("#mensaje").html(data);
+                    $("#alerta").css('display','block');
+                }
+            }
+        }); 
+    }
+}

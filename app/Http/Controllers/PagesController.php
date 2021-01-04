@@ -23,7 +23,15 @@ class PagesController extends Controller
     //
     public function inicio(){
         
+        return view('login');
+    }
+    public function login(){
+        return view('login');
+
+    }
+    public function menu(){
         return view('menu');
+
     }
     public function bases(){
         $emp = Empleado::orderBy('apellido1','asc')->get();

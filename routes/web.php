@@ -7,6 +7,7 @@ use App\Http\Controllers\LoadController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\FilesController;
 use App\Http\Controllers\ExcelController;
+use App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,7 +28,8 @@ Route::get('/', function () {
 */
 
 //Pages
-Route::get('/',[PagesController::class, 'inicio']);
+Route::get('/',[PagesController::class, 'inicio'])->name('inicio');
+Route::get('/menu',[PagesController::class, 'menu'])->name('menu');
 Route::get('/ordenes',[PagesController::class, 'ordenes']);
 Route::get('/getConsec',[PagesController::class, 'getConsec']);
 Route::get('/agregarp',[PagesController::class, 'agregarp']);
@@ -40,6 +42,7 @@ Route::get('/bases',[PagesController::class, 'bases']);
 Route::get('/consultas',[PagesController::class, 'consultas']);
 Route::get('/saveorden',[PagesController::class, 'saveorden']);
 Route::get('/verorden/{id}',[PagesController::class,'verorden']);
+Route::get('/login',[PagesController::class,'login']);
 
 //Load
 Route::get('/load/{tipo}',[LoadController::class,'load']);
@@ -57,3 +60,6 @@ Route::get('delete',[PagesController::class,'del'])->name('del');
 
 //Excel
 Route::get('exportReporte', [ExcelController::class, 'export'])->name('export');
+
+//Auth
+Route::get('validar',[AuthController::class,'validar'])->name('validar');

@@ -16,6 +16,6 @@
 #formulario{
     margin: 2%;
 }
-#datos,#dias{
+#datos,#dias, #alerta{
     display: none;
 }
