@@ -11,62 +11,93 @@ function nueva(){
       });
 }
 function agregarp(){
-    cantp = parseFloat($("#cantp").val());
+    cantp = $("#cantp").val();
     undp=$("#undp").val();
     materiales = $("#materiales").val();
-    id=parseInt($("#id").val());
-    diaid=parseInt($("#diaid").val());
-    url = '/agregarp'
-    data = {cant: cantp, und:undp, materiales:materiales, id:id, diaid:diaid}
-    $.ajax({
-              url: url,
-              type:'GET',
-              data: data,
-              success: function(data) {
-                 $data = $(data);
-                 $("#tablap").html($data);
-              }
-    });
+    if((cantp=="")&&(undp=="")&&(materiales=="")){
+        $("#mensajep").html("* Debe ingresar algún campo");
+        $("#alertap").css('display','block');
+    }
+    else{
+        $("#alertap").css('display','none');
+        cantp = parseFloat($("#cantp").val());
+        id=parseInt($("#id").val());
+        diaid=parseInt($("#diaid").val());
+        url = '/agregarp'
+        data = {cant: cantp, und:undp, materiales:materiales, id:id, diaid:diaid}
+        $.ajax({
+                url: url,
+                type:'GET',
+                data: data,
+                success: function(data) {
+                    $data = $(data);
+                    $("#tablap").html($data);
+                }
+        });
+    }
 }
 function agregare(){
-    cante = parseFloat($("#cante").val());
+    cante = $("#cante").val();
     unde=$("#unde").val();
     observacion = $("#observacione").val();
-    id=parseInt($("#id").val());
-    diaid=parseInt($("#diaid").val());
-    url = '/agregare'
-    data = {cant: cante, und:unde, observacion:observacion, id:id, diaid:diaid}
-    $.ajax({
-              url: url,
-              type:'GET',
-              data: data,
-              success: function(data) {
-                 $data = $(data);
-                 $("#tablae").html($data);
-              }
-    });
+    if((cante=="")&&(unde=="")&&(observacion=="")){
+        $("#mensajee").html("* Debe ingresar algún campo");
+        $("#alertae").css('display','block');
+    }
+    else{
+        $("#alertae").css('display','none');
+        cante = parseFloat($("#cante").val());
+        unde=$("#unde").val();
+        observacion = $("#observacione").val();
+        id=parseInt($("#id").val());
+        diaid=parseInt($("#diaid").val());
+        url = '/agregare'
+        data = {cant: cante, und:unde, observacion:observacion, id:id, diaid:diaid}
+        $.ajax({
+                url: url,
+                type:'GET',
+                data: data,
+                success: function(data) {
+                    $data = $(data);
+                    $("#tablae").html($data);
+                }
+        });
+    }
 }
 function agregarh(){
-    hi = parseInt($("#hi").val());
-    mi = parseInt($("#mi").val());
-    hf = parseInt($("#hf").val());
-    mf = parseInt($("#mf").val());
-    ht = parseFloat($("#th").val());
-    ha =0;
-    id=parseInt($("#id").val());
+    hi = $("#hi").val();
+    mi = $("#mi").val();
+    hf = $("#hf").val();
+    mf = $("#mf").val();
+    ht = $("#th").val();
     trabajador = $("#cct").val();
-    diaid=parseInt($("#diaid").val());
-    url = '/agregarh'
-    data = {hi: hi,mi:mi, hf:hf, mf:mf, ht:ht , trabajador: trabajador, id:id,diaid:diaid, ha:ha}
-    $.ajax({
-              url: url,
-              type:'GET',
-              data: data,
-              success: function(data) {
-                 $data = $(data);
-                 $("#tablah").html($data);
-              }
-    });
+    if ((hi=="")||(mi=="")||(hf=="")||(mf=="")||(ht=="")||(trabajador=="")){
+        $("#mensajeh").html("* Debe ingresar todos los campos");
+        $("#alertah").css('display','block');
+    }
+    else{
+        $("#alertah").css('display','none');
+        hi = parseInt($("#hi").val());
+        mi = parseInt($("#mi").val());
+        hf = parseInt($("#hf").val());
+        mf = parseInt($("#mf").val());
+        ht = parseFloat($("#th").val());
+        ha =0;
+        id=parseInt($("#id").val());
+        trabajador = $("#cct").val();
+        diaid=parseInt($("#diaid").val());
+        url = '/agregarh'
+        data = {hi: hi,mi:mi, hf:hf, mf:mf, ht:ht , trabajador: trabajador, id:id,diaid:diaid, ha:ha}
+        $.ajax({
+                url: url,
+                type:'GET',
+                data: data,
+                success: function(data) {
+                    $data = $(data);
+                    $("#tablah").html($data);
+                }
+        });
+    }
 }
 function nuevodia(){
     id=parseInt($("#id").val());
@@ -117,15 +148,37 @@ function almdia(){
 }
 function enviarorden(){
     data=$( "#f1" ).serialize(); 
-    url = '/saveorden'
-    $.ajax({
-              url: url,
-              type:'GET',
-              data: data,
-              success: function(data) {
-                  alert(data)            
-              }
-    });   
+    //console.log(data)
+    dataArray=data.split("&");
+    //console.log(dataArray);
+    cont =0;
+    band="";
+    dataArray.forEach(function(datos) {
+        console.log(datos);
+        if (cont<9){
+            x=datos.split("=")
+            if (x[1]==""){
+                var sel = "#"+x[0]
+                $( sel ).addClass( "invalid" );
+                band="error";
+            }
+        }
+        cont++;
+    });
+    if(band!="error"){
+        url = '/saveorden'
+        $.ajax({
+                url: url,
+                type:'GET',
+                data: data,
+                success: function(data) {
+                    alert(data)            
+                }
+        });  
+    }
+    else{
+        alert("Ingrese todos los campos obligatorios marcados con *")
+    } 
 }
 function consultar(){
     data=$( "#formConsulta" ).serialize(); 

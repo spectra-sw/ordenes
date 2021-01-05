@@ -139,7 +139,7 @@ class PagesController extends Controller
             if($tipo==""){ $tipo= "incencio";}
             else{ $tipo= $tipo." incencio";}    
         }
-        if ($request->filled('cabl.estr')) {
+        if ($request->filled('cablestr')) {
             if($tipo==""){ $tipo= "cabl.estr";}
             else{ $tipo= $tipo." cabl.estr";}    
         }
@@ -163,18 +163,21 @@ class PagesController extends Controller
             if($tipo==""){ $tipo= "documentacion";}
             else{ $tipo= $tipo." documentacion";}    
         }
-
+        
+        if ($tipo==""){
+            return "Ingrese el tipo de sistema solicitado";
+        }
 
         $objeto="";
         if ($request->filled('instalacion')) {
             if($objeto==""){ $objeto= "instalacion";}
             else{ $objeto= $objeto." instalacion";}    
         }
-        if ($request->filled('Mnto.Prev')) {
+        if ($request->filled('MntoPrev')) {
             if($objeto==""){ $objeto= "Mnto.Prev";}
             else{ $objeto= $objeto." Mnto.Prev";}    
         }
-        if ($request->filled('Trab.Int')) {
+        if ($request->filled('TrabInt')) {
             if($objeto==""){ $objeto= "Trab.Int";}
             else{ $objeto= $objeto." Trab.Int";}    
         }
@@ -182,7 +185,12 @@ class PagesController extends Controller
             if($objeto==""){ $objeto= "revision";}
             else{ $objeto= $objeto." revision";}    
         }
-        
+    
+        if($objeto==""){
+            return "Ingrese el objeto de la orden de trabajo";
+        }
+
+       // return $tipo." ".$objeto;
         
         $o = Orden::create([
             'proyecto' => $request->proyecto,

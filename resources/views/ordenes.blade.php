@@ -40,15 +40,15 @@
     <br>
     <div id="datos">
         <div class="row">
-            <div class="col-6 col-md-2 cajaAzul">Proyecto</div>
+            <div class="col-6 col-md-2 cajaAzul">Proyecto *</div>
             <div class="col-6 col-md-2 "><input type="text" name="proyecto" id="proyecto" class="form-control basicAutoComplete" data-url="autocomplete" placeholder="buscar..."></div>
-            <div class="col-6 col-md-2 cajaAzul">Fecha Inicio</div>
+            <div class="col-6 col-md-2 cajaAzul">Fecha Inicio *</div>
             <div class="col-6 col-md-2 "><input type="date" name="fechaInicio" id="fechaInicio" class="form-control"></div>
-            <div class="col-6 col-md-2 cajaAzul">Fecha Final</div>
+            <div class="col-6 col-md-2 cajaAzul">Fecha Final *</div>
             <div class="col-6 col-md-2 "><input type="date" name="fechaFinal" id="fechaFinal" class="form-control"></div>
         </div>
         <div class="row">
-            <div class="col-6 col-md-2 cajaAzul">Responsable</div>
+            <div class="col-6 col-md-2 cajaAzul">Responsable *</div>
             <div class="col-6 col-md-10">
                 <!--<input type="text" name="responsable" id="responsable" class="form-control basicAutoComplete" data-url="autoemp" >
                 <input type="hidden" name="cc" id="cc">-->
@@ -58,21 +58,21 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-6 col-md-2 cajaAzul">Cliente</div>
+            <div class="col-6 col-md-2 cajaAzul">Cliente *</div>
             <div class="col-6 col-md-2 "><input type="text" name="cliente" id="cliente" class="form-control"></div>
-            <div class="col-6 col-md-2 cajaAzul">Área de trabajo</div>
+            <div class="col-6 col-md-2 cajaAzul">Área de trabajo *</div>
             <div class="col-6 col-md-2 "><input type="text" name="area" id="area" class="form-control"></div>
-            <div class="col-6 col-md-2 cajaAzul">Contacto</div>
+            <div class="col-6 col-md-2 cajaAzul">Contacto *</div>
             <div class="col-6 col-md-2 "><input type="text" name="contacto" id="contacto" class="form-control"></div>
         </div>
         <br>
         <div class="row">
-            <div class="col-12 col-md-12 cajaAzul">Tipo de sistema solicitado</div>
+            <div class="col-12 col-md-12 cajaAzul">Tipo de sistema solicitado *</div>
         </div>
         <div class="row">
             <div class="col-6 col-md-3 "><label><input type="checkbox" name="cctv" id="cctv" value="cctv"> CCTV</label></div>
             <div class="col-6 col-md-3 "><label><input type="checkbox" name="incendio" id="incendio" value="incendio"> Incendio</label></div>
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="cabl.estr" id="cabl.estr" value="cabl.estr">Cabl. Estr.</label></div>
+            <div class="col-6 col-md-3 "><label><input type="checkbox" name="cablestr" id="cablestr" value="cablestr">Cabl. Estr.</label></div>
             <div class="col-6 col-md-3 "><label><input type="checkbox" name="otro" id="otro" value="otro"> Otro</label></div>
         </div>
         <div class="row">
@@ -83,12 +83,12 @@
         </div>
         <br>
         <div class="row">
-            <div class="col-12 col-md-12 cajaAzul">Objeto de la orden de trabajo</div>
+            <div class="col-12 col-md-12 cajaAzul">Objeto de la orden de trabajo *</div>
         </div>
         <div class="row">
             <div class="col-6 col-md-3 "><label><input type="checkbox" name="instalacion" id="instalacion" value="instalacion"> Instalación</label></div>
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="Mnto.Prev" id="Mnto.Prev" value="Mnto.Prev"> Mnto Prev</label></div>
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="Trab.Int" id="Trab.Int" value="Trab.Int"> Trab. Int.</label></div>
+            <div class="col-6 col-md-3 "><label><input type="checkbox" name="MntoPrev" id="MntoPrev" value="MntoPrev"> Mnto Prev</label></div>
+            <div class="col-6 col-md-3 "><label><input type="checkbox" name="TrabInt" id="TrabInt" value="TrabInt"> Trab. Int.</label></div>
             <div class="col-6 col-md-3 "><label><input type="checkbox" name="revision" id="revision" value="revision"> Revisión</label></div>
             <div class="col-6 col-md-3 "><label><input type="checkbox" name="otro" id="otro" value="otro"> Otro</label></div>
         </div>
@@ -111,6 +111,9 @@
                 <div class="col-6 col-md-2 cajaAzul">Materiales/equipos</div>
                 <div class="col-6 col-md-2 "><input type="text" name="materiales" id="materiales" class="form-control"></div>
                 <div class="col-6 col-md-2 "> <div class="col-12 col-md-2 "><button class="btn btn-primary btn-sm" type="button" onclick="agregarp()">Agregar</button></div></div>
+                <div class="alert alert-danger" id="alertap">
+                    <p id="mensajep"></p>
+                </div>
             </div>
             <div class="row">
                 <div class="col-12">
@@ -129,6 +132,9 @@
                 <div class="col-6 col-md-2 cajaAzul">Observación</div>
                 <div class="col-6 col-md-2 "><input type="text" name="observacione" id="observacione" class="form-control"></div>
                 <div class="col-6 col-md-2 "> <div class="col-12 col-md-2 "><button class="btn btn-primary btn-sm" type="button" onclick="agregare()">Agregar</button></div></div>
+                <div class="alert alert-danger" id="alertae">
+                    <p id="mensajee"></p>
+                </div>
             </div>
             <div class="row">
                 <div class="col-12">
@@ -157,6 +163,10 @@
                 <div class="col-4 col-md-1 cajaAzul">Th</div>
                 <div class="col-4 col-md-1 "><input type="number" onclick="calchoras()" name="th" id="th" min="0" max="24" class="form-control"></div>
                 <div class="col-6 col-md-1 "> <div class="col-12 col-md-2 "><button class="btn btn-primary btn-sm" type="button" onclick="agregarh()">Agregar</button></div></div>
+                <br>
+                <div class="alert alert-danger" id="alertah">
+                    <p id="mensajeh"></p>
+                </div>
             </div>
             <div class="row">
                 <div class="col-12">

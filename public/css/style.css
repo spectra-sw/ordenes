@@ -16,6 +16,9 @@
 #formulario{
     margin: 2%;
 }
-#datos,#dias, #alerta{
+#datos,#dias, #alerta,#alertap,#alertae,#alertah{
     display: none;
+}
+.invalid{
+    border-color:red;
 }
