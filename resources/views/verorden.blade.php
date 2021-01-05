@@ -86,7 +86,7 @@
         <div>  
             <div class="row">
                 <div class="col-6 col-md-2 cajaAzul">Fecha</div>
-                <div class="col-6 col-md-2 "><input type="date" name="fecha" id="fecha" value="{{ $d['fecha'] }}" class="form-control" ></div>
+                <div class="col-6 col-md-2 "><input type="date" name="fecha" id="fecha" value="{{ $d['fecha'] }}" class="form-control" disabled ></div>
             </div>
             <br>
             <div class="row">
@@ -145,7 +145,7 @@
             <br>
             <div class="row">
                 <div class="col-6 col-md-2 cajaAzul">Observación del día</div>
-                <div class="col-6 col-md-10 "><input type="text" name="observaciond" id="observaciond" class="form-control"></div>
+                <div class="col-6 col-md-10 "><input type="text" name="observaciond" id="observaciond" class="form-control" disabled></div>
             </div>
             <br>
             <div class="row">
@@ -192,13 +192,15 @@
         </div>
         <div class="row">
             <div class="col-12 col-md-12">
-            <textarea rows="10" name="observacionesg" id="observacionesg" class="form-control">
+            <textarea rows="10" name="observacionesg" id="observacionesg" class="form-control" disabled>
             {{ $o->observaciones }}
             </textarea></div>
         </div>
+        <!--
         <div class="row">
             <div class="col-12"><button class="btn btn-primary btn-block" type="button" onclick="enviarorden()">Finalizar orden</button></div>
         </div>
+        -->
     </div>
     </form>
 </div>
