@@ -42,7 +42,21 @@ Route::get('/bases',[PagesController::class, 'bases']);
 Route::get('/consultas',[PagesController::class, 'consultas']);
 Route::get('/saveorden',[PagesController::class, 'saveorden']);
 Route::get('/verorden/{id}',[PagesController::class,'verorden']);
+Route::get('/getdia',[PagesController::class,'getdia']);
 Route::get('/login',[PagesController::class,'login']);
+//emp
+Route::get('/nuevoemp',[PagesController::class,'nuevoemp']);
+Route::get('/buscaremp',[PagesController::class,'buscaremp']);
+Route::get('/editaremp',[PagesController::class,'editaremp']);
+Route::get('/tablaemp',[PagesController::class,'tablaemp']);
+Route::get('/eliminaremp',[PagesController::class,'eliminaremp']);
+
+//cdc
+Route::get('/nuevocdc',[PagesController::class,'nuevocdc']);
+Route::get('/buscarcdc',[PagesController::class,'buscarcdc']);
+Route::get('/editarcdc',[PagesController::class,'editarcdc']);
+Route::get('/tablacdc',[PagesController::class,'tablacdc']);
+Route::get('/eliminarcdc',[PagesController::class,'eliminarcdc']);
 
 //Load
 Route::get('/load/{tipo}',[LoadController::class,'load']);

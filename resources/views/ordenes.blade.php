@@ -93,6 +93,14 @@
             <div class="col-6 col-md-3 "><label><input type="checkbox" name="otro" id="otro" value="otro"> Otro</label></div>
         </div>
         <br>
+        <div class="row">
+            <div class="col-12 col-md-12 cajaAzul">Días registrados</div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                 <div id="tablad"></div>
+            </div>
+        </div>
         <button type="button" class="btn btn-primary btn-sm" onclick="nuevodia()">Nuevo día</button>
         <br>
         <div id="dias">
@@ -192,6 +200,22 @@
     </div>
     </form>
 </div>
+<!-- The Modal -->
+<div class="modal fade bd-example-modal-xl" id="info">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">  
+        <!-- Modal body -->
+        <div class="modal-body" id="infoBody">
+         
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+      </div>      
+      </div>
+    </div>
+  </div>
 <script type="text/javascript">
     $('.basicAutoComplete').autoComplete();
     $('#proyecto').on('autocomplete.select', function (evt, item) {
@@ -206,7 +230,7 @@
               success: function(data) {
                   console.log(data.descripcion)
                   $("#cliente").val(data.descripcion);
-                  $("#contacto").val(data.responsable);
+                  //$("#contacto").val(data.responsable);
         }
     });   
     });
@@ -218,7 +242,21 @@
     $('#trabajador').on('autocomplete.select', function (evt, item) {   
         $("#cct").val(item.value);
     });
-
+    function infoDia(id){
+        //alert(id);
+        url = '/getdia'
+        data = {id : id}
+        $.ajax({
+              url: url,
+              type:'GET',
+              data: data,
+              success: function(data) {
+                    $data = $(data);
+                    $("#infoBody").html($data); 
+                    $("#info").modal();
+                } 
+            });   
+    }
 </script>
 </body>
 </html>

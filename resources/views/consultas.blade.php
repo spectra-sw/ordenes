@@ -11,6 +11,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     
     <link rel="stylesheet" href="{{ URL::asset('css/style.css') }}">
+   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.7/dist/latest/bootstrap-autocomplete.min.js"></script>
+
     <style>
         
       
@@ -33,7 +38,11 @@
                 </div>
                 <div class="row">
                     <div class="col-6 col-md-2 cajaAzul">Responsable</div>
-                    <div class="col-6 col-md-10"><input type="text" name="responsable" id="responsable" class="form-control" ></div>
+                    <div class="col-6 col-md-10">                 
+                <select class="form-control basicAutoSelect" name="responsable" id="responsable"
+    placeholder="buscar..."
+    data-url="autoemp" autocomplete="off"></select>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-6 col-md-2 cajaAzul">Cliente</div>
@@ -56,4 +65,7 @@
         </form>
     </div>
 </body>
+<script type="text/javascript">
+    $('#responsable').autoComplete();
+</script>
 <script src="{{asset('js/scripts.js')}}"></script>

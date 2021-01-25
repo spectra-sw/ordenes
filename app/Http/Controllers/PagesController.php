@@ -127,9 +127,17 @@ class PagesController extends Controller
         $d=Dia::where('id', $request->diaid) 
           ->update(['fecha' => $request->fecha,
                     'observacion' => $request->observaciond]);
-        return 'Información del día almacenada';
+        $datos = Dia::where('ordenes_id',$request->id)->get();
+        return view('tablad',[
+            'datos' => $datos
+        ]);
+        //return 'Información del día almacenada';
     }
     public function saveorden(Request $request){
+        $id = $request->id;
+
+        if (Dia::where('ordenes_id',$id)->exists()){   
+
         $tipo="";
         if ($request->filled('cctv')) {
             if($tipo==""){ $tipo= "cctv";}
@@ -185,6 +193,10 @@ class PagesController extends Controller
             if($objeto==""){ $objeto= "revision";}
             else{ $objeto= $objeto." revision";}    
         }
+        if ($request->filled('otro')) {
+            if($objeto==""){ $objeto= "otro";}
+            else{ $objeto= $objeto." otro";}    
+        }
     
         if($objeto==""){
             return "Ingrese el objeto de la orden de trabajo";
@@ -208,6 +220,10 @@ class PagesController extends Controller
         ]);
 
         return "Orden de trabajo almacenada";
+        }
+        else{
+            return "No existen días registrados para esta orden";
+        }
     }
     public function verorden($id){
         //dd($id);
@@ -270,6 +286,62 @@ class PagesController extends Controller
         ]
         );
     }
+    public function getdia(Request $request){
+        
+        $diasc = collect([]);
+       
+           // dd($o['id']);
+            $dias = Dia::where('id',$request->id)->get();
+            foreach($dias as $d){
+                //dd($d);
+                $dia = collect([]);
+                $dia->put('id',$d['id']);
+                $dia->put('fecha',$d['fecha']);
+                $dia->put('observacion',$d['observacion']);
+                $horas = Hora::where('dias_id',$d['id'])->get();      
+                $horast=collect([]);
+                foreach($horas as $h){
+                    $horasc=collect([]);
+                    $horasc->put('id',$h->id);
+                    $horasc->put('Trabajador',$h->trabajador);
+                    $horasc->put('Hi',$h->hi);
+                    $horasc->put('Hf',$h->hf);
+                    $horasc->put('Ht',$h->ht);
+                    $horasc->put('Ha',$h->ha);
+                    $horast->push($horasc);
+                }
+                $pl= Planificacion::where('dias_id',$d['id'])->get();      
+                $plt=collect([]);
+                foreach($pl as $p){
+                    $pc=collect([]);
+                    $pc->put('Cant',$p->cant);
+                    $pc->put('Und',$p->und);
+                    $pc->put('Materiales',$p->materiales);
+                    $plt->push($pc);
+                }
+                $ej= Ejecucion::where('dias_id',$d['id'])->get();      
+                $ejt=collect([]);
+                foreach($ej as $e){
+                    $ec=collect([]);
+                    $ec->put('Cant',$e->cant);
+                    $ec->put('Und',$e->und);
+                    $ec->put('Observacion',$e->observacion);
+                    $ejt->push($ec);
+                }
+                //dd($dia);
+                $dia->put('Planificacion',$plt);
+                $dia->put('Ejecucion',$ejt);
+                $dia->put('Horas',$horast);
+                $diasc->push($dia);
+                //dd($diasc);
+            }
+        
+        //dd($diasc);
+        return view('infodia',[
+            'dias' => $diasc,
+        ]
+        );
+    }
     public function autorizadas(Request $request){
         $datos = Hora::where('id', $request->id) ->first();
         
@@ -321,5 +393,99 @@ class PagesController extends Controller
                 'datos' => $datos
             ]);
         }
+    }
+
+
+//empleado
+    public function nuevoemp(Request $request){
+        $e = Empleado::create([
+            'cc' => $request->cc,
+            'apellido1' => $request->apellido1,
+            'apellido2' => $request->apellido2,
+            'nombre' => $request->nombre,
+            'auxilio' => $request->auxilio,
+            'correo' => $request->correo,
+            'tipo' => $request->tipo
+
+        ]);
+
+        return "Empleado creado";
+    }
+    public function buscaremp(Request $request){
+        $e = Empleado::where('id',$request->id)->first();
+        return view('formemp',[
+            'datos' => $e
+        ]);
+    }
+    public function editaremp(Request $request){
+        Empleado::where('id', $request->id )
+        ->update([
+            'cc' => $request->cc,
+            'apellido1' => $request->apellido1,
+            'apellido2' => $request->apellido2,
+            'nombre' => $request->nombre,
+            'auxilio' => $request->auxilio,
+            'correo' => $request->correo,
+            'tipo' => $request->tipo
+          ]);
+          return "Empleado actualizado";
+    }
+    public function eliminaremp(Request $request){
+        Empleado::where('id', $request->id )->delete();
+        return "Empleado eliminado";
+    }
+    public function tablaemp(){
+        $emp = Empleado::orderBy('apellido1','asc')->get();
+        return view('tablaemp',[
+            'emp' => $emp,
+        ]);
+    }
+
+//cdc
+
+    public function nuevocdc(Request $request){
+        $e = Cdc::create([
+            'codigo' => $request->codigo,
+            'descripcion' => $request->descripcion,
+            'centro_operacion' => $request->co,
+            'unidad_negocio' => $request->un,
+            'responsable' => $request->responsable,
+            'mayor' => $request->mayor,
+            'grupo' => $request->grupo,
+            'observaciones' => $request->observaciones,
+
+        ]);
+
+        return "Centro creado";
+    }
+    public function buscarcdc(Request $request){
+        $c = Cdc::where('id',$request->id)->first();
+        return view('formcdc',[
+            'datos' => $c
+        ]);
+    }
+    public function editarcdc(Request $request){
+        Cdc::where('id', $request->id )
+        ->update([
+            'codigo' => $request->codigo,
+            'descripcion' => $request->descripcion,
+            'centro_operacion' => $request->co,
+            'unidad_negocio' => $request->un,
+            'responsable' => $request->responsable,
+            'mayor' => $request->mayor,
+            'grupo' => $request->grupo,
+            'observaciones' => $request->observaciones,
+        ]);
+        return "Centro actualizado";
+    }
+    public function eliminarcdc(Request $request){
+        Cdc::where('id', $request->id )->delete();
+        return "Centro eliminado";
+    }
+    public function tablacdc(){
+        $cdc = Cdc::all();
+        return view('tablacdc',[
+            'cdc' => $cdc,
+        ]);
     }
 }

@@ -4,8 +4,8 @@
       <tr>
         <th>CODIGO</th>
         <th>DESCRIPCION</th>
-        <th>CENTRO OPERACIÓN</th>
-        <th>UNIDAD NEGOCIO</th>
+        <th>C.OP</th>
+        <th>U.NE</th>
         <th>RESPONSABLE</th>
         <th>MAYOR</th>
         <th>GRUPO</th>
@@ -22,11 +22,11 @@
         <td>{{ $c->responsable }}</td>
         <td>{{ $c->mayor }}</td>
         <td>{{ $c->grupo }}</td>
-        <td>{{ $c->observacion }}</td>
-        <td><select>
+        <td>{{ $c->observaciones }}</td>
+        <td><select class="form-control" id="{{ $c->id }}" onchange="accionescdc(this.value,this.id)">
             <option></option>
-            <option>Editar</option>
-            <option>Eliminar</option>
+            <option value="1">Editar</option>
+            <option value="2">Eliminar</option>
         </select></td>
         
       </tr>

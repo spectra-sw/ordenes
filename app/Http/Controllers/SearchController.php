@@ -66,9 +66,26 @@ class SearchController extends Controller
         //$o=Orden::orderBy('created_at','desc')->get();
         $inicio= $request->fechaInicio." 00:00:00";
         $fin =$request->fechaFinal." 11:59:59";
+        $proyecto = $request->proyecto;
+        $responsable = $request->responsable;
+        $cliente = $request->cliente;
         //dd($fin);
-        $o=Orden::where('fecha_inicio','>=',$inicio)
-                ->where('fecha_final','<=',$fin)->orderBy('created_at','desc')->get();
+
+        $o = Orden::where('id','>',0);
+        if ($proyecto!=""){
+            $o=$o->where('proyecto',$proyecto);
+        }
+        if($responsable!=""){
+            $o=$o->where('responsable',$responsable);
+        }
+        if($cliente!=""){
+          $o=$o->where('cliente','like','%'.$cliente.'%');
+        }
+        if(($inicio!=" 00:00:00")&&($fin!=" 11:59:59")){
+                $o=$o->where('fecha_inicio','>=',$inicio)->where('fecha_final','<=',$fin);
+        }
+        $o=$o->orderBy('created_at','desc')->get();
+        //dd($o);
         return view('tablao',[
             'datos' => $o
         ]);

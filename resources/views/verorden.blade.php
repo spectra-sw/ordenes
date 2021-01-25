@@ -35,7 +35,7 @@
         <div class="col-12 col-md-4 cajaAzul">
             CONSECUTIVO <br>
             <input type="hidden" name="id" id="id" value="">
-            <span class="red" id="consec">{{ $o['id'] }}</span>
+            <span class="red" id="consec">{{ $o->id }}</span>
         </div>
     </div>
     <br>
@@ -80,18 +80,20 @@
             <div class="col-6 col-md-12 "><input type="text" class="form-control" name="tipo" id="tipo" value="{{ $o->objeto }}"></div>
         </div>
         <br>
-        <p><div class="cajaAzul">Días registrados</p>
-        <br>
+        <p><div class="cajaAzul">Días registrados</div></p>
         @foreach($dias as $d)
         <div>  
             <div class="row">
                 <div class="col-6 col-md-2 cajaAzul">Fecha</div>
                 <div class="col-6 col-md-2 "><input type="date" name="fecha" id="fecha" value="{{ $d['fecha'] }}" class="form-control" disabled ></div>
             </div>
-            <br>
+            
             <div class="row">
-                <div class="col-6 col-md-2 cajaAzul">Planificación</div>
-                <div class="col-12">
+                <div class="col-6 cajaAzul">Planificación</div>
+                <div class="col-6 cajaAzul">Ejecución</div>
+            </div>
+            <div class="row">
+                <div class="col-6">
                     <div id="tablap">
                         <table class="table table-bordered table-sm">
                             <thead>
@@ -114,11 +116,7 @@
                         </table>
                     </div>
                 </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-6 col-md-2 cajaAzul">Ejecución</div>
-                <div class="col-12">
+                <div class="col-6">
                     <div id="tablae">
                         <table class="table table-bordered table-sm">
                             <thead>
@@ -142,17 +140,15 @@
                     </div>
                 </div>
             </div>
-            <br>
+            
             <div class="row">
                 <div class="col-6 col-md-2 cajaAzul">Observación del día</div>
                 <div class="col-6 col-md-10 "><input type="text" name="observaciond" id="observaciond" class="form-control" disabled></div>
             </div>
-            <br>
-            <div class="row">
-                <div class="col-6 col-md-2 cajaAzul">Trabajador</div>
-            </div>
             <div class="row">
                 <div class="col-6 col-md-2 cajaAzul">Horas</div>
+            </div>
+            <div class="row">
                 <div class="col-12">
                     <div id="tablah{{ $d['id'] }}">
                         <table class="table table-bordered table-sm">

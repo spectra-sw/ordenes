@@ -8,6 +8,7 @@
         <th>NOMBRE</th>
         <th>AUXILIO</th>
         <th>CORREO</th>
+        <th>TIPO</th>
       </tr>
     </thead>
     <tbody>
@@ -19,10 +20,11 @@
         <td>{{ $e->nombre }}</td>
         <td>{{ $e->auxilio }}</td>
         <td>{{ $e->correo }}</td>
-        <td><select>
-            <option></option>
-            <option>Editar</option>
-            <option>Eliminar</option>
+        <td>{{ $e->tipo == 0 ? 'Admin' : 'Registro' }}</td>
+        <td><select class="form-control" id="{{ $e->id }}" onchange="acciones(this.value,this.id)">
+            <option value=""></option>
+            <option value="1">Editar</option>
+            <option value="2">Eliminar</option>
         </select></td>
         
       </tr>

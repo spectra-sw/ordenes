@@ -130,18 +130,21 @@ function calchoras(){
     $("#th").val(ht) 
 }
 function almdia(){
+    id=parseInt($("#id").val());
     diaid=parseInt($("#diaid").val());
     observaciond=$("#observaciond").val();
     //alert(observaciond);
     fecha=$("#fecha").val();
     url = '/almdia'
-    data = {diaid:diaid, observaciond : observaciond, fecha:fecha}
+    data = {diaid:diaid, observaciond : observaciond, fecha:fecha, id :id}
     $.ajax({
               url: url,
               type:'GET',
               data: data,
               success: function(data) {
-                  alert(data)
+                  //alert(data)
+                $data = $(data);
+                $("#tablad").html($data); 
                 $("#dias").css('display','none');
               }
     });   
@@ -274,4 +277,204 @@ function login(){
             }
         }); 
     }
+}
+
+
+//admin
+function nuevoemp(){
+    $("#nuevoemp").modal();
+}
+function nuevocdc(){
+    $("#nuevocdc").modal();
+}
+function guardare(){
+    band=0;
+    $('#formEmp input').each(function() { 
+        if (($(this).val() == '') && ($(this).attr('id') != 'apellido2')) {
+            band=1;
+        }        
+    })
+    if (band==0){
+        data=$( "#formEmp" ).serialize(); 
+        url = '/nuevoemp'
+        $.ajax({
+                url: url,
+                type:'GET',
+                data: data,
+                success: function(data) {
+                    alert(data);
+                    acttablaemp();
+                }
+        });   
+    }
+    else{
+        alert("Debes ingresar todos los campos");
+    }
+}
+function guardarcdc(){
+    band=0;
+    $('#formCdc input').each(function() { 
+        if (($(this).val() == '') && ($(this).attr('id') != 'observaciones')) {
+            band=1;
+        }        
+    })
+    if (band==0){
+        data=$( "#formCdc" ).serialize(); 
+        url = '/nuevocdc'
+        $.ajax({
+                url: url,
+                type:'GET',
+                data: data,
+                success: function(data) {
+                    alert(data);
+                    acttablacdc();
+                }
+        });   
+    }
+    else{
+
+        alert("Debes ingresar todos los campos");
+    }
+}
+function acciones(op,id){
+    //alert(op);
+    //alert(id);
+    if (op==1){
+        data = { id : id }
+        url="/buscaremp"
+        $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) { 
+                $("#editarBody").html(data);
+                $("#editaremp").modal();
+            }
+        }); 
+    }
+    if(op==2){
+        $("#id").val(id);
+        $("#eliminaremp").modal(); 
+    }
+}
+function accionescdc(op,id){
+    //alert(op);
+    //alert(id);
+    if (op==1){
+        data = { id : id }
+        url="/buscarcdc"
+        $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) { 
+                //alert(data);
+                $("#cdceditBody").html(data);
+                $("#editarcdc").modal();
+            }
+        }); 
+    }
+    if(op==2){
+        $("#id").val(id);
+        $("#eliminarcdc").modal(); 
+    }
+}
+function editare(){
+    band=0;
+    $('#formEdit input').each(function() { 
+        if (($(this).val() == '') && ($(this).attr('id') != 'apellido2')) {
+            band=1;
+        }        
+    })
+    if (band==0){
+        data=$( "#formEdit" ).serialize(); 
+        url = '/editaremp'
+        $.ajax({
+                url: url,
+                type:'GET',
+                data: data,
+                success: function(data) {
+                    alert(data);
+                    acttablaemp();
+                }
+        });   
+    }
+    else{
+        alert("Debes ingresar todos los campos");
+    }
+}
+function editarcdc(){
+    band=0;
+    $('#formCdce input').each(function() { 
+        if (($(this).val() == '') && ($(this).attr('id') != 'observaciones')) {
+            band=1;
+        }        
+    })
+    if (band==0){
+        data=$( "#formCdce" ).serialize(); 
+        url = '/editarcdc'
+        $.ajax({
+                url: url,
+                type:'GET',
+                data: data,
+                success: function(data) {
+                    alert(data);
+                    acttablacdc();
+                }
+        });   
+    }
+    else{
+        alert("Debes ingresar todos los campos");
+    }
+}
+function acttablaemp(){
+    url="/tablaemp"
+    $.ajax({
+        url: url,
+        type:'GET',
+        data: data,
+        success: function(data) { 
+            $("#te").html(data);
+        }
+    }); 
+}
+function acttablacdc(){
+    url="/tablacdc"
+    $.ajax({
+        url: url,
+        type:'GET',
+        success: function(data) { 
+            $("#tc").html(data);
+        }
+    }); 
+}
+function eliminare(){
+    id = $("#id").val();
+    // alert(id);
+    data={ id : id}
+    url = '/eliminaremp'
+    $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) {
+                alert(data);
+                acttablaemp();
+            }
+    });   
+}
+function eliminarcdc(){
+    id = $("#id").val();
+    // alert(id);
+    data={ id : id}
+    url = '/eliminarcdc'
+    $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) {
+                alert(data);
+                acttablacdc();
+            }
+    });   
 }
