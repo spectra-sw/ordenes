@@ -239,4 +239,24 @@
       </div>
     </div>
 </div>
+<div class="modal fade bd-example-modal-sm" id="password">
+    <div class="modal-dialog">
+      <div class="modal-content">  
+        <!-- Modal body -->
+       
+        <!-- Modal body -->
+        <div class="modal-body" id="eliminarBody">
+        <p>Nueva contraseña</p>
+        <p><input type="password" id="pwd" name="pwd" class="form-control"></p>
+        <input type="hidden" id="idup" name="idup" value=""> 
+        <button type="button" class="btn btn-primary" onclick="updatepwd()">Actualizar</button>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+      </div>      
+      </div>
+    </div>
+</div>
   <script src="{{asset('js/scripts.js')}}"></script>

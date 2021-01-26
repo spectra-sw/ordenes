@@ -71,6 +71,8 @@ Route::get('archivon',[FilesController::class,'archivon'])->name("archivon");
 //utilities
 Route::get('autorizadas',[PagesController::class, 'autorizadas'])->name('autorizadas');
 Route::get('delete',[PagesController::class,'del'])->name('del');
+Route::get('updatepwd',[PagesController::class,'updatepwd'])->name('updatepwd');
+Route::get('updatep',[PagesController::class,'updatep'])->name('updatep');
 
 //Excel
 Route::get('exportReporte', [ExcelController::class, 'export'])->name('export');

@@ -22,32 +22,64 @@ class PagesController extends Controller
 {
     //
     public function inicio(){
-        
+        session(['user' => '']);
+        session(['tipo' => '']);
         return view('login');
     }
     public function login(){
+        session(['user' => '']);
+        session(['tipo' => '']);
         return view('login');
 
     }
     public function menu(){
-        return view('menu');
+        $tipo = session('tipo');
+        //dd($tipo);
+        if ($tipo ==0){
+            return view('menu');
+        }
+        else{
+            return view('login');
+        }
 
     }
     public function bases(){
-        $emp = Empleado::orderBy('apellido1','asc')->get();
-        $cdc = Cdc::all();
-        return view('bases',[
-            'emp' => $emp,
-            'cdc' => $cdc
-        ]);
+        $tipo = session('tipo');
+        //dd($tipo);
+        if ($tipo ==0){
+            $emp = Empleado::orderBy('apellido1','asc')->get();
+            $cdc = Cdc::all();
+            return view('bases',[
+                'emp' => $emp,
+                'cdc' => $cdc
+            ]);
+        }
+        else{
+            return view('login');
+        }
+        
     }
     public function admin(){
-        return view('admin');
+        $tipo = session('tipo');
+        if (($tipo ==0)){
+            return view('admin');
+        }
+        else{
+            return view('login');
+        }
+        
     }
     public function consultas(){
-        return view('consultas',[
-            'header' => 'Consulta de órdenes'
-        ]);
+        $tipo = session('tipo');
+        if (($tipo ==0)){
+            return view('consultas',[
+                'header' => 'Consulta de órdenes'
+            ]);
+        }
+        else{
+            return view('login');
+        }
+       
     }
     public function ordenes(){
         return view('ordenes');
@@ -405,8 +437,8 @@ class PagesController extends Controller
             'nombre' => $request->nombre,
             'auxilio' => $request->auxilio,
             'correo' => $request->correo,
-            'tipo' => $request->tipo
-
+            'tipo' => $request->tipo,
+            'password' => bcrypt($request->cc)
         ]);
 
         return "Empleado creado";
@@ -429,6 +461,13 @@ class PagesController extends Controller
             'tipo' => $request->tipo
           ]);
           return "Empleado actualizado";
+    }
+    public function updatep(Request $request){
+        Empleado::where('id', $request->id )
+        ->update([
+            'password' => bcrypt($request->password)
+          ]);
+          return "Contraseña actualizada";
     }
     public function eliminaremp(Request $request){
         Empleado::where('id', $request->id )->delete();
@@ -487,5 +526,14 @@ class PagesController extends Controller
         return view('tablacdc',[
             'cdc' => $cdc,
         ]);
+    }
+    public function updatepwd(){
+        $emps = Empleado::all();
+        foreach($emps as $e){
+            Empleado::where('id',$e->id)->update([
+                'password' => bcrypt($e->cc)
+            ]);
+        }
+        return 'operacion realizada';
     }
 }

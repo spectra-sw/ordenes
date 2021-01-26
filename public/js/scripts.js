@@ -267,10 +267,13 @@ function login(){
             type:'GET',
             data: data,
             success: function(data) {
-                if (data == "ok"){
-                    window.open('menu');
+                if (data == 0){
+                    window.open('menu','_self');
                 }
-                else{
+                if (data == 1){
+                    window.open('ordenes','_self');
+                }
+                if ((data != 0)&&(data != 1)){
                     $("#mensaje").html(data);
                     $("#alerta").css('display','block');
                 }
@@ -355,6 +358,10 @@ function acciones(op,id){
     if(op==2){
         $("#id").val(id);
         $("#eliminaremp").modal(); 
+    }
+    if(op==3){
+        $("#idup").val(id);
+        $("#password").modal();
     }
 }
 function accionescdc(op,id){
@@ -475,6 +482,21 @@ function eliminarcdc(){
             success: function(data) {
                 alert(data);
                 acttablacdc();
+            }
+    });   
+}
+function updatepwd(){
+    id = $("#idup").val();
+    password= $("#pwd").val();
+    // alert(id);
+    data={ id : id, password : password}
+    url = '/updatep'
+    $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) {
+                alert(data);
             }
     });   
 }
