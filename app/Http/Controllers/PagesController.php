@@ -23,12 +23,12 @@ class PagesController extends Controller
     //
     public function inicio(){
         session(['user' => '']);
-        session(['tipo' => '']);
+        session(['tipo' => 3]);
         return view('login');
     }
     public function login(){
         session(['user' => '']);
-        session(['tipo' => '']);
+        session(['tipo' => 3]);
         return view('login');
 
     }

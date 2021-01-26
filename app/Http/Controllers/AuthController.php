@@ -23,7 +23,7 @@ class AuthController extends Controller
             }
             else {
                 session(['user' => '']);
-                session(['tipo' => '']);
+                session(['tipo' => 3]);
                 return "* Datos inválidos";
             }
             
@@ -31,7 +31,7 @@ class AuthController extends Controller
         }
         else{
             session(['user' => '']);
-            session(['tipo' => '']);
+            session(['tipo' => 3]);
             return "* Datos inválidos";
         }
     }
