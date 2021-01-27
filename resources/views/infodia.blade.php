@@ -60,7 +60,7 @@
             
             <div class="row">
                 <div class="col-6 col-md-2 cajaAzul">Observación del día</div>
-                <div class="col-6 col-md-10 "><input type="text" name="observaciond" id="observaciond" class="form-control" disabled></div>
+                <div class="col-6 col-md-10 "><input type="text" name="observaciond" id="observaciond" class="form-control" value="{{ $d['observacion'] }}" disabled></div>
             </div>
             <div class="row">
                 <div class="col-6 col-md-2 cajaAzul">Horas</div>
