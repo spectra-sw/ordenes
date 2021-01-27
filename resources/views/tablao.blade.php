@@ -12,6 +12,7 @@
         <th>Objeto</th>
         <th>Observaciones</th>
         <th>Creación</th>
+        <th>Autorizada</th>
       </tr>
     </thead>
     <tbody>
@@ -28,7 +29,7 @@
         <td>{{ $dato->objeto }}</td>
         <td>{{ $dato->observaciones}}</td>
         <td>{{ $dato->created_at }}</td>
-
+        <td>{{ $dato->autorizada_por !=0 ? 'Si' : 'No'}}</td>
         <td><button class="btn btn-primary btn-sm" type="button" onclick="verorden({{ $dato->id }})">Ver</button</td>
       </tr>
     @endforeach 

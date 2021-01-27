@@ -44,6 +44,7 @@ Route::get('/saveorden',[PagesController::class, 'saveorden']);
 Route::get('/verorden/{id}',[PagesController::class,'verorden']);
 Route::get('/getdia',[PagesController::class,'getdia']);
 Route::get('/login',[PagesController::class,'login']);
+Route::get('/logout',[PagesController::class,'login']);
 //emp
 Route::get('/nuevoemp',[PagesController::class,'nuevoemp']);
 Route::get('/buscaremp',[PagesController::class,'buscaremp']);

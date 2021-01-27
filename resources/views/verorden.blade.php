@@ -30,7 +30,7 @@
 
         <div class="col-12 col-md-4 cajaAzul ">
         ORDENES DE TRABAJO <br>
-        <button class="btn btn-primary" type="button" onclick="nueva()">Nueva orden</button>
+        <!--<button class="btn btn-primary" type="button" onclick="nueva()">Nueva orden</button>-->
         </div>
         <div class="col-12 col-md-4 cajaAzul">
             CONSECUTIVO <br>

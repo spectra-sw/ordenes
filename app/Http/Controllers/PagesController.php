@@ -235,6 +235,12 @@ class PagesController extends Controller
         }
 
        // return $tipo." ".$objeto;
+
+        $tipo = session('tipo');
+        $creada = 0;
+        if ($tipo !=3){
+            $creada = session('user');
+        }
         
         $o = Orden::create([
             'proyecto' => $request->proyecto,
@@ -248,7 +254,7 @@ class PagesController extends Controller
             'objeto' => $objeto,
             'observaciones' => $request->observacionesg  ,
             'autorizada_por' => 0,
-            'creada_por' => 0   
+            'creada_por' => $creada   
         ]);
 
         return "Orden de trabajo almacenada";
@@ -376,6 +382,14 @@ class PagesController extends Controller
     }
     public function autorizadas(Request $request){
         $datos = Hora::where('id', $request->id) ->first();
+
+        $tipo = session('tipo');
+        $autorizada = 0;
+        if ($tipo !=3){
+            $autorizada = session('user');
+        }
+        $o=Orden::where('id', $datos->ordenes_id) 
+          ->update(['autorizada_por' => $autorizada]);
         
         $h=Hora::where('id', $request->id) 
           ->update(['ha' => $request->valor]);
