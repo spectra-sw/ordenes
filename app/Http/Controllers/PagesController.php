@@ -170,6 +170,12 @@ class PagesController extends Controller
 
         if (Dia::where('ordenes_id',$id)->exists()){   
 
+            $tipou = session('tipo');
+            $creada = 0;
+            if ($tipou !=3){
+                $creada = session('user');
+            }
+
         $tipo="";
         if ($request->filled('cctv')) {
             if($tipo==""){ $tipo= "cctv";}
@@ -236,11 +242,7 @@ class PagesController extends Controller
 
        // return $tipo." ".$objeto;
 
-        $tipo = session('tipo');
-        $creada = 0;
-        if ($tipo !=3){
-            $creada = session('user');
-        }
+        
         
         $o = Orden::create([
             'proyecto' => $request->proyecto,
