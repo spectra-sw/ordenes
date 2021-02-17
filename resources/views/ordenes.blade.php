@@ -63,7 +63,7 @@
             <div class="col-6 col-md-2 cajaAzul">Área de trabajo *</div>
             <div class="col-6 col-md-2 "><input type="text" name="area" id="area" class="form-control"></div>
             <div class="col-6 col-md-2 cajaAzul">Contacto *</div>
-            <div class="col-6 col-md-2 "><input type="text" name="contacto" id="contacto" class="form-control"></div>
+            <div class="col-6 col-md-2 "><input type="text" name="contacto" id="contacto" class="form-control" ></div>
         </div>
         <br>
         <div class="row">

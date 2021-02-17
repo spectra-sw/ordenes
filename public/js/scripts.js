@@ -32,6 +32,9 @@ function agregarp(){
                 success: function(data) {
                     $data = $(data);
                     $("#tablap").html($data);
+                    $("#cantp").val("");
+                    $("#undp").val("");
+                    $("#materiales").val("");
                 }
         });
     }
@@ -60,6 +63,9 @@ function agregare(){
                 success: function(data) {
                     $data = $(data);
                     $("#tablae").html($data);
+                    $("#cante").val("");
+                    $("#unde").val("");
+                    $("#observacione").val("");
                 }
         });
     }
@@ -95,6 +101,11 @@ function agregarh(){
                 success: function(data) {
                     $data = $(data);
                     $("#tablah").html($data);
+                    $("#hi").val("");
+                    $("#mi").val("");
+                    $("#hf").val("");
+                    $("#mf").val("");
+                    $("#th").val("");
                 }
         });
     }
@@ -143,9 +154,14 @@ function almdia(){
               data: data,
               success: function(data) {
                   //alert(data)
-                $data = $(data);
-                $("#tablad").html($data); 
-                $("#dias").css('display','none');
+                if (data == 'no'){
+                    alert("No existen horas registradas para el día");
+                }
+                else{
+                    $data = $(data);
+                    $("#tablad").html($data); 
+                    $("#dias").css('display','none');
+                }
               }
     });   
 }
@@ -435,7 +451,9 @@ function editarcdc(){
     }
 }
 function acttablaemp(){
+    campo='';
     url="/tablaemp"
+    data = { campo : campo}
     $.ajax({
         url: url,
         type:'GET',
@@ -446,9 +464,12 @@ function acttablaemp(){
     }); 
 }
 function acttablacdc(){
+    campo = ''
+    data = {campo : campo}
     url="/tablacdc"
     $.ajax({
         url: url,
+        data:data,
         type:'GET',
         success: function(data) { 
             $("#tc").html(data);
@@ -499,4 +520,29 @@ function updatepwd(){
                 alert(data);
             }
     });   
+}
+function ordenar(campo){
+    //alert(campo);
+    url="/tablaemp";
+    data = {campo : campo}
+    $.ajax({
+        url: url,
+        type:'GET',
+        data: data,
+        success: function(data) { 
+            $("#te").html(data);
+        }
+    }); 
+}
+function ordenarc(campo){
+    url="/tablacdc"
+    data = {campo : campo}
+    $.ajax({
+        url: url,
+        data: data,
+        type:'GET',
+        success: function(data) { 
+            $("#tc").html(data);
+        }
+    }); 
 }

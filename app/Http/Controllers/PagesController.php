@@ -156,13 +156,20 @@ class PagesController extends Controller
         
     }
     public function almdia(Request $request){
-        $d=Dia::where('id', $request->diaid) 
-          ->update(['fecha' => $request->fecha,
-                    'observacion' => $request->observaciond]);
-        $datos = Dia::where('ordenes_id',$request->id)->get();
-        return view('tablad',[
-            'datos' => $datos
-        ]);
+
+        if (Hora::where('ordenes_id',$request->id)->where('dias_id',$request->diaid)->exists()){   
+
+            $d=Dia::where('id', $request->diaid) 
+            ->update(['fecha' => $request->fecha,
+                        'observacion' => $request->observaciond]);
+            $datos = Dia::where('ordenes_id',$request->id)->get();
+            return view('tablad',[
+                'datos' => $datos
+            ]);
+        }
+        else{
+            return 'no';
+        }
         //return 'Información del día almacenada';
     }
     public function saveorden(Request $request){
@@ -250,8 +257,8 @@ class PagesController extends Controller
             'fecha_final' => $request->fechaFinal,
             'responsable' => $request->responsable,
             'cliente' => $request->cliente,
-            'area_trabajo' => $request->area,
-            'contacto' => $request->contacto,
+            'area_trabajo' => strttoupper($request->area),
+            'contacto' => strttoupper($request->contacto),
             'tipo' => $tipo,
             'objeto' => $objeto,
             'observaciones' => $request->observacionesg  ,
@@ -489,8 +496,14 @@ class PagesController extends Controller
         Empleado::where('id', $request->id )->delete();
         return "Empleado eliminado";
     }
-    public function tablaemp(){
-        $emp = Empleado::orderBy('apellido1','asc')->get();
+    public function tablaemp(Request $request){
+        $campo = $request->campo;
+        if ($campo == ''){
+            $emp = Empleado::orderBy('apellido1','asc')->get();  
+        }
+        else{
+            $emp = Empleado::orderBy($campo,'asc')->get();  
+        }
         return view('tablaemp',[
             'emp' => $emp,
         ]);
@@ -537,8 +550,14 @@ class PagesController extends Controller
         Cdc::where('id', $request->id )->delete();
         return "Centro eliminado";
     }
-    public function tablacdc(){
-        $cdc = Cdc::all();
+    public function tablacdc(Request $request){
+        $campo = $request->campo;
+        if ($campo == ''){
+            $cdc = Cdc::all();
+        }
+        else{
+            $cdc = Cdc::orderBy($campo,'asc')->get();  
+        }
         return view('tablacdc',[
             'cdc' => $cdc,
         ]);

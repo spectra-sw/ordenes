@@ -1,14 +1,14 @@
 
 <table class="table table-bordered table-striped table-sm">
     <thead>
-      <tr>
-        <th>CC</th>
-        <th>APELLIDO 1</th>
-        <th>APELLIDO 2</th>
-        <th>NOMBRE</th>
-        <th>AUXILIO</th>
-        <th>CORREO</th>
-        <th>TIPO</th>
+      <tr style="cursor:pointer">
+        <th onclick="ordenar('cc')">CC</th>
+        <th onclick="ordenar('apellido1')">APELLIDO 1</th>
+        <th onclick="ordenar('apellido2')">APELLIDO 2</th>
+        <th onclick="ordenar('nombre')">NOMBRE</th>
+        <th onclick="ordenar('auxilio')">AUXILIO</th>
+        <th onclick="ordenar('correo')">CORREO</th>
+        <th onclick="ordenar('tipo')">TIPO</th>
       </tr>
     </thead>
     <tbody>

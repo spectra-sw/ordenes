@@ -1,12 +1,12 @@
 
 <table class="table table-bordered table-striped table-sm">
     <thead>
-      <tr>
-        <th>CODIGO</th>
-        <th>DESCRIPCION</th>
+      <tr >
+        <th onclick="ordenarc('codigo')" style="cursor:pointer">CODIGO</th>
+        <th onclick="ordenarc('descripcion')" style="cursor:pointer">DESCRIPCION</th>
         <th>C.OP</th>
         <th>U.NE</th>
-        <th>RESPONSABLE</th>
+        <th onclick="ordenarc('responsable')" style="cursor:pointer">RESPONSABLE</th>
         <th>MAYOR</th>
         <th>GRUPO</th>
         <th>OBSERVACIONES</th>
