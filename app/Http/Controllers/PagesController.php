@@ -92,6 +92,9 @@ class PagesController extends Controller
         else{
             $id = Orden::orderBy('created_at','desc')->first()->id;
             $id+=1;
+            $o = Orden::create([
+                'proyecto' => $id
+            ]);
             return "0000".$id;
         }      
     }
@@ -250,8 +253,9 @@ class PagesController extends Controller
        // return $tipo." ".$objeto;
 
         
-        
-        $o = Orden::create([
+       $o=Orden::where('id', $id) 
+       ->update([
+      
             'proyecto' => $request->proyecto,
             'fecha_inicio' => $request->fechaInicio,
             'fecha_final' => $request->fechaFinal,
