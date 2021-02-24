@@ -14,7 +14,7 @@
       
     </style>
 </head>
-<body>
+<body style="background-image:url('img/fondo.jpg');background-size: cover;")>
     <div class="row mt-4">
         <div class="col-md-4 offset-md-4">
             <div class="card">
