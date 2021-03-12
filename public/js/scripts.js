@@ -1,4 +1,12 @@
 function nueva(){
+    data=$( "#f1" ).serialize(); 
+    dataArray=data.split("&");
+    dataArray.forEach(function(datos) {
+        x=datos.split("=")    
+        var sel = "#"+x[0]
+        $( sel ).val("");
+                
+    });
     $("#datos").css('display','block');
     url="/getConsec";
     $.ajax({
@@ -545,4 +553,29 @@ function ordenarc(campo){
             $("#tc").html(data);
         }
     }); 
+}
+function buscarcontactos(){
+    cliente = $("#cliente").val();
+    url="/buscarcontactos"
+    data = {cliente : cliente}
+    $.ajax({
+        url: url,
+        type:'GET',
+        data: data,
+        success: function(data) { 
+              //alert(data);     
+              $("#contacto").val(data); 
+             
+        }
+    });   
+}
+function modalconfirm(){
+    $("#cproyecto").val($("#proyecto").val());
+    $("#cfechaInicio").val($("#fechaInicio").val());
+    $("#cfechaFinal").val($("#fechaFinal").val());
+    $("#ccliente").val($("#cliente").val());
+    $("#cresponsable").val($("#responsable").val());
+    $("#carea").val($("#area").val());
+    $("#ccontacto").val($("#contacto").val());
+    $("#confirm").modal();
 }

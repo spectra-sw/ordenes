@@ -67,6 +67,7 @@ Route::get('autocomplete', [SearchController::class, 'autocomplete'])->name('aut
 Route::get('autoemp', [SearchController::class, 'autoemp'])->name('autoemp');
 Route::get('consproyecto',[SearchController::class, 'consproyecto'])->name('consproyecto');
 Route::get('getordenes',[SearchController::class,'getordenes'])->name("getordenes");
+Route::get('buscarcontactos',[SearchController::class,'buscarcontactos'])->name("buscarcontactos");
 Route::get('archivon',[FilesController::class,'archivon'])->name("archivon");
 
 //utilities

@@ -63,7 +63,7 @@
             <div class="col-6 col-md-2 cajaAzul">Área de trabajo *</div>
             <div class="col-6 col-md-2 "><input type="text" name="area" id="area" class="form-control"></div>
             <div class="col-6 col-md-2 cajaAzul">Contacto *</div>
-            <div class="col-6 col-md-2 "><input type="text" name="contacto" id="contacto" class="form-control" ></div>
+            <div class="col-6 col-md-2 "><input type="text" name="contacto" id="contacto" class="form-control" onclick="buscarcontactos()"></div>
         </div>
         <br>
         <div class="row">
@@ -115,7 +115,20 @@
                 <div class="col-6 col-md-1 cajaAzul">Cant</div>
                 <div class="col-6 col-md-1 "><input type="text" name="cantp" id="cantp" class="form-control"></div>
                 <div class="col-6 col-md-1 cajaAzul">Und</div>
-                <div class="col-6 col-md-1 "><input type="text" name="undp" id="undp" class="form-control"></div>
+                <div class="col-6 col-md-1 ">
+                
+                    <select class="form-control" name="undp" id="undp">
+                        <option value=""></option>
+                        <option value="CAJA">CAJA</option>
+                        <option value="DIAS">DIAS</option>
+                        <option value="GL">GL</option>
+                        <option value="KG">KG</option>
+                        <option value="ML">ML</option>
+                        <option value="PERS">PERS</option>
+                        <option value="PKT">PKT</option>
+                        <option value="UND">UND</option>
+                    </select>
+                </div>
                 <div class="col-6 col-md-2 cajaAzul">Materiales/equipos</div>
                 <div class="col-6 col-md-2 "><input type="text" name="materiales" id="materiales" class="form-control"></div>
                 <div class="col-6 col-md-2 "> <div class="col-12 col-md-2 "><button class="btn btn-primary btn-sm" type="button" onclick="agregarp()">Agregar</button></div></div>
@@ -136,7 +149,19 @@
                 <div class="col-6 col-md-1 cajaAzul">Cant</div>
                 <div class="col-6 col-md-1 "><input type="text" name="cante" id="cante" class="form-control"></div>
                 <div class="col-6 col-md-1 cajaAzul">Und</div>
-                <div class="col-6 col-md-1 "><input type="text" name="unde" id="unde" class="form-control"></div>
+                <div class="col-6 col-md-1 ">
+                    <select class="form-control" name="unde" id="unde">
+                        <option value=""></option>
+                        <option value="CAJA">CAJA</option>
+                        <option value="DIAS">DIAS</option>
+                        <option value="GL">GL</option>
+                        <option value="KG">KG</option>
+                        <option value="ML">ML</option>
+                        <option value="PERS">PERS</option>
+                        <option value="PKT">PKT</option>
+                        <option value="UND">UND</option>
+                    </select>
+                </div>
                 <div class="col-6 col-md-2 cajaAzul">Observación</div>
                 <div class="col-6 col-md-2 "><input type="text" name="observacione" id="observacione" class="form-control"></div>
                 <div class="col-6 col-md-2 "> <div class="col-12 col-md-2 "><button class="btn btn-primary btn-sm" type="button" onclick="agregare()">Agregar</button></div></div>
@@ -169,7 +194,7 @@
                 <div class="col-4 col-md-1 "><input type="number" name="hf" id="hf" min="0" max="24" class="form-control"></div>
                 <div class="col-4 col-md-1 "><input type="number" name="mf" id="mf" min="0" max="59" class="form-control"></div>
                 <div class="col-4 col-md-1 cajaAzul">Th</div>
-                <div class="col-4 col-md-1 "><input type="number" onclick="calchoras()" name="th" id="th" min="0" max="24" class="form-control"></div>
+                <div class="col-4 col-md-1 "><input type="number" onclick="calchoras()" name="th" id="th" min="0" max="24" class="form-control"  readonly></div>
                 <div class="col-6 col-md-1 "> <div class="col-12 col-md-2 "><button class="btn btn-primary btn-sm" type="button" onclick="agregarh()">Agregar</button></div></div>
                 <br>
                 <div class="alert alert-danger" id="alertah">
@@ -195,23 +220,67 @@
             <div class="col-12 col-md-12"><textarea rows="10" name="observacionesg" id="observacionesg" class="form-control"></textarea></div>
         </div>
         <div class="row">
-            <div class="col-12"><button class="btn btn-primary btn-block" type="button" onclick="enviarorden()">Finalizar orden</button></div>
+            <div class="col-12"><button class="btn btn-primary btn-block" type="button" onclick="modalconfirm()">Finalizar orden</button></div>
         </div>
     </div>
     </form>
 </div>
 <!-- The Modal -->
-<div class="modal fade bd-example-modal-xl" id="info">
+<div class="modal fade bd-example-modal-xl" id="confirm">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">  
         <!-- Modal body -->
+        <div class="modal-header">
+        <h5 class="modal-title">Confirme los datos de la orden de trabajo antes de ser enviada</h5>
+        
+        </div>
         <div class="modal-body" id="infoBody">
-         
+            <div class="row">
+                <div class="col-6 col-md-2 cajaAzul">Proyecto</div>
+                <div class="col-6 col-md-2 "><input type="text" name="proyecto" id="cproyecto" class="form-control basicAutoComplete" value="" disabled></div>
+                <div class="col-6 col-md-2 cajaAzul">Fecha Inicio</div>
+                <div class="col-6 col-md-2 "><input type="date" name="fechaInicio" id="cfechaInicio" class="form-control"  disabled></div>
+                <div class="col-6 col-md-2 cajaAzul">Fecha Final</div>
+                <div class="col-6 col-md-2 "><input type="date" name="fechaFinal" id="cfechaFinal" class="form-control" disabled></div>
+            </div>
+            <div class="row">
+                <div class="col-6 col-md-2 cajaAzul">Responsable</div>
+                <div class="col-6 col-md-10">
+                    <!--<input type="text" name="responsable" id="responsable" class="form-control basicAutoComplete" data-url="autoemp" >
+                    <input type="hidden" name="cc" id="cc">-->
+                    <input type="text" name="responsable" id="cresponsable"  disabled >
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 col-md-2 cajaAzul">Cliente</div>
+                <div class="col-6 col-md-2 "><input type="text" name="cliente" id="ccliente" class="form-control"  disabled></div>
+                <div class="col-6 col-md-2 cajaAzul">Área de trabajo</div>
+                <div class="col-6 col-md-2 "><input type="text" name="area" id="carea" class="form-control"  disabled></div>
+                <div class="col-6 col-md-2 cajaAzul">Contacto</div>
+                <div class="col-6 col-md-2 "><input type="text" name="contacto" id="ccontacto" class="form-control"  disabled></div>
+            </div>
+            <br>
+            <!--<div class="row">
+                <div class="col-12 col-md-12 cajaAzul">Tipo de sistema solicitado</div>
+            </div>
+            <div class="row">
+                <div class="col-6 col-md-12 "><input type="text" class="form-control" name="tipo" id="tipo" ></div>
+            </div>
+            
+            <br>
+            <div class="row">
+                <div class="col-12 col-md-12 cajaAzul">Objeto de la orden de trabajo</div>
+            </div>
+            <div class="row">
+                <div class="col-6 col-md-12 "><input type="text" class="form-control" name="tipo" id="tipo" ></div>
+            </div>-->
+
         </div>
         
         <!-- Modal footer -->
         <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="enviarorden()">Enviar</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
       </div>      
       </div>
     </div>

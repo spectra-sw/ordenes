@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Cdc;
 use App\Models\Empleado;
 use App\Models\Orden;
+use App\Models\Cliente;
 class SearchController extends Controller
 {
     /**
@@ -89,5 +90,10 @@ class SearchController extends Controller
         return view('tablao',[
             'datos' => $o
         ]);
+    }
+    public function buscarcontactos(Request $request){
+      $cliente = $request->cliente;
+      $c=Cliente::where("cliente","LIKE","%".$cliente."%")->first();
+      return $c->contactos;
     }
 }
