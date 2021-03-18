@@ -13,4 +13,10 @@ class Orden extends Model
         'proyecto', 'fecha_inicio','fecha_final','responsable','cliente',
         'area_trabajo','contacto','tipo','objeto','observaciones','autorizada_por','creada_por'
     ];
+
+    public function empleado()
+    {
+    return $this->belongsTo(Empleado::class, 'responsable', 'cc');
+    }
+
 }

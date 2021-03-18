@@ -13,7 +13,7 @@
     
     <script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.7/dist/latest/bootstrap-autocomplete.min.js"></script>
     <style>
-        
+      
       
     </style>
 </head>
@@ -23,7 +23,7 @@
             <div class="card-header">
                 <div class="row justify-content-between">
                     <div class="col-2">
-                        <img src="{{ URL::asset('img/logo.png') }}" class="img-responsive center-block">
+                        <img src="{{ URL::asset('img/logo.png') }}" class="img-responsive center-block" onclick="window.open('/menu','_self')">
                     </div>
                     <div class="col-2">
                         <nav class="navbar navbar-expand-lg navbar-light bg-light">

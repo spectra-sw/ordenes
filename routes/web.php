@@ -41,8 +41,11 @@ Route::get('/admin',[PagesController::class, 'admin']);
 Route::get('/bases',[PagesController::class, 'bases']);
 Route::get('/consultas',[PagesController::class, 'consultas']);
 Route::get('/saveorden',[PagesController::class, 'saveorden']);
+Route::get('/updateorden',[PagesController::class, 'saveorden']);
 Route::get('/verorden/{id}',[PagesController::class,'verorden']);
+Route::get('/ordenese/{id}',[PagesController::class,'editorden']);
 Route::get('/getdia',[PagesController::class,'getdia']);
+Route::get('/editDia',[PagesController::class,'editDia']);
 Route::get('/login',[PagesController::class,'login']);
 Route::get('/logout',[PagesController::class,'login']);
 //emp
@@ -59,6 +62,9 @@ Route::get('/editarcdc',[PagesController::class,'editarcdc']);
 Route::get('/tablacdc',[PagesController::class,'tablacdc']);
 Route::get('/eliminarcdc',[PagesController::class,'eliminarcdc']);
 
+//programacion
+Route::get('/programacion',[PagesController::class,'programacion']);
+
 //Load
 Route::get('/load/{tipo}',[LoadController::class,'load']);
 
@@ -72,7 +78,7 @@ Route::get('archivon',[FilesController::class,'archivon'])->name("archivon");
 
 //utilities
 Route::get('autorizadas',[PagesController::class, 'autorizadas'])->name('autorizadas');
-Route::get('delete',[PagesController::class,'del'])->name('del');
+Route::get('eliminar',[PagesController::class,'delete'])->name('eliminar');
 Route::get('updatepwd',[PagesController::class,'updatepwd'])->name('updatepwd');
 Route::get('updatep',[PagesController::class,'updatep'])->name('updatep');
 

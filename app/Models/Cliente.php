@@ -11,6 +11,6 @@ class Cliente extends Model
     protected $table = 'clientes';
     public $timestamps = false;
     protected $fillable = [
-        'codigo_cdc', 'cliente','contactos',
+         'cliente','contactos',
     ];
 }

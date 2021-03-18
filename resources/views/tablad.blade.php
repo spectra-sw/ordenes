@@ -11,6 +11,7 @@
         <td>{{ $dato->fecha }}</td>
         <td>{{ $dato->observacion }}</td>
         <td><button class="btn btn-primary btn-sm" type="button" onclick="infoDia({{ $dato->id}})">Ver</button</td>
+        <td><button class="btn btn-primary btn-sm" type="button" onclick="editDia({{ $dato->id}})">Editar</button</td>
       </tr>
     @endforeach 
     </tbody>

@@ -13,5 +13,9 @@ class Empleado extends Model
     protected $fillable = [
         'cc','apellido1','apellido2','nombre','auxilio','correo','tipo','password'
     ];
-   
+    
+    public function ordenes()
+    {
+        return $this->hasMany(Orden::class, 'responsable', 'cc');
+    }
 }

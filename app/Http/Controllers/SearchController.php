@@ -7,6 +7,7 @@ use App\Models\Cdc;
 use App\Models\Empleado;
 use App\Models\Orden;
 use App\Models\Cliente;
+use App\Models\Proyecto;
 class SearchController extends Controller
 {
     /**
@@ -25,7 +26,18 @@ class SearchController extends Controller
     {
         //dd($request->q);
         $q = "%".$request->q."%";
+        /*
         $datas = Cdc::select("codigo")
+                ->where("codigo","LIKE","%".$request->q."%")
+                ->get();
+        
+                $dataModified = array();
+                foreach ($datas as $data)
+                {
+                  $dataModified[] = $data->codigo;
+                }
+        */
+        $datas = Proyecto::select("codigo")
                 ->where("codigo","LIKE","%".$request->q."%")
                 ->get();
         
@@ -60,7 +72,8 @@ class SearchController extends Controller
     }
     public function consproyecto(Request $request){
         $codigo = $request->codigo;
-        $data = Cdc::where("codigo",$codigo)->first();
+        $data = Proyecto::where("codigo",$codigo)->first();
+        $data['cliente'] = $data->cliente->cliente;
         return response()->json($data);
     }
     public function getordenes(Request $request){

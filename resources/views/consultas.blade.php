@@ -10,6 +10,7 @@
                     <div class="col-6 col-md-2 cajaAzul">Fecha Final</div>
                     <div class="col-6 col-md-2 "><input type="date" name="fechaFinal" id="fechaFinal" class="form-control"></div>
     </div>
+                @if (session('tipo')==0)
                 <div class="row">
                     <div class="col-6 col-md-2 cajaAzul">Responsable</div>
                     <div class="col-6 col-md-10">                 
@@ -18,6 +19,7 @@
     data-url="autoemp" autocomplete="off"></select>
                     </div>
                 </div>
+                @endif
                 <div class="row">
                     <div class="col-6 col-md-2 cajaAzul">Cliente</div>
                     <div class="col-6 col-md-2 "><input type="text" name="cliente" id="cliente" class="form-control"></div>
@@ -28,7 +30,9 @@
                 </div>
                 <div class="row">
                     <button type="button" class="btn btn-primary" onclick="consultar()">Consultar</button>&nbsp;
+                    @if (session('tipo')==0)
                     <button type="button" class="btn btn-primary" onclick="archivo()">Archivo Nómina</button>
+                    @endif
                 </div>
 
                 <div id="tablao">

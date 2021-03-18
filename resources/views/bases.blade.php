@@ -10,20 +10,42 @@
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#centros">Centros</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#clientes">Clientes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#proyectos">Proyectos</a>
+                </li>
                 </ul>
 
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <div class="tab-pane container active" id="emp">
+                        <br>
                         <button class="btn btn-primary" onclick="nuevoemp()">Nuevo Empleado</button><br><br>
                         <div id ="te">
                             @include('tablaemp')
                         </div>
                     </div>
                     <div class="tab-pane container fade" id="centros">
+                      <br>
                         <button class="btn btn-primary" onclick="nuevocdc()">Nuevo Centro</button><br><br>
                         <div id ="tc">
                             @include('tablacdc')
+                        </div>
+                    </div>
+                    <div class="tab-pane container fade" id="clientes">
+                      <br>
+                        <button class="btn btn-primary" onclick="nuevocliente()">Nuevo Cliente</button><br><br>
+                        <div id ="tcl">
+                            @include('tablacliente')
+                        </div>
+                    </div>
+                    <div class="tab-pane container fade" id="proyectos">
+                        <br>
+                        <button class="btn btn-primary" onclick="nuevoproyecto()">Nuevo Proyecto</button><br><br>
+                        <div id ="tp">
+                            @include('tablaproyecto')
                         </div>
                     </div>
                 </div>

@@ -29,41 +29,41 @@
 
         <div class="col-12 col-md-4 cajaAzul ">
         ORDENES DE TRABAJO <br>
-        <button class="btn btn-primary" type="button" onclick="nueva()">Nueva orden</button>
+        <!--<button class="btn btn-primary" type="button" onclick="nueva()">Nueva orden</button>-->
         </div>
         <div class="col-12 col-md-4 cajaAzul">
             CONSECUTIVO <br>
-            <input type="hidden" name="id" id="id" value="">
-            <span class="red" id="consec"></span>
+            <input type="hidden" name="id" id="id" value="{{ $o->id }}">
+            <span class="red" id="consec">{{ $o->id }}</span>
         </div>
     </div>
     <br>
-    <div id="datos">
+    <div id="">
         <div class="row">
             <div class="col-6 col-md-2 cajaAzul">Proyecto *</div>
-            <div class="col-6 col-md-2 "><input type="text" name="proyecto" id="proyecto" class="form-control basicAutoComplete" data-url="autocomplete" placeholder="buscar..."></div>
+            <div class="col-6 col-md-2 "><input type="text" name="proyecto" id="proyecto" class="form-control basicAutoComplete"  value="{{ $o->proyecto }}" data-url="../autocomplete" placeholder="buscar..."></div>
             <div class="col-6 col-md-2 cajaAzul">Fecha Inicio *</div>
-            <div class="col-6 col-md-2 "><input type="date" name="fechaInicio" id="fechaInicio" class="form-control"></div>
+            <div class="col-6 col-md-2 "><input type="date" name="fechaInicio" id="fechaInicio" class="form-control" value="{{ $o->fecha_inicio }}"></div>
             <div class="col-6 col-md-2 cajaAzul">Fecha Final *</div>
-            <div class="col-6 col-md-2 "><input type="date" name="fechaFinal" id="fechaFinal" class="form-control"></div>
+            <div class="col-6 col-md-2 "><input type="date" name="fechaFinal" id="fechaFinal" class="form-control" value="{{ $o->fecha_final }}"></div>
         </div>
         <div class="row">
             <div class="col-6 col-md-2 cajaAzul">Responsable *</div>
             <div class="col-6 col-md-10">
                 <!--<input type="text" name="responsable" id="responsable" class="form-control basicAutoComplete" data-url="autoemp" >
                 <input type="hidden" name="cc" id="cc">-->
-                <select class="form-control basicAutoSelect" name="responsable" id="responsable"
-    placeholder="buscar..."
-    data-url="autoemp" autocomplete="off"></select>
+                <input type="hidden" name="responsable" id="responsable" value="{{ $o->responsable }}" >
+                <input type="text" name="nresponsable" id="nresponsable" class="form-control" value="{{ $o->empleado->nombre .' '.$o->empleado->apellido1 }}" disabled >
+       
             </div>
         </div>
         <div class="row">
             <div class="col-6 col-md-2 cajaAzul">Cliente *</div>
-            <div class="col-6 col-md-2 "><input type="text" name="cliente" id="cliente" class="form-control"></div>
+            <div class="col-6 col-md-2 "><input type="text" name="cliente" id="cliente" class="form-control" value="{{ $o->cliente }}"></div>
             <div class="col-6 col-md-2 cajaAzul">Área de trabajo *</div>
-            <div class="col-6 col-md-2 "><input type="text" name="area" id="area" class="form-control"></div>
+            <div class="col-6 col-md-2 "><input type="text" name="area" id="area" class="form-control" value="{{ $o->area_trabajo }}"></div>
             <div class="col-6 col-md-2 cajaAzul">Contacto *</div>
-            <div class="col-6 col-md-2 "><input type="text" name="contacto" id="contacto" class="form-control" ></div>
+            <div class="col-6 col-md-2 "><input type="text" name="contacto" id="contacto" class="form-control" value="{{ $o->contacto }}" onclick="buscarcontactos()"></div>
         </div>
         <br>
         <div class="row">
@@ -71,16 +71,16 @@
         </div>
         <br>
         <div class="row">
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="cctv" id="cctv" value="cctv"> CCTV</label></div>
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="incendio" id="incendio" value="incendio"> Incendio</label></div>
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="cablestr" id="cablestr" value="cablestr">Cableado Estructurado</label></div>
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="otro" id="otro" value="otro"> Otro</label></div>
+            <div class="col-6 col-md-3 "><label><input type="checkbox" name="cctv" id="cctv" value="cctv" {{ str_contains($o->tipo, 'cctv') ? "checked" : "" }} >CCTV</label></div>
+            <div class="col-6 col-md-3 "><label><input type="checkbox" name="incendio" id="incendio" value="incendio" {{ str_contains($o->tipo, 'incendio') ? "checked" : "" }}> Incendio</label></div>
+            <div class="col-6 col-md-3 "><label><input type="checkbox" name="cablestr" id="cablestr" value="cablestr" {{ str_contains($o->tipo, 'cabl.estr') ? "checked" : "" }}>Cableado Estructurado</label></div>
+            <div class="col-6 col-md-3 "><label><input type="checkbox" name="otro" id="otro" value="otro" {{ str_contains($o->tipo, 'otro') ? "checked" : "" }}> Otro</label></div>
         </div>
         <div class="row">
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="acceso" id="acceso" value="acceso"> Acceso</label></div>
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="intrusion" id="intrusion" value="intrusion"> Intrusión</label></div>
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="integracion" id="integracion" value="integracion"> Integración</label></div>
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="documentacion" id="documentacion" value="documentacion"> Documentación</label></div>
+            <div class="col-6 col-md-3 "><label><input type="checkbox" name="acceso" id="acceso" value="acceso" {{ str_contains($o->tipo, 'acceso') ? "checked" : "" }}> Acceso</label></div>
+            <div class="col-6 col-md-3 "><label><input type="checkbox" name="intrusion" id="intrusion" value="intrusion" {{ str_contains($o->tipo, 'intrusion') ? "checked" : "" }}> Intrusión</label></div>
+            <div class="col-6 col-md-3 "><label><input type="checkbox" name="integracion" id="integracion" value="integracion" {{ str_contains($o->tipo, 'integracion') ? "checked" : "" }}> Integración</label></div>
+            <div class="col-6 col-md-3 "><label><input type="checkbox" name="documentacion" id="documentacion" value="documentacion" {{ str_contains($o->tipo, 'documentacion') ? "checked" : "" }}> Documentación</label></div>
         </div>
         <br>
         <div class="row">
@@ -88,22 +88,41 @@
         </div>
         <br>
         <div class="row">
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="instalacion" id="instalacion" value="instalacion"> Instalación</label></div>
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="MntoPrev" id="MntoPrev" value="MntoPrev"> Mantenimiento Preventivo</label></div>
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="TrabInt" id="TrabInt" value="TrabInt"> Trab. Int.</label></div>
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="revision" id="revision" value="revision"> Revisión</label></div>
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="otro" id="otro" value="otro"> Otro</label></div>
+            <div class="col-6 col-md-3 "><label><input type="checkbox" name="instalacion" id="instalacion" value="instalacion" {{ str_contains($o->objeto, 'instalacion') ? "checked" : "" }}> Instalación</label></div>
+            <div class="col-6 col-md-3 "><label><input type="checkbox" name="MntoPrev" id="MntoPrev" value="MntoPrev" {{ str_contains($o->objeto, 'Mnto.Prev') ? "checked" : "" }}> Mantenimiento Preventivo</label></div>
+            <div class="col-6 col-md-3 "><label><input type="checkbox" name="TrabInt" id="TrabInt" value="TrabInt" {{ str_contains($o->objeto, 'Trab.Int') ? "checked" : "" }}> Trab. Int.</label></div>
+            <div class="col-6 col-md-3 "><label><input type="checkbox" name="revision" id="revision" value="revision" {{ str_contains($o->objeto, 'revision') ? "checked" : "" }} > Revisión</label></div>
+            <div class="col-6 col-md-3 "><label><input type="checkbox" name="otro" id="otro" value="otro" {{ str_contains($o->objeto, 'otro') ? "checked" : "" }}> Otro</label></div>
         </div>
         <br>
         <div class="row">
             <div class="col-12 col-md-12 cajaAzul">Días registrados</div>
         </div>
+        <br>
         <div class="row">
             <div class="col-12">
-                 <div id="tablad"></div>
+                 <div id="tablad">
+                    <table class="table table-bordered table-sm">
+                        <thead>
+                        <tr>
+                            <th>FECHA</th>
+                            <th>OBSERVACION</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($datos as $dato)     
+                        <tr>
+                            <td>{{ $dato->fecha }}</td>
+                            <td>{{ $dato->observacion }}</td>
+                            <td><button class="btn btn-primary btn-sm" type="button" onclick="infoDia({{ $dato->id}})">Ver</button</td>
+                            <td><button class="btn btn-primary btn-sm" type="button" onclick="editDia({{ $dato->id}})">Editar</button</td>
+                        </tr>
+                        @endforeach 
+                        </tbody>
+                    </table>
+                 </div>
             </div>
         </div>
-        <br>
         <button type="button" class="btn btn-primary btn-sm" onclick="nuevodia()">Nuevo día</button>
         <br>
         <div id="dias">
@@ -187,7 +206,7 @@
             <div class="row">
                 <div class="col-6 col-md-2 cajaAzul">Trabajador</div>
                 <div class="col-6 col-md-10 ">
-                    <select class="form-control basicAutoSelect" name="trabajador" id="trabajador" placeholder="buscar..." data-url="autoemp" autocomplete="off"></select>
+                    <select class="form-control basicAutoSelect" name="trabajador" id="trabajador" placeholder="buscar..." data-url="../autoemp" autocomplete="off"></select>
                     <input type="hidden" name="cct" id="cct">
                 </div>
                 <div class="col-4 col-md-1 cajaAzul">Hi</div>
@@ -196,8 +215,8 @@
                 <div class="col-4 col-md-1 cajaAzul">Hf</div>
                 <div class="col-4 col-md-1 "><input type="number" name="hf" id="hf" min="0" max="24" class="form-control"></div>
                 <div class="col-4 col-md-1 "><input type="number" name="mf" id="mf" min="0" max="59" class="form-control"></div>
-                <!--<div class="col-4 col-md-1 cajaAzul">Ht</div>
-                <div class="col-4 col-md-1 "><input type="number" onclick="calchoras()" name="th" id="th" min="0" max="24" class="form-control"  readonly></div>-->
+                <div class="col-4 col-md-1 cajaAzul">Ht</div>
+                <div class="col-4 col-md-1 "><input type="number" onclick="calchoras()" name="th" id="th" min="0" max="24" class="form-control"  readonly></div>
                 <div class="col-6 col-md-1 "> <div class="col-12 col-md-2 "><button class="btn btn-primary btn-sm" type="button" onclick="agregarh()">Agregar</button></div></div>
                 <br>
                 <div class="alert alert-danger" id="alertah">
@@ -220,7 +239,9 @@
             <div class="col-12 col-md-12 cajaAzul">Observaciones y comentarios generales de la OT</div>
         </div>
         <div class="row">
-            <div class="col-12 col-md-12"><textarea rows="10" name="observacionesg" id="observacionesg" class="form-control"></textarea></div>
+            <div class="col-12 col-md-12"><textarea rows="10" name="observacionesg" id="observacionesg" class="form-control">
+            {{ $o->observaciones }}
+            </textarea></div>
         </div>
         <div class="row">
             <div class="col-12"><button class="btn btn-primary btn-block" type="button" onclick="modalconfirm()">Finalizar orden</button></div>
@@ -295,12 +316,12 @@
         
         <!-- Modal footer -->
         <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="enviarorden(1)">Enviar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="enviarorden(2)">Enviar</button>
         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
       </div>      
       </div>
     </div>
-</div>
+  </div>
 <script type="text/javascript">
     $('.basicAutoComplete').autoComplete();
     $('#proyecto').on('autocomplete.select', function (evt, item) {
@@ -314,9 +335,7 @@
               data: data,
               success: function(data) {
                   console.log(data.descripcion)
-                  $("#cliente").val(data.cliente.cliente);
-                  $("#contacto").val(data.cliente.contactos);
-                  validartipo(data.sistema)
+                  $("#cliente").val(data.descripcion);
                   //$("#contacto").val(data.responsable);
         }
     });   
@@ -330,27 +349,6 @@
         $("#cct").val(item.value);
     });
     
-    function validartipo(sistema){
-        var sistema = sistema.toLowerCase();
-        n = sistema.search("incendio");
-        if (n>=0) { $("#incendio").prop('checked', true);}
-        n = sistema.search("cctv");
-        if (n>=0) { $("#cctv").prop('checked', true);}
-        n = sistema.search("acceso");
-        if (n>=0) { $("#acceso").prop('checked', true);}
-        n = sistema.search("instrusión");
-        if (n>=0) { $("#intrusion").prop('checked', true);}
-        n = sistema.search("cableado estructurado");
-        if (n>=0) { $("#cablestr").prop('checked', true);}
-        n = sistema.search("instrusión");
-        if (n>=0) { $("#intrusion").prop('checked', true);}
-        n = sistema.search("integración");
-        if (n>=0) { $("#integrcion").prop('checked', true);}
-        n = sistema.search("otro");
-        if (n>=0) { $("#otro").prop('checked', true);}
-        n = sistema.search("documentacion");
-        if (n>=0) { $("#intrusion").prop('checked', true);}
-    }
 </script>
 </body>
 </html>

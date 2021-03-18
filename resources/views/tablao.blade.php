@@ -30,7 +30,12 @@
         <td>{{ $dato->observaciones}}</td>
         <td>{{ $dato->created_at }}</td>
         <td>{{ $dato->autorizada_por !=0 ? 'Si' : 'No'}}</td>
+        @if (session('tipo')==0)
         <td><button class="btn btn-primary btn-sm" type="button" onclick="verorden({{ $dato->id }})">Ver</button</td>
+        @endif
+        @if (session('tipo')==1)
+        <td><button class="btn btn-primary btn-sm" type="button" onclick="editorden({{ $dato->id }})">Editar</button</td>
+        @endif
       </tr>
     @endforeach 
     </tbody>

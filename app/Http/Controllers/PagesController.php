@@ -17,6 +17,9 @@ use App\Models\Hora;
 use App\Models\Dia;
 use App\Models\Empleado;
 use App\Models\Cdc;
+use App\Models\Cliente;
+use App\Models\Proyecto;
+use App\Models\Programacion;
 
 class PagesController extends Controller
 {
@@ -35,7 +38,7 @@ class PagesController extends Controller
     public function menu(){
         $tipo = session('tipo');
         //dd($tipo);
-        if ($tipo ==0){
+        if (($tipo ==0)||($tipo ==1)){
             return view('menu');
         }
         else{
@@ -49,15 +52,33 @@ class PagesController extends Controller
         if ($tipo ==0){
             $emp = Empleado::orderBy('apellido1','asc')->get();
             $cdc = Cdc::all();
+            $clientes = Cliente::orderBy('cliente','asc')->get();
+            $proyectos = Proyecto::orderBy('codigo','asc')->get();
             return view('bases',[
                 'emp' => $emp,
-                'cdc' => $cdc
+                'cdc' => $cdc,
+                'clientes' => $clientes,
+                'proyectos' => $proyectos
             ]);
         }
         else{
             return view('login');
         }
         
+    }
+    public function programacion(){
+        $tipo = session('tipo');
+        //dd($tipo);
+        if ($tipo ==0){
+            $prog = Programacion::orderBy('fecha','asc')->get();
+            
+            return view('programacion',[
+                'prog' => $prog,
+            ]);
+        }
+        else{
+            return view('login');
+        }
     }
     public function admin(){
         $tipo = session('tipo');
@@ -71,7 +92,7 @@ class PagesController extends Controller
     }
     public function consultas(){
         $tipo = session('tipo');
-        if (($tipo ==0)){
+        if (($tipo ==0)||($tipo ==1)){
             return view('consultas',[
                 'header' => 'Consulta de órdenes'
             ]);
@@ -104,8 +125,10 @@ class PagesController extends Controller
             'fecha' => date('Y-m-d'),
             'observacion' => ''
         ]);
-        
-        return $d->id;
+        return view('dia',[
+            'id' => $d->id
+        ]);
+       // return $d->id;
         
     }
     public function agregarp(Request $request){
@@ -140,27 +163,32 @@ class PagesController extends Controller
         
     }
     public function agregarh(Request $request){
-        $hi = $request->hi.":".$request->mi;
-        $hf = $request->hf.":".$request->mf;
-        $ha = 0;
-        $h = Hora::create([
-            'ordenes_id' => $request->id,
-            'dias_id' => $request->diaid,
-            'hi' => $hi,
-            'hf' => $hf,
-            'ht' => $request->ht,
-            'ha' => 0,
-            'trabajador' => $request->trabajador
-        ]);
-        $datos = Hora::where('ordenes_id',$request->id)->where('dias_id',$request->diaid)->get();
-        return view('tablah',[
-            'datos' => $datos
-        ]);
+        if( Hora::where('dias_id',$request->diaid)->where('trabajador',$request->trabajador)->exists()){
+            return 'no';
+        }
+        else{
+            $hi = $request->hi.":".$request->mi;
+            $hf = $request->hf.":".$request->mf;
+            $ha = 0;
+            $h = Hora::create([
+                'ordenes_id' => $request->id,
+                'dias_id' => $request->diaid,
+                'hi' => $hi,
+                'hf' => $hf,
+                'ht' => $request->ht,
+                'ha' => 0,
+                'trabajador' => $request->trabajador
+            ]);
+            $datos = Hora::where('ordenes_id',$request->id)->where('dias_id',$request->diaid)->get();
+            return view('tablah',[
+                'datos' => $datos
+            ]);
+        }
         
     }
     public function almdia(Request $request){
 
-        if (Hora::where('ordenes_id',$request->id)->where('dias_id',$request->diaid)->exists()){   
+        //if (Hora::where('ordenes_id',$request->id)->where('dias_id',$request->diaid)->exists()){   
 
             $d=Dia::where('id', $request->diaid) 
             ->update(['fecha' => $request->fecha,
@@ -169,10 +197,10 @@ class PagesController extends Controller
             return view('tablad',[
                 'datos' => $datos
             ]);
-        }
+       /* }
         else{
             return 'no';
-        }
+        }*/
         //return 'Información del día almacenada';
     }
     public function saveorden(Request $request){
@@ -192,8 +220,8 @@ class PagesController extends Controller
             else{ $tipo= $tipo." cctv";}    
         }
         if ($request->filled('incendio')) {
-            if($tipo==""){ $tipo= "incencio";}
-            else{ $tipo= $tipo." incencio";}    
+            if($tipo==""){ $tipo= "incendio";}
+            else{ $tipo= $tipo." incendio";}    
         }
         if ($request->filled('cablestr')) {
             if($tipo==""){ $tipo= "cabl.estr";}
@@ -212,8 +240,8 @@ class PagesController extends Controller
             else{ $tipo= $tipo." intrusion";}    
         }
         if ($request->filled('integracion')) {
-            if($tipo==""){ $tipo= "integración";}
-            else{ $tipo= $tipo." integración";}    
+            if($tipo==""){ $tipo= "integracion";}
+            else{ $tipo= $tipo." integracion";}    
         }
         if ($request->filled('documentacion')) {
             if($tipo==""){ $tipo= "documentacion";}
@@ -337,6 +365,69 @@ class PagesController extends Controller
         ]
         );
     }
+    public function editorden($id){
+        //dd($id);
+        $ordenes = Orden::where('id',$id)->get();
+        //dd($ordenes);
+        $dias = Dia::where('ordenes_id')->get();
+        $h = Hora::where('ordenes_id')->get();
+        $diasc = collect([]);
+        foreach($ordenes as $o){
+           // dd($o['id']);
+           
+            $dias = Dia::where('ordenes_id',$o['id'])->get();
+            foreach($dias as $d){
+                //dd($d);
+                $dia = collect([]);
+                $dia->put('id',$d['id']);
+                $dia->put('fecha',$d['fecha']);
+                $dia->put('observacion',$d['observacion']);
+                $horas = Hora::where('ordenes_id',$o['id'])->where('dias_id',$d['id'])->get();      
+                $horast=collect([]);
+                foreach($horas as $h){
+                    $horasc=collect([]);
+                    $horasc->put('id',$h->id);
+                    $horasc->put('Trabajador',$h->trabajador);
+                    $horasc->put('Hi',$h->hi);
+                    $horasc->put('Hf',$h->hf);
+                    $horasc->put('Ht',$h->ht);
+                    $horasc->put('Ha',$h->ha);
+                    $horast->push($horasc);
+                }
+                $pl= Planificacion::where('ordenes_id',$o['id'])->where('dias_id',$d['id'])->get();      
+                $plt=collect([]);
+                foreach($pl as $p){
+                    $pc=collect([]);
+                    $pc->put('Cant',$p->cant);
+                    $pc->put('Und',$p->und);
+                    $pc->put('Materiales',$p->materiales);
+                    $plt->push($pc);
+                }
+                $ej= Ejecucion::where('ordenes_id',$o['id'])->where('dias_id',$d['id'])->get();      
+                $ejt=collect([]);
+                foreach($ej as $e){
+                    $ec=collect([]);
+                    $ec->put('Cant',$e->cant);
+                    $ec->put('Und',$e->und);
+                    $ec->put('Observacion',$e->observacion);
+                    $ejt->push($ec);
+                }
+                //dd($dia);
+                $dia->put('Planificacion',$plt);
+                $dia->put('Ejecucion',$ejt);
+                $dia->put('Horas',$horast);
+                $diasc->push($dia);
+                //dd($diasc);
+            }
+        } 
+        //dd($diasc);
+        return view('ordenese',[
+            'o' => $o,
+            'dias' => $diasc,
+            'datos' => $dias
+        ]
+        );
+    }
     public function getdia(Request $request){
         
         $diasc = collect([]);
@@ -393,6 +484,19 @@ class PagesController extends Controller
         ]
         );
     }
+    public function editDia(Request $request){
+        $dias = Dia::where('id',$request->id)->first();
+        $horas = Hora::where('dias_id',$request->id)->get();  
+        $pl= Planificacion::where('dias_id',$request->id)->get(); 
+        $ej= Ejecucion::where('dias_id',$request->id)->get();   
+        //dd($pl);
+        return view('editDia',[
+            'dias' => $dias,
+            'horas' => $horas,
+            'pl' => $pl,
+            'ej' => $ej
+        ]);
+    }
     public function autorizadas(Request $request){
         $datos = Hora::where('id', $request->id) ->first();
 
@@ -427,7 +531,8 @@ class PagesController extends Controller
             'ndia' => $datos->dias_id
         ]);
     }
-    public function del(Request $request){
+    public function delete(Request $request){
+        //dd($request);
         if ($request->tipo == 1){
             $orden = Planificacion::where('id',$request->id)->first()->ordenes_id;
             $p=Planificacion::where('id',$request->id)->delete();

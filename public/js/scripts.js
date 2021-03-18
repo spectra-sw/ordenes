@@ -19,8 +19,10 @@ function nueva(){
       });
 }
 function agregarp(){
+    //alert("");
     cantp = $("#cantp").val();
     undp=$("#undp").val();
+    //alert(cantp);
     materiales = $("#materiales").val();
     if((cantp=="")&&(undp=="")&&(materiales=="")){
         $("#mensajep").html("* Debe ingresar algún campo");
@@ -43,6 +45,37 @@ function agregarp(){
                     $("#cantp").val("");
                     $("#undp").val("");
                     $("#materiales").val("");
+                }
+        });
+    }
+}
+function agregarp2(){
+    //alert("");
+    cantp = $("#cantp2").val();
+    undp=$("#undp2").val();
+    alert(cantp);
+    materiales = $("#materiales2").val();
+    if((cantp=="")&&(undp=="")&&(materiales=="")){
+        $("#mensajep2").html("* Debe ingresar algún campo");
+        $("#alertap2").css('display','block');
+    }
+    else{
+        $("#alertap2").css('display','none');
+        cantp = parseFloat($("#cantp2").val());
+        id=parseInt($("#id").val());
+        diaid=parseInt($("#diaid2").val());
+        url = '/agregarp'
+        data = {cant: cantp, und:undp, materiales:materiales, id:id, diaid:diaid}
+        $.ajax({
+                url: url,
+                type:'GET',
+                data: data,
+                success: function(data) {
+                    $data = $(data);
+                    $("#tablap2").html($data);
+                    $("#cantp2").val("");
+                    $("#undp2").val("");
+                    $("#materiales2").val("");
                 }
         });
     }
@@ -83,9 +116,11 @@ function agregarh(){
     mi = $("#mi").val();
     hf = $("#hf").val();
     mf = $("#mf").val();
-    ht = $("#th").val();
+    //ht = $("#th").val();
+   
+    //$("#th").val(ht) 
     trabajador = $("#cct").val();
-    if ((hi=="")||(mi=="")||(hf=="")||(mf=="")||(ht=="")||(trabajador=="")){
+    if ((hi=="")||(mi=="")||(hf=="")||(mf=="")||(trabajador=="")){
         $("#mensajeh").html("* Debe ingresar todos los campos");
         $("#alertah").css('display','block');
     }
@@ -95,7 +130,7 @@ function agregarh(){
         mi = parseInt($("#mi").val());
         hf = parseInt($("#hf").val());
         mf = parseInt($("#mf").val());
-        ht = parseFloat($("#th").val());
+        ht = (hf + mf/60)- (hi + mi/60)
         ha =0;
         id=parseInt($("#id").val());
         trabajador = $("#cct").val();
@@ -107,13 +142,18 @@ function agregarh(){
                 type:'GET',
                 data: data,
                 success: function(data) {
-                    $data = $(data);
-                    $("#tablah").html($data);
-                    $("#hi").val("");
-                    $("#mi").val("");
-                    $("#hf").val("");
-                    $("#mf").val("");
-                    $("#th").val("");
+                    if (data == 'no'){
+                        alert('Ya existen horas registradas en el día para este trabajador');
+                    }
+                    else{
+                        $data = $(data);
+                        $("#tablah").html($data);
+                        $("#hi").val("");
+                        $("#mi").val("");
+                        $("#hf").val("");
+                        $("#mf").val("");
+                        $("#th").val("");
+                    }
                 }
         });
     }
@@ -127,10 +167,13 @@ function nuevodia(){
               type:'GET',
               data: data,
               success: function(data) {
-                $('#diaid').val(data);
+                /*$('#diaid').val(data);
                 $("#tablap").html("");
                 $("#tablae").html("");
                 $("#tablah").html("");
+                $("#dias").css('display','block');*/
+                $data = $(data);
+                $('#dias').html(data); 
                 $("#dias").css('display','block');
               }
     });   
@@ -173,7 +216,7 @@ function almdia(){
               }
     });   
 }
-function enviarorden(){
+function enviarorden(a){
     data=$( "#f1" ).serialize(); 
     //console.log(data)
     dataArray=data.split("&");
@@ -193,7 +236,12 @@ function enviarorden(){
         cont++;
     });
     if(band!="error"){
-        url = '/saveorden'
+        if (a==1){
+        url = '/saveorden';
+        }
+        if (a==2){
+            url = '/updateorden';
+        }
         $.ajax({
                 url: url,
                 type:'GET',
@@ -237,6 +285,10 @@ function verorden(id){
     url='verorden/'+id;
     window.open(url,'_blank');
 }
+function editorden(id){
+    url='ordenese/'+id;
+    window.open(url,'_blank');
+}
 function auto(id,dia){
     url = '/autorizadas'
     selector= "#ha" + id
@@ -254,6 +306,8 @@ function auto(id,dia){
     }); 
 }
 function del(tipo,id){
+    //alert(tipo);
+    //alert(id);
     if (tipo==1){
         sel = "#tablap"
     }
@@ -263,13 +317,39 @@ function del(tipo,id){
     if (tipo==3){
         sel = "#tablah"
     }
-    url = 'delete'
+    url = '/eliminar'
     data = { tipo : tipo , id : id}
     $.ajax({
         url: url,
         type:'GET',
         data: data,
         success: function(data) {
+          //alert(data)
+          $data = $(data);
+          $(sel).html($data);
+        }
+    }); 
+}
+function del2(tipo,id){
+    //alert(tipo);
+    //alert(id);
+    if (tipo==1){
+        sel = "#tablap2"
+    }
+    if (tipo==2){
+        sel = "#tablae2"
+    }
+    if (tipo==3){
+        sel = "#tablah2"
+    }
+    url = '/eliminar'
+    data = { tipo : tipo , id : id}
+    $.ajax({
+        url: url,
+        type:'GET',
+        data: data,
+        success: function(data) {
+          //alert(data)
           $data = $(data);
           $(sel).html($data);
         }
@@ -295,7 +375,8 @@ function login(){
                     window.open('menu','_self');
                 }
                 if (data == 1){
-                    window.open('ordenes','_self');
+                    //window.open('ordenes','_self');
+                    window.open('menu','_self');
                 }
                 if ((data != 0)&&(data != 1)){
                     $("#mensaje").html(data);
@@ -578,4 +659,49 @@ function modalconfirm(){
     $("#carea").val($("#area").val());
     $("#ccontacto").val($("#contacto").val());
     $("#confirm").modal();
+}
+function infoDia(id){
+    //alert(id);
+    url = '/getdia'
+    data = {id : id}
+    $.ajax({
+          url: url,
+          type:'GET',
+          data: data,
+          success: function(data) {
+                $data = $(data);
+                $("#infoBody").html($data); 
+                $("#info").modal();
+            } 
+        });   
+}
+function editDia(id){
+    /*
+    //alert(id);
+    url = '/editDia'
+    data = {id : id}
+    $.ajax({
+          url: url,
+          type:'GET',
+          data: data,
+          success: function(data) {
+               //alert(data);
+                $data = $(data);
+                $("#infoBody").html($data); 
+                $("#info").modal();
+            } 
+        });  
+    */
+   url = '/editDia'
+   data = {id : id}
+   $.ajax({
+             url: url,
+             type:'GET',
+             data: data,
+             success: function(data) {
+               $data = $(data);
+               $('#dias').html(data); 
+               $("#dias").css('display','block');
+             }
+   });    
 }
