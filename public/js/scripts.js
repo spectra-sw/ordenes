@@ -705,3 +705,43 @@ function editDia(id){
              }
    });    
 }
+function nuevaprog(){
+    $("#prog").modal();
+}
+function guardarprog(){
+    band=0;
+    $('#formProg input').each(function() { 
+        if (($(this).val() == '') && ($(this).attr('id') != 'observaciones')) {
+            band=1;
+        }        
+    })
+    if (band==0){
+        data=$( "#formProg" ).serialize(); 
+        url = '/nuevaprog'
+        $.ajax({
+                url: url,
+                type:'GET',
+                data: data,
+                success: function(data) {
+                    alert(data);
+                    acttablaprog();
+                }
+        });   
+    }
+    else{
+        alert("Debes ingresar todos los campos");
+    }
+}
+function acttablaprog(){
+    campo='';
+    url="/tablaprog"
+    data = { campo : campo}
+    $.ajax({
+        url: url,
+        type:'GET',
+        data: data,
+        success: function(data) { 
+            $("#tprog").html(data);
+        }
+    }); 
+}

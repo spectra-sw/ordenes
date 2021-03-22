@@ -61,9 +61,11 @@ Route::get('/buscarcdc',[PagesController::class,'buscarcdc']);
 Route::get('/editarcdc',[PagesController::class,'editarcdc']);
 Route::get('/tablacdc',[PagesController::class,'tablacdc']);
 Route::get('/eliminarcdc',[PagesController::class,'eliminarcdc']);
+Route::get('/nuevaprog',[PagesController::class,'nuevaprog']);
 
 //programacion
 Route::get('/programacion',[PagesController::class,'programacion']);
+Route::get('/tablaprog',[PagesController::class,'tablaprog']);
 
 //Load
 Route::get('/load/{tipo}',[LoadController::class,'load']);

@@ -71,8 +71,11 @@ class PagesController extends Controller
         //dd($tipo);
         if ($tipo ==0){
             $prog = Programacion::orderBy('fecha','asc')->get();
-            
+            $emp = Empleado::orderBy('apellido1','asc')->get();
+            $proyectos = Proyecto::orderBy('codigo','asc')->get();
             return view('programacion',[
+                'proyectos' => $proyectos,
+                'emp' => $emp,
                 'prog' => $prog,
             ]);
         }
@@ -145,7 +148,6 @@ class PagesController extends Controller
         return view('tablap',[
             'datos' => $datos
         ]);
-        
     }
     public function agregare(Request $request){
         $e = Ejecucion::create([
@@ -558,7 +560,31 @@ class PagesController extends Controller
             ]);
         }
     }
+//programacion
+    public function nuevaprog(Request $request){
+        $p = Programacion::create([
+            'cc' => $request->cc,
+            'fecha' => $request->fecha,
+            'proyecto' => $request->proyecto,
+            'responsable' => $request->responsable,
+            'observaciones' => $request->observaciones,
+            
+        ]);
 
+        return "Programacion creada";
+    }
+    public function tablaprog(Request $request){
+        $campo = $request->campo;
+        if ($campo == ''){
+            $prog = Programacion::orderBy('fecha','asc')->get();  
+        }
+        else{
+            $prog = Programacion::orderBy($campo,'asc')->get();  
+        }
+        return view('tablaprog',[
+            'prog' => $prog,
+        ]);
+    }
 
 //empleado
     public function nuevoemp(Request $request){
