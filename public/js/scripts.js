@@ -745,3 +745,61 @@ function acttablaprog(){
         }
     }); 
 }
+function accionesprog(op,id){ 
+    if (op==1){
+        data = { id : id }
+        url="/buscarprog"
+        $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) { 
+                $("#editarprogBody").html(data);
+                $("#editarprog").modal();
+            }
+        }); 
+    }
+    if(op==2){
+        $("#id").val(id);
+        $("#eliminarprog").modal(); 
+    }  
+}
+function editarprog(){
+    band=0;
+    $('#formProgEdit input').each(function() { 
+        if (($(this).val() == '') && ($(this).attr('id') != 'observaciones')) {
+            band=1;
+        }        
+    })
+    if (band==0){
+        data=$( "#formProgEdit" ).serialize(); 
+        url = '/editarprog'
+        $.ajax({
+                url: url,
+                type:'GET',
+                data: data,
+                success: function(data) {
+                    alert(data);
+                    acttablaprog();
+                }
+        });   
+    }
+    else{
+        alert("Debes ingresar todos los campos");
+    }
+}
+function eliminarprog(){
+    id = $("#id").val();
+    // alert(id);
+    data={ id : id}
+    url = '/eliminarprog'
+    $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) {
+                alert(data);
+                acttablaprog();
+            }
+    });   
+}

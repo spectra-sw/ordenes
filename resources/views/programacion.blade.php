@@ -66,15 +66,15 @@
       </div>
     </div>
 </div>
-  <div class="modal fade bd-example-modal-xl" id="editaremp">
+  <div class="modal fade bd-example-modal-xl" id="editarprog">
     <div class="modal-dialog">
       <div class="modal-content">  
         <!-- Modal body -->
         <div class="modal-header">
-            Editar empleado
+            Editar programación
         </div>
         <!-- Modal body -->
-        <div class="modal-body" id="editarBody">
+        <div class="modal-body" id="editarprogBody">
         </div>
         
         <!-- Modal footer -->
@@ -84,16 +84,16 @@
       </div>
     </div>
   </div>
-  <div class="modal fade bd-example-modal-sm" id="eliminaremp">
+  <div class="modal fade bd-example-modal-sm" id="eliminarprog">
     <div class="modal-dialog">
       <div class="modal-content">  
         <!-- Modal body -->
        
         <!-- Modal body -->
-        <div class="modal-body" id="eliminarBody">
-        <p>Desea eliminar a este empleado?</p>
+        <div class="modal-body" id="eliminarprogBody">
+        <p>Desea eliminar esta programación?</p>
         <input type="hidden" id="id" name="id" value=""> 
-        <button type="button" class="btn btn-primary" onclick="eliminare()">Eliminar</button>
+        <button type="button" class="btn btn-primary" onclick="eliminarprog()">Eliminar</button>
         </div>
         
         <!-- Modal footer -->

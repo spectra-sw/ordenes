@@ -567,7 +567,7 @@ class PagesController extends Controller
             'fecha' => $request->fecha,
             'proyecto' => $request->proyecto,
             'responsable' => $request->responsable,
-            'observaciones' => $request->observaciones,
+            'observacion' => $request->observaciones,
             
         ]);
 
@@ -584,6 +584,26 @@ class PagesController extends Controller
         return view('tablaprog',[
             'prog' => $prog,
         ]);
+    }
+    
+    public function buscarprog(Request $request){
+        $p = Programacion::where('id',$request->id)->first();
+        $emp = Empleado::orderBy('apellido1','asc')->get();
+        $cdc = Cdc::all();
+        $clientes = Cliente::orderBy('cliente','asc')->get();
+        $proyectos = Proyecto::orderBy('codigo','asc')->get();
+            
+        return view('formprog',[
+            'emp' => $emp,
+            'cdc' => $cdc,
+            'clientes' => $clientes,
+            'proyectos' => $proyectos,
+            'datos' => $p
+        ]);
+    }
+    public function eliminarprog(Request $request){
+        Programacion::where('id', $request->id )->delete();
+        return "Programación eliminada";
     }
 
 //empleado
@@ -705,5 +725,16 @@ class PagesController extends Controller
             ]);
         }
         return 'operacion realizada';
+    }
+    public function editarprog(Request $request){
+        Programacion::where('id', $request->id )
+        ->update([
+            'cc' => $request->cc,
+            'fecha' => $request->fecha,
+            'proyecto' => $request->proyecto,
+            'responsable' => $request->responsable,
+            'observacion' => $request->observaciones
+        ]);
+        return "Programación actualizada";
     }
 }
