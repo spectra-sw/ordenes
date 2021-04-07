@@ -39,7 +39,7 @@
             <p id="mensaje">Prueba</p>
         </div>
         </div>
-        <p id="demo"></p>
+        <!--<p id="demo"></p>-->
     </div>
 </body>
 <script src="{{asset('js/scripts.js')}}"></script>

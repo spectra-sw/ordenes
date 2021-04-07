@@ -130,6 +130,9 @@ class PagesController extends Controller
     public function getConsec(){
         $total=Orden::all()->count();
         if ($total == 0){
+            $o = Orden::create([
+                'proyecto' => 1
+            ]);
             return "00001";
         } 
         else{
@@ -238,8 +241,12 @@ class PagesController extends Controller
             if ($tipou !=3){
                 $creada = session('user');
             }
-
-        $tipo="";
+        
+        $tipo = $request->sistema;
+        if ($tipo==""){
+            return "Ingrese el tipo de sistema solicitado";
+        }
+        /*$tipo="";
         if ($request->filled('cctv')) {
             if($tipo==""){ $tipo= "cctv";}
             else{ $tipo= $tipo." cctv";}    
@@ -275,9 +282,9 @@ class PagesController extends Controller
         
         if ($tipo==""){
             return "Ingrese el tipo de sistema solicitado";
-        }
+        }*/
 
-        $objeto="";
+        /*$objeto="";
         if ($request->filled('instalacion')) {
             if($objeto==""){ $objeto= "instalacion";}
             else{ $objeto= $objeto." instalacion";}    
@@ -301,10 +308,13 @@ class PagesController extends Controller
     
         if($objeto==""){
             return "Ingrese el objeto de la orden de trabajo";
-        }
+        }*/
 
        // return $tipo." ".$objeto;
-
+        $objeto = $request->objeto;
+        if($objeto==""){
+            return "Ingrese el objeto de la orden de trabajo";
+        }
         
        $o=Orden::where('id', $id) 
        ->update([
@@ -515,11 +525,15 @@ class PagesController extends Controller
         $pl= Planificacion::where('dias_id',$request->id)->get(); 
         $ej= Ejecucion::where('dias_id',$request->id)->get();   
         //dd($pl);
+        $o = Dia::where('id',$request->id)->first()->ordenes_id;
+        $p = Orden::where('id',$o)->first()->proyecto;
+        $ts = Programacion::where('proyecto',$p)->get();
         return view('editDia',[
             'dias' => $dias,
             'horas' => $horas,
             'pl' => $pl,
-            'ej' => $ej
+            'ej' => $ej,
+            'ts' => $ts
         ]);
     }
     public function autorizadas(Request $request){

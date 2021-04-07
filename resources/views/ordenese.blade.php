@@ -42,10 +42,11 @@
         <div class="row">
             <div class="col-6 col-md-2 cajaAzul">Proyecto *</div>
             <div class="col-6 col-md-2 "><input type="text" name="proyecto" id="proyecto" class="form-control basicAutoComplete"  value="{{ $o->proyecto }}" data-url="../autocomplete" placeholder="buscar..."></div>
-            <div class="col-6 col-md-2 cajaAzul">Fecha Inicio *</div>
+           <!-- <div class="col-6 col-md-2 cajaAzul">Fecha Inicio *</div>
             <div class="col-6 col-md-2 "><input type="date" name="fechaInicio" id="fechaInicio" class="form-control" value="{{ $o->fecha_inicio }}"></div>
             <div class="col-6 col-md-2 cajaAzul">Fecha Final *</div>
             <div class="col-6 col-md-2 "><input type="date" name="fechaFinal" id="fechaFinal" class="form-control" value="{{ $o->fecha_final }}"></div>
+            -->
         </div>
         <div class="row">
             <div class="col-6 col-md-2 cajaAzul">Responsable *</div>
@@ -59,40 +60,41 @@
         </div>
         <div class="row">
             <div class="col-6 col-md-2 cajaAzul">Cliente *</div>
-            <div class="col-6 col-md-2 "><input type="text" name="cliente" id="cliente" class="form-control" value="{{ $o->cliente }}"></div>
+            <div class="col-6 col-md-2 "><input type="text" name="cliente" id="cliente" class="form-control" value="{{ $o->cliente }}" readonly></div>
             <div class="col-6 col-md-2 cajaAzul">Área de trabajo *</div>
             <div class="col-6 col-md-2 "><input type="text" name="area" id="area" class="form-control" value="{{ $o->area_trabajo }}"></div>
             <div class="col-6 col-md-2 cajaAzul">Contacto *</div>
-            <div class="col-6 col-md-2 "><input type="text" name="contacto" id="contacto" class="form-control" value="{{ $o->contacto }}" onclick="buscarcontactos()"></div>
+            <div class="col-6 col-md-2 "><input type="text" name="contacto" id="contacto" class="form-control" value="{{ $o->contacto }}" onclick="buscarcontactos()" readonly></div>
         </div>
         <br>
         <div class="row">
-            <div class="col-12 col-md-12 cajaAzul">Tipo de sistema solicitado *</div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="cctv" id="cctv" value="cctv" {{ str_contains($o->tipo, 'cctv') ? "checked" : "" }} >CCTV</label></div>
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="incendio" id="incendio" value="incendio" {{ str_contains($o->tipo, 'incendio') ? "checked" : "" }}> Incendio</label></div>
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="cablestr" id="cablestr" value="cablestr" {{ str_contains($o->tipo, 'cabl.estr') ? "checked" : "" }}>Cableado Estructurado</label></div>
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="otro" id="otro" value="otro" {{ str_contains($o->tipo, 'otro') ? "checked" : "" }}> Otro</label></div>
-        </div>
-        <div class="row">
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="acceso" id="acceso" value="acceso" {{ str_contains($o->tipo, 'acceso') ? "checked" : "" }}> Acceso</label></div>
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="intrusion" id="intrusion" value="intrusion" {{ str_contains($o->tipo, 'intrusion') ? "checked" : "" }}> Intrusión</label></div>
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="integracion" id="integracion" value="integracion" {{ str_contains($o->tipo, 'integracion') ? "checked" : "" }}> Integración</label></div>
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="documentacion" id="documentacion" value="documentacion" {{ str_contains($o->tipo, 'documentacion') ? "checked" : "" }}> Documentación</label></div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-12 col-md-12 cajaAzul">Objeto de la orden de trabajo *</div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="instalacion" id="instalacion" value="instalacion" {{ str_contains($o->objeto, 'instalacion') ? "checked" : "" }}> Instalación</label></div>
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="MntoPrev" id="MntoPrev" value="MntoPrev" {{ str_contains($o->objeto, 'Mnto.Prev') ? "checked" : "" }}> Mantenimiento Preventivo</label></div>
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="TrabInt" id="TrabInt" value="TrabInt" {{ str_contains($o->objeto, 'Trab.Int') ? "checked" : "" }}> Trab. Int.</label></div>
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="revision" id="revision" value="revision" {{ str_contains($o->objeto, 'revision') ? "checked" : "" }} > Revisión</label></div>
-            <div class="col-6 col-md-3 "><label><input type="checkbox" name="otro" id="otro" value="otro" {{ str_contains($o->objeto, 'otro') ? "checked" : "" }}> Otro</label></div>
+            <div class="col-12 col-md-6">
+                <div class="row">
+                    <div class="col-12 col-md-12 cajaAzul">Tipo de sistema solicitado *</div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-12 col-md-12 "><input type="text" class="form-control" name="sistema" id="sistema" value="{{ $o->tipo }}" readonly></div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="row">
+                    <div class="col-12 col-md-12 cajaAzul">Objeto de la orden de trabajo *</div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-12 col-md-12 ">
+                        <select class="form-control" id="objeto" name="objeto">
+                            <option value="{{ $o->objeto }}">{{ $o->objeto }}</option>
+                            <option value="Instalación">Instalación</option>
+                            <option value="Mantenimiento Preventivo">Mantenimiento Preventivo</option>
+                            <option value="Trabajo Interno">Trabajo Interno</option>
+                            <option value="Revisión">Revisión</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
         <br>
         <div class="row">

@@ -50,10 +50,10 @@
                 </select>
                 <!--<input type="text" name="proyecto" id="proyecto" class="form-control basicAutoComplete" data-url="autocomplete" placeholder="buscar...">-->
             </div>
-            <div class="col-6 col-md-2 cajaAzul">Fecha Inicio *</div>
+           <!-- <div class="col-6 col-md-2 cajaAzul">Fecha Inicio *</div>
             <div class="col-6 col-md-2 "><input type="date" name="fechaInicio" id="fechaInicio" class="form-control"></div>
             <div class="col-6 col-md-2 cajaAzul">Fecha Final *</div>
-            <div class="col-6 col-md-2 "><input type="date" name="fechaFinal" id="fechaFinal" class="form-control"></div>
+            <div class="col-6 col-md-2 "><input type="date" name="fechaFinal" id="fechaFinal" class="form-control"></div>-->
         </div>
         <div class="row">
             <div class="col-6 col-md-2 cajaAzul">Responsable *</div>
@@ -77,7 +77,7 @@
         </div>
         <div class="row">
             <div class="col-6 col-md-2 cajaAzul">Cliente *</div>
-            <div class="col-6 col-md-2 "><input type="text" name="cliente" id="cliente" class="form-control" disabled></div>
+            <div class="col-6 col-md-2 "><input type="text" name="cliente" id="cliente" class="form-control" readonly></div>
             <div class="col-6 col-md-2 cajaAzul">Área de trabajo *</div>
             <div class="col-6 col-md-2 "><input type="text" name="area" id="area" class="form-control"></div>
             <div class="col-6 col-md-2 cajaAzul">Contacto *</div>
@@ -91,7 +91,7 @@
                 </div>
                 <br>
                 <div class="row">
-                    <div class="col-12 col-md-12 "><input type="text" class="form-control" name="sistema" id="sistema" disabled></div>
+                    <div class="col-12 col-md-12 "><input type="text" class="form-control" name="sistema" id="sistema" readonly></div>
                 </div>
             </div>
             <div class="col-12 col-md-6">
