@@ -19,4 +19,12 @@ class Proyecto extends Model
     {
         return $this->belongsTo(Cliente::class, 'cliente_id', 'id');
     }
+    public function ndirector()
+    {
+        return $this->belongsTo(Empleado::class, 'director', 'id');
+    }
+    public function nlider()
+    {
+        return $this->belongsTo(Empleado::class, 'lider', 'id');
+    }
 }

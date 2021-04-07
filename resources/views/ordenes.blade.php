@@ -41,7 +41,15 @@
     <div id="datos">
         <div class="row">
             <div class="col-6 col-md-2 cajaAzul">Proyecto *</div>
-            <div class="col-6 col-md-2 "><input type="text" name="proyecto" id="proyecto" class="form-control basicAutoComplete" data-url="autocomplete" placeholder="buscar..."></div>
+            <div class="col-6 col-md-2 ">
+                <select class="form-control" name="proyecto" id="proyecto"  onchange="buscarP(this.value)" >
+                    <option value=""></option>
+                    @foreach ($proyectos as $p)
+                        <option value="{{ $p }}">{{ $p }}</option>
+                    @endforeach
+                </select>
+                <!--<input type="text" name="proyecto" id="proyecto" class="form-control basicAutoComplete" data-url="autocomplete" placeholder="buscar...">-->
+            </div>
             <div class="col-6 col-md-2 cajaAzul">Fecha Inicio *</div>
             <div class="col-6 col-md-2 "><input type="date" name="fechaInicio" id="fechaInicio" class="form-control"></div>
             <div class="col-6 col-md-2 cajaAzul">Fecha Final *</div>
@@ -49,17 +57,27 @@
         </div>
         <div class="row">
             <div class="col-6 col-md-2 cajaAzul">Responsable *</div>
-            <div class="col-6 col-md-10">
+            <div class="col-6 col-md-4">
                 <!--<input type="text" name="responsable" id="responsable" class="form-control basicAutoComplete" data-url="autoemp" >
                 <input type="hidden" name="cc" id="cc">-->
                 <select class="form-control basicAutoSelect" name="responsable" id="responsable"
     placeholder="buscar..."
     data-url="autoemp" autocomplete="off"></select>
             </div>
+            <div class="col-6 col-md-1 cajaAzul">Subportafolio</div>
+            <div class="col-6 col-md-2 "><input type="text" name="subportafolio" id="subportafolio" class="form-control" readonly></div>
+        </div>
+        <div class="row">
+            <div class="col-6 col-md-2 cajaAzul">Descripción</div>
+            <div class="col-6 col-md-4 "><input type="text" name="descripcion" id="descripcion" class="form-control" disabled></div>
+            <div class="col-6 col-md-1 cajaAzul">Director</div>
+            <div class="col-6 col-md-2 "><input type="text" name="director" id="director" class="form-control" disabled></div>
+            <div class="col-6 col-md-1 cajaAzul">Líder</div>
+            <div class="col-6 col-md-2 "><input type="text" name="lider" id="lider" class="form-control" disabled ></div>
         </div>
         <div class="row">
             <div class="col-6 col-md-2 cajaAzul">Cliente *</div>
-            <div class="col-6 col-md-2 "><input type="text" name="cliente" id="cliente" class="form-control"></div>
+            <div class="col-6 col-md-2 "><input type="text" name="cliente" id="cliente" class="form-control" disabled></div>
             <div class="col-6 col-md-2 cajaAzul">Área de trabajo *</div>
             <div class="col-6 col-md-2 "><input type="text" name="area" id="area" class="form-control"></div>
             <div class="col-6 col-md-2 cajaAzul">Contacto *</div>
@@ -67,10 +85,35 @@
         </div>
         <br>
         <div class="row">
-            <div class="col-12 col-md-12 cajaAzul">Tipo de sistema solicitado *</div>
+            <div class="col-12 col-md-6">
+                <div class="row">
+                    <div class="col-12 col-md-12 cajaAzul">Tipo de sistema solicitado *</div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-12 col-md-12 "><input type="text" class="form-control" name="sistema" id="sistema" disabled></div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="row">
+                    <div class="col-12 col-md-12 cajaAzul">Objeto de la orden de trabajo *</div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-12 col-md-12 ">
+                        <select class="form-control" id="objeto" name="objeto">
+                            <option value="Instalación">Instalación</option>
+                            <option value="Mantenimiento Preventivo">Mantenimiento Preventivo</option>
+                            <option value="Trabajo Interno">Trabajo Interno</option>
+                            <option value="Revisión">Revisión</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
-        <br>
-        <div class="row">
+
+        <!--<div class="row">
             <div class="col-6 col-md-3 "><label><input type="checkbox" name="cctv" id="cctv" value="cctv"> CCTV</label></div>
             <div class="col-6 col-md-3 "><label><input type="checkbox" name="incendio" id="incendio" value="incendio"> Incendio</label></div>
             <div class="col-6 col-md-3 "><label><input type="checkbox" name="cablestr" id="cablestr" value="cablestr">Cableado Estructurado</label></div>
@@ -81,9 +124,9 @@
             <div class="col-6 col-md-3 "><label><input type="checkbox" name="intrusion" id="intrusion" value="intrusion"> Intrusión</label></div>
             <div class="col-6 col-md-3 "><label><input type="checkbox" name="integracion" id="integracion" value="integracion"> Integración</label></div>
             <div class="col-6 col-md-3 "><label><input type="checkbox" name="documentacion" id="documentacion" value="documentacion"> Documentación</label></div>
-        </div>
+        </div>-->
         <br>
-        <div class="row">
+        <!--<div class="row">
             <div class="col-12 col-md-12 cajaAzul">Objeto de la orden de trabajo *</div>
         </div>
         <br>
@@ -94,7 +137,7 @@
             <div class="col-6 col-md-3 "><label><input type="checkbox" name="revision" id="revision" value="revision"> Revisión</label></div>
             <div class="col-6 col-md-3 "><label><input type="checkbox" name="otro" id="otro" value="otro"> Otro</label></div>
         </div>
-        <br>
+        <br>-->
         <div class="row">
             <div class="col-12 col-md-12 cajaAzul">Días registrados</div>
         </div>
@@ -187,8 +230,13 @@
             <div class="row">
                 <div class="col-6 col-md-2 cajaAzul">Trabajador</div>
                 <div class="col-6 col-md-10 ">
+                    <!--
                     <select class="form-control basicAutoSelect" name="trabajador" id="trabajador" placeholder="buscar..." data-url="autoemp" autocomplete="off"></select>
-                    <input type="hidden" name="cct" id="cct">
+                    <input type="hidden" name="cct" id="cct">-->
+                    <select class="form-control" name="cct" id="cct">
+                        <option value=""></option>
+                        
+                    </select>
                 </div>
                 <div class="col-4 col-md-1 cajaAzul">Hi</div>
                 <div class="col-4 col-md-1 "><input type="number" name="hi" id="hi" min="0" max="24" class="form-control"></div>
@@ -313,9 +361,14 @@
               type:'GET',
               data: data,
               success: function(data) {
-                  console.log(data.descripcion)
+                  console.log(data)
                   $("#cliente").val(data.cliente.cliente);
                   $("#contacto").val(data.cliente.contactos);
+                  $("#descripcion").val(data.descripcion);
+                  $("#subportafolio").val(data.subportafolio);
+                  $("#director").val(data.director);
+                  $("#lider").val(data.lider);
+                  $("#sistema").val(data.sistema);
                   validartipo(data.sistema)
                   //$("#contacto").val(data.responsable);
         }
@@ -329,7 +382,37 @@
     $('#trabajador').on('autocomplete.select', function (evt, item) {   
         $("#cct").val(item.value);
     });
-    
+    function buscarP(codigo){
+        //alert(codigo);
+        url = '/consproyecto'
+        data = {codigo : codigo}
+        $.ajax({
+              url: url,
+              type:'GET',
+              data: data,
+              success: function(data) {
+                  console.log(data)
+                  $("#cliente").val(data.cliente.cliente);
+                  $("#contacto").val(data.cliente.contactos);
+                  $("#descripcion").val(data.descripcion);
+                  $("#subportafolio").val(data.subportafolio);
+                  $("#director").val(data.director);
+                  $("#lider").val(data.lider);
+                  $("#sistema").val(data.sistema);
+
+                  /*for (let k in data.trabajadores) {
+                        //console.log(k + ' is ' + data.trabajadores[k])
+                        
+                        $('#cct').append($('<option>', { 
+                            value: k,
+                            text : data.trabajadores[k]
+                        }));
+                    }      */
+                  //validartipo(data.sistema)
+                  //$("#contacto").val(data.responsable);
+            }
+        }); 
+    }
     function validartipo(sistema){
         var sistema = sistema.toLowerCase();
         n = sistema.search("incendio");

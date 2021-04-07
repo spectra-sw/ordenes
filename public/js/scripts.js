@@ -160,8 +160,9 @@ function agregarh(){
 }
 function nuevodia(){
     id=parseInt($("#id").val());
+    proyecto = $("#proyecto").val()
     url = '/agregardia'
-    data = {id:id}
+    data = {id:id, proyecto:proyecto}
     $.ajax({
               url: url,
               type:'GET',
@@ -467,6 +468,10 @@ function acciones(op,id){
     if(op==3){
         $("#idup").val(id);
         $("#password").modal();
+    }
+    if(op==4){
+        $("#idup").val(id);
+        $("#horarios").modal();
     }
 }
 function accionescdc(op,id){

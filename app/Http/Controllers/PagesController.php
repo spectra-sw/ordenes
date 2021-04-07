@@ -106,7 +106,26 @@ class PagesController extends Controller
        
     }
     public function ordenes(){
-        return view('ordenes');
+        //$proyectos = Proyecto::orderBy('codigo','asc')->get();
+        $proyectos = collect([]);
+        $user = session('user');
+        //$user = 108;
+        $cc = Empleado::where('id',$user)->first()->cc;
+        $ps = Programacion::where('cc',$cc)->get();
+        foreach ($ps as $p){
+            $proyectos->push($p->proyecto);
+        }
+        $ps = Proyecto::where('director',$user)->orWhere('lider',$user)->get();
+        foreach ($ps as $p){
+            $proyectos->push($p->codigo);
+        }
+        //dd($proyectos);
+
+        
+        return view('ordenes',[
+            'proyectos' => $proyectos 
+
+        ]);
     }
     public function getConsec(){
         $total=Orden::all()->count();
@@ -123,13 +142,17 @@ class PagesController extends Controller
         }      
     }
     public function agregardia(Request $request){
+        $proyecto = $request->proyecto;
         $d = Dia::create([
             'ordenes_id' => $request->id,
             'fecha' => date('Y-m-d'),
             'observacion' => ''
         ]);
+
+        $ts = Programacion::where('proyecto',$proyecto)->get();
         return view('dia',[
-            'id' => $d->id
+            'id' => $d->id,
+            'ts' => $ts
         ]);
        // return $d->id;
         

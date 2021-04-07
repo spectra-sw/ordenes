@@ -24,8 +24,10 @@
         <td><select class="form-control" id="{{ $e->id }}" onchange="acciones(this.value,this.id)">
             <option value=""></option>
             <option value="1">Editar</option>
-            <option value="2">Eliminar</option>
+            <option value="4">Horarios</option>
             <option value="3">Contraseña</option>
+            <option value="2">Eliminar</option>
+            
         </select></td>
         
       </tr>

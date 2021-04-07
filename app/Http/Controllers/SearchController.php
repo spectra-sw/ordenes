@@ -8,6 +8,7 @@ use App\Models\Empleado;
 use App\Models\Orden;
 use App\Models\Cliente;
 use App\Models\Proyecto;
+use App\Models\Programacion;
 class SearchController extends Controller
 {
     /**
@@ -74,6 +75,16 @@ class SearchController extends Controller
         $codigo = $request->codigo;
         $data = Proyecto::where("codigo",$codigo)->first();
         $data['cliente'] = $data->cliente->cliente;
+        $data['director'] = $data->ndirector->nombre." ".$data->ndirector->apellido1;
+        $data['lider'] = $data->nlider->nombre." ".$data->nlider->apellido1;
+
+        $ps = Programacion::where('proyecto',$request->codigo)->get();
+        $ts = collect([]);
+        foreach ($ps as $p){
+            $ts->put($p->empleado->cc,$p->empleado->nombre . " ". $p->empleado->apellido1);
+        }
+        $data['trabajadores'] = $ts;
+
         return response()->json($data);
     }
     public function getordenes(Request $request){
