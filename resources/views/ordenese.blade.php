@@ -41,12 +41,12 @@
     <div id="">
         <div class="row">
             <div class="col-6 col-md-2 cajaAzul">Proyecto *</div>
-            <div class="col-6 col-md-2 "><input type="text" name="proyecto" id="proyecto" class="form-control basicAutoComplete"  value="{{ $o->proyecto }}" data-url="../autocomplete" placeholder="buscar..."></div>
-           <!-- <div class="col-6 col-md-2 cajaAzul">Fecha Inicio *</div>
+            <div class="col-6 col-md-2 "><input type="text" name="proyecto" id="proyecto" class="form-control basicAutoComplete"  value="{{ $o->proyecto }}" data-url="../autocomplete" placeholder="buscar..." ></div>
+          <!-- <div class="col-6 col-md-2 cajaAzul">Fecha Inicio *</div>
             <div class="col-6 col-md-2 "><input type="date" name="fechaInicio" id="fechaInicio" class="form-control" value="{{ $o->fecha_inicio }}"></div>
             <div class="col-6 col-md-2 cajaAzul">Fecha Final *</div>
             <div class="col-6 col-md-2 "><input type="date" name="fechaFinal" id="fechaFinal" class="form-control" value="{{ $o->fecha_final }}"></div>
-            -->
+           --> 
         </div>
         <div class="row">
             <div class="col-6 col-md-2 cajaAzul">Responsable *</div>
@@ -246,7 +246,7 @@
             </textarea></div>
         </div>
         <div class="row">
-            <div class="col-12"><button class="btn btn-primary btn-block" type="button" onclick="modalconfirm()">Finalizar orden</button></div>
+            <div class="col-12"><button class="btn btn-primary btn-block" type="button" onclick="modalconfirm()">Guardar orden</button></div>
         </div>
     </div>
     </form>
@@ -277,10 +277,10 @@
             <div class="row">
                 <div class="col-6 col-md-2 cajaAzul">Proyecto</div>
                 <div class="col-6 col-md-2 "><input type="text" name="proyecto" id="cproyecto" class="form-control basicAutoComplete" value="" disabled></div>
-                <div class="col-6 col-md-2 cajaAzul">Fecha Inicio</div>
+                <!--<div class="col-6 col-md-2 cajaAzul">Fecha Inicio</div>
                 <div class="col-6 col-md-2 "><input type="date" name="fechaInicio" id="cfechaInicio" class="form-control"  disabled></div>
                 <div class="col-6 col-md-2 cajaAzul">Fecha Final</div>
-                <div class="col-6 col-md-2 "><input type="date" name="fechaFinal" id="cfechaFinal" class="form-control" disabled></div>
+                <div class="col-6 col-md-2 "><input type="date" name="fechaFinal" id="cfechaFinal" class="form-control" disabled></div>-->
             </div>
             <div class="row">
                 <div class="col-6 col-md-2 cajaAzul">Responsable</div>

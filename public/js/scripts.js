@@ -226,9 +226,9 @@ function enviarorden(a){
     band="";
     dataArray.forEach(function(datos) {
         console.log(datos);
-        if (cont<9){
+        if (cont<7){
             x=datos.split("=")
-            if (x[1]==""){
+            if ((x[1]=="")&&(x[0] != "fechaInicio")&&(x[0] != "fechaFinal")) {
                 var sel = "#"+x[0]
                 $( sel ).addClass( "invalid" );
                 band="error";

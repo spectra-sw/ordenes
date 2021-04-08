@@ -37,9 +37,18 @@ class PagesController extends Controller
     }
     public function menu(){
         $tipo = session('tipo');
+        $user = session('user');
         //dd($tipo);
         if (($tipo ==0)||($tipo ==1)){
-            return view('menu');
+            $e = Empleado::where('id',$user)->first();
+            $cc = $e->cc;
+            $nombre = $e->nombre. " " . $e->apellido1;
+            $prog = Programacion::where('cc',$cc)->orderBy('fecha','asc')->get();
+            //dd($prog);
+            return view('menu',[
+                'prog' => $prog,
+                'nombre' => $nombre
+            ]);
         }
         else{
             return view('login');
