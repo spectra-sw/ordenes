@@ -120,9 +120,17 @@ class PagesController extends Controller
         $user = session('user');
         //$user = 108;
         $cc = Empleado::where('id',$user)->first()->cc;
+        $ciudad = Empleado::where('id',$user)->first()->ciudad;
         $ps = Programacion::where('cc',$cc)->get();
         foreach ($ps as $p){
             $proyectos->push($p->proyecto);
+        }
+        //dd($proyectos->count());
+        if ($proyectos->count() == 0){
+            $ps = Proyecto::where('ciudad',$ciudad)->orderBy('codigo','asc')->get();
+            foreach ($ps as $p){
+                $proyectos->push($p->codigo);
+            }
         }
         $ps = Proyecto::where('director',$user)->orWhere('lider',$user)->get();
         foreach ($ps as $p){
@@ -160,11 +168,13 @@ class PagesController extends Controller
             'fecha' => date('Y-m-d'),
             'observacion' => ''
         ]);
+        $ciudad = Proyecto::where('codigo',$proyecto)->first()->ciudad;
 
         $ts = Programacion::where('proyecto',$proyecto)->get();
         return view('dia',[
             'id' => $d->id,
-            'ts' => $ts
+            'ts' => $ts,
+            'ciudad' => $ciudad
         ]);
        // return $d->id;
         
@@ -662,6 +672,7 @@ class PagesController extends Controller
             'auxilio' => $request->auxilio,
             'correo' => $request->correo,
             'tipo' => $request->tipo,
+            'ciudad' => strtoupper($request->ciudad),
             'password' => bcrypt($request->cc)
         ]);
 

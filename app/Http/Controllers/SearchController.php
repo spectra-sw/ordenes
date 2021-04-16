@@ -107,9 +107,9 @@ class SearchController extends Controller
           $o=$o->where('cliente','like','%'.$cliente.'%');
         }
         if(($inicio!=" 00:00:00")&&($fin!=" 11:59:59")){
-                $o=$o->where('fecha_inicio','>=',$inicio)->where('fecha_final','<=',$fin);
+                $o=$o->where('created_at','>=',$inicio)->where('created_at','<=',$fin);
         }
-        $o=$o->orderBy('created_at','desc')->get();
+        $o=$o->where('cliente','<>',NULL)->orderBy('created_at','desc')->get();
         //dd($o);
         return view('tablao',[
             'datos' => $o

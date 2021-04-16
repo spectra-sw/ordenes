@@ -50,6 +50,63 @@
                     </div>
                 </div>
 
+
+<!--  Modal crear proyecto -->
+<div class="modal fade bd-example-modal-xl" id="nuevoproyecto">
+    <div class="modal-dialog">
+      <div class="modal-content">  
+
+        <!-- Modal body -->
+        <div class="modal-header">
+            Nuevo proyecto
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body" id="proyBody">
+            <form id="formProy">
+                <div class="form-group">
+                    <label for="codigo">CODIGO</label>
+                    <input type="text" class="form-control"  id="codigo" name="codigo">
+                </div>
+                <div class="form-group">
+                    <label for="apellido1">APELLIDO 1</label>
+                    <input type="text" class="form-control"  id="apellido1" name="apellido1">
+                </div>
+                <div class="form-group">
+                    <label for="apellido2">APELLIDO 2</label>
+                    <input type="text" class="form-control"  id="apellido2" name="apellido2">
+                </div>
+                <div class="form-group">
+                    <label for="nombre">NOMBRE</label>
+                    <input type="text" class="form-control"  id="nombre" name="nombre">
+                </div>
+                <div class="form-group">
+                    <label for="auxilio">AUXILIO</label>
+                    <input type="text" class="form-control"  id="auxilio" name="auxilio">
+                </div>
+                <div class="form-group">
+                    <label for="correo">CORREO</label>
+                    <input type="text" class="form-control"  id="correo" name="correo">
+                </div>
+                <div class="form-group">
+                    <label for="tipo">Tipo</label>
+                    <select id="tipo" name="tipo" class="form-control">
+                        <option value="0">Admin</option>
+                        <option value="1">Registro</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="guardare()">Guardar</button>
+
+            </form>
+        </div>        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+      </div>      
+      </div>
+    </div>
+</div>
+
 <!--  Modal crear emp -->
 <div class="modal fade bd-example-modal-xl" id="nuevoemp">
     <div class="modal-dialog">
@@ -86,6 +143,10 @@
                 <div class="form-group">
                     <label for="correo">CORREO</label>
                     <input type="text" class="form-control"  id="correo" name="correo">
+                </div>
+                <div class="form-group">
+                    <label for="correo">CIUDAD</label>
+                    <input type="text" class="form-control"  id="ciudad" name="ciudad">
                 </div>
                 <div class="form-group">
                     <label for="tipo">Tipo</label>

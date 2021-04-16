@@ -79,14 +79,18 @@
             <div class="row">
                 <div class="col-6 col-md-2 cajaAzul">Trabajador</div>
                 <div class="col-6 col-md-10 ">
-                    <!--<select class="form-control basicAutoSelect" name="trabajador" id="trabajador" placeholder="buscar..." data-url="../autoemp" autocomplete="off"></select>
-                    <input type="hidden" name="cct" id="cct">-->
+                    @if ($ciudad == 'BOGOTÁ')
+                     <select class="form-control basicAutoSelect" name="trabajador" id="trabajador" placeholder="buscar..." data-url="../autoemp" autocomplete="off"></select>
+                    <input type="hidden" name="cct" id="cct">
+                    @endif
+                    @if ($ciudad != 'BOGOTÁ')
                     <select class="form-control" name="cct" id="cct">
                         <option value=""></option>
                         @foreach ($ts as $t)
                             <option value="{{ $t->empleado->cc }}">{{ $t->empleado->nombre . " ". $t->empleado->apellido1}}</option>
                         @endforeach
                     </select>
+                    @endif
                 </div>
                 <div class="col-4 col-md-1 cajaAzul">Hi</div>
                 <div class="col-4 col-md-1 "><input type="number" name="hi" id="hi" min="0" max="24" class="form-control"></div>

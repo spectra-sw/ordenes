@@ -50,13 +50,14 @@
         </div>
         <div class="row">
             <div class="col-6 col-md-2 cajaAzul">Responsable *</div>
-            <div class="col-6 col-md-10">
+            <div class="col-6 col-md-4">
                 <!--<input type="text" name="responsable" id="responsable" class="form-control basicAutoComplete" data-url="autoemp" >
                 <input type="hidden" name="cc" id="cc">-->
                 <input type="hidden" name="responsable" id="responsable" value="{{ $o->responsable }}" >
                 <input type="text" name="nresponsable" id="nresponsable" class="form-control" value="{{ $o->empleado->nombre .' '.$o->empleado->apellido1 }}" disabled >
        
             </div>
+            
         </div>
         <div class="row">
             <div class="col-6 col-md-2 cajaAzul">Cliente *</div>
