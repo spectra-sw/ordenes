@@ -90,7 +90,7 @@ class SearchController extends Controller
     public function getordenes(Request $request){
         //$o=Orden::orderBy('created_at','desc')->get();
         $inicio= $request->fechaInicio." 00:00:00";
-        $fin =$request->fechaFinal." 11:59:59";
+        $fin =$request->fechaFinal." 23:59:59";
         $proyecto = $request->proyecto;
         $responsable = $request->responsable;
         $cliente = $request->cliente;
