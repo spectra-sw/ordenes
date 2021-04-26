@@ -1,9 +1,10 @@
 <table class="table table-bordered table-sm">
     <thead>
       <tr>
+      <th>No. orden</th>
         <th>Proyecto</th>
-        <th>Fecha Inicio</th>
-        <th>Fecha Final</th>
+       <!-- <th>Fecha Inicio</th>
+        <th>Fecha Final</th>-->
         <th>Responsable</th>
         <th>Cliente</th>
         <th>Area</th>
@@ -18,9 +19,10 @@
     <tbody>
     @foreach ($datos as $dato)     
       <tr>
+      <td>{{ $dato->id }}</td>
         <td>{{ $dato->proyecto }}</td>
-        <td>{{ $dato->fecha_inicio }}</td>
-        <td>{{ $dato->fecha_final }}</td>
+      <!--  <td>{{ $dato->fecha_inicio }}</td>
+        <td>{{ $dato->fecha_final }}</td>-->
         <td>{{ $dato->responsable }}</td>
         <td>{{ $dato->cliente }}</td>
         <td>{{ $dato->area_trabajo }}</td>

@@ -39,7 +39,7 @@ class FilesController extends Controller
         $ordenes=$o;
         
         $datos = collect([]);
-
+        $total = array();
         foreach($ordenes as $o){
             //dd($o['id']);
             $dias = Dia::where('ordenes_id',$o['id'])->get();
@@ -54,6 +54,14 @@ class FilesController extends Controller
                     $emp=Empleado::where('cc',$h['trabajador'])->first();
                     $auxilio=round((($emp->auxilio)/240)*$h['ha'],1);
 
+                   
+                    if (array_key_exists($h['trabajador'], $total) ) {
+                        $total[$h['trabajador']] = $total[$h['trabajador']] + $h['ha'];
+                    }
+                    else{
+                        $total[$h['trabajador']]= $h['ha'];
+                    }
+                   
                     //horas
                     $linea=collect([]);
                     $linea->put('codigo del empleado', $h['trabajador']);
@@ -96,15 +104,17 @@ class FilesController extends Controller
 
                     //dd($datos);
                 }
-                //dd($datos);
+               // dd($total);
             }
 
         }
+        //dd($total);
 
         //return $datos;
         $datos = $datos->sortBy('codigo del empleado');
         return view('tablan',[
-            'datos' => $datos
+            'datos' => $datos,
+            'total' => $total,
         ]);
         
     }
