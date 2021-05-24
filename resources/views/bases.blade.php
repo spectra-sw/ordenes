@@ -88,6 +88,7 @@
                     <label for="correo">CORREO</label>
                     <input type="text" class="form-control"  id="correo" name="correo">
                 </div>
+                
                 <div class="form-group">
                     <label for="tipo">Tipo</label>
                     <select id="tipo" name="tipo" class="form-control">
@@ -147,6 +148,15 @@
                 <div class="form-group">
                     <label for="correo">CIUDAD</label>
                     <input type="text" class="form-control"  id="ciudad" name="ciudad">
+                </div>
+                <div class="form-group">
+                    <label for="correo">HORARIO</label>
+                    <select class="form-control" id="horario" name="horario">
+                        <option value=""></option>
+                        @foreach ($horarios as $h)
+                        <option value="{{ $h->id }}">{{ $h->nombre }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="tipo">Tipo</label>

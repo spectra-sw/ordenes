@@ -8,6 +8,7 @@
         <th onclick="ordenar('nombre')">NOMBRE</th>
         <th onclick="ordenar('auxilio')">AUXILIO</th>
         <th onclick="ordenar('correo')">CORREO</th>
+        <th>CIUDAD</th>
         <th onclick="ordenar('tipo')">TIPO</th>
       </tr>
     </thead>
@@ -20,11 +21,11 @@
         <td>{{ $e->nombre }}</td>
         <td>{{ $e->auxilio }}</td>
         <td>{{ $e->correo }}</td>
+        <td>{{ $e->ciudad }}</td>
         <td>{{ $e->tipo == 0 ? 'Admin' : 'Registro' }}</td>
         <td><select class="form-control" id="{{ $e->id }}" onchange="acciones(this.value,this.id)">
             <option value=""></option>
             <option value="1">Editar</option>
-            <option value="4">Horarios</option>
             <option value="3">Contraseña</option>
             <option value="2">Eliminar</option>
             

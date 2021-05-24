@@ -469,10 +469,7 @@ function acciones(op,id){
         $("#idup").val(id);
         $("#password").modal();
     }
-    if(op==4){
-        $("#idup").val(id);
-        $("#horarios").modal();
-    }
+    
 }
 function accionescdc(op,id){
     //alert(op);

@@ -3,8 +3,8 @@
       <tr>
       <th>No. orden</th>
         <th>Proyecto</th>
-       <!-- <th>Fecha Inicio</th>
-        <th>Fecha Final</th>-->
+       <th>Día</th>
+       <!-- <th>Fecha Final</th>-->
         <th>Responsable</th>
         <th>Cliente</th>
         <th>Area</th>
@@ -19,8 +19,9 @@
     <tbody>
     @foreach ($datos as $dato)     
       <tr>
-      <td>{{ $dato->id }}</td>
+      <td>{{ $dato->ordenes_id }}</td>
         <td>{{ $dato->proyecto }}</td>
+        <td>{{ $dato->fecha}}</td>
       <!--  <td>{{ $dato->fecha_inicio }}</td>
         <td>{{ $dato->fecha_final }}</td>-->
         <td>{{ $dato->responsable }}</td>
@@ -31,12 +32,13 @@
         <td>{{ $dato->objeto }}</td>
         <td>{{ $dato->observaciones}}</td>
         <td>{{ $dato->created_at }}</td>
+
         <td>{{ $dato->autorizada_por !=0 ? 'Si' : 'No'}}</td>
         @if (session('tipo')==0)
-        <td><button class="btn btn-primary btn-sm" type="button" onclick="verorden({{ $dato->id }})">Autorizar</button</td>
+        <td><button class="btn btn-primary btn-sm" type="button" onclick="verorden({{ $dato->ordenes_id }})">Autorizar</button</td>
         @endif
         
-        <td><button class="btn btn-primary btn-sm" type="button" onclick="editorden({{ $dato->id }})">Editar</button</td>
+        <td><button class="btn btn-primary btn-sm" type="button" onclick="editorden({{ $dato->ordenes_id }})">Editar</button</td>
        
       </tr>
     @endforeach 

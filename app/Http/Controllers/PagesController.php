@@ -20,6 +20,7 @@ use App\Models\Cdc;
 use App\Models\Cliente;
 use App\Models\Proyecto;
 use App\Models\Programacion;
+use App\Models\Horario;
 
 class PagesController extends Controller
 {
@@ -63,11 +64,13 @@ class PagesController extends Controller
             $cdc = Cdc::all();
             $clientes = Cliente::orderBy('cliente','asc')->get();
             $proyectos = Proyecto::orderBy('codigo','asc')->get();
+            $horarios = Horario::all();
             return view('bases',[
                 'emp' => $emp,
                 'cdc' => $cdc,
                 'clientes' => $clientes,
-                'proyectos' => $proyectos
+                'proyectos' => $proyectos,
+                'horarios' => $horarios
             ]);
         }
         else{
@@ -679,9 +682,18 @@ class PagesController extends Controller
         return "Empleado creado";
     }
     public function buscaremp(Request $request){
+        $horario=$idh="";
         $e = Empleado::where('id',$request->id)->first();
+        $horarios = Horario::all();
+        if ($e->horario_id !=0){
+            $horario =  $e->horario->nombre;
+            $idh = $e->horario->id;
+        } 
         return view('formemp',[
-            'datos' => $e
+            'datos' => $e,
+            'horarios' => $horarios,
+            'horario' => $horario,
+            'idh' => $idh
         ]);
     }
     public function editaremp(Request $request){
@@ -693,6 +705,8 @@ class PagesController extends Controller
             'nombre' => $request->nombre,
             'auxilio' => $request->auxilio,
             'correo' => $request->correo,
+            'ciudad' => $request->ciudad,
+            'horario_id' => $request->horario,
             'tipo' => $request->tipo
           ]);
           return "Empleado actualizado";

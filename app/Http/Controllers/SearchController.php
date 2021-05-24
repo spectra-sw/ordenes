@@ -9,6 +9,7 @@ use App\Models\Orden;
 use App\Models\Cliente;
 use App\Models\Proyecto;
 use App\Models\Programacion;
+use DB;
 class SearchController extends Controller
 {
     /**
@@ -96,20 +97,21 @@ class SearchController extends Controller
         $cliente = $request->cliente;
         //dd($fin);
 
-        $o = Orden::where('id','>',0);
+        //$o = Orden::where('id','>',0);
+        $o = DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->where('ordenes.cliente','<>',NULL);
         if ($proyecto!=""){
-            $o=$o->where('proyecto',$proyecto);
+            $o=$o->where('ordenes.proyecto',$proyecto);
         }
         if($responsable!=""){
-            $o=$o->where('responsable',$responsable);
+            $o=$o->where('ordenes.responsable',$responsable);
         }
         if($cliente!=""){
-          $o=$o->where('cliente','like','%'.$cliente.'%');
+          $o=$o->where('ordenes.cliente','like','%'.$cliente.'%');
         }
         if(($inicio!=" 00:00:00")&&($fin!=" 11:59:59")){
-                $o=$o->where('created_at','>=',$inicio)->where('created_at','<=',$fin);
+                $o=$o->where('dias.fecha','>=',$inicio)->where('dias.fecha','<=',$fin);
         }
-        $o=$o->where('cliente','<>',NULL)->orderBy('created_at','desc')->get();
+        $o=$o->distinct()->orderBy('ordenes.created_at','desc')->get();
         //dd($o);
         return view('tablao',[
             'datos' => $o
