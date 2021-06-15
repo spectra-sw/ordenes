@@ -93,3 +93,6 @@ Route::get('exportReporte', [ExcelController::class, 'export'])->name('export');
 
 //Auth
 Route::get('validar',[AuthController::class,'validar'])->name('validar');
+
+Route::get('yoursix',[PagesController::class,'yoursix'])->name('yoursix');
+Route::get('apiyoursix',[PagesController::class,'apiyoursix'])->name('apiyoursix');
