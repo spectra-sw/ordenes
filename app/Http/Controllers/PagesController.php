@@ -626,6 +626,7 @@ class PagesController extends Controller
     public function nuevaprog(Request $request){
         $hi = $request->hi.":".$request->mi;
         $hf = $request->hf.":".$request->mf;
+        //dd($hi." ".$hf);
         $p = Programacion::create([
             'cc' => $request->cc,
             'fecha' => $request->fecha,
@@ -635,7 +636,7 @@ class PagesController extends Controller
             'hi' => $hi,
             'hf' => $hf    
         ]);
-
+       // dd($p);
         return "Programacion creada";
     }
     public function tablaprog(Request $request){
