@@ -805,13 +805,18 @@ class PagesController extends Controller
         return 'operacion realizada';
     }
     public function editarprog(Request $request){
+        $hi = $request->hi.":".$request->mi;
+        $hf = $request->hf.":".$request->mf;
+        
         Programacion::where('id', $request->id )
         ->update([
             'cc' => $request->cc,
             'fecha' => $request->fecha,
             'proyecto' => $request->proyecto,
             'responsable' => $request->responsable,
-            'observacion' => $request->observaciones
+            'observacion' => $request->observaciones,
+            'hi' => $hi,
+            'hf' => $hf  
         ]);
         return "Programación actualizada";
     }
