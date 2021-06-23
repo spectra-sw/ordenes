@@ -624,13 +624,16 @@ class PagesController extends Controller
     }
 //programacion
     public function nuevaprog(Request $request){
+        $hi = $request->hi.":".$request->mi;
+        $hf = $request->hf.":".$request->mf;
         $p = Programacion::create([
             'cc' => $request->cc,
             'fecha' => $request->fecha,
             'proyecto' => $request->proyecto,
             'responsable' => $request->responsable,
             'observacion' => $request->observaciones,
-            
+            'hi' => $hi,
+            'hf' => $hf    
         ]);
 
         return "Programacion creada";
