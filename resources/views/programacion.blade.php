@@ -6,6 +6,7 @@
 <button class="btn btn-primary" onclick="nuevaprog()">Nueva Programacion</button><br><br>
 <div id ="tprog">
     @include('tablaprog')
+    
 </div>
 <div class="modal fade bd-example-modal-xl" id="prog">
     <div class="modal-dialog">

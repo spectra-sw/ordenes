@@ -11,7 +11,7 @@
         <th>Contacto</th>
         <th>Tipo de sistema</th>
         <th>Objeto</th>
-        <th>Observaciones</th>
+        <!--<th>Observaciones</th>-->
         <th>Creación</th>
         <th>Autorizada</th>
       </tr>
@@ -30,7 +30,7 @@
         <td>{{ $dato->contacto }}</td>
         <td>{{ $dato->tipo }}</td>
         <td>{{ $dato->objeto }}</td>
-        <td>{{ $dato->observaciones}}</td>
+        <!--<td>{{ $dato->observaciones}}</td>-->
         <td>{{ $dato->created_at }}</td>
 
         <td>{{ $dato->autorizada_por !=0 ? 'Si' : 'No'}}</td>

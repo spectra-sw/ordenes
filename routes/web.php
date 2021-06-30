@@ -48,6 +48,10 @@ Route::get('/getdia',[PagesController::class,'getdia']);
 Route::get('/editDia',[PagesController::class,'editDia']);
 Route::get('/login',[PagesController::class,'login']);
 Route::get('/logout',[PagesController::class,'login']);
+Route::get('/ocupacion',[PagesController::class,'ocupacion']);
+Route::get('/rocupacion',[PagesController::class,'rocupacion']);
+
+
 //emp
 Route::get('/nuevoemp',[PagesController::class,'nuevoemp']);
 Route::get('/buscaremp',[PagesController::class,'buscaremp']);

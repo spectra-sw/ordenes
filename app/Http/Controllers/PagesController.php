@@ -21,6 +21,11 @@ use App\Models\Cliente;
 use App\Models\Proyecto;
 use App\Models\Programacion;
 use App\Models\Horario;
+use App\Models\Area;
+use App\Models\Actividad;
+use App\Models\Ocupacion;
+
+use Carbon\Carbon;
 
 class PagesController extends Controller
 {
@@ -85,7 +90,7 @@ class PagesController extends Controller
         $tipo = session('tipo');
         //dd($tipo);
         if ($tipo ==0){
-            $prog = Programacion::orderBy('fecha','asc')->get();
+            $prog = Programacion::orderBy('fecha','desc')->paginate(15);
             $emp = Empleado::orderBy('apellido1','asc')->get();
             $proyectos = Proyecto::orderBy('codigo','asc')->get();
             return view('programacion',[
@@ -820,6 +825,67 @@ class PagesController extends Controller
         ]);
         return "Programación actualizada";
     }
+
+    public function ocupacion(){
+        $areas = Area::all();
+        $actividades = Actividad::all();
+        $proyectos = Proyecto::orderBy('codigo','asc')->get();
+        return view('ocupacion',[
+            'areas' => $areas,
+            'actividades' => $actividades,
+            'proyectos' => $proyectos
+        ]);
+    }
+    public function rocupacion(Request $request){
+        //dd($request);
+        $u = session('user');
+        $cc = Empleado::where('id',$u)->first()->cc;
+        $existe = ocupacion::where('cc',$cc)->where('dia',$request->dia)->exists();
+        $hoy = Carbon::now();
+        $dia = new Carbon($request->dia);
+        if ($dia > $hoy){
+            return "No es posible registrar una fecha posterior";
+        }
+        else{
+            if (!$existe){
+                $e = ocupacion::create([
+                    'cc' => $cc,
+                    'dia' => $request->dia,
+                    'area' => $request->area,
+                    'actividad' => $request->actividad,
+                    'proyecto' => $request->proyecto,
+                    'horas' => $request->horas,
+                    'minutos' => $request->min,
+                ]);
+            }
+            else{
+                return "Ya existe un registro para esta fecha";
+            }
+            return "Registro creado";
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     public function apiyoursix(Request $request){

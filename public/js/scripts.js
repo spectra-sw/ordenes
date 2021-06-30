@@ -805,3 +805,28 @@ function eliminarprog(){
             }
     });   
 }
+function rocupacion(){
+    data=$( "#formRegistro" ).serialize(); 
+    dataArray=data.split("&");
+    band =0;
+    dataArray.forEach(function(datos) {
+        x=datos.split("=")
+        if (x[1]==""){
+            band=1;
+        }  
+    });
+    if(band==0){
+        url = '/rocupacion'
+        $.ajax({
+                url: url,
+                type:'GET',
+                data: data,
+                success: function(data) {
+                    alert(data);
+                }
+        }); 
+    }
+    else{
+        alert("Debe ingresar todos los campos");
+    }
+}
