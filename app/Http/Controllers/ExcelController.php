@@ -327,7 +327,7 @@ class ExcelController extends Controller
 
 
                     //valor
-                    if ($auxilio >0){
+                    /*if ($auxilio >0){
                         $linea=collect([]);
                         $linea->put('codigo del empleado', $h['trabajador']);
                         $linea->put('sucursal', '');
@@ -345,7 +345,7 @@ class ExcelController extends Controller
                         $linea->put('numero de cuotas', '');
                         $linea->put('notas', '');
                         $datos->push($linea);
-                    }
+                    }*/
 
 
 
@@ -355,9 +355,41 @@ class ExcelController extends Controller
             }
 
         }
+        $datos2 = collect([]);
+        foreach ($datos as $d){
+            if ($d['codigo del concepto']=='001'){
+                $cc = $d['codigo del empleado'];
+                $horas = $d['horas'];
+                $emp=Empleado::where('cc',$cc)->first();
+                $auxilio= round(($emp->auxilio/$total[$cc])*$horas,1);
+                $linea=collect([]);
+                /*$linea->put('total',$total[$cc]);
+                $linea->put('auxilio',$emp->auxilio);
+                $linea->put('horas',$horas);*/
 
+                $linea->put('codigo del empleado',$cc);
+                $linea->put('sucursal', '');
+                $linea->put('codigo del concepto', '075');
+                $linea->put('centro de operacion', $d['centro de operacion']);
+                $linea->put('centro de costo', $d['centro de costo']);
+                $linea->put('fecha movimiento', $d['fecha movimiento']);
+                $linea->put('horas','');
+                $linea->put('valor', $auxilio);
+                $linea->put('cantidad', '');
+                $linea->put('proyecto', '');
+                $linea->put('numero de contrato', '');
+                $linea->put('unidad de negocio', $d['unidad de negocio']);
+                $linea->put('fecha de causacion', '');
+                $linea->put('numero de cuotas', '');
+                $linea->put('notas', '');
+                $datos2->push($linea);
+            }
+        }
+        foreach ($datos2 as $d){
+            $datos->push($d);
+        }
         //return $datos;
-        $datos = $datos->sortBy('codigo del empleado');
+        $datos = $datos->sortBy(['codigo del empleado','fecha movimiento']);
         return Excel::download(new NominaExport($datos), 'nomina.xlsx');
     }
 }
