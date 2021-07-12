@@ -142,6 +142,14 @@
                     <input type="text" class="form-control"  id="auxilio" name="auxilio">
                 </div>
                 <div class="form-group">
+                    <label for="auxilio">AUXILIO TRANSPORTE</label>
+                    <select class="form-control" id="auxiliot" name="auxiliot">
+                        <option value=""></option>
+                        <option value="1">Si</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="correo">CORREO</label>
                     <input type="text" class="form-control"  id="correo" name="correo">
                 </div>

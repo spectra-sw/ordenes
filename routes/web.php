@@ -85,12 +85,14 @@ Route::get('consproyecto',[SearchController::class, 'consproyecto'])->name('cons
 Route::get('getordenes',[SearchController::class,'getordenes'])->name("getordenes");
 Route::get('buscarcontactos',[SearchController::class,'buscarcontactos'])->name("buscarcontactos");
 Route::get('archivon',[FilesController::class,'archivon'])->name("archivon");
+Route::get('reportep',[FilesController::class,'reportep'])->name("reportep");
 
 //utilities
 Route::get('autorizadas',[PagesController::class, 'autorizadas'])->name('autorizadas');
 Route::get('eliminar',[PagesController::class,'delete'])->name('eliminar');
 Route::get('updatepwd',[PagesController::class,'updatepwd'])->name('updatepwd');
 Route::get('updatep',[PagesController::class,'updatep'])->name('updatep');
+Route::get('consfestivo',[PagesController::class,'consfestivo'])->name('consfestivo');
 
 //Excel
 Route::get('exportReporte', [ExcelController::class, 'export'])->name('export');

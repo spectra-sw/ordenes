@@ -282,6 +282,20 @@ function archivo(){
               }
     }); 
 }
+function reportep(){
+    data=$( "#formConsulta" ).serialize(); 
+    url = '/reportep'
+    $.ajax({
+              url: url,
+              type:'GET',
+              data: data,
+              success: function(data) {
+                $data = $(data);
+                $("#tablao").html($data);
+              }
+    }); 
+}
+
 function verorden(id){
     url='verorden/'+id;
     window.open(url,'_blank');
@@ -301,8 +315,14 @@ function auto(id,dia){
         type:'GET',
         data: data,
         success: function(data) {
-          $data = $(data);
-          $(sdia).html($data);
+            //alert(data);
+            if (data == 'login'){
+                alert('Debe loguearse para poder autorizar horas');
+            }
+            else{
+                $data = $(data);
+                $(sdia).html($data);
+            }
         }
     }); 
 }
@@ -829,4 +849,19 @@ function rocupacion(){
     else{
         alert("Debe ingresar todos los campos");
     }
+}
+function validarfest(fecha){
+    //alert(fecha);
+    url = '/consfestivo'
+    data = { fecha : fecha }
+    $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) {
+                if (data == "si"){
+                    alert("La fecha seleccionada es un día festivo");
+                }
+            }
+    }); 
 }

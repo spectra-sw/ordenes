@@ -24,8 +24,10 @@ use App\Models\Horario;
 use App\Models\Area;
 use App\Models\Actividad;
 use App\Models\Ocupacion;
+use App\Models\Festivo;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class PagesController extends Controller
 {
@@ -176,7 +178,8 @@ class PagesController extends Controller
         $proyecto = $request->proyecto;
         $d = Dia::create([
             'ordenes_id' => $request->id,
-            'fecha' => date('Y-m-d'),
+            //'fecha' => date('Y-m-d'),
+            'fecha' => '1900-01-01',
             'observacion' => ''
         ]);
         $ciudad = Proyecto::where('codigo',$proyecto)->first()->ciudad;
@@ -221,10 +224,24 @@ class PagesController extends Controller
         
     }
     public function agregarh(Request $request){
+        $fecha = Dia::where('id',$request->diaid)->first()->fecha;
+
+        $datos = DB::table('dias')
+            ->join('horas', 'dias.ordenes_id', '=', 'horas.ordenes_id')
+            ->where('dias.fecha',$fecha)
+            ->where('horas.trabajador',$request->trabajador)
+            ->count();
+
+        if ($datos>0){
+            return 'no';
+        }
+
         if( Hora::where('dias_id',$request->diaid)->where('trabajador',$request->trabajador)->exists()){
             return 'no';
         }
+
         else{
+
             $hi = $request->hi.":".$request->mi;
             $hf = $request->hf.":".$request->mf;
             $ha = 0;
@@ -574,6 +591,9 @@ class PagesController extends Controller
         if ($tipo !=3){
             $autorizada = session('user');
         }
+        if ($autorizada ==0){
+            return 'login';
+        }
         $o=Orden::where('id', $datos->ordenes_id) 
           ->update(['autorizada_por' => $autorizada]);
         
@@ -685,6 +705,7 @@ class PagesController extends Controller
             'apellido2' => $request->apellido2,
             'nombre' => $request->nombre,
             'auxilio' => $request->auxilio,
+            'auxiliot' => $request->auxiliot,
             'correo' => $request->correo,
             'tipo' => $request->tipo,
             'ciudad' => strtoupper($request->ciudad),
@@ -716,6 +737,7 @@ class PagesController extends Controller
             'apellido2' => $request->apellido2,
             'nombre' => $request->nombre,
             'auxilio' => $request->auxilio,
+            'auxiliot' => $request->auxiliot,
             'correo' => $request->correo,
             'ciudad' => $request->ciudad,
             'horario_id' => $request->horario,
@@ -863,6 +885,13 @@ class PagesController extends Controller
             }
             return "Registro creado";
         }
+    }
+    public function consfestivo(Request $request){
+        $fecha = $request->fecha;
+        if (Festivo::where('fecha',$fecha)->exists()){
+            return 'si';
+        }
+        return 'no';
     }
 
 

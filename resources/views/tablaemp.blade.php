@@ -7,6 +7,7 @@
         <th onclick="ordenar('apellido2')">APELLIDO 2</th>
         <th onclick="ordenar('nombre')">NOMBRE</th>
         <th onclick="ordenar('auxilio')">AUXILIO</th>
+        <th >AUXILIO TR.</th>
         <th onclick="ordenar('correo')">CORREO</th>
         <th>CIUDAD</th>
         <th onclick="ordenar('tipo')">TIPO</th>
@@ -20,6 +21,7 @@
         <td>{{ $e->apellido2 }}</td>
         <td>{{ $e->nombre }}</td>
         <td>{{ $e->auxilio }}</td>
+        <td>{{ $e->auxiliot == 0 ? 'No' : 'Si' }}</td>
         <td>{{ $e->correo }}</td>
         <td>{{ $e->ciudad }}</td>
         <td>{{ $e->tipo == 0 ? 'Admin' : 'Registro' }}</td>

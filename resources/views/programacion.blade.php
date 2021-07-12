@@ -31,7 +31,7 @@
                 </div>
                 <div class="form-group">
                     <label for="apellido1">FECHA</label>
-                    <input type="date" class="form-control"  id="fecha" name="fecha">
+                    <input type="date" class="form-control"  id="fecha" name="fecha" onchange="validarfest(this.value)">
                 </div>
                 <div class="form-group">
                     <label for="proyecto">PROYECTO</label>

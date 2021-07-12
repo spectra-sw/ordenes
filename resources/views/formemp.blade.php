@@ -21,6 +21,13 @@
                     <input type="text" class="form-control"  id="auxilio" name="auxilio" value={{ $datos['auxilio'] }}>
                 </div>
                 <div class="form-group">
+                    <label for="auxilio">AUXILIO TRANSPORTE</label>
+                    <select class="form-control" id="auxiliot" name="auxiliot">
+                        <option value="0" {{ $datos['auxiliot'] == 0 ? 'selected' : '' }}>No</option>
+                        <option value="1" {{ $datos['auxiliot'] == 1 ? 'selected' : '' }}>Si</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="correo">CORREO</label>
                     <input type="text" class="form-control"  id="correo" name="correo" value={{ $datos['correo'] }}>
                 </div>

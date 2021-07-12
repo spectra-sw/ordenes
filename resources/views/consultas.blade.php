@@ -31,7 +31,9 @@
                 <div class="row">
                     <button type="button" class="btn btn-primary" onclick="consultar()">Consultar</button>&nbsp;
                     @if (session('tipo')==0)
-                    <button type="button" class="btn btn-primary" onclick="archivo()">Archivo Nómina</button>
+                    <button type="button" class="btn btn-primary" onclick="archivo()">Archivo Distribución</button>&nbsp;
+                    <button type="button" class="btn btn-primary" onclick="archivor()">Archivo Redistribución</button>&nbsp;
+                    <button type="button" class="btn btn-primary" onclick="reportep()">Reporte personas</button>
                     @endif
                 </div>
 
