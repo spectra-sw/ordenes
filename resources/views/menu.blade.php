@@ -9,7 +9,9 @@
 @if (session('tipo')==1)
 <button type="button" class="btn btn-primary" onclick="window.open('consultas','_self')">CONSULTAR</button>
 @endif
+@if (session('tipo')!=1)
 <button type="button" class="btn btn-primary" onclick="window.open('ocupacion','_self')">REGISTRO DE OCUPACIÓN</button>
+@endif
 @if (session('tipo')==1)
 <br>
 <br>

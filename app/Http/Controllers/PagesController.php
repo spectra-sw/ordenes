@@ -823,13 +823,15 @@ class PagesController extends Controller
         ]);
     }
     public function updatepwd(){
-        $emps = Empleado::all();
+        $emps = Empleado::where('password','')->get();
+        $cont =0;
         foreach($emps as $e){
             Empleado::where('id',$e->id)->update([
                 'password' => bcrypt($e->cc)
             ]);
+            $cont++;
         }
-        return 'operacion realizada';
+        return 'operacion realizada '.$cont;
     }
     public function editarprog(Request $request){
         $hi = $request->hi.":".$request->mi;
