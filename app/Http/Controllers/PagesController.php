@@ -92,7 +92,8 @@ class PagesController extends Controller
         $tipo = session('tipo');
         //dd($tipo);
         if ($tipo ==0){
-            $prog = Programacion::orderBy('fecha','desc')->paginate(15);
+            //$prog = Programacion::orderBy('fecha','desc')->paginate(15);
+            $prog = Programacion::all();
             $emp = Empleado::orderBy('apellido1','asc')->get();
             $proyectos = Proyecto::orderBy('codigo','asc')->get();
             return view('programacion',[
@@ -713,6 +714,26 @@ class PagesController extends Controller
         ]);
 
         return "Empleado creado";
+    }
+    public function nuevocliente(Request $request){
+        $e = Cliente::create([
+            'cliente' => $request->cliente,
+            'contactos' => $request->contactos,
+        ]);
+
+        return "Cliente creado";
+    }
+    public function tablacliente(Request $request){
+        $campo = $request->campo;
+        if ($campo == ''){
+            $clientes = Cliente::orderBy('cliente','asc')->get();  
+        }
+        else{
+            $clientes = Cliente::orderBy($campo,'asc')->get();  
+        }
+        return view('tablacliente',[
+            'clientes' => $clientes,
+        ]);
     }
     public function buscaremp(Request $request){
         $horario=$idh="";

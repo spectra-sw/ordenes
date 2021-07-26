@@ -417,6 +417,12 @@ function nuevoemp(){
 function nuevocdc(){
     $("#nuevocdc").modal();
 }
+function nuevoproyecto(){
+    $("#nuevoproyecto").modal();
+}
+function nuevocliente(){
+    $("#nuevocliente").modal();
+}
 function guardare(){
     band=0;
     $('#formEmp input').each(function() { 
@@ -463,6 +469,30 @@ function guardarcdc(){
     }
     else{
 
+        alert("Debes ingresar todos los campos");
+    }
+}
+function guardarcliente(){
+    band=0;
+    $('#formCliente input').each(function() { 
+        if (($(this).val() == '')) {
+            band=1;
+        }        
+    })
+    if (band==0){
+        data=$( "#formCliente" ).serialize(); 
+        url = '/nuevocliente'
+        $.ajax({
+                url: url,
+                type:'GET',
+                data: data,
+                success: function(data) {
+                    alert(data);
+                    acttablacliente();
+                }
+        });   
+    }
+    else{
         alert("Debes ingresar todos los campos");
     }
 }
@@ -585,6 +615,19 @@ function acttablacdc(){
         type:'GET',
         success: function(data) { 
             $("#tc").html(data);
+        }
+    }); 
+}
+function acttablacliente(){
+    campo = ''
+    data = {campo : campo}
+    url="/tablacliente"
+    $.ajax({
+        url: url,
+        data:data,
+        type:'GET',
+        success: function(data) { 
+            $("#tcl").html(data);
         }
     }); 
 }
@@ -734,6 +777,11 @@ function nuevaprog(){
 function guardarprog(){
     band=0;
     $('#formProg input').each(function() { 
+        if (($(this).val() == '') && ($(this).attr('id') != 'observaciones')) {
+            band=1;
+        }        
+    })
+    $('#formProg select').each(function() { 
         if (($(this).val() == '') && ($(this).attr('id') != 'observaciones')) {
             band=1;
         }        
