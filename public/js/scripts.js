@@ -137,6 +137,7 @@ function agregarh(){
         diaid=parseInt($("#diaid").val());
         url = '/agregarh'
         data = {hi: hi,mi:mi, hf:hf, mf:mf, ht:ht , trabajador: trabajador, id:id,diaid:diaid, ha:ha}
+        console.log(data);
         $.ajax({
                 url: url,
                 type:'GET',

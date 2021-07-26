@@ -227,7 +227,7 @@ class PagesController extends Controller
         $fecha = Dia::where('id',$request->diaid)->first()->fecha;
 
         $datos = DB::table('dias')
-            ->join('horas', 'dias.ordenes_id', '=', 'horas.ordenes_id')
+            ->join('horas', 'dias.id', '=', 'horas.dias_id')
             ->where('dias.fecha',$fecha)
             ->where('horas.trabajador',$request->trabajador)
             ->count();
