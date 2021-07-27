@@ -226,9 +226,10 @@ class PagesController extends Controller
     }
     public function agregarh(Request $request){
         $fecha = Dia::where('id',$request->diaid)->first()->fecha;
-
+        $oid =  Dia::where('id',$request->diaid)->first()->ordenes_id;
         $datos = DB::table('dias')
             ->join('horas', 'dias.id', '=', 'horas.dias_id')
+            ->where('dias.ordenes_id ','=',$oid)
             ->where('dias.fecha',$fecha)
             ->where('horas.trabajador',$request->trabajador)
             ->count();
