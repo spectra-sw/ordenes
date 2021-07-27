@@ -5,7 +5,7 @@
 <br>
 <button class="btn btn-primary" onclick="nuevaprog()">Nueva Programacion</button><br><br>
 <form id="filtrarProg">
-<div class="row">
+<div class="row cajaAzul">
   <div class="col-12 col-sm-2">
     <div class="form-group">
       <label for="cc">TÉCNICO</label>
