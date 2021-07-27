@@ -914,3 +914,15 @@ function validarfest(fecha){
             }
     }); 
 }
+function filtrarprog(){
+    data=$( "#filtrarProg" ).serialize(); 
+    url = '/filtrarprog'
+    $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) {
+                $("#tprog").html(data);
+            }
+    });   
+}

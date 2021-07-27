@@ -4,6 +4,59 @@
 
 <br>
 <button class="btn btn-primary" onclick="nuevaprog()">Nueva Programacion</button><br><br>
+<form id="filtrarProg">
+<div class="row">
+  <div class="col-12 col-sm-2">
+    <div class="form-group">
+      <label for="cc">TÉCNICO</label>
+        <select class="form-control" id="filtrocc" name="filtrocc">
+          <option value=""><option>
+          @foreach ($emp as $e)
+          <option value="{{ $e->cc }}">{{ $e->apellido1. " " . $e->nombre}}</option>
+          @endforeach
+          </select>
+    </div>
+  </div>
+  <div class="col-12 col-sm-2">
+    <div class="form-group">
+      <label for="apellido1">FECHA 1</label>
+      <input type="date" class="form-control"  id="filtrofecha1" name="filtrofecha1" >
+    </div>
+  </div>
+  <div class="col-12 col-sm-2">
+    <div class="form-group">
+      <label for="apellido1">FECHA 2</label>
+      <input type="date" class="form-control"  id="filtrofecha2" name="filtrofecha2" >
+    </div>
+  </div>
+  <div class="col-12 col-sm-2">
+                <div class="form-group">
+                    <label for="proyecto">PROYECTO</label>
+                    <select class="form-control" id="filtroproyecto" name="filtroproyecto">
+                    <option value=""><option>
+                        @foreach ($proyectos as $p)
+                            <option value="{{ $p->codigo }}">{{ $p->codigo . " " . $p->cliente->cliente }}</option>
+                        @endforeach
+                    </select>
+                </div>
+  </div>
+  <div class="col-12 col-sm-2">
+    <div class="form-group">
+                    <label for="responsable">RESPONSABLE</label>
+                    <select class="form-control" id="filtroresp" name="filtroresp">
+                    <option value=""><option>
+                        @foreach ($emp as $e)
+                            <option value="{{ $e->id }}">{{ $e->apellido1 . " " . $e->nombre}}</option>
+                        @endforeach
+                    </select>
+    </div>
+  </div>
+  <div class="col-12 col-sm-2">
+    <button type="button" class="btn btn-primary" onclick="filtrarprog()">Filtrar</button>
+  </div>
+</div>
+</form>
+<br>
 <div id ="tprog">
     @include('tablaprog')
     

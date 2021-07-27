@@ -677,7 +677,27 @@ class PagesController extends Controller
             'prog' => $prog,
         ]);
     }
-    
+    public function filtrarprog(Request $request){
+        
+        $prog =  $prog = Programacion::orderBy('fecha','asc');
+        
+        if ($request->filtrocc !=""){
+            $prog = $prog->where('cc',$request->filtrocc );
+        }
+        if (($request->filtrofecha1 !="")&&($request->filtrofecha2 !="")){
+            $prog = $prog->where('fecha','>=',$request->filtrofecha1)->where('fecha','<=',$request->filtrofecha2);
+        }
+        if ($request->filtroproyecto !=""){
+            $prog = $prog->where('proyecto',$request->filtroproyecto );
+        }
+        if ($request->filtroresp !=""){
+            $prog = $prog->where('cc',$request->filtroresp );
+        }
+        $prog = $prog->get();
+        return view('tablaprog',[
+            'prog' => $prog,
+        ]);
+    }
     public function buscarprog(Request $request){
         $p = Programacion::where('id',$request->id)->first();
         $emp = Empleado::orderBy('apellido1','asc')->get();
