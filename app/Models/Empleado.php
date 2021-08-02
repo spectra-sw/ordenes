@@ -22,4 +22,8 @@ class Empleado extends Model
     {
         return $this->belongsTo(Horario::class, 'horario_id', 'id');
     }
+    public function horas()
+    {
+        return $this->hasMany(Hora::class, 'trabajdor', 'cc');
+    }
 }

@@ -65,7 +65,7 @@
     data-url="autoemp" autocomplete="off"></select>
             </div>
             <div class="col-6 col-md-1 cajaAzul">Subportafolio</div>
-            <div class="col-6 col-md-2 "><input type="text" name="subportafolio" id="subportafolio" class="form-control" readonly></div>
+            <div class="col-6 col-md-2 "><input type="text" name="subportafolio" id="subportafolio" class="form-control" ></div>
         </div>
         <div class="row">
             <div class="col-6 col-md-2 cajaAzul">Descripción</div>
@@ -73,11 +73,11 @@
             <div class="col-6 col-md-1 cajaAzul">Director</div>
             <div class="col-6 col-md-2 "><input type="text" name="director" id="director" class="form-control" disabled></div>
             <div class="col-6 col-md-1 cajaAzul">Líder</div>
-            <div class="col-6 col-md-2 "><input type="text" name="lider" id="lider" class="form-control" disabled ></div>
+            <div class="col-6 col-md-2 "><input type="text" name="lider" id="lider" class="form-control"></div>
         </div>
         <div class="row">
             <div class="col-6 col-md-2 cajaAzul">Cliente *</div>
-            <div class="col-6 col-md-2 "><input type="text" name="cliente" id="cliente" class="form-control" readonly></div>
+            <div class="col-6 col-md-2 "><input type="text" name="cliente" id="cliente" class="form-control" ></div>
             <div class="col-6 col-md-2 cajaAzul">Área de trabajo *</div>
             <div class="col-6 col-md-2 "><input type="text" name="area" id="area" class="form-control"></div>
             <div class="col-6 col-md-2 cajaAzul">Contacto *</div>

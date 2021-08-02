@@ -13,4 +13,9 @@ class Hora extends Model
     protected $fillable = [
         'ordenes_id', 'dias_id','hi','hf','ht','trabajador','ha'
     ];
+
+    public function empleado()
+    {
+    return $this->belongsTo(Empleado::class, 'trabajador', 'cc');
+    }
 }

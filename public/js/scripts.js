@@ -226,8 +226,9 @@ function enviarorden(a){
     cont =0;
     band="";
     dataArray.forEach(function(datos) {
-        console.log(datos);
+        //console.log(datos);
         if (cont<7){
+            console.log(datos);
             x=datos.split("=")
             if ((x[1]=="")&&(x[0] != "fechaInicio")&&(x[0] != "fechaFinal")) {
                 var sel = "#"+x[0]

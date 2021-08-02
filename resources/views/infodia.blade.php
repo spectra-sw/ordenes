@@ -71,7 +71,8 @@
                         <table class="table table-bordered table-sm">
                             <thead>
                             <tr>
-                                <th>Trabajador</th>
+                                <th>cc</th>
+                                <th>Nombre</th>
                                 <th>Hora Inicio</th>
                                 <th>Hora fin</th>
                                 <th>Total</th>
@@ -81,7 +82,8 @@
                             <tbody>
                             @foreach ($d['Horas'] as $dato)     
                             <tr>
-                                <td>{{ $dato['Trabajador'] }}</td>
+                                <td>{{ $dato['cc'] }}</td>
+                                <td>{{ $dato['Nombre'] }}</td>
                                 <td>{{ $dato['Hi'] }}</td>
                                 <td>{{ $dato['Hf'] }}</td>
                                 <td>{{ $dato['Ht'] }}</td>

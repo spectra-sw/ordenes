@@ -135,7 +135,7 @@ class PagesController extends Controller
         //$user = 108;
         $cc = Empleado::where('id',$user)->first()->cc;
         $ciudad = Empleado::where('id',$user)->first()->ciudad;
-        $ps = Programacion::where('cc',$cc)->get();
+        $ps = Programacion::where('cc',$cc)->get()->unique('proyecto');
         foreach ($ps as $p){
             $proyectos->push($p->proyecto);
         }
@@ -185,7 +185,7 @@ class PagesController extends Controller
         ]);
         $ciudad = Proyecto::where('codigo',$proyecto)->first()->ciudad;
 
-        $ts = Programacion::where('proyecto',$proyecto)->get();
+        $ts = Programacion::where('proyecto',$proyecto)->get()->unique('cc');
         return view('dia',[
             'id' => $d->id,
             'ts' => $ts,
@@ -225,24 +225,49 @@ class PagesController extends Controller
         
     }
     public function agregarh(Request $request){
+        $rhi =$request->hi;
+        $rmi = $request->mi;
+        $rhf =$request->hf;
+        $rmf = $request->mf;
         $fecha = Dia::where('id',$request->diaid)->first()->fecha;
         $oid =  Dia::where('id',$request->diaid)->first()->ordenes_id;
         $datos = DB::table('dias')
             ->join('horas', 'dias.id', '=', 'horas.dias_id')
             ->where('dias.ordenes_id','=',$oid)
             ->where('dias.fecha',$fecha)
-            ->where('horas.trabajador',$request->trabajador)
-            ->count();
+            ->where('horas.trabajador',$request->trabajador);
+        $conteo = $datos->count();
+        $datos = $datos->get();
 
-        if ($datos>0){
-            return 'no';
+        if ($conteo>0){
+            foreach($datos as $d){
+                $hi = explode(":", $d->hi);
+                $hf = explode(":", $d->hf);
+                
+                $hi = intval($hi[0]) + round(floatval($hi[1]/60),1);
+                $hf = intval($hf[0]) + round(floatval($hf[1]/60),1);
+
+                $rhi = intval($rhi) + round(floatval($rmi/60),1);
+                $rhf = intval($rhf) + round(floatval($rmf/60),1);
+
+                if ((($rhi < $hi) && ($rhi < $hf)) && (($rhf > $hi) && ($rhf < $hf))){
+                    return 'no';
+                }
+                if ((($rhi > $hi) && ($rhi < $hf)) && (($rhf > $hi) && ($rhf < $hf))){
+                    return 'no';
+                }
+                if ((($rhi > $hi) && ($rhi < $hf)) && (($rhf > $hi) && ($rhf > $hf))){
+                    return 'no';
+                }
+
+    
+            }  
+            
         }
 
-        if( Hora::where('dias_id',$request->diaid)->where('trabajador',$request->trabajador)->exists()){
-            return 'no';
-        }
+       
 
-        else{
+       
 
             $hi = $request->hi.":".$request->mi;
             $hf = $request->hf.":".$request->mf;
@@ -260,7 +285,7 @@ class PagesController extends Controller
             return view('tablah',[
                 'datos' => $datos
             ]);
-        }
+        
         
     }
     public function almdia(Request $request){
@@ -529,7 +554,8 @@ class PagesController extends Controller
                 foreach($horas as $h){
                     $horasc=collect([]);
                     $horasc->put('id',$h->id);
-                    $horasc->put('Trabajador',$h->trabajador);
+                    $horasc->put('cc',$h->trabajador);
+                    $horasc->put('Nombre',$h->empleado->nombre." ".$h->empleado->apellido1);
                     $horasc->put('Hi',$h->hi);
                     $horasc->put('Hf',$h->hf);
                     $horasc->put('Ht',$h->ht);
