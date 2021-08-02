@@ -813,6 +813,17 @@ class PagesController extends Controller
           ]);
           return "Empleado actualizado";
     }
+    public function buscarproy(Request $request){
+        $horario=$idh="";
+        $p = Proyecto::where('id',$request->id)->first();
+        $emp = Empleado::orderBy('apellido1','asc')->get();
+        $clientes = Cliente::orderBy('cliente','asc')->get();
+        return view('formproy',[
+            'p' => $p,
+            'clientes' => $clientes,
+            'emp' => $emp
+        ]);
+    }
     public function updatep(Request $request){
         Empleado::where('id', $request->id )
         ->update([

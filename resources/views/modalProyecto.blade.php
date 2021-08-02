@@ -34,21 +34,22 @@
                 </div>
                 <div class="form-group">
                     <label for="auxilio">SUBPORTAFOLIO</label>
-                    <input type="text" class="form-control"  id="auxilio" name="auxilio">
+                    <input type="text" class="form-control"  id="subportafolio" name="subportafolio">
                 </div>
                 <div class="form-group">
-                    <label for="correo">CORREO</label>
-                    <input type="text" class="form-control"  id="correo" name="correo">
+                    <label for="director">DIRECTOR</label>
+                    <input type="text" class="form-control"  id="director" name="director">
+                </div>
+                <div class="form-group">
+                    <label for="lider">LIDER</label>
+                    <input type="text" class="form-control"  id="lider" name="lider">
+                </div>
+                <div class="form-group">
+                    <label for="lider">CIUDAD</label>
+                    <input type="text" class="form-control"  id="ciudad" name="ciudad">
                 </div>
                 
-                <div class="form-group">
-                    <label for="tipo">Tipo</label>
-                    <select id="tipo" name="tipo" class="form-control">
-                        <option value="0">Admin</option>
-                        <option value="1">Registro</option>
-                    </select>
-                </div>
-                <button type="button" class="btn btn-primary" onclick="guardare()">Guardar</button>
+                <button type="button" class="btn btn-primary" onclick="guardarproy()">Guardar</button>
 
             </form>
         </div>        
@@ -59,3 +60,41 @@
       </div>
     </div>
 </div>
+<div class="modal fade bd-example-modal-xl" id="editarproy">
+    <div class="modal-dialog">
+      <div class="modal-content">  
+        <!-- Modal body -->
+        <div class="modal-header">
+            Editar proyecto
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body" id="editarBodyProy">
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+      </div>      
+      </div>
+    </div>
+  </div>
+  <div class="modal fade bd-example-modal-sm" id="eliminarproy">
+    <div class="modal-dialog">
+      <div class="modal-content">  
+        <!-- Modal body -->
+       
+        <!-- Modal body -->
+        <div class="modal-body" id="eliminarBody">
+        <p>Desea eliminar este proyecto?</p>
+        <input type="hidden" id="id" name="id" value=""> 
+        <button type="button" class="btn btn-primary" onclick="eliminarproy()">Eliminar</button>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+      </div>      
+      </div>
+    </div>
+  </div>
+
