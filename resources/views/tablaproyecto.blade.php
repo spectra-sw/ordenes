@@ -6,7 +6,10 @@
         <th onclick="ordenarc('descripcion')" style="cursor:pointer">CLIENTE</th>
         <th onclick="ordenarc('descripcion')" style="cursor:pointer">DESCRIPCION</th>
         <th>SISTEMA</th>
-        
+        <th>SUBPORTAFOLIO</th>
+        <th>DIRECTOR</th>
+        <th>LÍDER</th>
+        <th>CIUDAD</th>
       </tr>
     </thead>
     <tbody>
@@ -16,6 +19,19 @@
         <td>{{ $p->cliente->cliente }}</td>
         <td>{{ $p->descripcion }}</td>
         <td>{{ $p->sistema }}</td>
+        <td>{{ $p->subportafolio }}</td>
+        @if ($p->director ==0)
+          <td></td>
+        @else
+          <td>{{ $p->ndirector->apellido1 }}</td>
+        @endif
+        @if ($p->lider ==0)
+          <td></td>
+        @else
+          <td>{{ $p->nlider->apellido1 }}</td>
+        @endif
+        
+        <td>{{ $p->ciudad }}</td>
         <td><select class="form-control" id="{{ $p->id }}" onchange="accionesproyectos(this.value,this.id)">
             <option></option>
             <option value="1">Editar</option>

@@ -523,6 +523,27 @@ function acciones(op,id){
     }
     
 }
+function accionesproyectos(op,id){
+    //alert(op);
+    //alert(id);
+    if (op==1){
+        data = { id : id }
+        url="/buscarproy"
+        $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) { 
+                $("#editarBodyProy").html(data);
+                $("#editarproy").modal();
+            }
+        }); 
+    }
+    if(op==2){
+        $("#id").val(id);
+        $("#eliminarproy").modal(); 
+    }   
+}
 function accionescdc(op,id){
     //alert(op);
     //alert(id);

@@ -91,7 +91,7 @@
                 </div>
                 <br>
                 <div class="row">
-                    <div class="col-12 col-md-12 "><input type="text" class="form-control" name="sistema" id="sistema" readonly></div>
+                    <div class="col-12 col-md-12 "><input type="text" class="form-control" name="sistema" id="sistema" ></div>
                 </div>
             </div>
             <div class="col-12 col-md-6">
