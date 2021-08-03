@@ -742,7 +742,7 @@ class PagesController extends Controller
             $proy = $proy->where('lider',$request->flider);
         }
         if ($request->fciudad !=""){
-            $proy = $proy->where('ciudad',$request->flider);
+            $proy = $proy->where('ciudad',$request->fciudad);
         }
         $proy = $proy->get();
         return view('tablaproyecto',[
