@@ -29,7 +29,7 @@
                     <label for="director">DIRECTOR</label>
                     <select class="form-control" id="director" name="director">
                         @if ($p['director'] >0)
-                        <option value="{{ $p->ndirector->cc }}">{{ $p->ndirector->nombre. " " . $p->ndirector->apellido1 }}<option>
+                        <option value="{{ $p->ndirector->id }}">{{ $p->ndirector->nombre. " " . $p->ndirector->apellido1 }}<option>
                         @endif
                         @foreach ($emp as $e)
                             <option value="{{ $e->id }}" >{{ $e->nombre . " " . $e->apellido1 }}</option>
@@ -41,7 +41,7 @@
                     
                     <select class="form-control" id="lider" name="lider">
                         @if ($p['lider'] >0)
-                        <option value="{{ $p->nlider->cc }}">{{ $p->nlider->nombre. " " . $p->nlider->apellido1 }}<option>
+                        <option value="{{ $p->nlider->id }}">{{ $p->nlider->nombre. " " . $p->nlider->apellido1 }}<option>
                         @endif
                         @foreach ($emp as $e)
                             <option value="{{ $e->id }}" >{{ $e->nombre . " " . $e->apellido1 }}</option>
