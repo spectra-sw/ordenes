@@ -706,7 +706,7 @@ class PagesController extends Controller
     }
     public function filtrarprog(Request $request){
         
-        $prog =  $prog = Programacion::orderBy('fecha','asc');
+        $prog =  Programacion::orderBy('fecha','asc');
         
         if ($request->filtrocc !=""){
             $prog = $prog->where('cc',$request->filtrocc );
@@ -723,6 +723,27 @@ class PagesController extends Controller
         $prog = $prog->get();
         return view('tablaprog',[
             'prog' => $prog,
+        ]);
+    }
+    public function filtrarproy(Request $request){
+        
+        $proy =  Proyecto::orderBy('codigo','asc');
+        
+        if ($request->fcodigo !=""){
+            $proy = $proy->where('codigo',$request->fcodigo );
+        }
+        if ($request->fcliente !=""){
+            $proy = $proy->where('cliente_id',$request->fcliente);
+        }
+        if ($request->fdirector !=""){
+            $proy = $proy->where('director',$request->fdirector );
+        }
+        if ($request->flider !=""){
+            $proy = $proy->where('lider',$request->flider);
+        }
+        $proy = $proy->get();
+        return view('tablaproyecto',[
+            'proyectos' => $proy,
         ]);
     }
     public function buscarprog(Request $request){

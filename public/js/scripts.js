@@ -1005,3 +1005,15 @@ function filtrarprog(){
             }
     });   
 }
+function filtrarproy(){
+    data=$( "#filtrarProy" ).serialize(); 
+    url = '/filtrarproy'
+    $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) {
+                $("#tp").html(data);
+            }
+    });   
+}

@@ -2,9 +2,9 @@
 <table class="table table-bordered table-striped table-sm">
     <thead>
       <tr >
-        <th onclick="ordenarc('codigo')" style="cursor:pointer">CODIGO</th>
-        <th onclick="ordenarc('descripcion')" style="cursor:pointer">CLIENTE</th>
-        <th onclick="ordenarc('descripcion')" style="cursor:pointer">DESCRIPCION</th>
+        <th onclick="ordenarproy('codigo')" style="cursor:pointer">CODIGO</th>
+        <th onclick="ordenarproy('cliente_id')" style="cursor:pointer">CLIENTE</th>
+        <th >DESCRIPCION</th>
         <th>SISTEMA</th>
         <th>SUBPORTAFOLIO</th>
         <th>DIRECTOR</th>

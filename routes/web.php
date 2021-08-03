@@ -72,6 +72,7 @@ Route::get('/buscarproy',[PagesController::class,'buscarproy']);
 Route::get('/editarproy',[PagesController::class,'editarproy']);
 Route::get('/tablaproy',[PagesController::class,'tablaproy']);
 Route::get('/eliminarproy',[PagesController::class,'eliminarproy']);
+Route::get('/filtrarproy',[PagesController::class,'filtrarproy']);
 
 
 //cdc

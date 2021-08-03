@@ -44,6 +44,8 @@
                     <div class="tab-pane container fade" id="proyectos">
                         <br>
                         <button class="btn btn-primary" onclick="nuevoproyecto()">Nuevo Proyecto</button><br><br>
+                        @include('busquedaProy')
+                        <br>
                         <div id ="tp">
                             @include('tablaproyecto')
                         </div>
