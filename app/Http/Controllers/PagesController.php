@@ -862,6 +862,18 @@ class PagesController extends Controller
             'emp' => $emp,
         ]);
     }
+    public function tablaproy(Request $request){
+        $campo = $request->campo;
+        if ($campo == ''){
+            $proyectos = Proyecto::orderBy('codigo','asc')->get();
+        }
+        else{
+            $proyectos= Proyecto::orderBy($campo,'asc')->get();  
+        }
+        return view('tablaproyecto',[
+            'proyectos' => $proyectos,
+        ]);
+    }
 
 //cdc
 
