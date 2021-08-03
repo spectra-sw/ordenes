@@ -741,6 +741,9 @@ class PagesController extends Controller
         if ($request->flider !=""){
             $proy = $proy->where('lider',$request->flider);
         }
+        if ($request->fciudad !=""){
+            $proy = $proy->where('ciudad',$request->flider);
+        }
         $proy = $proy->get();
         return view('tablaproyecto',[
             'proyectos' => $proy,
