@@ -590,6 +590,35 @@ function editare(){
         alert("Debes ingresar todos los campos");
     }
 }
+function editarproy(){
+    band=0;
+    $('#formEditProy input').each(function() { 
+        if (($(this).val() == '') && ($(this).attr('id') != 'apellido2')) {
+            band=1;
+        }        
+    })
+    $('#formEditProy select').each(function() { 
+        if (($(this).val() == '')) {
+            band=1;
+        }        
+    })
+    if (band==0){
+        data=$( "#formEditProy" ).serialize(); 
+        url = '/editarproy'
+        $.ajax({
+                url: url,
+                type:'GET',
+                data: data,
+                success: function(data) {
+                    alert(data);
+                    acttablaproy();
+                }
+        });   
+    }
+    else{
+        alert("Debes ingresar todos los campos");
+    }
+}
 function editarcdc(){
     band=0;
     $('#formCdce input').each(function() { 
@@ -624,6 +653,19 @@ function acttablaemp(){
         data: data,
         success: function(data) { 
             $("#te").html(data);
+        }
+    }); 
+}
+function acttablaproy(){
+    campo='';
+    url="/tablaproy"
+    data = { campo : campo}
+    $.ajax({
+        url: url,
+        type:'GET',
+        data: data,
+        success: function(data) { 
+            $("#tp").html(data);
         }
     }); 
 }
@@ -665,6 +707,21 @@ function eliminare(){
             success: function(data) {
                 alert(data);
                 acttablaemp();
+            }
+    });   
+}
+function eliminarproy(){
+    id = $("#id").val();
+    // alert(id);
+    data={ id : id}
+    url = '/eliminarproy'
+    $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) {
+                alert(data);
+                acttablaproy();
             }
     });   
 }

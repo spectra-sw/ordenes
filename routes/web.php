@@ -67,11 +67,11 @@ Route::get('/tablacliente',[PagesController::class,'tablacliente']);
 Route::get('/eliminarcliente',[PagesController::class,'eliminarcliente']);
 
 //proyectos
-Route::get('/nuevoproy',[PagesController::class,'nuevocliente']);
-Route::get('/buscarproy',[PagesController::class,'buscarcliente']);
-Route::get('/editarproy',[PagesController::class,'editarcliente']);
-Route::get('/tablaproy',[PagesController::class,'tablacliente']);
-Route::get('/eliminarproy',[PagesController::class,'eliminarcliente']);
+Route::get('/nuevoproy',[PagesController::class,'nuevoproy']);
+Route::get('/buscarproy',[PagesController::class,'buscarproy']);
+Route::get('/editarproy',[PagesController::class,'editarproy']);
+Route::get('/tablaproy',[PagesController::class,'tablaproy']);
+Route::get('/eliminarproy',[PagesController::class,'eliminarproy']);
 
 
 //cdc

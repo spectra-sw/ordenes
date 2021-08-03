@@ -2,15 +2,15 @@
                 <input type="hidden" id="id" name="id" value="{{ $p['id']}}">
                 <div class="form-group">
                     <label for="codigo">CODIGO</label>
-                    <input type="text" class="form-control"  id="codigo" name="codigo" value="{{ $datos['codigo'] }}">
+                    <input type="text" class="form-control"  id="codigo" name="codigo" value="{{ $p['codigo'] }}">
                 </div>
                 <div class="form-group">
                     <label for="descripcion">DESCRIPCIÓN</label>
-                    <input type="text" class="form-control"  id="descripcion" name="descripcion" value="{{ $datos['descripcion'] }}">
+                    <input type="text" class="form-control"  id="descripcion" name="descripcion" value="{{ $p['descripcion'] }}">
                 </div>
                 <div class="form-group">
                     <label for="proyecto">CLIENTE</label>
-                    <select class="form-control" id="proyecto" name="proyecto">
+                    <select class="form-control" id="cliente" name="cliente">
                         <option value="{{ $p->cliente}}">{{ $p->cliente->cliente }}<option>
                         @foreach ($clientes as $c)
                             <option value="{{ $c->id }}">{{ $c->cliente }}</option>
@@ -19,16 +19,18 @@
                 </div>
                 <div class="form-group">
                     <label for="sistema">SISTEMA</label>
-                    <input type="text" class="form-control"  id="sistema" name="sistema" value="{{ $datos['sistema'] }}">
+                    <input type="text" class="form-control"  id="sistema" name="sistema" value="{{ $p['sistema'] }}">
                 </div>
                 <div class="form-group">
                     <label for="auxilio">SUBPORTAFOLIO</label>
-                    <input type="text" class="form-control"  id="subportafolio" name="subportafolio" value="{{ $datos['subportafolio'] }}">
+                    <input type="text" class="form-control"  id="subportafolio" name="subportafolio" value="{{ $p['subportafolio'] }}">
                 </div>
                 <div class="form-group">
                     <label for="director">DIRECTOR</label>
                     <select class="form-control" id="director" name="director">
+                        @if ($p['director'] >0)
                         <option value="{{ $p->ndirector->cc }}">{{ $p->ndirector->nombre. " " . $p->ndirector->apellido1 }}<option>
+                        @endif
                         @foreach ($emp as $e)
                             <option value="{{ $e->id }}" >{{ $e->nombre . " " . $e->apellido1 }}</option>
                         @endforeach
@@ -36,9 +38,11 @@
                 </div>
                 <div class="form-group">
                     <label for="lider">LIDER</label>
-                    <input type="text" class="form-control"  id="lider" name="lider" value="{{ $p->nlider->apellido1. " " . $p->nlider->nombre }}">
+                    
                     <select class="form-control" id="lider" name="lider">
+                        @if ($p['lider'] >0)
                         <option value="{{ $p->nlider->cc }}">{{ $p->nlider->nombre. " " . $p->nlider->apellido1 }}<option>
+                        @endif
                         @foreach ($emp as $e)
                             <option value="{{ $e->id }}" >{{ $e->nombre . " " . $e->apellido1 }}</option>
                         @endforeach
@@ -46,7 +50,7 @@
                 </div>
                 <div class="form-group">
                     <label for="lider">CIUDAD</label>
-                    <input type="text" class="form-control"  id="ciudad" name="ciudad" value="{{ $datos['ciudad'] }}">
+                    <input type="text" class="form-control"  id="ciudad" name="ciudad" value="{{ $p['ciudad'] }}">
                 </div>
                 
                 <button type="button" class="btn btn-primary" onclick="editarproy()">Guardar</button>

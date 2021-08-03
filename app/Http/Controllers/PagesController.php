@@ -818,11 +818,26 @@ class PagesController extends Controller
         $p = Proyecto::where('id',$request->id)->first();
         $emp = Empleado::orderBy('apellido1','asc')->get();
         $clientes = Cliente::orderBy('cliente','asc')->get();
+        //dd($p);
         return view('formproy',[
             'p' => $p,
             'clientes' => $clientes,
             'emp' => $emp
         ]);
+    }
+    public function editarproy(Request $request){
+        Proyecto::where('id', $request->id )
+        ->update([
+            'codigo' => $request->codigo,
+            'descripcion' => $request->descripcion,
+            'cliente_id' => $request->cliente,
+            'sistema' => $request->sistema,
+            'subportafolio' => $request->subportafolio,
+            'director' => $request->director,
+            'lider' => $request->lider,
+            'ciudad' => $request->ciudad,
+          ]);
+          return "Proyecto actualizado";
     }
     public function updatep(Request $request){
         Empleado::where('id', $request->id )
