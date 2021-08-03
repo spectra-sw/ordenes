@@ -21,7 +21,7 @@
                 </div>
                 <div class="form-group">
                     <label for="proyecto">CLIENTE</label>
-                    <select class="form-control" id="proyecto" name="proyecto">
+                    <select class="form-control" id="cliente" name="cliente">
                     <option value=""><option>
                         @foreach ($clientes as $c)
                             <option value="{{ $c->id }}">{{ $c->cliente }}</option>
