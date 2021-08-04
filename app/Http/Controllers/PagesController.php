@@ -751,7 +751,7 @@ class PagesController extends Controller
     }
     public function filtrarcentro(Request $request){
         
-        $cdc =  Centro::orderBy('codigo','asc');
+        $cdc =  Cdc::orderBy('codigo','asc');
         
         if ($request->fcodigo !=""){
             $cdc = $cdc->where('codigo',$request->fcodigo );
