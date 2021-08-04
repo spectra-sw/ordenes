@@ -1029,4 +1029,16 @@ function filtrarcentro(){
             }
     });   
 }
+function filtrarcliente(){
+    data=$( "#filtrarCliente" ).serialize(); 
+    url = '/filtrarcliente'
+    $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) {
+                $("#tcl").html(data);
+            }
+    });   
+}
 

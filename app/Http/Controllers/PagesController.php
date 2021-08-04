@@ -765,6 +765,16 @@ class PagesController extends Controller
             'cdc' => $cdc,
         ]);
     }
+    public function filtrarcliente(Request $request){
+        $clientes =  Cliente::orderBy('cliente','asc');
+        if ($request->fcliente !=""){
+            $cliente = $cliente->where('cliente',$request->fcliente );
+        }
+        $clientes  = $clientes->get();
+        return view('tablacliente',[
+            'clientes' => $clientes,
+        ]);
+    }
     public function buscarprog(Request $request){
         $p = Programacion::where('id',$request->id)->first();
         $emp = Empleado::orderBy('apellido1','asc')->get();

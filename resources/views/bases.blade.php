@@ -31,6 +31,7 @@
                       <br>
                         <button class="btn btn-primary" onclick="nuevocdc()">Nuevo Centro</button><br><br>
                         @include('busquedaCentro')
+                        <br>
                         <div id ="tc">
                             @include('tablacdc')
                         </div>
@@ -38,6 +39,8 @@
                     <div class="tab-pane container fade" id="clientes">
                       <br>
                         <button class="btn btn-primary" onclick="nuevocliente()">Nuevo Cliente</button><br><br>
+                        @include('busquedaCliente')
+                        <br>
                         <div id ="tcl">
                             @include('tablacliente')
                         </div>
