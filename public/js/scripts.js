@@ -1017,3 +1017,16 @@ function filtrarproy(){
             }
     });   
 }
+function filtrarcentro(){
+    data=$( "#filtrarCentro" ).serialize(); 
+    url = '/filtrarcentro'
+    $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) {
+                $("#tc").html(data);
+            }
+    });   
+}
+

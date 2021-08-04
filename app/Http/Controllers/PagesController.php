@@ -749,6 +749,22 @@ class PagesController extends Controller
             'proyectos' => $proy,
         ]);
     }
+    public function filtrarcentro(Request $request){
+        
+        $cdc =  Centro::orderBy('codigo','asc');
+        
+        if ($request->fcodigo !=""){
+            $cdc = $cdc->where('codigo',$request->fcodigo );
+        }
+        if ($request->fresponsable !=""){
+            $cdc = $cdc->where('responsable','like' ,'%'.$request->fresponsable.'%');
+        }
+       
+        $cdc = $cdc->get();
+        return view('tablacdc',[
+            'cdc' => $cdc,
+        ]);
+    }
     public function buscarprog(Request $request){
         $p = Programacion::where('id',$request->id)->first();
         $emp = Empleado::orderBy('apellido1','asc')->get();

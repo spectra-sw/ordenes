@@ -30,6 +30,7 @@
                     <div class="tab-pane container fade" id="centros">
                       <br>
                         <button class="btn btn-primary" onclick="nuevocdc()">Nuevo Centro</button><br><br>
+                        @include('busquedaCentro')
                         <div id ="tc">
                             @include('tablacdc')
                         </div>

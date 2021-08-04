@@ -81,6 +81,7 @@ Route::get('/buscarcdc',[PagesController::class,'buscarcdc']);
 Route::get('/editarcdc',[PagesController::class,'editarcdc']);
 Route::get('/tablacdc',[PagesController::class,'tablacdc']);
 Route::get('/eliminarcdc',[PagesController::class,'eliminarcdc']);
+Route::get('/filtrarcentro',[PagesController::class,'filtrarcentro']);
 
 
 //programacion
