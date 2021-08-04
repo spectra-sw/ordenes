@@ -65,6 +65,7 @@ Route::get('/buscarcliente',[PagesController::class,'buscarcliente']);
 Route::get('/editarcliente',[PagesController::class,'editarcliente']);
 Route::get('/tablacliente',[PagesController::class,'tablacliente']);
 Route::get('/eliminarcliente',[PagesController::class,'eliminarcliente']);
+Route::get('/filtrarcliente',[PagesController::class,'filtrarcliente']);
 
 //proyectos
 Route::get('/nuevoproy',[PagesController::class,'nuevoproy']);
