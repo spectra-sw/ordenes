@@ -768,7 +768,7 @@ class PagesController extends Controller
     public function filtrarcliente(Request $request){
         $clientes =  Cliente::orderBy('cliente','asc');
         if ($request->fcliente !=""){
-            $cliente = $cliente->where('cliente','like' ,'%'.$request->fcliente.'%');
+            $clientes = $clientes->where('cliente','like' ,'%'.$request->fcliente.'%');
         }
         $clientes  = $clientes->get();
         return view('tablacliente',[
