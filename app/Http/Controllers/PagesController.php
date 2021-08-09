@@ -602,7 +602,8 @@ class PagesController extends Controller
         //dd($pl);
         $o = Dia::where('id',$request->id)->first()->ordenes_id;
         $p = Orden::where('id',$o)->first()->proyecto;
-        $ts = Programacion::where('proyecto',$p)->get();
+        //$ts = Programacion::where('proyecto',$p)->get();
+        $ts = Programacion::where('proyecto',$p)->get()->unique('cc');
         return view('editDia',[
             'dias' => $dias,
             'horas' => $horas,
@@ -1297,5 +1298,21 @@ class PagesController extends Controller
         }
         curl_close($curl);
         return $resp;
+    }
+
+    public function cargarprog(){
+        $url="https://sheet.zoho.com/sheet/open/h8b9e28859b38113f4c34ab88596ac808c3e1?sheet=2021";
+        $curl = curl_init();
+        $curlOpts = [
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_URL => $url,
+            CURLOPT_FOLLOWLOCATION => 1,
+        ];
+    
+        curl_setopt_array($curl, $curlOpts);
+
+        $resp = curl_exec($curl);
+        dd($resp);
+        curl_close($curl);
     }
 }
