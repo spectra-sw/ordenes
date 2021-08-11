@@ -685,6 +685,8 @@ class PagesController extends Controller
         $hi = $request->hi.":".$request->mi;
         $hf = $request->hf.":".$request->mf;
         //dd($hi." ".$hf);
+        $grupo = Empleado::where('cc',$request->cc)->first()->ciudad;
+        //dd($grupo);
         $p = Programacion::create([
             'cc' => $request->cc,
             'fecha' => $request->fecha,
@@ -692,10 +694,21 @@ class PagesController extends Controller
             'responsable' => $request->responsable,
             'observacion' => $request->observaciones,
             'hi' => $hi,
-            'hf' => $hf    
+            'hf' => $hf,
+            'grupo' => $grupo   
         ]);
        // dd($p);
         return "Programacion creada";
+    }
+    public function actgprog(){
+        $prog = Programacion::all();
+        foreach($prog as $p){
+            $grupo = Empleado::where('cc',$p->cc)->first()->ciudad;
+            $p = Programacion::where('id',$p->id)->update([
+                'grupo' => $grupo
+            ]);
+        }
+        return 'Programacion actualizada';
     }
     public function tablaprog(Request $request){
         $campo = $request->campo;
@@ -729,6 +742,9 @@ class PagesController extends Controller
         }
         if ($request->filtroresp !=""){
             $prog = $prog->where('responsable',$request->filtroresp );
+        }
+        if ($request->filtrociudad !=""){
+            $prog = $prog->where('grupo',$request->filtrociudad );
         }
         $prog = $prog->orderBy('fecha','asc')->get();
         return view('tablaprog',[

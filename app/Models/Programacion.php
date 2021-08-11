@@ -12,7 +12,7 @@ class Programacion extends Model
     protected $table = 'programacion';
     public $timestamps = false;
     protected $fillable = [
-         'cc','fecha','proyecto','responsable','observacion','hi','hf'
+         'cc','fecha','proyecto','responsable','observacion','hi','hf','grupo'
     ];
 
     public function empleado()

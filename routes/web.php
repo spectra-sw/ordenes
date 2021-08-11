@@ -94,6 +94,8 @@ Route::get('/editarprog',[PagesController::class,'editarprog']);
 Route::get('/eliminarprog',[PagesController::class,'eliminarprog']);
 Route::get('/filtrarprog',[PagesController::class,'filtrarprog']);
 Route::get('/cargarprog',[PagesController::class,'cargarprog']);
+Route::get('/actgprog',[PagesController::class,'actgprog']);
+
 
 
 //Load

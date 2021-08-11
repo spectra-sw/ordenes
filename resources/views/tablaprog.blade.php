@@ -9,6 +9,7 @@
         <th>INICIO</th>
         <th>FIN</th>
         <th onclick="ordenarc('descripcion')" style="cursor:pointer">OBSERVACION</th>
+        <th>GRUPO</th>
         
       </tr>
     </thead>
@@ -22,6 +23,7 @@
         <td>{{ $p->hi }}</td>
         <td>{{ $p->hf }}</td>
         <td>{{ $p->observacion }}</td>
+        <td>{{ $p->grupo }}</td>
         <td>
             <select class="form-control" id="{{ $p->id }}" onchange="accionesprog(this.value,this.id)">
             <option></option>
