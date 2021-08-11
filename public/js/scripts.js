@@ -518,7 +518,7 @@ function guardarproy(){
                 data: data,
                 success: function(data) {
                     alert(data);
-                    acttablaproyecto();
+                    acttablaproy();
                 }
         });   
     }
