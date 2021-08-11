@@ -38,7 +38,7 @@
             Editar cliente
         </div>
         <!-- Modal body -->
-        <div class="modal-body" id="editarCliente">
+        <div class="modal-body" id="editarClienteBody">
         </div>
         
         <!-- Modal footer -->
@@ -54,10 +54,10 @@
         <!-- Modal body -->
        
         <!-- Modal body -->
-        <div class="modal-body" id="eliminarCliente">
-        <p>Desea eliminar a este empleado?</p>
+        <div class="modal-body" id="eliminarClienteBody">
+        <p>Desea eliminar a este cliente?</p>
         <input type="hidden" id="id" name="id" value=""> 
-        <button type="button" class="btn btn-primary" onclick="eliminare()">Eliminar</button>
+        <button type="button" class="btn btn-primary" onclick="eliminarc()">Eliminar</button>
         </div>
         
         <!-- Modal footer -->

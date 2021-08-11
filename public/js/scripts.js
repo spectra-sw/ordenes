@@ -595,6 +595,28 @@ function accionescdc(op,id){
         $("#eliminarcdc").modal(); 
     }
 }
+function accionescliente(op,id){
+    //alert(op);
+    //alert(id);
+    if (op==1){
+        data = { id : id }
+        url="/buscarcliente"
+        $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) { 
+                //alert(data);
+                $("#editarClienteBody").html(data);
+                $("#editarcliente").modal();
+            }
+        }); 
+    }
+    if(op==2){
+        $("#id").val(id);
+        $("#eliminarcliente").modal(); 
+    }
+}
 function editare(){
     band=0;
     $('#formEdit input').each(function() { 
@@ -612,6 +634,30 @@ function editare(){
                 success: function(data) {
                     alert(data);
                     acttablaemp();
+                }
+        });   
+    }
+    else{
+        alert("Debes ingresar todos los campos");
+    }
+}
+function editarcliente(){
+    band=0;
+    $('#formEditCliente input').each(function() { 
+        if (($(this).val() == '')) {
+            band=1;
+        }        
+    })
+    if (band==0){
+        data=$( "#formEditCliente" ).serialize(); 
+        url = '/editarcliente'
+        $.ajax({
+                url: url,
+                type:'GET',
+                data: data,
+                success: function(data) {
+                    alert(data);
+                    acttablacliente();
                 }
         });   
     }

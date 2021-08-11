@@ -988,6 +988,12 @@ class PagesController extends Controller
             'datos' => $c
         ]);
     }
+    public function buscarcliente(Request $request){
+        $c = Cliente::where('id',$request->id)->first();
+        return view('formcliente',[
+            'datos' => $c
+        ]);
+    }
     public function editarcdc(Request $request){
         Cdc::where('id', $request->id )
         ->update([
@@ -1001,6 +1007,15 @@ class PagesController extends Controller
             'observaciones' => $request->observaciones,
         ]);
         return "Centro actualizado";
+    }
+    public function editarcliente(Request $request){
+        Cliente::where('id', $request->id )
+        ->update([
+            'cliente' => $request->cliente,
+            'contactos' => $request->contactos,
+            
+        ]);
+        return "Cliente actualizado";
     }
     public function eliminarcdc(Request $request){
         Cdc::where('id', $request->id )->delete();
