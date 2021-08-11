@@ -711,12 +711,12 @@ class PagesController extends Controller
     }
     public function filtrarprog(Request $request){
         
-        #$prog =  Programacion::orderBy('fecha','asc');
-        $prog=DB::table('programacion')
+        $prog =  Programacion::orderBy('fecha','asc');
+        /*$prog=DB::table('programacion')
         ->join('empleados','programacion.cc','=','empleados.cc')
         -join('proyectos','programacion.proyecto','=','proyecto.codigo')
         ->join('clientes','proyecto.cliente_id','=','clientes.id')
-        ->join('empleados','programacion.responsable','=','empleados.id');
+        ->join('empleados','programacion.responsable','=','empleados.id');*/
         
         if ($request->filtrocc !=""){
             $prog = $prog->where('programacion.cc',$request->filtrocc );
