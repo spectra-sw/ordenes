@@ -38,11 +38,19 @@
                 </div>
                 <div class="form-group">
                     <label for="director">DIRECTOR</label>
-                    <input type="text" class="form-control"  id="director" name="director">
+                    <select class="form-control" id="director" name="director">
+                        @foreach ($emp as $e)
+                            <option value="{{ $e->id }}" >{{ $e->nombre . " " . $e->apellido1 }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="lider">LIDER</label>
-                    <input type="text" class="form-control"  id="lider" name="lider">
+                    <select class="form-control" id="lider" name="lider">
+                        @foreach ($emp as $e)
+                            <option value="{{ $e->id }}" >{{ $e->nombre . " " . $e->apellido1 }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="lider">CIUDAD</label>

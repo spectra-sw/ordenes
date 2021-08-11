@@ -96,10 +96,14 @@ class PagesController extends Controller
             $prog = Programacion::all();
             $emp = Empleado::orderBy('apellido1','asc')->get();
             $proyectos = Proyecto::orderBy('codigo','asc')->get();
+            $ciudades= Empleado::select('ciudad')->orderby('ciudad','asc')->distinct()->get();
+
+            //dd($prog);
             return view('programacion',[
                 'proyectos' => $proyectos,
                 'emp' => $emp,
                 'prog' => $prog,
+                'ciudades' => $ciudades
             ]);
         }
         else{
@@ -707,10 +711,15 @@ class PagesController extends Controller
     }
     public function filtrarprog(Request $request){
         
-        $prog =  Programacion::orderBy('fecha','asc');
+        #$prog =  Programacion::orderBy('fecha','asc');
+        $prog=DB::table('programacion')
+        ->join('empleados','programacion.cc','=','empleados.cc')
+        -join('proyectos','programacion.proyecto','=','proyecto.codigo')
+        ->join('clientes','proyecto.cliente_id','=','clientes.id')
+        ->join('empleados','programacion.responsable','=','empleados.id');
         
         if ($request->filtrocc !=""){
-            $prog = $prog->where('cc',$request->filtrocc );
+            $prog = $prog->where('programacion.cc',$request->filtrocc );
         }
         if (($request->filtrofecha1 !="")&&($request->filtrofecha2 !="")){
             $prog = $prog->where('fecha','>=',$request->filtrofecha1)->where('fecha','<=',$request->filtrofecha2);
@@ -719,9 +728,9 @@ class PagesController extends Controller
             $prog = $prog->where('proyecto',$request->filtroproyecto );
         }
         if ($request->filtroresp !=""){
-            $prog = $prog->where('cc',$request->filtroresp );
+            $prog = $prog->where('responsable',$request->filtroresp );
         }
-        $prog = $prog->get();
+        $prog = $prog->orderBy('fecha','asc')->get();
         return view('tablaprog',[
             'prog' => $prog,
         ]);
@@ -812,6 +821,20 @@ class PagesController extends Controller
         ]);
 
         return "Empleado creado";
+    }
+    public function nuevoproy(Request $request){
+        $e = Proyecto::create([
+            'codigo' => $request->codigo,
+            'descripcion' => $request->descripcion,
+            'cliente_id' => $request->cliente,
+            'sistema' => $request->sistema,
+            'subportafolio' => $request->subportafolio,
+            'director' => $request->director,
+            'lider' => $request->lider,
+            'ciudad' => $request->ciudad,
+        ]);
+
+        return "Proyecto creado";
     }
     public function nuevocliente(Request $request){
         $e = Cliente::create([

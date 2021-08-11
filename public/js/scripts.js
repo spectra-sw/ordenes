@@ -497,6 +497,35 @@ function guardarcliente(){
         alert("Debes ingresar todos los campos");
     }
 }
+function guardarproy(){
+    band=0;
+    $('#formProy input').each(function() { 
+        if (($(this).val() == '')) {
+            band=1;
+        }        
+    })
+    $('#formProy select').each(function() { 
+        if (($(this).val() == '')) {
+            band=1;
+        }        
+    })
+    if (band==0){
+        data=$( "#formProy" ).serialize(); 
+        url = '/nuevoproy'
+        $.ajax({
+                url: url,
+                type:'GET',
+                data: data,
+                success: function(data) {
+                    alert(data);
+                    acttablaproyecto();
+                }
+        });   
+    }
+    else{
+        alert("Debes ingresar todos los campos");
+    }
+}
 function acciones(op,id){
     //alert(op);
     //alert(id);

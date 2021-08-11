@@ -52,6 +52,16 @@
     </div>
   </div>
   <div class="col-12 col-sm-2">
+    <div class="form-group">
+                    <label for="responsable">CIUDAD</label>
+                    <select class="form-control" id="filtrociudad" name="filtrociudad">
+                        @foreach ($ciudades as $c)
+                            <option value="{{ $c->ciudad }}">{{ $c->ciudad }}</option>
+                        @endforeach
+                    </select>
+    </div>
+  </div>
+  <div class="col-12 col-sm-1">
     <button type="button" class="btn btn-primary" onclick="filtrarprog()">Filtrar</button>
   </div>
 </div>
