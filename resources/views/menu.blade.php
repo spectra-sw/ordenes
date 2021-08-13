@@ -19,7 +19,7 @@
 <table class="table table-bordered table-striped table-sm">
     <thead>
       <tr >
-        <th onclick="ordenarc('codigo')" style="cursor:pointer">TÉCNICO</th>
+        <th onclick="ordenarc('codigo')" style="cursor:pointer">FUNCIONARIO</th>
         <th onclick="ordenarc('descripcion')" style="cursor:pointer">FECHA</th>
         <th onclick="ordenarc('descripcion')" style="cursor:pointer">PROYECTO</th>
         <th onclick="ordenarc('descripcion')" style="cursor:pointer">RESPONSABLE</th>

@@ -9,6 +9,7 @@ use App\Models\Orden;
 use App\Models\Cliente;
 use App\Models\Proyecto;
 use App\Models\Programacion;
+use App\Models\Hora;
 use DB;
 class SearchController extends Controller
 {
@@ -113,6 +114,14 @@ class SearchController extends Controller
         }
         $o=$o->distinct()->orderBy('ordenes.created_at','desc')->get();
         //dd($o);
+
+        foreach ($o as $or){
+          //dd($or->ordenes_id);
+          if( Hora::where('ordenes_id',$or->ordenes_id)->where('ha',0)->count() > 0){
+            Orden::where('id',$or->ordenes_id)->update(['autorizada_por' => 0]);
+          }
+          
+        }
         return view('tablao',[
             'datos' => $o
         ]);

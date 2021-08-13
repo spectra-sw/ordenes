@@ -1,7 +1,7 @@
 <form id="formProgEdit">
 <input type="hidden" id="id" name="id" value="{{ $datos['id']}}">
                 <div class="form-group">
-                    <label for="cc">TÉCNICO</label>
+                    <label for="cc">FUNCIONARIO</label>
                     <select class="form-control" id="cc" name="cc">
                         <option value=""><option>
                         @foreach ($emp as $e)

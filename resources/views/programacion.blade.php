@@ -8,7 +8,7 @@
 <div class="row cajaAzul">
   <div class="col-12 col-sm-2">
     <div class="form-group">
-      <label for="cc">TÉCNICO</label>
+      <label for="cc">FUNCIONARIO</label>
         <select class="form-control" id="filtrocc" name="filtrocc">
           <option value=""><option>
           @foreach ($emp as $e)
@@ -84,7 +84,7 @@
         <div class="modal-body" id="progBody">
             <form id="formProg">
                 <div class="form-group">
-                    <label for="cc">TÉCNICO</label>
+                    <label for="cc">FUNCIONARIO</label>
                     <select class="form-control" id="cc" name="cc">
                         <option value=""><option>
                         @foreach ($emp as $e)
