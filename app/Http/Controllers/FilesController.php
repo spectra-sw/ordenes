@@ -9,6 +9,7 @@ use App\Models\Hora;
 use App\Models\Cdc;
 use App\Models\Empleado;
 use App\Models\Detalleh;
+use App\Models\Programacion;
 use DB;
 use Carbon\Carbon;
 class FilesController extends Controller
@@ -58,18 +59,41 @@ class FilesController extends Controller
                 $c = new Carbon($d['fecha']);
                 $numdia = $c->dayOfWeek;
                 //dd($numdia);
+            
                 foreach($horas as $h){
                     //dd($h['trabajador']);
-                    $emp=Empleado::where('cc',$h['trabajador'])->first();
-                    $horario = $emp->horario_id;
 
-                    if (Detalleh::where('horario_id',$horario)->where('dia',$numdia)->exists()){
-                        $detalleh = Detalleh::where('horario_id',$horario)->where('dia',$numdia)->first();
-                        $detallei = explode(":", $detalleh->hi);
+                    $inicio = $fin =0;
+                    //horario programacion
+                    //dd($h['trabajador']. " ".$d['fecha']." ".$o->proyecto);
+                    
+                    if(Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->exists()){
+                        $prog=Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->first();
+                        //dd($prog);
+                        $detallei = explode(":", $prog->hi);
                         $inicio = intval($detallei[0]) + round(floatval($detallei[1]/60),1);
-                        $detallef = explode(":", $detalleh->hf);
+                        $detallef = explode(":", $prog->hf);
                         $fin = intval($detallef[0]) + round(floatval($detallef[1]/60),1);
+                        //dd($inicio." ".$fin);
                     }
+
+                    $emp=Empleado::where('cc',$h['trabajador'])->first();
+                    //horario del trabajador
+                    /*if ($inicio>0 && $fin>0){
+                        
+                        $horario = $emp->horario_id;
+                        
+                        
+                        if (Detalleh::where('horario_id',$horario)->where('dia',$numdia)->exists()){
+                            $detalleh = Detalleh::where('horario_id',$horario)->where('dia',$numdia)->first();
+                            $detallei = explode(":", $detalleh->hi);
+                            $inicio = intval($detallei[0]) + round(floatval($detallei[1]/60),1);
+                            $detallef = explode(":", $detalleh->hf);
+                            $fin = intval($detallef[0]) + round(floatval($detallef[1]/60),1);
+                        }
+                    }*/
+
+
                     //dd($inicio." ".$fin);
                     $ri = explode(":", $h->hi);
                     $rinicio = intval($ri[0]) + round(floatval($ri[1]/60),1);
