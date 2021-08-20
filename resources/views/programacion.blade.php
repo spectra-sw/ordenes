@@ -61,8 +61,16 @@
                     </select>
     </div>
   </div>
+ 
+</div>
+<div class="row cajaAzul">
   <div class="col-12 col-sm-1">
-    <button type="button" class="btn btn-primary" onclick="filtrarprog()">Filtrar</button>
+    <button type="button" class="btn btn-primary" onclick="filtrarprog()">Listado</button><br>
+    
+  </div>
+  <div class="col-12 col-sm-1">
+    
+    <button type="button" class="btn btn-primary" onclick="calendario()">Calendario</button>
   </div>
 </div>
 </form>

@@ -725,11 +725,7 @@ class PagesController extends Controller
     public function filtrarprog(Request $request){
         
         $prog =  Programacion::orderBy('fecha','asc');
-        /*$prog=DB::table('programacion')
-        ->join('empleados','programacion.cc','=','empleados.cc')
-        -join('proyectos','programacion.proyecto','=','proyecto.codigo')
-        ->join('clientes','proyecto.cliente_id','=','clientes.id')
-        ->join('empleados','programacion.responsable','=','empleados.id');*/
+       
         
         if ($request->filtrocc !=""){
             $prog = $prog->where('programacion.cc',$request->filtrocc );
@@ -749,6 +745,87 @@ class PagesController extends Controller
         $prog = $prog->orderBy('fecha','asc')->get();
         return view('tablaprog',[
             'prog' => $prog,
+        ]);
+    }
+    public function calendarioprog(Request $request){
+        $prog =  DB::table('programacion');
+
+        if ($request->filtrocc !=""){
+            $prog = $prog->where('programacion.cc',$request->filtrocc );
+        }
+        if (($request->filtrofecha1 !="")&&($request->filtrofecha2 !="")){
+            $prog = $prog->where('fecha','>=',$request->filtrofecha1)->where('fecha','<=',$request->filtrofecha2);
+        }
+        if ($request->filtroproyecto !=""){
+            $prog = $prog->where('proyecto',$request->filtroproyecto );
+        }
+        if ($request->filtroresp !=""){
+            $prog = $prog->where('responsable',$request->filtroresp );
+        }
+        if ($request->filtrociudad !=""){
+            $prog = $prog->where('grupo',$request->filtrociudad );
+        }
+       
+        $cedulas = $prog->groupby('cc')->get(['cc']);
+        //dd($cedulas);
+       
+        if (($request->filtrofecha1 !="")&&($request->filtrofecha2 !="")){
+            $fechas=DB::table('programacion')->where('fecha','>=',$request->filtrofecha1)->where('fecha','<=',$request->filtrofecha2)->groupby('fecha')->get(['fecha']);
+        }
+        else{
+            $fechas=DB::table('programacion')->groupby('fecha')->get(['fecha']);
+        }
+        //dd($fechas);
+        $calendario = collect([]);
+        foreach($cedulas as $c){
+            $linea = collect([]);
+            foreach ($fechas as $f){  
+               
+                $e = Empleado::where('cc',$c->cc)->first();
+                
+                $nombre= $e->nombre. " ". $e->apellido1;
+
+                $p = Programacion::where('cc',$c->cc)->where('fecha',$f->fecha)->first();
+                
+
+                $col = collect([]);
+                if($p){
+                    $re = Empleado::where('id',$p->responsable)->first();
+                    $responsable = $re->nombre. " ". $re->apellido1;
+                    $col->put('fecha',$f->fecha);
+                    $col->put('nombre',$nombre);
+                    $col->put('proyecto',$p->proyecto."-".$p->datosproyecto->cliente->cliente );
+                    $col->put('responsable',$responsable);
+                    $col->put('inicio',$p->hi);
+                    $col->put('fin',$p->hf);
+                    $col->put('observacion',$p->observacion);
+                    $col->put('grupo',$p->grupo);
+                    }
+                else{
+                    $col->put('fecha','');
+                    $col->put('nombre','');
+                    $col->put('proyecto','');
+                    $col->put('responsable','');
+                    $col->put('inicio','');
+                    $col->put('fin','');
+                    $col->put('observacion','');
+                    $col->put('grupo','');
+
+                }
+                //dd($col);
+                $linea->push($col);
+
+            }
+            $calendario->push($linea);
+        }
+        
+        
+       // dd($calendario);
+        
+
+
+        return view('calendarioprog',[
+            'calendario' => $calendario,
         ]);
     }
     public function filtrarproy(Request $request){

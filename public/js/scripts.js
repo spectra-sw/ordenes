@@ -1080,6 +1080,18 @@ function filtrarprog(){
             }
     });   
 }
+function calendario(){
+    data=$( "#filtrarProg" ).serialize(); 
+    url = '/calendarioprog'
+    $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) {
+                $("#tprog").html(data);
+            }
+    });   
+}
 function filtrarproy(){
     data=$( "#filtrarProy" ).serialize(); 
     url = '/filtrarproy'
