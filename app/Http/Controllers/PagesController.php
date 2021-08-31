@@ -98,12 +98,32 @@ class PagesController extends Controller
             $proyectos = Proyecto::orderBy('codigo','asc')->get();
             $ciudades= Empleado::select('ciudad')->orderby('ciudad','asc')->distinct()->get();
 
+            $estados = collect([]);
+            $dato=array();
+            foreach($prog as $p){
+                
+                $dato[$p->id]=1;
+                $o = DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->where('ordenes.proyecto',$p->proyecto)
+                ->where('dias.fecha',$p->fecha)->exists();
+                if($o){
+                    $dato[$p->id] = 2;
+                }
+                $o = DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->where('ordenes.proyecto',$p->proyecto)
+                ->where('dias.fecha',$p->fecha)->where('ordenes.autorizada_por','<>',0)->exists();
+                if($o){
+                    $dato[$p->id] = 3;
+                }
+                $estados->push($dato);
+            }
+            //dd($dato);
             //dd($prog);
             return view('programacion',[
                 'proyectos' => $proyectos,
                 'emp' => $emp,
                 'prog' => $prog,
-                'ciudades' => $ciudades
+                'ciudades' => $ciudades,
+                'dato' => $dato
+
             ]);
         }
         else{
