@@ -299,7 +299,7 @@ class PagesController extends Controller
             $d=Dia::where('id', $request->diaid) 
             ->update(['fecha' => $request->fecha,
                         'observacion' => $request->observaciond]);
-            $datos = Dia::where('ordenes_id',$request->id)->get();
+            $datos = Dia::where('ordenes_id',$request->id)->where('fecha','<>','1900-01-01')->get();
             return view('tablad',[
                 'datos' => $datos
             ]);
@@ -312,7 +312,7 @@ class PagesController extends Controller
     public function saveorden(Request $request){
         $id = $request->id;
 
-        if (Dia::where('ordenes_id',$id)->exists()){   
+        if (Dia::where('ordenes_id',$id)->where('fecha','<>','1900-01-01')->exists()){   
 
             $tipou = session('tipo');
             $creada = 0;
@@ -421,12 +421,12 @@ class PagesController extends Controller
         //dd($id);
         $ordenes = Orden::where('id',$id)->get();
         //dd($ordenes);
-        $dias = Dia::where('ordenes_id')->get();
+        $dias = Dia::where('ordenes_id')->where('fecha','<>','1900-01-01')->get();
         $h = Hora::where('ordenes_id')->get();
         $diasc = collect([]);
         foreach($ordenes as $o){
            // dd($o['id']);
-            $dias = Dia::where('ordenes_id',$o['id'])->get();
+            $dias = Dia::where('ordenes_id',$o['id'])->where('fecha','<>','1900-01-01')->get();
             foreach($dias as $d){
                 //dd($d);
                 $dia = collect([]);
@@ -482,13 +482,13 @@ class PagesController extends Controller
         //dd($id);
         $ordenes = Orden::where('id',$id)->get();
         //dd($ordenes);
-        $dias = Dia::where('ordenes_id')->get();
+        $dias = Dia::where('ordenes_id')->where('fecha','<>','1900-01-01')->get();
         $h = Hora::where('ordenes_id')->get();
         $diasc = collect([]);
         foreach($ordenes as $o){
            // dd($o['id']);
            
-            $dias = Dia::where('ordenes_id',$o['id'])->get();
+            $dias = Dia::where('ordenes_id',$o['id'])->where('fecha','<>','1900-01-01')->get();
             foreach($dias as $d){
                 //dd($d);
                 $dia = collect([]);
