@@ -169,7 +169,7 @@
             </div>
             <br>
             <div class="row">
-                <div class="col-12"><button class="btn btn-primary btn-block" type="button" onclick="almdia()">Actualizar día</button></div>
+                <div class="col-12"><button class="btn btn-warning btn-block" type="button" onclick="almdia()"><span class="spinner-grow spinner-grow-sm"></span>&nbsp;Actualizar día</button></div>
             </div>
             <script src="{{asset('js/scripts.js')}}"></script>
             <script type="text/javascript">

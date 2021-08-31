@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-
+<!--
 <button type="button" class="btn btn-primary" onclick="window.open('ordenes','_self')">CREAR ORDENES</button>
 @if (session('tipo')==0)
 <button type="button" class="btn btn-primary" onclick="window.open('admin','_self')">ADMINISTRACIÓN</button>
@@ -11,7 +11,7 @@
 @endif
 @if (session('tipo')!=1)
 <button type="button" class="btn btn-primary" onclick="window.open('ocupacion','_self')">REGISTRO DE OCUPACIÓN</button>
-@endif
+@endif-->
 @if (session('tipo')==1)
 <br>
 <br>

@@ -23,10 +23,13 @@
             <div class="card-header">
                 <div class="row justify-content-between">
                     <div class="col-2">
-                        <img src="{{ URL::asset('img/logo.png') }}" class="img-responsive center-block" onclick="window.open('/menu','_self')">
+                        <img src="{{ URL::asset('img/logo.png') }}" class="img-responsive center-block" style="cursor:pointer" onclick="window.open('/menu','_self')">
                     </div>
                     <div class="col-2">
-                        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                        <p class="font-weight-light">{{ session('nombre') }}&nbsp; <button class="btn btn-primary btn-sm" onclick="window.open('/logout','_self')">Salir</button></p>
+                        
+                        
+                        <!--<nav class="navbar navbar-expand-lg navbar-light bg-light">
                                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                                     <span class="navbar-toggler-icon"></span>
                                 </button>
@@ -46,14 +49,50 @@
                                     </li>  
                                     </ul>
                                 </div>
-                        </nav>
+                        </nav>-->
                     </div>
+
                 </div>
             </div>
             <div class="card-body">
-                @yield('content')
+            
+
+                <ul class="nav nav-pills">
+                    <li class="nav-item ml-1">
+                        <a class="nav-link active" href="/ordenes">CREAR ORDENES</a>
+                    </li>
+                    @if (session('tipo')==0)
+                    <li class="nav-item dropdown ml-2">
+                        <a class="nav-link active dropdown-toggle" data-toggle="dropdown" href="#">ADMINISTRACIÓN</a>
+                        <div class="dropdown-menu">
+                        <a class="dropdown-item" href="consultas">CONSULTAS</a>
+                        <a class="dropdown-item" href="bases">BASES DE DATOS</a>
+                        <a class="dropdown-item" href="programacion">PROGRAMACION</a>
+                        </div>
+                    </li>
+                    @endif
+                    @if (session('tipo')==1)
+                    <li class="nav-item ml-2">
+                        <a class="nav-link active" href="consultas">CONSULTAR</a>
+                    </li>
+                    @endif
+                    @if (session('tipo')!=1)
+                    <li class="nav-item ml-2">
+                        <a class="nav-link active" href="ocupacion">REGISTRO DE OCUPACIÓN</a>
+                    </li>
+                    @endif
+                   
+                </ul>
+                <br>
+               
 
             </div>
         </div>
+        <div class="row m-1">
+            <div class="col-12">
+                @yield('content')
+            </div>
+        </div>
+       
     </div>
 </body>
