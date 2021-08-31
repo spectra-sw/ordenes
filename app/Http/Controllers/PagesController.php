@@ -763,8 +763,25 @@ class PagesController extends Controller
             $prog = $prog->where('grupo',$request->filtrociudad );
         }
         $prog = $prog->orderBy('fecha','asc')->get();
+        $dato=array();
+            foreach($prog as $p){
+                
+                $dato[$p->id]=1;
+                $o = DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->where('ordenes.proyecto',$p->proyecto)
+                ->where('dias.fecha',$p->fecha)->exists();
+                if($o){
+                    $dato[$p->id] = 2;
+                }
+                $o = DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->where('ordenes.proyecto',$p->proyecto)
+                ->where('dias.fecha',$p->fecha)->where('ordenes.autorizada_por','<>',0)->exists();
+                if($o){
+                    $dato[$p->id] = 3;
+                }
+               
+            }
         return view('tablaprog',[
             'prog' => $prog,
+            'dato' => $dato
         ]);
     }
     public function calendarioprog(Request $request){
