@@ -12,7 +12,7 @@
         <td>{{ $dato->cant }}</td>
         <td>{{ $dato->und }}</td>
         <td>{{ $dato->observacion }}</td>
-        <td><button class="btn btn-danger btn-sm" type="button" onclick="del(2,{{ $dato->id}})">x</button</td>
+        <td><button class="btn btn-danger btn-sm" type="button" onclick="del(2,{{ $dato->id}},{{ $dato->dias_id}})">x</button</td>
       </tr>
     @endforeach 
     </tbody>

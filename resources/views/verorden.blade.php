@@ -154,6 +154,7 @@
                         <table class="table table-bordered table-sm">
                             <thead>
                             <tr>
+                                <th>CC</th>
                                 <th>Trabajador</th>
                                 <th>Hora Inicio</th>
                                 <th>Hora fin</th>
@@ -165,6 +166,7 @@
                             @foreach ($d['Horas'] as $dato)     
                             <tr>
                                 <td>{{ $dato['Trabajador'] }}</td>
+                                <td>{{ $dato['Nombre'] }}</td>
                                 <td>{{ $dato['Hi'] }}</td>
                                 <td>{{ $dato['Hf'] }}</td>
                                 <td>{{ $dato['Ht'] }}</td>

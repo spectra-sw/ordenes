@@ -24,7 +24,7 @@
     <form id="f1">
     <div class="row">
         <div class="col-12 col-md-4">
-            <img src="{{ URL::asset('img/logo.png') }}" class="img-responsive center-block">
+            <img src="{{ URL::asset('img/logo.png') }}" class="img-responsive center-block" style="cursor:pointer" onclick="window.open('/menu','_self')">
         </div>
 
         <div class="col-12 col-md-4 cajaAzul ">
@@ -247,7 +247,7 @@
             </textarea></div>
         </div>
         <div class="row">
-            <div class="col-12"><button class="btn btn-primary btn-block" type="button" onclick="modalconfirm()">Guardar orden</button></div>
+            <div class="col-12"><button class="btn btn-warning btn-block" type="button" onclick="modalconfirm()"><span class="spinner-grow spinner-grow-sm"></span>&nbsp;Guardar orden</button></div>
         </div>
     </div>
     </form>

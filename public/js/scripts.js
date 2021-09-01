@@ -328,7 +328,7 @@ function auto(id,dia){
         }
     }); 
 }
-function del(tipo,id){
+function del(tipo,id,diaid){
     //alert(tipo);
     //alert(id);
     if (tipo==1){
@@ -341,7 +341,7 @@ function del(tipo,id){
         sel = "#tablah"
     }
     url = '/eliminar'
-    data = { tipo : tipo , id : id}
+    data = { tipo : tipo , id : id, diaid:diaid}
     $.ajax({
         url: url,
         type:'GET',

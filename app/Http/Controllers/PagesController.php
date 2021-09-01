@@ -260,11 +260,14 @@ class PagesController extends Controller
             ->where('dias.ordenes_id','=',$oid)
             ->where('dias.fecha',$fecha)
             ->where('horas.trabajador',$request->trabajador);
+        
         $conteo = $datos->count();
+        //dd($conteo);
         $datos = $datos->get();
-
+       // dd($datos);
         if ($conteo>0){
             foreach($datos as $d){
+                
                 $hi = explode(":", $d->hi);
                 $hf = explode(":", $d->hf);
                 
@@ -273,7 +276,10 @@ class PagesController extends Controller
 
                 $rhi = intval($rhi) + round(floatval($rmi/60),1);
                 $rhf = intval($rhf) + round(floatval($rmf/60),1);
-
+                //dd($hi." ".$hf." ".$rhi." ".$rhf);
+                if (($rhi == $hi) && ($rhf==$hf)){
+                    return 'no';
+                }
                 if ((($rhi < $hi) && ($rhi < $hf)) && (($rhf > $hi) && ($rhf < $hf))){
                     return 'no';
                 }
@@ -459,6 +465,7 @@ class PagesController extends Controller
                     $horasc=collect([]);
                     $horasc->put('id',$h->id);
                     $horasc->put('Trabajador',$h->trabajador);
+                    $horasc->put('Nombre',$h->empleado->nombre." ".$h->empleado->apellido1);
                     $horasc->put('Hi',$h->hi);
                     $horasc->put('Hf',$h->hf);
                     $horasc->put('Ht',$h->ht);
@@ -521,6 +528,7 @@ class PagesController extends Controller
                     $horasc=collect([]);
                     $horasc->put('id',$h->id);
                     $horasc->put('Trabajador',$h->trabajador);
+                    $horasc->put('Nombre',$h->empleado->nombre." ".$h->empleado->apellido1);
                     $horasc->put('Hi',$h->hi);
                     $horasc->put('Hf',$h->hf);
                     $horasc->put('Ht',$h->ht);
@@ -678,7 +686,7 @@ class PagesController extends Controller
         if ($request->tipo == 1){
             $orden = Planificacion::where('id',$request->id)->first()->ordenes_id;
             $p=Planificacion::where('id',$request->id)->delete();
-            $datos = Planificacion::where('ordenes_id',$orden)->get();
+            $datos = Planificacion::where('ordenes_id',$orden)->where('dias_id',$request->diaid)->get();
             return view('tablap',[
                 'datos' => $datos
             ]);
@@ -686,7 +694,7 @@ class PagesController extends Controller
         if ($request->tipo == 2){
             $orden = Ejecucion::where('id',$request->id)->first()->ordenes_id;
             $e=Ejecucion::where('id',$request->id)->delete();
-            $datos = Ejecucion::where('ordenes_id',$orden)->get();
+            $datos = Ejecucion::where('ordenes_id',$orden)->where('dias_id',$request->diaid)->get();
             return view('tablae',[
                 'datos' => $datos
             ]);
@@ -694,7 +702,7 @@ class PagesController extends Controller
         if ($request->tipo == 3){
             $orden = Hora::where('id',$request->id)->first()->ordenes_id;
             $h=Hora::where('id',$request->id)->delete();
-            $datos = Hora::where('ordenes_id',$orden)->get();
+            $datos = Hora::where('ordenes_id',$orden)->where('dias_id',$request->diaid)->get();
             return view('tablah',[
                 'datos' => $datos
             ]);

@@ -100,7 +100,7 @@
                             <td>{{ $dato->cant }}</td>
                             <td>{{ $dato->und }}</td>
                             <td>{{ $dato->observacion }}</td>
-                            <td><button class="btn btn-danger btn-sm" type="button" onclick="del(2,{{ $dato->id}})">x</button</td>
+                            <td><button class="btn btn-danger btn-sm" type="button" onclick="del(2,{{ $dato->id}},{{ $dato->dias_id}})">x</button</td>
                         </tr>
                         @endforeach 
                         </tbody>
@@ -146,6 +146,7 @@
                     <table class="table table-bordered table-sm">
                         <thead>
                         <tr>
+                            <th>CC</th>
                             <th>Trabajador</th>
                             <th>Hora Inicio</th>
                             <th>Hora fin</th>
@@ -156,10 +157,11 @@
                         @foreach ($horas as $dato)     
                         <tr>
                             <td>{{ $dato->trabajador }}</td>
+                            <td>{{ $dato->empleado->nombre . " ". $dato->empleado->apellido1}}</td>
                             <td>{{ $dato->hi }}</td>
                             <td>{{ $dato->hf }}</td>
                             <td>{{ $dato->ht }}</td>
-                            <td><button class="btn btn-danger btn-sm" type="button" onclick="del(3,{{ $dato->id}})">x</button</td>
+                            <td><button class="btn btn-danger btn-sm" type="button" onclick="del(3,{{ $dato->id}},{{ $dato->dias_id}})">x</button</td>
                         </tr>
                         @endforeach 
                         </tbody>
