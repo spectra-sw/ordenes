@@ -24,7 +24,7 @@
         <td>{{ $dato->fecha}}</td>
       <!--  <td>{{ $dato->fecha_inicio }}</td>
         <td>{{ $dato->fecha_final }}</td>-->
-        <td>{{ $dato->responsable }}</td>
+        <td>{{ $dato->nresponsable }}</td>
         <td>{{ $dato->cliente }}</td>
         <td>{{ $dato->area_trabajo }}</td>
         <td>{{ $dato->contacto }}</td>

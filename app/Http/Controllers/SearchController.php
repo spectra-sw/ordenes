@@ -116,12 +116,16 @@ class SearchController extends Controller
         //dd($o);
 
         foreach ($o as $or){
-          //dd($or->ordenes_id);
+          //dd($or);
           if( Hora::where('ordenes_id',$or->ordenes_id)->where('ha',0)->count() > 0){
             Orden::where('id',$or->ordenes_id)->update(['autorizada_por' => 0]);
           }
-          
+          $field="nresponsable";
+          $e = Empleado::where('cc',$or->responsable)->first();
+          $nresponsable = $e->nombre." ".$e->apellido1;
+          $or->{$field} = $nresponsable;         
         }
+        //dd($o);
         return view('tablao',[
             'datos' => $o
         ]);
