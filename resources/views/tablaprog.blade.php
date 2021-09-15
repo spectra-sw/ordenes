@@ -28,9 +28,12 @@
         <td><img src="{{ URL::asset('img/red.png') }}" width="50%"></td>
         @endif
         @if ($dato[$p->id]==2)
-        <td><img src="{{ URL::asset('img/yellow.png') }}" width="50%"></td>
+        <td><img src="{{ URL::asset('img/orange.png') }}" width="50%"></td>
         @endif
         @if ($dato[$p->id]==3)
+        <td><img src="{{ URL::asset('img/yellow.png') }}" width="50%"></td>
+        @endif
+        @if ($dato[$p->id]==4)
         <td><img src="{{ URL::asset('img/green.png') }}" width="50%"></td>
         @endif
         <td>{{ $p->grupo }}</td>
