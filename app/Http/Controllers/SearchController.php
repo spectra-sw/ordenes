@@ -99,7 +99,7 @@ class SearchController extends Controller
         //dd($fin);
 
         //$o = Orden::where('id','>',0);
-        $o = DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->where('ordenes.cliente','<>',NULL);
+        $o = DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->where('ordenes.cliente','<>',NULL)->where('dias.fecha','<>','1900-01-01');
         if ($proyecto!=""){
             $o=$o->where('ordenes.proyecto',$proyecto);
         }

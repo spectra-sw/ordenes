@@ -46,6 +46,7 @@ Route::get('/verorden/{id}',[PagesController::class,'verorden']);
 Route::get('/ordenese/{id}',[PagesController::class,'editorden']);
 Route::get('/getdia',[PagesController::class,'getdia']);
 Route::get('/editDia',[PagesController::class,'editDia']);
+Route::get('/deleteDia',[PagesController::class,'deleteDia']);
 Route::get('/login',[PagesController::class,'login']);
 Route::get('/logout',[PagesController::class,'login']);
 Route::get('/ocupacion',[PagesController::class,'ocupacion']);

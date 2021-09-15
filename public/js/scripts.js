@@ -925,6 +925,20 @@ function editDia(id){
              }
    });    
 }
+function deleteDia(id){
+   url = '/deleteDia'
+   data = {id : id}
+   $.ajax({
+             url: url,
+             type:'GET',
+             data: data,
+             success: function(data) {
+               $data = $(data);
+               $("#tablad").html($data); 
+               
+             }
+   });    
+}
 function nuevaprog(){
     $("#prog").modal();
 }

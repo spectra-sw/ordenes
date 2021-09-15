@@ -644,6 +644,18 @@ class PagesController extends Controller
             'ts' => $ts
         ]);
     }
+    public function deleteDia(Request $request){
+        $orden_id = Dia::where('id',$request->id)->first()->ordenes_id;
+        $horas = Hora::where('dias_id',$request->id)->delete();  
+        $pl= Planificacion::where('dias_id',$request->id)->delete(); 
+        $ej= Ejecucion::where('dias_id',$request->id)->delete();   
+        $dias = Dia::where('id',$request->id)->delete();
+        $datos = Dia::where('ordenes_id',$orden_id)->where('fecha','<>','1900-01-01')->get();
+            return view('tablad',[
+                'datos' => $datos
+            ]);
+        
+    }
     public function autorizadas(Request $request){
         $datos = Hora::where('id', $request->id) ->first();
 
