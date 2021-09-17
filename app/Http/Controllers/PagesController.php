@@ -93,7 +93,8 @@ class PagesController extends Controller
         //dd($tipo);
         if ($tipo ==0){
             //$prog = Programacion::orderBy('fecha','desc')->paginate(15);
-            $prog = Programacion::all();
+            $prog =Programacion::where('fecha',date('Y-m-d'))->get();
+
             $emp = Empleado::orderBy('apellido1','asc')->get();
             $proyectos = Proyecto::orderBy('codigo','asc')->get();
             $ciudades= Empleado::select('ciudad')->orderby('ciudad','asc')->distinct()->get();
