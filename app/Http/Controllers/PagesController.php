@@ -792,10 +792,11 @@ class PagesController extends Controller
             $prog = $prog->where('grupo',$request->filtrociudad );
         }
         $prog = $prog->orderBy('fecha','asc')->get();
+        $estados = collect([]);
         $dato=array();
             foreach($prog as $p){
                 
-                $dato[$p->id]=1;
+                /*$dato[$p->id]=1;
                 $o = DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->where('ordenes.proyecto',$p->proyecto)
                 ->where('dias.fecha',$p->fecha)->exists();
                 if($o){
@@ -805,7 +806,28 @@ class PagesController extends Controller
                 ->where('dias.fecha',$p->fecha)->where('ordenes.autorizada_por','<>',0)->exists();
                 if($o){
                     $dato[$p->id] = 3;
+                }*/
+                $pl=$e=$h=False;
+                $dato[$p->id]=1;
+                $o = DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->where('ordenes.proyecto',$p->proyecto)->where('dias.fecha',$p->fecha)->exists();
+                if($o){
+                    $oid = DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->where('ordenes.proyecto',$p->proyecto)->where('dias.fecha',$p->fecha)->first()->ordenes_id;
+                    $pl = Planificacion::where('ordenes_id',$oid)->exists();
+                    $e = Ejecucion::where('ordenes_id',$oid)->exists();
+                    $h = Hora::where('ordenes_id',$oid)->exists();
                 }
+                if($o && $pl){
+                    $dato[$p->id] = 2;
+                }
+                if($o && $pl && $e && $h){
+                    $dato[$p->id] = 3;
+                }
+                $o = DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->where('ordenes.proyecto',$p->proyecto)
+                ->where('dias.fecha',$p->fecha)->where('ordenes.autorizada_por','<>',0)->exists();
+                if($o && $p && $e && $h){
+                    $dato[$p->id] = 4;
+                }
+                $estados->push($dato);
                
             }
         return view('tablaprog',[
