@@ -29,6 +29,14 @@
                     <div class="col-6 col-md-2 "><input type="text" name="contacto" id="contacto" class="form-control"></div>-->
                 </div>
                 <div class="row">
+                    <div class="col-6 col-md-2 cajaAzul">Técnico</div>
+                    <div class="col-6 col-md-10">                 
+                <select class="form-control basicAutoSelect" name="tecnico" id="tecnico"
+    placeholder="buscar..."
+    data-url="autoemp" autocomplete="off"></select>
+                    </div>
+                </div>
+                <div class="row">
                     <button type="button" class="btn btn-primary" onclick="consultar()">Consultar</button>&nbsp;
                     @if (session('tipo')==0)
                     <button type="button" class="btn btn-primary" onclick="archivo()">Archivo Distribución</button>&nbsp;
@@ -44,6 +52,7 @@
 </form>
 <script type="text/javascript">
     $('#responsable').autoComplete();
+    $('#tecnico').autoComplete();
 </script>
 <script src="{{asset('js/scripts.js')}}"></script>
 @endsection

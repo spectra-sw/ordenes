@@ -338,7 +338,8 @@ class FilesController extends Controller
         $proyecto = $request->proyecto;
         $responsable = $request->responsable;
         $cliente = $request->cliente;
-       
+        $tecnico = $request->tecnico;
+       // dd($tecnico);
         $o = DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->where('ordenes.cliente','<>',NULL);
         if ($proyecto!=""){
             $o=$o->where('ordenes.proyecto',$proyecto);
@@ -366,17 +367,37 @@ class FilesController extends Controller
                 $horas = Hora::where('ordenes_id',$o->ordenes_id)->where('dias_id',$d['id'])->get();
                 foreach($horas as $h){
                     //dd($h['trabajador']);
-                    $emp=Empleado::where('cc',$h['trabajador'])->first();
-                    $horario = $emp->horario_id;
-
-                    $linea=collect([]);
-                    $linea->put('cc', $h['trabajador']);
-                    $linea->put('nombre', $emp->nombre." ".$emp->apellido1);
-                    $linea->put('fecha', $d->fecha);
-                    $linea->put('entrada', $h->hi);
-                    $linea->put('salida', $h->hf);
-                   
-                    $datos->push($linea);         
+                    if ($tecnico ==""){
+                        $emp=Empleado::where('cc',$h['trabajador'])->first();
+                        $horario = $emp->horario_id;  
+                        $linea=collect([]);
+                            $linea->put('cc', $h['trabajador']);
+                            $linea->put('nombre', $emp->nombre." ".$emp->apellido1);
+                            $linea->put('fecha', $d->fecha);
+                            $linea->put('proyecto', $o->proyecto);
+                            $linea->put('entrada', $h->hi);
+                            $linea->put('salida', $h->hf);
+                            $linea->put('autorizadas', $h->ha);
+                                
+                            $datos->push($linea);        
+                    }    
+                    else{
+                        if ($tecnico==$h['trabajador']){
+                            $emp=Empleado::where('cc',$h['trabajador'])->first();
+                            $horario = $emp->horario_id;    
+                            $linea=collect([]);
+                            $linea->put('cc', $h['trabajador']);
+                            $linea->put('nombre', $emp->nombre." ".$emp->apellido1);
+                            $linea->put('fecha', $d->fecha);
+                            $linea->put('proyecto', $o->proyecto);
+                            $linea->put('entrada', $h->hi);
+                            $linea->put('salida', $h->hf);
+                            $linea->put('autorizadas', $h->ha);    
+                            $datos->push($linea);        
+                            
+                        }
+                    }
+                       
                 }   
             }
 
