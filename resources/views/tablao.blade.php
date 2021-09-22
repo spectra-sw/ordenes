@@ -33,7 +33,7 @@
         <!--<td>{{ $dato->observaciones}}</td>-->
         <td>{{ $dato->created_at }}</td>
 
-        <td>{{ $dato->autorizada_por !=0 ? 'Si' : 'No'}}</td>
+        <td>{{ $dato->auth !=0 ? 'Si' : 'No'}}</td>
         @if (session('tipo')==0)
         <td><button class="btn btn-primary btn-sm" type="button" onclick="verorden({{ $dato->ordenes_id }})">Autorizar</button</td>
         @endif

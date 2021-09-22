@@ -117,8 +117,10 @@ class SearchController extends Controller
 
         foreach ($o as $or){
           //dd($or);
-          if( Hora::where('ordenes_id',$or->ordenes_id)->where('ha',0)->count() > 0){
-            Orden::where('id',$or->ordenes_id)->update(['autorizada_por' => 0]);
+          $or->{'auth'} = 1;       
+          if( Hora::where('dias_id',$or->id)->where('ha',0)->count() > 0){
+            //Orden::where('id',$or->ordenes_id)->update(['autorizada_por' => 0]);
+            $or->{'auth'} = 0;     
           }
           $field="nresponsable";
           $e = Empleado::where('cc',$or->responsable)->first();
