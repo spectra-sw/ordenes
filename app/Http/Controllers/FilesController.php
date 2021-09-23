@@ -62,40 +62,20 @@ class FilesController extends Controller
                 //dd($numdia);
             
                 foreach($horas as $h){
-                    //dd($h['trabajador']);
-
+                  
                     $inicio = $fin =0;
-                    //horario programacion
-                    //dd($h['trabajador']. " ".$d['fecha']." ".$o->proyecto);
                     
                     if(Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->exists()){
                         $prog=Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->first();
-                        //dd($prog);
+                        
                         $detallei = explode(":", $prog->hi);
                         $inicio = intval($detallei[0]) + round(floatval($detallei[1]/60),1);
                         $detallef = explode(":", $prog->hf);
                         $fin = intval($detallef[0]) + round(floatval($detallef[1]/60),1);
-                        //dd($inicio." ".$fin);
+                       
                     }
 
                     $emp=Empleado::where('cc',$h['trabajador'])->first();
-                    //horario del trabajador
-                    /*if ($inicio>0 && $fin>0){
-                        
-                        $horario = $emp->horario_id;
-                        
-                        
-                        if (Detalleh::where('horario_id',$horario)->where('dia',$numdia)->exists()){
-                            $detalleh = Detalleh::where('horario_id',$horario)->where('dia',$numdia)->first();
-                            $detallei = explode(":", $detalleh->hi);
-                            $inicio = intval($detallei[0]) + round(floatval($detallei[1]/60),1);
-                            $detallef = explode(":", $detalleh->hf);
-                            $fin = intval($detallef[0]) + round(floatval($detallef[1]/60),1);
-                        }
-                    }*/
-
-
-                    //dd($inicio." ".$fin);
                     $ri = explode(":", $h->hi);
                     $rinicio = intval($ri[0]) + round(floatval($ri[1]/60),1);
                     $rfin = explode(":", $h->hf);
@@ -105,9 +85,7 @@ class FilesController extends Controller
                     $sb = $hedo = $heno=$hedf=$henf= 0;
                     if ($numdia > 0){
                         $sb = $h['ha'];    
-                    
-                    
-                    //hedo
+                        //hedo
                         if (($rfin > $fin) && ($rfin <= 21)){
                             $sb = $sb  - ($rfin-$fin);
                             $hedo = $rfin - $fin;  
@@ -148,142 +126,114 @@ class FilesController extends Controller
                         }
                         
                     }
-
                     $auxilio=round((($emp->auxilio)/240)*$sb,1);
-
-                   
                     if (array_key_exists($h['trabajador'], $total) ) {
                         $total[$h['trabajador']] = $total[$h['trabajador']] + $h['ha'];
                     }
                     else{
                         $total[$h['trabajador']]= $h['ha'];
                     }
-                   
+
+                    if(($tecnico == "")||($tecnico != "" && $tecnico ==$h['trabajador'])) {
                     //horas
-                    if ($sb>0){
-                        $linea=collect([]);
-                        $linea->put('codigo del empleado', $h['trabajador']);
-                        $linea->put('sucursal', '');
-                        $linea->put('codigo del concepto', '001');
-                        $linea->put('centro de operacion', $centro->centro_operacion);
-                        $linea->put('centro de costo', $centro->codigo);
-                        $linea->put('fecha movimiento', $d->fecha);
-                        $linea->put('horas', $sb);
-                        $linea->put('valor', '');
-                        $linea->put('cantidad', '');
-                        $linea->put('proyecto', '');
-                        $linea->put('numero de contrato', '');
-                        $linea->put('unidad de negocio', $centro->unidad_negocio);
-                        $linea->put('fecha de causacion', '');
-                        $linea->put('numero de cuotas', '');
-                        $linea->put('notas', '');
-                        $datos->push($linea);
+                        if ($sb>0){
+                            $linea=collect([]);
+                            $linea->put('codigo del empleado', $h['trabajador']);
+                            $linea->put('sucursal', '');
+                            $linea->put('codigo del concepto', '001');
+                            $linea->put('centro de operacion', $centro->centro_operacion);
+                            $linea->put('centro de costo', $centro->codigo);
+                            $linea->put('fecha movimiento', $d->fecha);
+                            $linea->put('horas', $sb);
+                            $linea->put('valor', '');
+                            $linea->put('cantidad', '');
+                            $linea->put('proyecto', '');
+                            $linea->put('numero de contrato', '');
+                            $linea->put('unidad de negocio', $centro->unidad_negocio);
+                            $linea->put('fecha de causacion', '');
+                            $linea->put('numero de cuotas', '');
+                            $linea->put('notas', '');
+                            $datos->push($linea);
+                        }
+                        if ($hedo>0){
+                            $linea=collect([]);
+                            $linea->put('codigo del empleado', $h['trabajador']);
+                            $linea->put('sucursal', '');
+                            $linea->put('codigo del concepto', '006');
+                            $linea->put('centro de operacion', $centro->centro_operacion);
+                            $linea->put('centro de costo', $centro->codigo);
+                            $linea->put('fecha movimiento', $d->fecha);
+                            $linea->put('horas', $hedo);
+                            $linea->put('valor', '');
+                            $linea->put('cantidad', '');
+                            $linea->put('proyecto', '');
+                            $linea->put('numero de contrato', '');
+                            $linea->put('unidad de negocio', $centro->unidad_negocio);
+                            $linea->put('fecha de causacion', '');
+                            $linea->put('numero de cuotas', '');
+                            $linea->put('notas', '');
+                            $datos->push($linea);
+                        }
+                        if ($heno>0){
+                            $linea=collect([]);
+                            $linea->put('codigo del empleado', $h['trabajador']);
+                            $linea->put('sucursal', '');
+                            $linea->put('codigo del concepto', '007');
+                            $linea->put('centro de operacion', $centro->centro_operacion);
+                            $linea->put('centro de costo', $centro->codigo);
+                            $linea->put('fecha movimiento', $d->fecha);
+                            $linea->put('horas', $heno);
+                            $linea->put('valor', '');
+                            $linea->put('cantidad', '');
+                            $linea->put('proyecto', '');
+                            $linea->put('numero de contrato', '');
+                            $linea->put('unidad de negocio', $centro->unidad_negocio);
+                            $linea->put('fecha de causacion', '');
+                            $linea->put('numero de cuotas', '');
+                            $linea->put('notas', '');
+                            $datos->push($linea);
+                        }
+                        if ($hedf>0){
+                            $linea=collect([]);
+                            $linea->put('codigo del empleado', $h['trabajador']);
+                            $linea->put('sucursal', '');
+                            $linea->put('codigo del concepto', '008');
+                            $linea->put('centro de operacion', $centro->centro_operacion);
+                            $linea->put('centro de costo', $centro->codigo);
+                            $linea->put('fecha movimiento', $d->fecha);
+                            $linea->put('horas', $hedf);
+                            $linea->put('valor', '');
+                            $linea->put('cantidad', '');
+                            $linea->put('proyecto', '');
+                            $linea->put('numero de contrato', '');
+                            $linea->put('unidad de negocio', $centro->unidad_negocio);
+                            $linea->put('fecha de causacion', '');
+                            $linea->put('numero de cuotas', '');
+                            $linea->put('notas', '');
+                            $datos->push($linea);
+                        }
+                        if ($henf>0){
+                            $linea=collect([]);
+                            $linea->put('codigo del empleado', $h['trabajador']);
+                            $linea->put('sucursal', '');
+                            $linea->put('codigo del concepto', '009');
+                            $linea->put('centro de operacion', $centro->centro_operacion);
+                            $linea->put('centro de costo', $centro->codigo);
+                            $linea->put('fecha movimiento', $d->fecha);
+                            $linea->put('horas', $henf);
+                            $linea->put('valor', '');
+                            $linea->put('cantidad', '');
+                            $linea->put('proyecto', '');
+                            $linea->put('numero de contrato', '');
+                            $linea->put('unidad de negocio', $centro->unidad_negocio);
+                            $linea->put('fecha de causacion', '');
+                            $linea->put('numero de cuotas', '');
+                            $linea->put('notas', '');
+                            $datos->push($linea);
+                        }
                     }
-                    if ($hedo>0){
-                        $linea=collect([]);
-                        $linea->put('codigo del empleado', $h['trabajador']);
-                        $linea->put('sucursal', '');
-                        $linea->put('codigo del concepto', '006');
-                        $linea->put('centro de operacion', $centro->centro_operacion);
-                        $linea->put('centro de costo', $centro->codigo);
-                        $linea->put('fecha movimiento', $d->fecha);
-                        $linea->put('horas', $hedo);
-                        $linea->put('valor', '');
-                        $linea->put('cantidad', '');
-                        $linea->put('proyecto', '');
-                        $linea->put('numero de contrato', '');
-                        $linea->put('unidad de negocio', $centro->unidad_negocio);
-                        $linea->put('fecha de causacion', '');
-                        $linea->put('numero de cuotas', '');
-                        $linea->put('notas', '');
-                        $datos->push($linea);
-                    }
-                    if ($heno>0){
-                        $linea=collect([]);
-                        $linea->put('codigo del empleado', $h['trabajador']);
-                        $linea->put('sucursal', '');
-                        $linea->put('codigo del concepto', '007');
-                        $linea->put('centro de operacion', $centro->centro_operacion);
-                        $linea->put('centro de costo', $centro->codigo);
-                        $linea->put('fecha movimiento', $d->fecha);
-                        $linea->put('horas', $heno);
-                        $linea->put('valor', '');
-                        $linea->put('cantidad', '');
-                        $linea->put('proyecto', '');
-                        $linea->put('numero de contrato', '');
-                        $linea->put('unidad de negocio', $centro->unidad_negocio);
-                        $linea->put('fecha de causacion', '');
-                        $linea->put('numero de cuotas', '');
-                        $linea->put('notas', '');
-                        $datos->push($linea);
-                    }
-                    if ($hedf>0){
-                        $linea=collect([]);
-                        $linea->put('codigo del empleado', $h['trabajador']);
-                        $linea->put('sucursal', '');
-                        $linea->put('codigo del concepto', '008');
-                        $linea->put('centro de operacion', $centro->centro_operacion);
-                        $linea->put('centro de costo', $centro->codigo);
-                        $linea->put('fecha movimiento', $d->fecha);
-                        $linea->put('horas', $hedf);
-                        $linea->put('valor', '');
-                        $linea->put('cantidad', '');
-                        $linea->put('proyecto', '');
-                        $linea->put('numero de contrato', '');
-                        $linea->put('unidad de negocio', $centro->unidad_negocio);
-                        $linea->put('fecha de causacion', '');
-                        $linea->put('numero de cuotas', '');
-                        $linea->put('notas', '');
-                        $datos->push($linea);
-                    }
-                    if ($henf>0){
-                        $linea=collect([]);
-                        $linea->put('codigo del empleado', $h['trabajador']);
-                        $linea->put('sucursal', '');
-                        $linea->put('codigo del concepto', '009');
-                        $linea->put('centro de operacion', $centro->centro_operacion);
-                        $linea->put('centro de costo', $centro->codigo);
-                        $linea->put('fecha movimiento', $d->fecha);
-                        $linea->put('horas', $henf);
-                        $linea->put('valor', '');
-                        $linea->put('cantidad', '');
-                        $linea->put('proyecto', '');
-                        $linea->put('numero de contrato', '');
-                        $linea->put('unidad de negocio', $centro->unidad_negocio);
-                        $linea->put('fecha de causacion', '');
-                        $linea->put('numero de cuotas', '');
-                        $linea->put('notas', '');
-                        $datos->push($linea);
-                    }
-
-
-                    //valor
-                    /*
-                    if ($auxilio >0){
-                        $linea=collect([]);
-                        $linea->put('codigo del empleado', $h['trabajador']);
-                        $linea->put('sucursal', '');
-                        $linea->put('codigo del concepto', '075');
-                        $linea->put('centro de operacion', $centro->centro_operacion);
-                        $linea->put('centro de costo', $centro->codigo);
-                        $linea->put('fecha movimiento', $d->fecha);
-                        $linea->put('horas','');
-                        $linea->put('valor', $auxilio);
-                        $linea->put('cantidad', '');
-                        $linea->put('proyecto', '');
-                        $linea->put('numero de contrato', '');
-                        $linea->put('unidad de negocio', $centro->unidad_negocio);
-                        $linea->put('fecha de causacion', '');
-                        $linea->put('numero de cuotas', '');
-                        $linea->put('notas', '');
-                        $datos->push($linea);
-                    }
-                    */
-
-
-                    //dd($datos);
                 }
-               // dd($total);
+
             }
 
         }
