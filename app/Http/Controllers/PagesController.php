@@ -815,16 +815,28 @@ class PagesController extends Controller
                     $pl = Planificacion::where('ordenes_id',$oid)->exists();
                     $e = Ejecucion::where('ordenes_id',$oid)->exists();
                     $h = Hora::where('ordenes_id',$oid)->exists();
+                    $a=true;
+                    $hrs = Hora::where('ordenes_id',$oid)->get();
+                    //dd($hrs);
+                    foreach($hrs as $hx){
+                        if ($hx->ha ==0){
+                            $a=false;
+                        }
+                    }
                 }
+
+               // dd($pl." ".$e." ".$h." ".$a);
                 if($o && $pl){
                     $dato[$p->id] = 2;
                 }
                 if($o && $pl && $e && $h){
                     $dato[$p->id] = 3;
                 }
-                $o = DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->where('ordenes.proyecto',$p->proyecto)
-                ->where('dias.fecha',$p->fecha)->where('ordenes.autorizada_por','<>',0)->exists();
-                if($o && $p && $e && $h){
+               
+                /*$o = DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->where('ordenes.proyecto',$p->proyecto)
+                ->where('dias.fecha',$p->fecha)->where('ordenes.autorizada_por','<>',0)->exists();*/
+                
+                if($a && $p && $e && $h){
                     $dato[$p->id] = 4;
                 }
                 $estados->push($dato);

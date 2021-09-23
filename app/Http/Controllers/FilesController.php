@@ -21,6 +21,7 @@ class FilesController extends Controller
         $proyecto = $request->proyecto;
         $responsable = $request->responsable;
         $cliente = $request->cliente;
+        $tecnico = $request->tecnico;
         //dd($fin);
         //$o = DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->where('ordenes.cliente','<>',NULL)->where('dias.fecha','>=', '2021-05-10')->get();
 
