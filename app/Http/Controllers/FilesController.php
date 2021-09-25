@@ -48,6 +48,7 @@ class FilesController extends Controller
         
         $datos = collect([]);
         $total = array();
+        $tsb=array();
         foreach($ordenes as $o){
             //dd($o['id']);
             //dd($o->ordenes_id);
@@ -126,15 +127,17 @@ class FilesController extends Controller
                         }
                         
                     }
-                    $auxilio=round((($emp->auxilio)/240)*$sb,1);
-                    if (array_key_exists($h['trabajador'], $total) ) {
-                        $total[$h['trabajador']] = $total[$h['trabajador']] + $h['ha'];
-                    }
-                    else{
-                        $total[$h['trabajador']]= $h['ha'];
-                    }
 
                     if(($tecnico == "")||($tecnico != "" && $tecnico ==$h['trabajador'])) {
+                        $auxilio=round((($emp->auxilio)/240)*$sb,1);
+                        if (array_key_exists($h['trabajador'], $total) ) {
+                            $total[$h['trabajador']] = $total[$h['trabajador']] + $h['ha'];
+                        }
+                        else{
+                            $total[$h['trabajador']]= $h['ha'];
+                        }
+
+                   
                     //horas
                         if ($sb>0){
                             $linea=collect([]);
@@ -154,6 +157,12 @@ class FilesController extends Controller
                             $linea->put('numero de cuotas', '');
                             $linea->put('notas', '');
                             $datos->push($linea);
+                            if (array_key_exists($h['trabajador'], $tsb) ) {
+                                $tsb[$h['trabajador']]= $tsb[$h['trabajador']] + $sb;
+                            }
+                            else{
+                                $tsb[$h['trabajador']]= $sb;
+                            }
                         }
                         if ($hedo>0){
                             $linea=collect([]);
@@ -237,14 +246,15 @@ class FilesController extends Controller
             }
 
         }
-        //dd($total);
+        //dd($tsb);
         $datos2 = collect([]);
         foreach ($datos as $d){
             if ($d['codigo del concepto']=='001'){
                 $cc = $d['codigo del empleado'];
                 $horas = $d['horas'];
                 $emp=Empleado::where('cc',$cc)->first();
-                $auxilio= round(($emp->auxilio/$total[$cc])*$horas,1);
+               
+                $auxilio= round(($emp->auxilio/$tsb[$cc])*$horas,1);
                 $linea=collect([]);
                 /*$linea->put('total',$total[$cc]);
                 $linea->put('auxilio',$emp->auxilio);
