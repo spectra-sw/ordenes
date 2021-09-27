@@ -122,6 +122,10 @@ class SearchController extends Controller
             //Orden::where('id',$or->ordenes_id)->update(['autorizada_por' => 0]);
             $or->{'auth'} = 0;     
           }
+          if(!Hora::where('dias_id',$or->id)->exists()){
+
+            $or->{'auth'} = 0;     
+          }
           $field="nresponsable";
           $e = Empleado::where('cc',$or->responsable)->first();
           $nresponsable = $e->nombre." ".$e->apellido1;
