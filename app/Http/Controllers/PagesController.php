@@ -807,7 +807,7 @@ class PagesController extends Controller
                 if($o){
                     $dato[$p->id] = 3;
                 }*/
-                $pl=$e=$h=False;
+                $a=$pl=$e=$h=False;
                 $dato[$p->id]=1;
                 $o = DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->where('ordenes.proyecto',$p->proyecto)->where('dias.fecha',$p->fecha)->exists();
                 if($o){
