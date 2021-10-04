@@ -811,12 +811,15 @@ class PagesController extends Controller
                 $dato[$p->id]=1;
                 $o = DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->where('ordenes.proyecto',$p->proyecto)->where('dias.fecha',$p->fecha)->exists();
                 if($o){
-                    $oid = DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->where('ordenes.proyecto',$p->proyecto)->where('dias.fecha',$p->fecha)->first()->ordenes_id;
+                    //dd(DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->where('ordenes.proyecto',$p->proyecto)->where('dias.fecha',$p->fecha)->first());
+                    $data=DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->where('ordenes.proyecto',$p->proyecto)->where('dias.fecha',$p->fecha)->first();
+                    $oid = $data->ordenes_id;
+                    $did = $data->id;
                     $pl = Planificacion::where('ordenes_id',$oid)->exists();
                     $e = Ejecucion::where('ordenes_id',$oid)->exists();
                     $h = Hora::where('ordenes_id',$oid)->exists();
                     $a=true;
-                    $hrs = Hora::where('ordenes_id',$oid)->get();
+                    $hrs = Hora::where('ordenes_id',$oid)->where('dias_id',$did)->get();
                     //dd($hrs);
                     foreach($hrs as $hx){
                         if ($hx->ha ==0){
@@ -825,7 +828,7 @@ class PagesController extends Controller
                     }
                 }
 
-               // dd($pl." ".$e." ".$h." ".$a);
+                //dd($pl." ".$e." ".$h." ".$a);
                 if($o && $pl){
                     $dato[$p->id] = 2;
                 }
