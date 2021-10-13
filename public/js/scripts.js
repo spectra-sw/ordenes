@@ -273,6 +273,7 @@ function consultar(){
 }
 function archivo(){
     data=$( "#formConsulta" ).serialize(); 
+    console.log(data);
     url = '/archivon'
     $.ajax({
               url: url,

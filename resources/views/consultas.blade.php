@@ -39,10 +39,21 @@
                 <div class="row">
                     <button type="button" class="btn btn-primary" onclick="consultar()">Consultar</button>&nbsp;
                     @if (session('tipo')==0)
-                    <button type="button" class="btn btn-primary" onclick="archivo()">Archivo Distribución</button>&nbsp;
-                    <button type="button" class="btn btn-primary" onclick="archivor()">Archivo Redistribución</button>&nbsp;
-                    <button type="button" class="btn btn-primary" onclick="reportep()">Reporte personas</button>
+                    <!--<button type="button" class="btn btn-primary" onclick="archivor()">Archivo Redistribución</button>&nbsp;-->
+                    <button type="button" class="btn btn-primary" onclick="reportep()">Reporte personas</button>&nbsp;
+                    <button type="button" class="btn btn-primary" onclick="archivo()">Archivo Distribución</button>&nbsp;&nbsp;
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="auxilio" value="si" checked>Con auxilio
+                        </label>
+                    </div>&nbsp;
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="auxilio" value="no">Sin auxilio
+                        </label>
+                    </div>
                     @endif
+                    
                 </div>
 
                 <div id="tablao">
