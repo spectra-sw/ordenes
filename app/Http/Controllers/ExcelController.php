@@ -86,7 +86,7 @@ class ExcelController extends Controller
                     //dd($rfin);
                     $rfin = intval($rfin[0]) + round(floatval($rfin[1]/60),1);
                     
-                    $sb = $hedo = $heno=$hedf=$henf= 0;
+                    $sb = $hedo = $heno=$hedf=$henf=$rno=$dtsc=$rnd= 0;
                     if ($numdia > 0){
                         $sb = $h['ha'];    
                         //hedo
@@ -110,9 +110,23 @@ class ExcelController extends Controller
                             $hedo = (6-$rinicio);
                             $heno = ($inicio-$rinicio) - $hedo;
                         }
+                         //rno
+                        if (($rinicio < 21)&&($rfin>21)){
+                            $rno = $rfin - 21;
+                        }
+                        if (($rinicio >= 21)&&($rfin<=24)){
+                            $rno = $rfin - $rinicio;
+                        }
+                        if (($rinicio < 6)&&($rfin>0)){
+                            $rno = $rfin ;
+                        }
+                        if (($rinicio >= 0)&&($rfin<=6)){
+                            $rno = $rfin - $rinicio;
+                        }
                     }
                     //hedf
                     if ($numdia == 0){
+                        $dtsc=$h['ha'];
                         if (($rinicio >= 6)&& ($rfin <= 21)){
                             $hedf = $h['ha'];  
                         }
@@ -127,6 +141,19 @@ class ExcelController extends Controller
                         if (($rinicio < 6 )&& ($rfin > 21)){
                             $henf = (6-$rinicio) + (21-$rfin);
                             $hedf = $h['ha'] - $henf;  
+                        }
+                        //rnd
+                        if (($rinicio < 21)&&($rfin>21)){
+                            $rnd = $rfin - 21;
+                        }
+                        if (($rinicio >= 21)&&($rfin<=24)){
+                            $rnd = $rfin - $rinicio;
+                        }
+                        if (($rinicio < 6)&&($rfin>0)){
+                            $rnd = $rfin ;
+                        }
+                        if (($rinicio >= 0)&&($rfin<=6)){
+                            $rnd = $rfin - $rinicio;
                         }
                         
                     }
@@ -233,6 +260,63 @@ class ExcelController extends Controller
                             $linea->put('centro de costo', $centro->codigo);
                             $linea->put('fecha movimiento', $d->fecha);
                             $linea->put('horas', $henf);
+                            $linea->put('valor', '');
+                            $linea->put('cantidad', '');
+                            $linea->put('proyecto', '');
+                            $linea->put('numero de contrato', '');
+                            $linea->put('unidad de negocio', $centro->unidad_negocio);
+                            $linea->put('fecha de causacion', '');
+                            $linea->put('numero de cuotas', '');
+                            $linea->put('notas', '');
+                            $datos->push($linea);
+                        }
+                        if ($rno>0){
+                            $linea=collect([]);
+                            $linea->put('codigo del empleado', $h['trabajador']);
+                            $linea->put('sucursal', '');
+                            $linea->put('codigo del concepto', '012');
+                            $linea->put('centro de operacion', $centro->centro_operacion);
+                            $linea->put('centro de costo', $centro->codigo);
+                            $linea->put('fecha movimiento', $d->fecha);
+                            $linea->put('horas', $rno);
+                            $linea->put('valor', '');
+                            $linea->put('cantidad', '');
+                            $linea->put('proyecto', '');
+                            $linea->put('numero de contrato', '');
+                            $linea->put('unidad de negocio', $centro->unidad_negocio);
+                            $linea->put('fecha de causacion', '');
+                            $linea->put('numero de cuotas', '');
+                            $linea->put('notas', '');
+                            $datos->push($linea);
+                        }
+                        if ($rnd>0){
+                            $linea=collect([]);
+                            $linea->put('codigo del empleado', $h['trabajador']);
+                            $linea->put('sucursal', '');
+                            $linea->put('codigo del concepto', '013');
+                            $linea->put('centro de operacion', $centro->centro_operacion);
+                            $linea->put('centro de costo', $centro->codigo);
+                            $linea->put('fecha movimiento', $d->fecha);
+                            $linea->put('horas', $rnd);
+                            $linea->put('valor', '');
+                            $linea->put('cantidad', '');
+                            $linea->put('proyecto', '');
+                            $linea->put('numero de contrato', '');
+                            $linea->put('unidad de negocio', $centro->unidad_negocio);
+                            $linea->put('fecha de causacion', '');
+                            $linea->put('numero de cuotas', '');
+                            $linea->put('notas', '');
+                            $datos->push($linea);
+                        }
+                        if ($dtsc>0){
+                            $linea=collect([]);
+                            $linea->put('codigo del empleado', $h['trabajador']);
+                            $linea->put('sucursal', '');
+                            $linea->put('codigo del concepto', '011');
+                            $linea->put('centro de operacion', $centro->centro_operacion);
+                            $linea->put('centro de costo', $centro->codigo);
+                            $linea->put('fecha movimiento', $d->fecha);
+                            $linea->put('horas', $dtsc);
                             $linea->put('valor', '');
                             $linea->put('cantidad', '');
                             $linea->put('proyecto', '');
