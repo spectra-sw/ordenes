@@ -63,21 +63,30 @@ class FilesController extends Controller
                 $c = new Carbon($d['fecha']);
                 $numdia = $c->dayOfWeek;
                 //dd($numdia);
-            
+                $cont=1;
+                $ant =0;
                 foreach($horas as $h){
                   
-                    $inicio = $fin =0;
-                    
-                    if(Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->exists()){
-                        $prog=Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->first();
-                        
-                        $detallei = explode(":", $prog->hi);
-                        $inicio = intval($detallei[0]) + round(floatval($detallei[1]/60),1);
-                        $detallef = explode(":", $prog->hf);
-                        $fin = intval($detallef[0]) + round(floatval($detallef[1]/60),1);
-                       
+                    $inicio = $fin =$rinicio=$rfin=0;
+                    if ($ant==$h['trabajador']){
+                        $cont = $cont+1;
                     }
-
+                    else{
+                        $ant=$h['trabajador'];
+                        $cont=1;
+                    }
+                    if(Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->exists()){
+                        $progs=Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->take($cont)->get();
+                        
+                        foreach ($progs as $prog){
+                            $detallei = explode(":", $prog->hi);
+                            $inicio = intval($detallei[0]) + round(floatval($detallei[1]/60),1);
+                            $detallef = explode(":", $prog->hf);
+                            $fin = intval($detallef[0]) + round(floatval($detallef[1]/60),1);
+                        }
+                      
+                    }
+                    
                     $emp=Empleado::where('cc',$h['trabajador'])->first();
                     $ri = explode(":", $h->hi);
                     $rinicio = intval($ri[0]) + round(floatval($ri[1]/60),1);
@@ -97,7 +106,7 @@ class FilesController extends Controller
                             $sb = $sb - ($inicio-$rinicio);
                             $hedo = ($inicio-$rinicio);
                         }
-
+                        
                         //heno
                         if (($rfin > $fin) && ($rfin > 21)){
                             $sb = $sb - ($rfin-$fin);
@@ -110,19 +119,20 @@ class FilesController extends Controller
                             $heno = ($inicio-$rinicio) - $hedo;
                         }
                         //rno
-                        if (($rinicio < 21)&&($rfin>21)){
+                        if (($rinicio < 21)&&($rinicio > 6)&&($rfin>21)&&($rfin<=24)){
                             $rno = $rfin - 21;
                         }
                         if (($rinicio >= 21)&&($rfin<=24)){
                             $rno = $rfin - $rinicio;
                         }
-                        if (($rinicio < 6)&&($rfin>0)){
-                            $rno = $rfin ;
+                        if (($rinicio >=0 )&&($rinicio <=6 )&&($rfin>6)){
+                            $rno = 6 - $rinicio;
                         }
                         if (($rinicio >= 0)&&($rfin<=6)){
                             $rno = $rfin - $rinicio;
                         }
                     }
+                    
                     //hedf
                     if ($numdia == 0){
                         $dtsc=$h['ha'];
@@ -134,7 +144,7 @@ class FilesController extends Controller
                             $hedf = $h['ha'] - $henf;  
                         }
                         if (($rinicio >= 6)&& ($rfin > 21)){
-                            $henf = 21-$rfin;
+                            $henf = $rfin-21;
                             $hedf = $h['ha'] - $henf;  
                         }
                         if (($rinicio < 6 )&& ($rfin > 21)){
@@ -142,21 +152,30 @@ class FilesController extends Controller
                             $hedf = $h['ha'] - $henf;  
                         }
                         //rnd
-                        if (($rinicio < 21)&&($rfin>21)){
+                        if (($rinicio < 21)&&($rinicio > 6)&&($rfin>21)&&($rfin<=24)){
                             $rnd = $rfin - 21;
                         }
                         if (($rinicio >= 21)&&($rfin<=24)){
                             $rnd = $rfin - $rinicio;
                         }
-                        if (($rinicio < 6)&&($rfin>0)){
-                            $rnd = $rfin ;
+                        if (($rinicio >=0 )&&($rinicio <=6 )&&($rfin>6)){
+                            $rnd = 6 - $rinicio;
                         }
                         if (($rinicio >= 0)&&($rfin<=6)){
                             $rnd = $rfin - $rinicio;
                         }
+                        
+                        
                     }
 
+                    /*if($cont==2){
+                        dd($rno);
+                        dd($rinicio." ".$rfin." ".$inicio." ".$fin);
+                    }*/
                     if(($tecnico == "")||($tecnico != "" && $tecnico ==$h['trabajador'])) {
+                        
+
+
                         $auxilio=round((($emp->auxilio)/240)*$sb,1);
                         if (array_key_exists($h['trabajador'], $total) ) {
                             $total[$h['trabajador']] = $total[$h['trabajador']] + $h['ha'];
@@ -164,10 +183,28 @@ class FilesController extends Controller
                         else{
                             $total[$h['trabajador']]= $h['ha'];
                         }
-
+                        if (array_key_exists($h['trabajador'], $total) ) {
+                            if(($total[$h['trabajador']]>47.5)&& ($hedf>0)&&($centro->codigo==9933)){
+                                
+                                $hedf2=$total[$h['trabajador']]-47.5;
+                                $sb=$hedf-$hedf2;
+                                
+                                $hedf=$hedf2;
+                            }
+                            
+                            if(($total[$h['trabajador']]<47.5)&& ($hedf>0)&&($centro->codigo==9933)){
+                                    $sb = $h['ha'];
+                                    $dtsc=$h['ha']-$rnd;
+                                    $hedf=0;
+                                    $henf=0;
+                            }
+                            
+                        }
+                        
                    
-                    //horas
+                        //horas
                         if ($sb>0){
+                            
                             $linea=collect([]);
                             $linea->put('codigo del empleado', $h['trabajador']);
                             $linea->put('sucursal', '');
@@ -193,6 +230,8 @@ class FilesController extends Controller
                             }
                         }
                         if ($hedo>0){
+                            //dd($hedo);
+                           
                             $linea=collect([]);
                             $linea->put('codigo del empleado', $h['trabajador']);
                             $linea->put('sucursal', '');
