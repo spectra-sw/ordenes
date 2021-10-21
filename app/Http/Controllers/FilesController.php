@@ -183,7 +183,7 @@ class FilesController extends Controller
                         else{
                             $total[$h['trabajador']]= $h['ha'];
                         }
-                        if (array_key_exists($h['trabajador'], $total) ) {
+                       if (array_key_exists($h['trabajador'], $total) ) {
                             if(($total[$h['trabajador']]>47.5)&& ($hedf>0)&&($centro->codigo==9933)){
                                 
                                 $hedf2=$total[$h['trabajador']]-47.5;
