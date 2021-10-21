@@ -97,6 +97,7 @@ class FilesController extends Controller
                     $sb = $hedo = $heno=$hedf=$henf=$rno=$dtsc=$rnd= 0;
                     if ($numdia > 0){
                         $sb = $h['ha'];    
+                        
                         //hedo
                         if (($rfin > $fin) && ($rfin <= 21)){
                             $sb = $sb  - ($rfin-$fin);
@@ -204,7 +205,7 @@ class FilesController extends Controller
                    
                         //horas
                         if ($sb>0){
-                            
+                            //dd($sb);
                             $linea=collect([]);
                             $linea->put('codigo del empleado', $h['trabajador']);
                             $linea->put('sucursal', '');
