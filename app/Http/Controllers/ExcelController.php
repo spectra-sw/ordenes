@@ -65,99 +65,165 @@ class ExcelController extends Controller
                 $c = new Carbon($d['fecha']);
                 $numdia = $c->dayOfWeek;
                 //dd($numdia);
-            
+                $cont=1;
+                $ant =0;
                 foreach($horas as $h){
                   
-                    $inicio = $fin =0;
                     
-                    if(Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->exists()){
-                        $prog=Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->first();
-                        
-                        $detallei = explode(":", $prog->hi);
-                        $inicio = intval($detallei[0]) + round(floatval($detallei[1]/60),1);
-                        $detallef = explode(":", $prog->hf);
-                        $fin = intval($detallef[0]) + round(floatval($detallef[1]/60),1);
-                       
+                    $inicio = $fin =$rinicio=$rfin=0;
+                    if ($ant==$h['trabajador']){
+                        $cont = $cont+1;
                     }
-
+                    else{
+                        $ant=$h['trabajador'];
+                        $cont=1;
+                    }
+                    if(Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->exists()){
+                        $progs=Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->take($cont)->get();
+                        
+                        foreach ($progs as $prog){
+                            $detallei = explode(":", $prog->hi);
+                            $inicio = intval($detallei[0]) + round(floatval($detallei[1]/60),1);
+                            $detallef = explode(":", $prog->hf);
+                            $fin = intval($detallef[0]) + round(floatval($detallef[1]/60),1);
+                            $extra = $prog->extra;
+                        }
+                      
+                    }
+                    
+                    
                     $emp=Empleado::where('cc',$h['trabajador'])->first();
                     $ri = explode(":", $h->hi);
                     $rinicio = intval($ri[0]) + round(floatval($ri[1]/60),1);
                     $rfin = explode(":", $h->hf);
                     //dd($rfin);
                     $rfin = intval($rfin[0]) + round(floatval($rfin[1]/60),1);
-                    
+                     
                     $sb = $hedo = $heno=$hedf=$henf=$rno=$dtsc=$rnd= 0;
-                    if ($numdia > 0){
-                        $sb = $h['ha'];    
-                        //hedo
-                        if (($rfin > $fin) && ($rfin <= 21)){
-                            $sb = $sb  - ($rfin-$fin);
-                            $hedo = $rfin - $fin;  
-                        }
-                        if (($rinicio < $inicio ) && ($rinicio >= 6)){
-                            $sb = $sb - ($inicio-$rinicio);
-                            $hedo = ($inicio-$rinicio);
-                        }
-
-                        //heno
-                        if (($rfin > $fin) && ($rfin > 21)){
-                            $sb = $sb - ($rfin-$fin);
-                            $hedo =  (21-$fin);
-                            $heno = ($rfin - $fin) - $hedo;
-                        }
-                        if (($rinicio < $inicio ) && ($rinicio < 6)){
-                            $sb = $sb - ($inicio-$rinicio);
-                            $hedo = (6-$rinicio);
-                            $heno = ($inicio-$rinicio) - $hedo;
-                        }
-                         //rno
-                        if (($rinicio < 21)&&($rfin>21)){
-                            $rno = $rfin - 21;
-                        }
-                        if (($rinicio >= 21)&&($rfin<=24)){
-                            $rno = $rfin - $rinicio;
-                        }
-                        if (($rinicio < 6)&&($rfin>0)){
-                            $rno = $rfin ;
-                        }
-                        if (($rinicio >= 0)&&($rfin<=6)){
-                            $rno = $rfin - $rinicio;
-                        }
-                    }
-                    //hedf
-                    if ($numdia == 0){
-                        $dtsc=$h['ha'];
-                        if (($rinicio >= 6)&& ($rfin <= 21)){
-                            $hedf = $h['ha'];  
-                        }
-                        if (($rinicio < 6)&& ($rfin <= 21)){
-                            $henf = 6-$rinicio;
-                            $hedf = $h['ha'] - $henf;  
-                        }
-                        if (($rinicio >= 6)&& ($rfin > 21)){
-                            $henf = 21-$rfin;
-                            $hedf = $h['ha'] - $henf;  
-                        }
-                        if (($rinicio < 6 )&& ($rfin > 21)){
-                            $henf = (6-$rinicio) + (21-$rfin);
-                            $hedf = $h['ha'] - $henf;  
-                        }
-                        //rnd
-                        if (($rinicio < 21)&&($rfin>21)){
-                            $rnd = $rfin - 21;
-                        }
-                        if (($rinicio >= 21)&&($rfin<=24)){
-                            $rnd = $rfin - $rinicio;
-                        }
-                        if (($rinicio < 6)&&($rfin>0)){
-                            $rnd = $rfin ;
-                        }
-                        if (($rinicio >= 0)&&($rfin<=6)){
-                            $rnd = $rfin - $rinicio;
+                    if ($extra !=1){      
+                        
+                        if ($numdia > 0){
+                            $sb = $h['ha'];    
+                            
+                            //hedo
+                            if (($rfin > $fin) && ($rfin <= 21)){
+                                $sb = $sb  - ($rfin-$fin);
+                                $hedo = $rfin - $fin;  
+                            }
+                            if (($rinicio < $inicio ) && ($rinicio >= 6)){
+                                $sb = $sb - ($inicio-$rinicio);
+                                $hedo = ($inicio-$rinicio);
+                            }
+                            
+                            //heno
+                            if (($rfin > $fin) && ($rfin > 21)){
+                                $sb = $sb - ($rfin-$fin);
+                                $hedo =  (21-$fin);
+                                $heno = ($rfin - $fin) - $hedo;
+                            }
+                            if (($rinicio < $inicio ) && ($rinicio < 6)){
+                                $sb = $sb - ($inicio-$rinicio);
+                                $hedo = (6-$rinicio);
+                                $heno = ($inicio-$rinicio) - $hedo;
+                            }
+                            //rno
+                            if (($rinicio < 21)&&($rinicio > 6)&&($rfin>21)&&($rfin<=24)){
+                                $rno = $rfin - 21;
+                            }
+                            if (($rinicio >= 21)&&($rfin<=24)){
+                                $rno = $rfin - $rinicio;
+                            }
+                            if (($rinicio >=0 )&&($rinicio <=6 )&&($rfin>6)){
+                                $rno = 6 - $rinicio;
+                            }
+                            if (($rinicio >= 0)&&($rfin<=6)){
+                                $rno = $rfin - $rinicio;
+                            }
                         }
                         
+                        //hedf
+                        if ($numdia == 0){
+                            $dtsc=$h['ha'];
+                            if (($rinicio >= 6)&& ($rfin <= 21)){
+                                $hedf = $h['ha'];  
+                            }
+                            if (($rinicio < 6)&& ($rfin <= 21)){
+                                $henf = 6-$rinicio;
+                                $hedf = $h['ha'] - $henf;  
+                            }
+                            if (($rinicio >= 6)&& ($rfin > 21)){
+                                $henf = $rfin-21;
+                                $hedf = $h['ha'] - $henf;  
+                            }
+                            if (($rinicio < 6 )&& ($rfin > 21)){
+                                $henf = (6-$rinicio) + (21-$rfin);
+                                $hedf = $h['ha'] - $henf;  
+                            }
+                            //rnd
+                            if (($rinicio < 21)&&($rinicio > 6)&&($rfin>21)&&($rfin<=24)){
+                                $rnd = $rfin - 21;
+                            }
+                            if (($rinicio >= 21)&&($rfin<=24)){
+                                $rnd = $rfin - $rinicio;
+                            }
+                            if (($rinicio >=0 )&&($rinicio <=6 )&&($rfin>6)){
+                                $rnd = 6 - $rinicio;
+                            }
+                            if (($rinicio >= 0)&&($rfin<=6)){
+                                $rnd = $rfin - $rinicio;
+                            }
+                            
+                            
+                        }
+
                     }
+                    if($extra==1){
+                        if ($numdia > 0){
+
+                            if (($rfin >= 6) && ($rfin <= 21)){
+                                $hedo = $h['ha']; 
+                            }
+                            else{
+                                $heno = $h['ha']; 
+                            }   
+                            
+                            //rno
+                            if (($rinicio < 21)&&($rinicio > 6)&&($rfin>21)&&($rfin<=24)){
+                                $rno = $rfin - 21;
+                            }
+                            if (($rinicio >= 21)&&($rfin<=24)){
+                                $rno = $rfin - $rinicio;
+                            }
+                            if (($rinicio >=0 )&&($rinicio <=6 )&&($rfin>6)){
+                                $rno = 6 - $rinicio;
+                            }
+                            if (($rinicio >= 0)&&($rfin<=6)){
+                                $rno = $rfin - $rinicio;
+                            } 
+                        }
+                        if ($numdia == 0){
+                            if (($rfin >= 6) && ($rfin <= 21)){
+                                $hedf = $h['ha']; 
+                            }
+                            else{
+                                $henf = $h['ha']; 
+                            }   
+                            //rnd
+                            if (($rinicio < 21)&&($rinicio > 6)&&($rfin>21)&&($rfin<=24)){
+                                $rnd = $rfin - 21;
+                            }
+                            if (($rinicio >= 21)&&($rfin<=24)){
+                                $rnd = $rfin - $rinicio;
+                            }
+                            if (($rinicio >=0 )&&($rinicio <=6 )&&($rfin>6)){
+                                $rnd = 6 - $rinicio;
+                            }
+                            if (($rinicio >= 0)&&($rfin<=6)){
+                                $rnd = $rfin - $rinicio;
+                            }
+                        }
+                    }
+
 
                     if(($tecnico == "")||($tecnico != "" && $tecnico ==$h['trabajador'])) {
                         $auxilio=round((($emp->auxilio)/240)*$sb,1);
