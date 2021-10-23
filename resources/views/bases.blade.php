@@ -47,12 +47,14 @@
                     </div>
                     <div class="tab-pane container fade" id="proyectos">
                         <br>
+                        @if ($authpr == 1)
                         <button class="btn btn-primary" onclick="nuevoproyecto()">Nuevo Proyecto</button><br><br>
                         @include('busquedaProy')
                         <br>
                         <div id ="tp">
-                            @include('tablaproyecto')
+                             @include('tablaproyecto')
                         </div>
+                        @endif
                     </div>
                 </div>
 

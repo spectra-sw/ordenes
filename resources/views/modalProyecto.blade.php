@@ -56,7 +56,14 @@
                     <label for="lider">CIUDAD</label>
                     <input type="text" class="form-control"  id="ciudad" name="ciudad">
                 </div>
-                
+                <div class="form-group">
+                    <label for="co">CENTRO DE OPERACIÓN</label>
+                    <input type="text" class="form-control"  id="co" name="co">
+                </div>
+                <div class="form-group">
+                    <label for="un">UNIDAD DE NEGOCIO</label>
+                    <input type="text" class="form-control"  id="un" name="un">
+                </div>
                 <button type="button" class="btn btn-primary" onclick="guardarproy()">Guardar</button>
 
             </form>

@@ -10,9 +10,9 @@ class Programacion extends Model
     use HasFactory;
 
     protected $table = 'programacion';
-    public $timestamps = false;
+    public $timestamps = true;
     protected $fillable = [
-         'cc','fecha','proyecto','responsable','observacion','hi','hf','grupo'
+         'cc','fecha','proyecto','responsable','observacion','hi','hf','grupo','extra'
     ];
 
     public function empleado()

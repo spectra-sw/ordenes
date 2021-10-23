@@ -137,6 +137,13 @@
                       <div class="col-4 col-md-2 "><input type="number" name="mf" id="mf" min="0" max="59" class="form-control"></div>
                     </div>
                 </div>
+                <br>
+                <div class="form-group">
+                  
+                    <div class="row">
+                      <div class="col-4 col-md-4">Tiempo extra <input type="checkbox" name="extra" ></div>
+                    </div>
+                </div>
                 <button type="button" class="btn btn-primary" onclick="guardarprog()">Guardar</button>
 
             </form>

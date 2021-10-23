@@ -68,6 +68,11 @@ class PagesController extends Controller
     }
     public function bases(){
         $tipo = session('tipo');
+        $user = session('user');
+        $authpr=0;
+        if (($user ==32)||($user ==31)||($user ==82)||($user ==141)){
+            $authpr=1;
+        }
         //dd($tipo);
         if ($tipo ==0){
             $emp = Empleado::orderBy('apellido1','asc')->get();
@@ -80,7 +85,8 @@ class PagesController extends Controller
                 'cdc' => $cdc,
                 'clientes' => $clientes,
                 'proyectos' => $proyectos,
-                'horarios' => $horarios
+                'horarios' => $horarios,
+                'authpr' => $authpr
             ]);
         }
         else{
@@ -480,6 +486,7 @@ class PagesController extends Controller
                     $horasc->put('Hf',$h->hf);
                     $horasc->put('Ht',$h->ht);
                     $horasc->put('Ha',$h->ha);
+                    $horasc->put('Autorizada',$h->autorizada);
                     $horast->push($horasc);
                 }
                 $pl= Planificacion::where('ordenes_id',$o['id'])->where('dias_id',$d['id'])->get();      
@@ -681,7 +688,9 @@ class PagesController extends Controller
           ->update(['autorizada_por' => $autorizada]);
         
         $h=Hora::where('id', $request->id) 
-          ->update(['ha' => $request->valor]);
+          ->update(['ha' => $request->valor,
+                    'autorizada' =>  date('Y-m-d H:i:s')
+                ]);
 
           $dia = collect([]);
           $horas = Hora::where('ordenes_id',$datos->ordenes_id)->where('dias_id',$datos->dias_id)->get();      
@@ -694,6 +703,7 @@ class PagesController extends Controller
               $horasc->put('Hf',$h->hf);
               $horasc->put('Ht',$h->ht);
               $horasc->put('Ha',$h->ha);
+              $horasc->put('Autorizada',$h->autorizada);
               $horast->push($horasc);
           }
           $dia->put('Horas',$horast);
@@ -735,6 +745,10 @@ class PagesController extends Controller
         $hi = $request->hi.":".$request->mi;
         $hf = $request->hf.":".$request->mf;
         //dd($hi." ".$hf);
+        $extra=0;
+        if($request->extra){
+            $extra=1;
+        }
         $grupo = Empleado::where('cc',$request->cc)->first()->ciudad;
         //dd($grupo);
         $p = Programacion::create([
@@ -745,7 +759,8 @@ class PagesController extends Controller
             'observacion' => $request->observaciones,
             'hi' => $hi,
             'hf' => $hf,
-            'grupo' => $grupo   
+            'grupo' => $grupo  ,
+            'extra' => $extra 
         ]);
        // dd($p);
         return "Programacion creada";
@@ -1020,16 +1035,32 @@ class PagesController extends Controller
         return "Empleado creado";
     }
     public function nuevoproy(Request $request){
-        $e = Proyecto::create([
-            'codigo' => $request->codigo,
-            'descripcion' => $request->descripcion,
-            'cliente_id' => $request->cliente,
-            'sistema' => $request->sistema,
-            'subportafolio' => $request->subportafolio,
-            'director' => $request->director,
-            'lider' => $request->lider,
-            'ciudad' => $request->ciudad,
-        ]);
+        if(Proyecto::where('codigo',$request->codigo)->exists()){
+            return "Ya existe un proyecto con ese código";
+        }
+        else{
+            $e = Proyecto::create([
+                'codigo' => $request->codigo,
+                'descripcion' => $request->descripcion,
+                'cliente_id' => $request->cliente,
+                'sistema' => $request->sistema,
+                'subportafolio' => $request->subportafolio,
+                'director' => $request->director,
+                'lider' => $request->lider,
+                'ciudad' => $request->ciudad,
+            ]);
+            $c =  Cdc::create([
+                'codigo' => $request->codigo,
+                'descripcion' => $request->descripcion,
+                'centro_operacion' => $request->co,
+                'unidad_negocio' => $request->un,
+                'responsable' => '',
+                'mayor' => 0,
+                'grupo' => 'CP',
+                'observaciones' => '',
+
+            ]);
+        }
 
         return "Proyecto creado";
     }

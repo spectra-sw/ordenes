@@ -11,6 +11,8 @@
         <th onclick="ordenarc('descripcion')" style="cursor:pointer">OBSERVACION</th>
         <th>ESTADO</th>
         <th>GRUPO</th>
+        <th>EXTRA</th>
+        <th>CREACION</th>
         
       </tr>
     </thead>
@@ -37,6 +39,15 @@
         <td><img src="{{ URL::asset('img/green.png') }}" width="50%"></td>
         @endif
         <td>{{ $p->grupo }}</td>
+        @if ($p->extra==0)
+        <td>No</td>
+        @endif
+        @if ($p->extra==1)
+        <td>Si</td>
+        @endif
+        <td>
+        {{ $p->created_at}}
+        </td>
         <td>
             <select class="form-control" id="{{ $p->id }}" onchange="accionesprog(this.value,this.id)">
             <option></option>
@@ -44,6 +55,8 @@
             <option value="2">Eliminar</option>
         </select>
         </td>
+
+        
         
       </tr>
     @endforeach 

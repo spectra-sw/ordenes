@@ -957,6 +957,7 @@ function guardarprog(){
     })
     if (band==0){
         data=$( "#formProg" ).serialize(); 
+        console.log(data);
         url = '/nuevaprog'
         $.ajax({
                 url: url,
