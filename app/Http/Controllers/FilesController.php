@@ -137,6 +137,7 @@ class FilesController extends Controller
                             if (($rinicio >= 0)&&($rfin<=6)){
                                 $rno = $rfin - $rinicio;
                             }
+                           
                         }
                        
                         //hedf

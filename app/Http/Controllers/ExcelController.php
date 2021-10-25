@@ -60,6 +60,7 @@ class ExcelController extends Controller
             $centro = Cdc::where('codigo',$o->proyecto)->first();
 
             foreach($dias as $d){
+                $extra=0;
                 $horas = Hora::where('ordenes_id',$o->ordenes_id)->where('dias_id',$d['id'])->get();
                 //dd($horas);
                 $c = new Carbon($d['fecha']);
