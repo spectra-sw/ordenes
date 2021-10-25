@@ -542,7 +542,7 @@ class PagesController extends Controller
                 $horas = Hora::where('ordenes_id',$o['id'])->where('dias_id',$d['id'])->get();      
                 $horast=collect([]);
 
-                dd($horas);
+                //dd($horas);
                 foreach($horas as $h){
                     $horasc=collect([]);
                     $horasc->put('id',$h->id);
