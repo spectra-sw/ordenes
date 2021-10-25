@@ -66,7 +66,7 @@ class FilesController extends Controller
                 $cont=1;
                 $ant =0;
                 foreach($horas as $h){
-                    
+                    $extra=0;
                     $inicio = $fin =$rinicio=$rfin=0;
                     if ($ant==$h['trabajador']){
                         $cont = $cont+1;
@@ -96,7 +96,8 @@ class FilesController extends Controller
                     //dd($rfin);
                     $rfin = intval($rfin[0]) + round(floatval($rfin[1]/60),1);
                      
-                    $sb = $hedo = $heno=$hedf=$henf=$rno=$dtsc=$rnd= 0;
+                    $sb = $hedo = $heno= $hedf = $henf = $rno = $dtsc = $rnd = 0;
+                   
                     if ($extra !=1){      
                         
                         if ($numdia > 0){
@@ -137,9 +138,10 @@ class FilesController extends Controller
                                 $rno = $rfin - $rinicio;
                             }
                         }
-                        
+                       
                         //hedf
                         if ($numdia == 0){
+                            
                             $dtsc=$h['ha'];
                             if (($rinicio >= 6)&& ($rfin <= 21)){
                                 $hedf = $h['ha'];  
@@ -169,12 +171,15 @@ class FilesController extends Controller
                             if (($rinicio >= 0)&&($rfin<=6)){
                                 $rnd = $rfin - $rinicio;
                             }
-                            
+                           
                             
                         }
-
+                        
+                        
                     }
+                    
                     if($extra==1){
+                        
                         if ($numdia > 0){
 
                             if (($rfin >= 6) && ($rfin <= 21)){
@@ -220,7 +225,7 @@ class FilesController extends Controller
                             }
                         }
                     }
-
+                    
                     if(($tecnico == "")||($tecnico != "" && $tecnico ==$h['trabajador'])) {
                         //dd($extra);
 
