@@ -22,10 +22,12 @@
                 <div class="tab-content">
                     <div class="tab-pane container active" id="emp">
                         <br>
+                        @if ($authpr == 1)
                         <button class="btn btn-primary" onclick="nuevoemp()">Nuevo Empleado</button><br><br>
                         <div id ="te">
                             @include('tablaemp')
                         </div>
+                        @endif
                     </div>
                     <div class="tab-pane container fade" id="centros">
                       <br>
@@ -47,14 +49,14 @@
                     </div>
                     <div class="tab-pane container fade" id="proyectos">
                         <br>
-                        @if ($authpr == 1)
+                      
                         <button class="btn btn-primary" onclick="nuevoproyecto()">Nuevo Proyecto</button><br><br>
                         @include('busquedaProy')
                         <br>
                         <div id ="tp">
                              @include('tablaproyecto')
                         </div>
-                        @endif
+                       
                     </div>
                 </div>
 
