@@ -11,6 +11,7 @@ use App\Models\Empleado;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\NominaExport;
 use App\Models\Detalleh;
+use App\Models\Festivo;
 use DB;
 use Carbon\Carbon;
 use App\Models\Programacion;
