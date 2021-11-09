@@ -64,6 +64,7 @@ class ExcelController extends Controller
                 $horas = Hora::where('ordenes_id',$o->ordenes_id)->where('dias_id',$d['id'])->get();
                 //dd($horas);
                 $c = new Carbon($d['fecha']);
+                $festivo = $this->consfestivo($d['fecha']);
                 $numdia = $c->dayOfWeek;
                 //dd($numdia);
                 $cont=1;
@@ -143,7 +144,7 @@ class ExcelController extends Controller
                         }
                         
                         //hedf
-                        if ($numdia == 0){
+                        if (($numdia == 0)||($festivo=="si")){
                             $dtsc=$h['ha'];
                             if (($rinicio >= 6)&& ($rfin <= 21)){
                                 $hedf = $h['ha'];  

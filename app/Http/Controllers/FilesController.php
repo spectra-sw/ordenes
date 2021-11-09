@@ -10,6 +10,7 @@ use App\Models\Cdc;
 use App\Models\Empleado;
 use App\Models\Detalleh;
 use App\Models\Programacion;
+use App\Models\Festivo;
 use DB;
 use Carbon\Carbon;
 class FilesController extends Controller
@@ -61,6 +62,7 @@ class FilesController extends Controller
                 $horas = Hora::where('ordenes_id',$o->ordenes_id)->where('dias_id',$d['id'])->get();
                 //dd($horas);
                 $c = new Carbon($d['fecha']);
+                $festivo = $this->consfestivo($d['fecha']);
                 $numdia = $c->dayOfWeek;
                 //dd($numdia);
                 $cont=1;
@@ -141,7 +143,7 @@ class FilesController extends Controller
                         }
                        
                         //hedf
-                        if ($numdia == 0){
+                        if (($numdia == 0)||($festivo=="si")){
                             
                             $dtsc=$h['ha'];
                             if (($rinicio >= 6)&& ($rfin <= 21)){
@@ -556,5 +558,11 @@ class FilesController extends Controller
             'datos' => $datos,
         ]);
         
+    }
+    public function consfestivo($fecha){     
+        if (Festivo::where('fecha',$fecha)->exists()){
+            return 'si';
+        }
+        return 'no';
     }
 }
