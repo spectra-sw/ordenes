@@ -444,4 +444,10 @@ class ExcelController extends Controller
         $datos = $datos->sortBy(['codigo del empleado','fecha movimiento']);
         return Excel::download(new NominaExport($datos), 'nomina.xlsx');
     }
+    public function consfestivo($fecha){     
+        if (Festivo::where('fecha',$fecha)->exists()){
+            return 'si';
+        }
+        return 'no';
+    }
 }
