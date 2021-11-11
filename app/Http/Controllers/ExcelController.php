@@ -178,6 +178,9 @@ class ExcelController extends Controller
                             
                             
                         }
+                        if ($festivo=="si"){
+                            $dtsc=$sb=0;
+                        }  
 
                     }
                     if($extra==1){
