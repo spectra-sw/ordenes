@@ -177,7 +177,9 @@ class FilesController extends Controller
                            
                             
                         }
-                        
+                        if ($festivo=="si"){
+                            $dtsc=$sb=0;
+                        }  
                         
                     }
                     
