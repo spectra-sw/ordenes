@@ -70,7 +70,7 @@ class PagesController extends Controller
         $tipo = session('tipo');
         $user = session('user');
         $authpr=0;
-        if (($user ==32)||($user ==31)||($user ==82)||($user ==141)){
+        if (($user ==32)||($user ==31)||($user ==82)||($user ==141)||($user ==187)){
             $authpr=1;
         }
         //dd($tipo);
