@@ -753,19 +753,32 @@ class PagesController extends Controller
         }
         $grupo = Empleado::where('cc',$request->cc)->first()->ciudad;
         //dd($grupo);
-        $p = Programacion::create([
-            'cc' => $request->cc,
-            'fecha' => $request->fecha,
-            'proyecto' => $request->proyecto,
-            'responsable' => $request->responsable,
-            'observacion' => $request->observaciones,
-            'hi' => $hi,
-            'hf' => $hf,
-            'grupo' => $grupo  ,
-            'extra' => $extra 
-        ]);
-       // dd($p);
-        return "Programacion creada";
+
+        $existe = Programacion::where('cc',$request->cc)
+                              ->where('fecha',$request->fecha)
+                              ->where('proyecto',$request->proyecto)
+                              ->where('hi',$hi)
+                              ->where('hf',$hf)
+                              ->exists();
+       
+        if($existe){
+            return "Programacion ya existe";
+        }
+        else{                     
+            $p = Programacion::create([
+                'cc' => $request->cc,
+                'fecha' => $request->fecha,
+                'proyecto' => $request->proyecto,
+                'responsable' => $request->responsable,
+                'observacion' => $request->observaciones,
+                'hi' => $hi,
+                'hf' => $hf,
+                'grupo' => $grupo  ,
+                'extra' => $extra 
+            ]);
+        // dd($p);
+            return "Programacion creada";
+        }
     }
     public function actgprog(){
         $prog = Programacion::all();
@@ -946,6 +959,72 @@ class PagesController extends Controller
 
 
         return view('calendarioprog',[
+            'calendario' => $calendario,
+        ]);
+    }
+    public function calendariooc(Request $request){
+        $user = session('user');
+        $cc =  Empleado::where('id',$user)->first()->cc;
+        $oc =  DB::table('ocupacion')->where('cc',$cc);
+       
+        
+        if (($request->fechaInicioOcup !="")&&($request->fechaFinalOcup !="")){
+            $oc = $oc->where('dia','>=',$request->fechaInicioOcup)->where('dia','<=',$request->fechaFinalOcup);
+        }
+        
+       
+        $ocs = $oc->get();
+        dd($oc);
+       
+        $reporte  = collect([]);
+        foreach($ocs as $oc){
+            $linea = collect([]);
+            foreach ($fechas as $f){  
+               
+                $e = Empleado::where('cc',$c->cc)->first();
+                
+                $nombre= $e->nombre. " ". $e->apellido1;
+
+                $p = Programacion::where('cc',$c->cc)->where('fecha',$f->fecha)->first();
+                
+
+                $col = collect([]);
+                if($p){
+                    $re = Empleado::where('id',$p->responsable)->first();
+                    $responsable = $re->nombre. " ". $re->apellido1;
+                    $col->put('fecha',$f->fecha);
+                    $col->put('nombre',$nombre);
+                    $col->put('proyecto',$p->proyecto."-".$p->datosproyecto->cliente->cliente );
+                    $col->put('responsable',$responsable);
+                    $col->put('inicio',$p->hi);
+                    $col->put('fin',$p->hf);
+                    $col->put('observacion',$p->observacion);
+                    $col->put('grupo',$p->grupo);
+                    }
+                else{
+                    $col->put('fecha','');
+                    $col->put('nombre','');
+                    $col->put('proyecto','');
+                    $col->put('responsable','');
+                    $col->put('inicio','');
+                    $col->put('fin','');
+                    $col->put('observacion','');
+                    $col->put('grupo','');
+
+                }
+                //dd($col);
+                $linea->push($col);
+
+            }
+            $calendario->push($linea);
+        }
+        
+        
+       // dd($calendario);
+        
+
+
+        return view('calendariooc',[
             'calendario' => $calendario,
         ]);
     }

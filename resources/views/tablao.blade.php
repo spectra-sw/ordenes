@@ -35,10 +35,15 @@
 
         <td>{{ $dato->auth !=0 ? 'Si' : 'No'}}</td>
         @if (session('tipo')==0)
-        <td><button class="btn btn-primary btn-sm" type="button" onclick="verorden({{ $dato->ordenes_id }})">Autorizar</button</td>
+        <td><button class="btn btn-primary btn-sm" type="button" onclick="verorden({{ $dato->ordenes_id }})">Autorizar</button></td>
         @endif
         
-        <td><button class="btn btn-primary btn-sm" type="button" onclick="editorden({{ $dato->ordenes_id }})">Editar</button</td>
+        @if  ($dato->auth ==0 )
+        <td><button class="btn btn-primary btn-sm" type="button" onclick="editorden({{ $dato->ordenes_id }})">Editar</button></td>
+        @else
+        <td></td>
+        @endif
+        
        
       </tr>
     @endforeach 

@@ -1144,4 +1144,16 @@ function filtrarcliente(){
             }
     });   
 }
+function consultaroc(){
+    data=$( "#formConsultaOcupacion" ).serialize(); 
+    url = '/calendariooc'
+    $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) {
+                $("#tablaocupacion").html(data);
+            }
+    });   
+}
 

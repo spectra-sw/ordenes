@@ -95,6 +95,7 @@ Route::get('/editarprog',[PagesController::class,'editarprog']);
 Route::get('/eliminarprog',[PagesController::class,'eliminarprog']);
 Route::get('/filtrarprog',[PagesController::class,'filtrarprog']);
 Route::get('/calendarioprog',[PagesController::class,'calendarioprog']);
+Route::get('/calendariooc',[PagesController::class,'calendariooc']);
 Route::get('/cargarprog',[PagesController::class,'cargarprog']);
 Route::get('/actgprog',[PagesController::class,'actgprog']);
 
