@@ -239,6 +239,23 @@ class ExcelController extends Controller
                         else{
                             $total[$h['trabajador']]= $h['ha'];
                         }
+                       if (array_key_exists($h['trabajador'], $total) ) {
+                            if(($total[$h['trabajador']]>47.5)&& ($hedf>0)&&($centro->codigo==9933)){
+                                
+                                $hedf2=$total[$h['trabajador']]-47.5;
+                                $sb=$hedf-$hedf2;
+                                
+                                $hedf=$hedf2;
+                            }
+                            
+                            if(($total[$h['trabajador']]<47.5)&& ($hedf>0)&&($centro->codigo==9933)){
+                                    $sb = $h['ha'];
+                                   // $dtsc=$h['ha']-$rnd;
+                                    $dtsc=0;
+                                    $hedf=0;
+                                    $henf=0;
+                            }
+                       }
 
                    
                     //horas
