@@ -257,6 +257,8 @@ class FilesController extends Controller
                                     $dtsc=0;
                                     $hedf=0;
                                     $henf=0;
+                                    $hedo=0;
+                                    $heno=0;
                             }
                             
                         }
