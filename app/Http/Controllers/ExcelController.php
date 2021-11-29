@@ -44,7 +44,7 @@ class ExcelController extends Controller
         if(($inicio!=" 00:00:00")&&($fin!=" 11:59:59")){
                 $o=$o->where('dias.fecha','>=',$inicio)->where('dias.fecha','<=',$fin);
         }
-        $o=$o->orderBy('ordenes.created_at','desc')->get();
+        $o=$o->orderBy('dias.fecha','asc')->get();
        // $o=$o->orderBy('created_at','desc')->get();
 
         //dd($o);

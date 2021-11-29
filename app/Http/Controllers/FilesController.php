@@ -42,7 +42,7 @@ class FilesController extends Controller
         if(($inicio!=" 00:00:00")&&($fin!=" 11:59:59")){
                 $o=$o->where('dias.fecha','>=',$inicio)->where('dias.fecha','<=',$fin);
         }
-        $o=$o->orderBy('ordenes.created_at','desc')->get();
+        $o=$o->orderBy('dias.fecha','asc')->get();
        // $o=$o->orderBy('created_at','desc')->get();
 
         //dd($o);
@@ -242,13 +242,17 @@ class FilesController extends Controller
                         else{
                             $total[$h['trabajador']]= $h['ha'];
                         }
+                       
                        if (array_key_exists($h['trabajador'], $total) ) {
-                            if(($total[$h['trabajador']]>47.5)&& ($hedf>0)&&($centro->codigo==9933)){
-                                
+                           
+                            if(($total[$h['trabajador']]>47.5)&&($centro->codigo==9933)){
+                               // dd($sb);
                                 $hedf2=$total[$h['trabajador']]-47.5;
-                                $sb=$hedf-$hedf2;
-                                
                                 $hedf=$hedf2;
+                                $sb=$sb-$hedf;
+                                
+                               
+                               
                             }
                             
                             if(($total[$h['trabajador']]<47.5)&&($centro->codigo==9933)){

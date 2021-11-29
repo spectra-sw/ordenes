@@ -112,7 +112,7 @@ class SearchController extends Controller
         if(($inicio!=" 00:00:00")&&($fin!=" 11:59:59")){
                 $o=$o->where('dias.fecha','>=',$inicio)->where('dias.fecha','<=',$fin);
         }
-        $o=$o->distinct()->orderBy('ordenes.created_at','desc')->get();
+        $o=$o->distinct()->orderBy('dias.fecha','desc')->get();
         //dd($o);
 
         foreach ($o as $or){
