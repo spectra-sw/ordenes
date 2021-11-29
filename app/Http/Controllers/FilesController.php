@@ -251,7 +251,7 @@ class FilesController extends Controller
                                 $hedf=$hedf2;
                             }
                             
-                            if(($total[$h['trabajador']]<47.5)&& ($hedf>0)&&($centro->codigo==9933)){
+                            if(($total[$h['trabajador']]<47.5)&&($centro->codigo==9933)){
                                     $sb = $h['ha'];
                                    // $dtsc=$h['ha']-$rnd;
                                     $dtsc=0;
