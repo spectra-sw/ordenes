@@ -184,7 +184,7 @@ class ExcelController extends Controller
 
                     }
                     if($extra==1){
-                        if ($numdia > 0){
+                        if (($numdia > 0)&&($festivo!="si")){
 
                             if (($rfin >= 6) && ($rfin <= 21)){
                                 $hedo = $h['ha']; 
@@ -207,7 +207,7 @@ class ExcelController extends Controller
                                 $rno = $rfin - $rinicio;
                             } 
                         }
-                        if ($numdia == 0){
+                        if (($numdia == 0)||($festivo=="si")){
                             if (($rfin >= 6) && ($rfin <= 21)){
                                 $hedf = $h['ha']; 
                             }
