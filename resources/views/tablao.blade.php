@@ -38,11 +38,9 @@
         <td><button class="btn btn-primary btn-sm" type="button" onclick="verorden({{ $dato->ordenes_id }})">Autorizar</button></td>
         @endif
         
-        @if  ($dato->auth ==0 )
+        
         <td><button class="btn btn-primary btn-sm" type="button" onclick="editorden({{ $dato->ordenes_id }})">Editar</button></td>
-        @else
-        <td></td>
-        @endif
+       
         
        
       </tr>
