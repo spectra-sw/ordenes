@@ -686,6 +686,17 @@ class PagesController extends Controller
         if ($autorizada ==0){
             return 'login';
         }
+        $hi = explode(":", $datos->hi);
+        $hf = explode(":", $datos->hf);
+        
+        $hi = intval($hi[0]) + round(floatval($hi[1]/60),1);
+        $hf = intval($hf[0]) + round(floatval($hf[1]/60),1);
+        $tiempo = $hf-$hi;
+        //dd($tiempo);
+        if ($request->valor>$tiempo ){
+            return 'limite';
+        }
+
         $o=Orden::where('id', $datos->ordenes_id) 
           ->update(['autorizada_por' => $autorizada]);
         

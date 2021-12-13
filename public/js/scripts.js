@@ -319,12 +319,16 @@ function auto(id,dia){
         data: data,
         success: function(data) {
             //alert(data);
-            if (data == 'login'){
-                alert('Debe loguearse para poder autorizar horas');
-            }
-            else{
-                $data = $(data);
-                $(sdia).html($data);
+            if (data == 'limite'){
+                alert('No puede autorizar horas superiores al tiempo registrado');
+            }else{
+                if (data == 'login'){
+                    alert('Debe loguearse para poder autorizar horas');
+                }
+                else{
+                    $data = $(data);
+                    $(sdia).html($data);
+                }
             }
         }
     }); 
