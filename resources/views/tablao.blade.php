@@ -36,11 +36,15 @@
         <td>{{ $dato->auth !=0 ? 'Si' : 'No'}}</td>
         @if (session('tipo')==0)
         <td><button class="btn btn-primary btn-sm" type="button" onclick="verorden({{ $dato->ordenes_id }})">Autorizar</button></td>
-        
-        
-        
+        <td><button class="btn btn-primary btn-sm" type="button" onclick="editorden({{ $dato->ordenes_id }})">Editar</button></td>
+        @endif
+
+        @if (session('tipo')!=0)
+        @if ($dato->auth ==0)
+        <td></td>
         <td><button class="btn btn-primary btn-sm" type="button" onclick="editorden({{ $dato->ordenes_id }})">Editar</button></td>
        
+        @endif
         @endif
        
       </tr>
