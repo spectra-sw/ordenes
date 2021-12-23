@@ -106,11 +106,11 @@ class FilesController extends Controller
                             $sb = $h['ha'];    
                             
                             //hedo
-                            if (($rfin > $fin) && ($rfin <= 21) && ($sb > 47.5)){
+                            if (($rfin > $fin) && ($rfin <= 21)){
                                 $sb = $sb  - ($rfin-$fin);
                                 $hedo = $rfin - $fin;  
                             }
-                            if (($rinicio < $inicio ) && ($rinicio >= 6) && ($sb > 47.5)){
+                            if (($rinicio < $inicio ) && ($rinicio >= 6)){
                                 $sb = $sb - ($inicio-$rinicio);
                                 $hedo = ($inicio-$rinicio);
                             }
