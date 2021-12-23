@@ -31,7 +31,7 @@
                         <select class="form-control" id="area" name="area">
                                 <option value=""><option>
                                 @foreach ($areas  as $a)
-                                    <option value="{{ $a->id }}">{{ $a->area }}</option>
+                                    <option value="{{ $a->id }}" {{ $area == $a->id  ? 'selected' : ''}} >{{ $a->area }}</option>
                                 @endforeach
                         </select>
                     </div>

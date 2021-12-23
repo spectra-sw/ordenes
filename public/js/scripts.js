@@ -406,7 +406,11 @@ function login(){
                     //window.open('ordenes','_self');
                     window.open('menu','_self');
                 }
-                if ((data != 0)&&(data != 1)){
+                if (data == 10){
+                    //window.open('ordenes','_self');
+                    window.open('menu','_self');
+                }
+                if ((data != 0)&&(data != 1)&&(data != 10)){
                     $("#mensaje").html(data);
                     $("#alerta").css('display','block');
                 }

@@ -50,7 +50,7 @@ class PagesController extends Controller
         $tipo = session('tipo');
         $user = session('user');
         //dd($tipo);
-        if (($tipo ==0)||($tipo ==1)){
+        if (($tipo ==0)||($tipo ==1)||($tipo ==10)){
             $e = Empleado::where('id',$user)->first();
             $cc = $e->cc;
             $nombre = $e->nombre. " " . $e->apellido1;
@@ -985,50 +985,38 @@ class PagesController extends Controller
         
        
         $ocs = $oc->get();
-        dd($oc);
+        //dd($ocs);
+
        
-        $reporte  = collect([]);
-        foreach($ocs as $oc){
-            $linea = collect([]);
-            foreach ($fechas as $f){  
-               
-                $e = Empleado::where('cc',$c->cc)->first();
-                
-                $nombre= $e->nombre. " ". $e->apellido1;
+       
+        $calendario  = collect([]);
 
-                $p = Programacion::where('cc',$c->cc)->where('fecha',$f->fecha)->first();
-                
+        $inicio = new Carbon($request->fechaInicioOcup);
+        $fin = new Carbon($request->fechaFinalOcup);
 
-                $col = collect([]);
-                if($p){
-                    $re = Empleado::where('id',$p->responsable)->first();
-                    $responsable = $re->nombre. " ". $re->apellido1;
-                    $col->put('fecha',$f->fecha);
-                    $col->put('nombre',$nombre);
-                    $col->put('proyecto',$p->proyecto."-".$p->datosproyecto->cliente->cliente );
-                    $col->put('responsable',$responsable);
-                    $col->put('inicio',$p->hi);
-                    $col->put('fin',$p->hf);
-                    $col->put('observacion',$p->observacion);
-                    $col->put('grupo',$p->grupo);
-                    }
-                else{
-                    $col->put('fecha','');
-                    $col->put('nombre','');
-                    $col->put('proyecto','');
-                    $col->put('responsable','');
-                    $col->put('inicio','');
-                    $col->put('fin','');
-                    $col->put('observacion','');
-                    $col->put('grupo','');
+        while ($inicio <= $fin){
+           
+            $col = collect([]);
 
-                }
-                //dd($col);
-                $linea->push($col);
+            $col->put('fecha',$inicio->toDateString());
+            $col->put('registro','');
 
+            $oc = Ocupacion::where('cc',$cc)->where('dia','=',$inicio)->count();
+
+            if ($oc>0){
+                $col->put('registro','OK');
             }
-            $calendario->push($linea);
+            else{
+                $col->put('registro','SR'); 
+            }
+           
+            $calendario->push($col);
+            $inicio = $inicio->addDay();
+
         }
+        //dd($calendario);
+
+       
         
         
        // dd($calendario);
@@ -1036,7 +1024,7 @@ class PagesController extends Controller
 
 
         return view('calendariooc',[
-            'calendario' => $calendario,
+            'calendariooc' => $calendario,
         ]);
     }
     public function filtrarproy(Request $request){
@@ -1369,10 +1357,15 @@ class PagesController extends Controller
         $areas = Area::all();
         $actividades = Actividad::all();
         $proyectos = Proyecto::orderBy('codigo','asc')->get();
+        $u = session('user');
+        $area = Empleado::where('id',$u)->first()->area;
+        
         return view('ocupacion',[
             'areas' => $areas,
             'actividades' => $actividades,
-            'proyectos' => $proyectos
+            'proyectos' => $proyectos,
+            'area' => $area
+
         ]);
     }
     public function rocupacion(Request $request){
@@ -1382,6 +1375,12 @@ class PagesController extends Controller
         $existe = ocupacion::where('cc',$cc)->where('dia',$request->dia)->exists();
         $hoy = Carbon::now();
         $dia = new Carbon($request->dia);
+        if (Festivo::where('fecha',$request->dia)->exists()){
+            return 'La fecha seleccionada es un día festivo';
+        }
+        if ($request->horas == 0 && $request->min == 0){
+            return "El tiempo registrado no puede ser 0";
+        }
         if ($dia > $hoy){
             return "No es posible registrar una fecha posterior";
         }
