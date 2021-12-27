@@ -68,6 +68,7 @@
                         <a class="dropdown-item" href="consultas">CONSULTAS</a>
                         <a class="dropdown-item" href="bases">BASES DE DATOS</a>
                         <a class="dropdown-item" href="programacion">PROGRAMACION</a>
+                        <a class="dropdown-item" href="rocupacion">OCUPACIÓN</a>
                         </div>
                     </li>
                     @endif

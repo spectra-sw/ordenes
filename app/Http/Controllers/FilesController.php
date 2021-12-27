@@ -233,8 +233,6 @@ class FilesController extends Controller
                     
                     if(($tecnico == "")||($tecnico != "" && $tecnico ==$h['trabajador'])) {
                         //dd($extra);
-
-
                         $auxilio=round((($emp->auxilio)/240)*$sb,1);
                         if (array_key_exists($h['trabajador'], $total) ) {
                             $total[$h['trabajador']] = $total[$h['trabajador']] + $h['ha'];
@@ -244,15 +242,18 @@ class FilesController extends Controller
                         }
                        
                        if (array_key_exists($h['trabajador'], $total) ) {
-                           
                             if(($total[$h['trabajador']]>47.5)&&($centro->codigo==9933)){
                                // dd($sb);
-                                $hedf2=$total[$h['trabajador']]-47.5;
-                                $hedf=$hedf2;
-                                $sb=$sb-$hedf;
-                                
-                               
-                               
+                                if (($numdia == 0)){
+                                    $hedf2=$total[$h['trabajador']]-47.5;
+                                    $hedf=$hedf2;
+                                    $sb=$sb-$hedf;
+                                }
+                                else{
+                                    $hedo2=$total[$h['trabajador']]-47.5;
+                                    $hedo=$hedo2;
+                                    $sb=$sb-$hedo;
+                                }    
                             }
                             
                             if(($total[$h['trabajador']]<47.5)&&($centro->codigo==9933)){

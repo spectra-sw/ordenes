@@ -61,7 +61,6 @@ class ExcelController extends Controller
             $centro = Cdc::where('codigo',$o->proyecto)->first();
 
             foreach($dias as $d){
-                $extra=0;
                 $horas = Hora::where('ordenes_id',$o->ordenes_id)->where('dias_id',$d['id'])->get();
                 //dd($horas);
                 $c = new Carbon($d['fecha']);
@@ -71,8 +70,7 @@ class ExcelController extends Controller
                 $cont=1;
                 $ant =0;
                 foreach($horas as $h){
-                  
-                    
+                    $extra=0;
                     $inicio = $fin =$rinicio=$rfin=0;
                     if ($ant==$h['trabajador']){
                         $cont = $cont+1;
@@ -102,7 +100,8 @@ class ExcelController extends Controller
                     //dd($rfin);
                     $rfin = intval($rfin[0]) + round(floatval($rfin[1]/60),1);
                      
-                    $sb = $hedo = $heno=$hedf=$henf=$rno=$dtsc=$rnd= 0;
+                    $sb = $hedo = $heno= $hedf = $henf = $rno = $dtsc = $rnd = 0;
+                   
                     if ($extra !=1){      
                         
                         if ($numdia > 0){
@@ -142,10 +141,12 @@ class ExcelController extends Controller
                             if (($rinicio >= 0)&&($rfin<=6)){
                                 $rno = $rfin - $rinicio;
                             }
+                           
                         }
-                        
+                       
                         //hedf
                         if (($numdia == 0)||($festivo=="si")){
+                            
                             $dtsc=$h['ha'];
                             if (($rinicio >= 6)&& ($rfin <= 21)){
                                 $hedf = $h['ha'];  
@@ -175,15 +176,17 @@ class ExcelController extends Controller
                             if (($rinicio >= 0)&&($rfin<=6)){
                                 $rnd = $rfin - $rinicio;
                             }
-                            
+                           
                             
                         }
                         if ($festivo=="si"){
                             $dtsc=$sb=0;
                         }  
-
+                        
                     }
+                    
                     if($extra==1){
+                        
                         if (($numdia > 0)&&($festivo!="si")){
 
                             if (($rfin >= 6) && ($rfin <= 21)){
@@ -207,7 +210,7 @@ class ExcelController extends Controller
                                 $rno = $rfin - $rinicio;
                             } 
                         }
-                        if (($numdia == 0)||($festivo=="si")){
+                       if (($numdia == 0)||($festivo=="si")){
                             if (($rfin >= 6) && ($rfin <= 21)){
                                 $hedf = $h['ha']; 
                             }
@@ -229,9 +232,9 @@ class ExcelController extends Controller
                             }
                         }
                     }
-
-
+                    
                     if(($tecnico == "")||($tecnico != "" && $tecnico ==$h['trabajador'])) {
+                        //dd($extra);
                         $auxilio=round((($emp->auxilio)/240)*$sb,1);
                         if (array_key_exists($h['trabajador'], $total) ) {
                             $total[$h['trabajador']] = $total[$h['trabajador']] + $h['ha'];
@@ -239,13 +242,20 @@ class ExcelController extends Controller
                         else{
                             $total[$h['trabajador']]= $h['ha'];
                         }
+                       
                        if (array_key_exists($h['trabajador'], $total) ) {
-                            if(($total[$h['trabajador']]>47.5)&& ($hedf>0)&&($centro->codigo==9933)){
-                                
-                                $hedf2=$total[$h['trabajador']]-47.5;
-                                $sb=$hedf-$hedf2;
-                                
-                                $hedf=$hedf2;
+                            if(($total[$h['trabajador']]>47.5)&&($centro->codigo==9933)){
+                               // dd($sb);
+                                if (($numdia == 0)){
+                                    $hedf2=$total[$h['trabajador']]-47.5;
+                                    $hedf=$hedf2;
+                                    $sb=$sb-$hedf;
+                                }
+                                else{
+                                    $hedo2=$total[$h['trabajador']]-47.5;
+                                    $hedo=$hedo2;
+                                    $sb=$sb-$hedo;
+                                }    
                             }
                             
                             if(($total[$h['trabajador']]<47.5)&&($centro->codigo==9933)){
@@ -257,11 +267,13 @@ class ExcelController extends Controller
                                     $hedo=0;
                                     $heno=0;
                             }
-                       }
-
+                            
+                        }
+                        
                    
-                    //horas
+                        //horas
                         if ($sb>0){
+                            //dd($sb);
                             $linea=collect([]);
                             $linea->put('codigo del empleado', $h['trabajador']);
                             $linea->put('sucursal', '');
@@ -287,6 +299,8 @@ class ExcelController extends Controller
                             }
                         }
                         if ($hedo>0){
+                            //dd($hedo);
+                           
                             $linea=collect([]);
                             $linea->put('codigo del empleado', $h['trabajador']);
                             $linea->put('sucursal', '');
@@ -433,7 +447,9 @@ class ExcelController extends Controller
                     $cc = $d['codigo del empleado'];
                     $horas = $d['horas'];
                     $emp=Empleado::where('cc',$cc)->first();
+
                     if ($emp->auxilio>0){
+                
                         $auxilio= round(($emp->auxilio/$tsb[$cc])*$horas,1);
                         $linea=collect([]);
                         /*$linea->put('total',$total[$cc]);
@@ -459,6 +475,7 @@ class ExcelController extends Controller
                     }
                 }
             }
+           // dd($datos2);
             foreach ($datos2 as $d){
                 $datos->push($d);
             }
