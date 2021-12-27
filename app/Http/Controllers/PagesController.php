@@ -1372,7 +1372,7 @@ class PagesController extends Controller
         //dd($request);
         $u = session('user');
         $cc = Empleado::where('id',$u)->first()->cc;
-        $existe = ocupacion::where('cc',$cc)->where('dia',$request->dia)->exists();
+        $existe = Ocupacion::where('cc',$cc)->where('dia',$request->dia)->exists();
         $hoy = Carbon::now();
         $dia = new Carbon($request->dia);
         if (Festivo::where('fecha',$request->dia)->exists()){
