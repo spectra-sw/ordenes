@@ -3,7 +3,7 @@
     <thead>
       <tr >      
         <th>FECHA</th>
-        <th>RPORTE</th>      
+        <th>REPORTE</th>      
       </tr>
     </thead>
     <tbody>

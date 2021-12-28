@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Log;
 use Illuminate\Http\Request;
 use App\Models\Orden;
 use App\Models\Dia;
@@ -57,10 +57,10 @@ class FilesController extends Controller
             //dd($o->ordenes_id);
             $dias = Dia::where('id',$o->id)->get();
             $centro = Cdc::where('codigo',$o->proyecto)->first();
-
+            $bandextra=0;
             foreach($dias as $d){
                 $horas = Hora::where('ordenes_id',$o->ordenes_id)->where('dias_id',$d['id'])->get();
-                //dd($horas);
+                
                 $c = new Carbon($d['fecha']);
                 $festivo = $this->consfestivo($d['fecha']);
                 $numdia = $c->dayOfWeek;
@@ -79,7 +79,7 @@ class FilesController extends Controller
                     }
                     if(Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->exists()){
                         $progs=Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->take($cont)->get();
-                        
+                        //dd(Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->get());
                         foreach ($progs as $prog){
                             $detallei = explode(":", $prog->hi);
                             $inicio = intval($detallei[0]) + round(floatval($detallei[1]/60),1);
@@ -97,7 +97,13 @@ class FilesController extends Controller
                     $rfin = explode(":", $h->hf);
                     //dd($rfin);
                     $rfin = intval($rfin[0]) + round(floatval($rfin[1]/60),1);
-                     
+                    if($tecnico ==$h['trabajador']&&$d['fecha']=="2021-11-21"){
+                       // dd($horas);
+                       Log::info($d['fecha']." ".$inicio." ".$rinicio." ".$fin." ".$rfin);
+                       Log::info($total[$h['trabajador']]);
+                      // Log::info("Hedf(008):".$hedf." Henf(009):".$henf);
+                    }
+                   
                     $sb = $hedo = $heno= $hedf = $henf = $rno = $dtsc = $rnd = 0;
                    
                     if ($extra !=1){      
@@ -230,7 +236,10 @@ class FilesController extends Controller
                             }
                         }
                     }
-                    
+                    if($tecnico ==$h['trabajador']&&$d['fecha']=="2021-11-21"){
+                        // dd($horas);
+                        Log::info("Hedf(008):".$hedf." Henf(009):".$henf);
+                     }
                     if(($tecnico == "")||($tecnico != "" && $tecnico ==$h['trabajador'])) {
                         //dd($extra);
                         $auxilio=round((($emp->auxilio)/240)*$sb,1);
@@ -242,12 +251,20 @@ class FilesController extends Controller
                         }
                        
                        if (array_key_exists($h['trabajador'], $total) ) {
-                            if(($total[$h['trabajador']]>47.5)&&($centro->codigo==9933)){
+                            if(($total[$h['trabajador']]>47.5)&&($centro->codigo==9933)&&($bandextra==0)){
                                // dd($sb);
+                                $bandextra=1;
                                 if (($numdia == 0)){
-                                    $hedf2=$total[$h['trabajador']]-47.5;
-                                    $hedf=$hedf2;
-                                    $sb=$sb-$hedf;
+                                    if($henf>0){
+                                        $henf2=$total[$h['trabajador']]-47.5;
+                                        $henf=$henf2;
+                                        $dtsc=$dtsc-$henf;
+                                    }
+                                    else{
+                                        $hedf2=$total[$h['trabajador']]-47.5;
+                                        $hedf=$hedf2;
+                                        $dtsc=$dtsc-$hedf;
+                                    }
                                 }
                                 else{
                                     $hedo2=$total[$h['trabajador']]-47.5;
@@ -265,9 +282,9 @@ class FilesController extends Controller
                                     $hedo=0;
                                     $heno=0;
                             }
-                            
+                            Log::info("Hedf(008):".$hedf." Henf(009):".$henf);
                         }
-                        
+                       
                    
                         //horas
                         if ($sb>0){
