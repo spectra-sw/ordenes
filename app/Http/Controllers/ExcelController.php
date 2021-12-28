@@ -393,7 +393,7 @@ class ExcelController extends Controller
                             $linea->put('notas', '');
                             $datos->push($linea);
                         }
-                        if ($rno>0){
+                        if(($rno>0)&&($heno==0)){
                             $linea=collect([]);
                             $linea->put('codigo del empleado', $h['trabajador']);
                             $linea->put('sucursal', '');
