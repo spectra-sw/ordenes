@@ -99,8 +99,8 @@ class FilesController extends Controller
                     $rfin = intval($rfin[0]) + round(floatval($rfin[1]/60),1);
                     if($tecnico ==$h['trabajador']&&$d['fecha']=="2021-11-21"){
                        // dd($horas);
-                       Log::info($d['fecha']." ".$inicio." ".$rinicio." ".$fin." ".$rfin);
-                       Log::info($total[$h['trabajador']]);
+                      // Log::info($d['fecha']." ".$inicio." ".$rinicio." ".$fin." ".$rfin);
+                      // Log::info($total[$h['trabajador']]);
                       // Log::info("Hedf(008):".$hedf." Henf(009):".$henf);
                     }
                    
@@ -282,7 +282,7 @@ class FilesController extends Controller
                                     $hedo=0;
                                     $heno=0;
                             }
-                            Log::info("Hedf(008):".$hedf." Henf(009):".$henf);
+                            //Log::info("Hedf(008):".$hedf." Henf(009):".$henf);
                         }
                        
                    
