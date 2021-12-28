@@ -276,6 +276,7 @@ class ExcelController extends Controller
                             }
                             
                             if(($total[$h['trabajador']]<47.5)&&($centro->codigo==9933)){
+                                if (($festivo == 'no')){
                                     $sb = $h['ha'];
                                    // $dtsc=$h['ha']-$rnd;
                                     $dtsc=0;
@@ -283,6 +284,7 @@ class ExcelController extends Controller
                                     $henf=0;
                                     $hedo=0;
                                     $heno=0;
+                                }
                             }
                             //Log::info("Hedf(008):".$hedf." Henf(009):".$henf);
                         }
