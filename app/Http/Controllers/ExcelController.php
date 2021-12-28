@@ -240,7 +240,7 @@ class ExcelController extends Controller
                     }
                     if($tecnico ==$h['trabajador']&&$d['fecha']=="2021-11-21"){
                         // dd($horas);
-                        Log::info("Hedf(008):".$hedf." Henf(009):".$henf);
+                       // Log::info("Hedf(008):".$hedf." Henf(009):".$henf);
                      }
                     if(($tecnico == "")||($tecnico != "" && $tecnico ==$h['trabajador'])) {
                         //dd($extra);
