@@ -153,7 +153,12 @@ class ExcelController extends Controller
                         //hedf
                         if (($numdia == 0)||($festivo=="si")){
                             
-                            $dtsc=$h['ha'];
+                            if($festivo=="si"){
+                                $sb=$h['ha'];
+                            }
+                            if($festivo=="no"){
+                                $dtsc=$h['ha'];
+                            }
 
                             //hedf
                             if (($rfin > $fin) && ($rfin <= 21)){
@@ -442,7 +447,8 @@ class ExcelController extends Controller
                             $linea=collect([]);
                             $linea->put('codigo del empleado', $h['trabajador']);
                             $linea->put('sucursal', '');
-                            $linea->put('codigo del concepto', '013');
+                            //$linea->put('codigo del concepto', '013');
+                            $linea->put('codigo del concepto', '014');
                             $linea->put('centro de operacion', $centro->centro_operacion);
                             $linea->put('centro de costo', $centro->codigo);
                             $linea->put('fecha movimiento', $d->fecha);
