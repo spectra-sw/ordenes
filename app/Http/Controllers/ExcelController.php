@@ -99,10 +99,10 @@ class ExcelController extends Controller
                     $rfin = explode(":", $h->hf);
                     //dd($rfin);
                     $rfin = intval($rfin[0]) + round(floatval($rfin[1]/60),1);
-                    if($tecnico ==$h['trabajador']&&$d['fecha']=="2021-11-21"){
+                    if($tecnico ==$h['trabajador']){
                        // dd($horas);
-                       //Log::info($d['fecha']." ".$inicio." ".$rinicio." ".$fin." ".$rfin);
-                       //Log::info($total[$h['trabajador']]);
+                      // Log::info($d['fecha']." ".$inicio." ".$rinicio." ".$fin." ".$rfin);
+                      // Log::info($total[$h['trabajador']]);
                       // Log::info("Hedf(008):".$hedf." Henf(009):".$henf);
                     }
                    
@@ -110,7 +110,7 @@ class ExcelController extends Controller
                    
                     if ($extra !=1){      
                         
-                        if ($numdia > 0){
+                        if (($numdia > 0)&&($festivo=="no")){
                             $sb = $h['ha'];    
                             
                             //hedo
@@ -154,7 +154,30 @@ class ExcelController extends Controller
                         if (($numdia == 0)||($festivo=="si")){
                             
                             $dtsc=$h['ha'];
-                            if (($rinicio >= 6)&& ($rfin <= 21)){
+
+                            //hedf
+                            if (($rfin > $fin) && ($rfin <= 21)){
+                                $sb = $sb  - ($rfin-$fin);
+                                $hedf = $rfin - $fin;  
+                            }
+                            if (($rinicio < $inicio ) && ($rinicio >= 6)){
+                                $sb = $sb - ($inicio-$rinicio);
+                                $hedf = ($inicio-$rinicio);
+                            }
+
+                            //henf
+                            if (($rfin > $fin) && ($rfin > 21)){
+                                $sb = $sb - ($rfin-$fin);
+                                $hedf =  (21-$fin);
+                                $henf = ($rfin - $fin) - $hedf;
+                            }
+                            if (($rinicio < $inicio ) && ($rinicio < 6)){
+                                $sb = $sb - ($inicio-$rinicio);
+                                $hedf = (6-$rinicio);
+                                $henf = ($inicio-$rinicio) - $hedf;
+                            }
+
+                            /*if (($rinicio >= 6)&& ($rfin <= 21)){
                                 $hedf = $h['ha'];  
                             }
                             if (($rinicio < 6)&& ($rfin <= 21)){
@@ -168,7 +191,8 @@ class ExcelController extends Controller
                             if (($rinicio < 6 )&& ($rfin > 21)){
                                 $henf = (6-$rinicio) + (21-$rfin);
                                 $hedf = $h['ha'] - $henf;  
-                            }
+                            }*/
+
                             //rnd
                             if (($rinicio < 21)&&($rinicio > 6)&&($rfin>21)&&($rfin<=24)){
                                 $rnd = $rfin - 21;
@@ -185,7 +209,7 @@ class ExcelController extends Controller
                            
                             
                         }
-                        if ($festivo=="si"){
+                        if (($festivo=="si")&&($centro->codigo!=9933)){
                             $dtsc=$sb=0;
                         }  
                         
@@ -238,9 +262,9 @@ class ExcelController extends Controller
                             }
                         }
                     }
-                    if($tecnico ==$h['trabajador']&&$d['fecha']=="2021-11-21"){
+                    if($tecnico ==$h['trabajador']){
                         // dd($horas);
-                       // Log::info("Hedf(008):".$hedf." Henf(009):".$henf);
+                       // Log::info("sb(001):".$sb." dtsc(011):".$dtsc." Hedf(008):".$hedf." Henf(009):".$henf." rno(012):".$rno." rnd(013):".$rnd);
                      }
                     if(($tecnico == "")||($tecnico != "" && $tecnico ==$h['trabajador'])) {
                         //dd($extra);
@@ -395,7 +419,7 @@ class ExcelController extends Controller
                             $linea->put('notas', '');
                             $datos->push($linea);
                         }
-                        if(($rno>0)&&($heno==0)){
+                        if( ($rno>0)&&($heno==0)){
                             $linea=collect([]);
                             $linea->put('codigo del empleado', $h['trabajador']);
                             $linea->put('sucursal', '');
