@@ -97,10 +97,10 @@ class FilesController extends Controller
                     $rfin = explode(":", $h->hf);
                     //dd($rfin);
                     $rfin = intval($rfin[0]) + round(floatval($rfin[1]/60),1);
-                    if($tecnico ==$h['trabajador']){
+                    if($tecnico ==$h['trabajador']&&($d['fecha']=="2021-12-04")){
                        // dd($horas);
-                      // Log::info($d['fecha']." ".$inicio." ".$rinicio." ".$fin." ".$rfin);
-                      // Log::info($total[$h['trabajador']]);
+                       Log::info($d['fecha']." ".$inicio." ".$rinicio." ".$fin." ".$rfin);
+                       Log::info($total[$h['trabajador']]);
                       // Log::info("Hedf(008):".$hedf." Henf(009):".$henf);
                     }
                    
@@ -113,8 +113,12 @@ class FilesController extends Controller
                             
                             //hedo
                             if (($rfin > $fin) && ($rfin <= 21)){
+                               
                                 $sb = $sb  - ($rfin-$fin);
                                 $hedo = $rfin - $fin;  
+                                if($hedo>$sb){
+                                   $sb =  $sb = $h['ha'];  
+                                }
                             }
                             if (($rinicio < $inicio ) && ($rinicio >= 6)){
                                 $sb = $sb - ($inicio-$rinicio);
@@ -267,7 +271,7 @@ class FilesController extends Controller
                     }
                     if($tecnico ==$h['trabajador']){
                         // dd($horas);
-                       // Log::info("sb(001):".$sb." dtsc(011):".$dtsc." Hedf(008):".$hedf." Henf(009):".$henf." rno(012):".$rno." rnd(013):".$rnd);
+                        Log::info("sb(001):".$sb." dtsc(011):".$dtsc." Hedo:".$hedo." Henf(009):".$henf." rno(012):".$rno." rnd(013):".$rnd);
                      }
                     if(($tecnico == "")||($tecnico != "" && $tecnico ==$h['trabajador'])) {
                         //dd($extra);
