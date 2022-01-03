@@ -1375,13 +1375,20 @@ class PagesController extends Controller
         $existe = ocupacion::where('cc',$cc)->where('dia',$request->dia)->exists();
         $hoy = Carbon::now();
         $dia = new Carbon($request->dia);
+        $diff = $hoy->diffInDays($dia);
+        if ($diff> 21){
+            return 'No pude registrar actividades anteriores a tres semanas';
+        }
         if (Festivo::where('fecha',$request->dia)->exists()){
             return 'La fecha seleccionada es un día festivo';
+        }
+        if(($dia->dayOfWeek == 0 || $dia->dayOfWeek == 6)){
+            return 'Solo se pueden seleccionar días de Lunes a Viernes';
         }
         if ($request->horas == 0 && $request->min == 0){
             return "El tiempo registrado no puede ser 0";
         }
-        if ($dia > $hoy){
+        if ($dia >= $hoy){
             return "No es posible registrar una fecha posterior";
         }
         else{
