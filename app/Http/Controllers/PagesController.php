@@ -1377,7 +1377,7 @@ class PagesController extends Controller
         $dia = new Carbon($request->dia);
         $diff = $hoy->diffInDays($dia);
         if ($diff> 21){
-            return 'No pude registrar actividades anteriores a tres semanas';
+            return 'No puede registrar actividades anteriores a tres semanas';
         }
         if (Festivo::where('fecha',$request->dia)->exists()){
             return 'La fecha seleccionada es un día festivo';
