@@ -1004,7 +1004,13 @@ class PagesController extends Controller
             $oc = Ocupacion::where('cc',$cc)->where('dia','=',$inicio)->count();
 
             if ($oc>0){
-                $col->put('registro','OK');
+                $totalh=0;
+                $registros= ocupacion::where('cc',$cc)->where('dia',$inicio)->get();
+                foreach($registros as $r){
+                    $totalh = $totalh + $r->horas + ($r->minutos/60);
+                }
+                $msg='OK Horas='.$totalh;
+                $col->put('registro',$msg);
             }
             else{
                 $col->put('registro','SR'); 
@@ -1376,6 +1382,11 @@ class PagesController extends Controller
         $hoy = Carbon::now();
         $dia = new Carbon($request->dia);
         $diff = $hoy->diffInDays($dia);
+        $totalh=0;
+        $registros= ocupacion::where('cc',$cc)->where('dia',$request->dia)->get();
+        foreach($registros as $r){
+            $totalh = $totalh + $r->horas + ($r->minutos/60);
+        }
         if ($diff> 21){
             return 'No puede registrar actividades anteriores a tres semanas';
         }
@@ -1392,7 +1403,8 @@ class PagesController extends Controller
             return "No es posible registrar una fecha posterior";
         }
         else{
-            if (!$existe){
+
+            if (($totalh+$request->horas)<=9.5){
                 $e = ocupacion::create([
                     'cc' => $cc,
                     'dia' => $request->dia,
@@ -1404,7 +1416,7 @@ class PagesController extends Controller
                 ]);
             }
             else{
-                return "Ya existe un registro para esta fecha";
+                return "La horas que desea registrar superan las 9,5 horas";
             }
             return "Registro creado";
         }
