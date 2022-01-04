@@ -1403,8 +1403,8 @@ class PagesController extends Controller
             return "No es posible registrar una fecha posterior";
         }
         else{
-
-            if (($totalh+$request->horas)<=9.5){
+            $totalh = $totalh + $request->horas + ($request->min/60);
+            if (($totalh)<=9.5){
                 $e = ocupacion::create([
                     'cc' => $cc,
                     'dia' => $request->dia,
