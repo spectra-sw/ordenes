@@ -127,4 +127,9 @@ Route::get('exportReporte', [ExcelController::class, 'export'])->name('export');
 Route::get('validar',[AuthController::class,'validar'])->name('validar');
 
 Route::get('yoursix',[PagesController::class,'yoursix'])->name('yoursix');
-Route::get('apiyoursix',[PagesController::class,'apiyoursix'])->name('apiyoursix');
+
+
+//ocupación
+Route::get('/seguimiento',[PagesController::class,'seguimiento']);
+Route::get('/generalo',[PagesController::class,'generalo']);
+Route::get('/distribuciono',[PagesController::class,'distribuciono']);

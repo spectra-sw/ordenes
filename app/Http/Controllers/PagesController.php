@@ -80,13 +80,15 @@ class PagesController extends Controller
             $clientes = Cliente::orderBy('cliente','asc')->get();
             $proyectos = Proyecto::orderBy('codigo','asc')->get();
             $horarios = Horario::all();
+            $areas = Area::all();
             return view('bases',[
                 'emp' => $emp,
                 'cdc' => $cdc,
                 'clientes' => $clientes,
                 'proyectos' => $proyectos,
                 'horarios' => $horarios,
-                'authpr' => $authpr
+                'authpr' => $authpr,
+                'areas' => $areas
             ]);
         }
         else{
@@ -1115,6 +1117,8 @@ class PagesController extends Controller
             'correo' => $request->correo,
             'tipo' => $request->tipo,
             'ciudad' => strtoupper($request->ciudad),
+            'horario_id' => $request->horario,
+            'area' => $request->area,
             'password' => bcrypt($request->cc)
         ]);
 
@@ -1691,5 +1695,73 @@ class PagesController extends Controller
         $resp = curl_exec($curl);
         dd($resp);
         curl_close($curl);
+    }
+
+    //ocupacion
+    public function seguimiento(Request $request){
+        $area = $request->area;
+        $oc =  DB::table('ocupacion');
+       
+        
+        if (($request->fechaInicioOcup1 !="")&&($request->fechaFinalOcup1 !="")){
+            $oc = $oc->where('dia','>=',$request->fechaInicioOcup)->where('dia','<=',$request->fechaFinalOcup);
+        }
+        
+       
+        $ocs = $oc->get();
+        //dd($ocs);
+
+
+        $calendario  = collect([]);
+
+        $inicio = new Carbon($request->fechaInicioOcup);
+        $fin = new Carbon($request->fechaFinalOcup);
+
+        while ($inicio <= $fin){
+           
+            $col = collect([]);
+
+            $col->put('fecha',$inicio->toDateString());
+            $col->put('registro','');
+
+            $oc = Ocupacion::where('cc',$cc)->where('dia','=',$inicio)->count();
+
+            if ($oc>0){
+                $totalh=0;
+                $registros= ocupacion::where('cc',$cc)->where('dia',$inicio)->get();
+                foreach($registros as $r){
+                    $totalh = $totalh + $r->horas + ($r->minutos/60);
+                }
+                $msg='OK Horas='.$totalh;
+                $col->put('registro',$msg);
+            }
+            else{
+                $col->put('registro','SR'); 
+            }
+           
+            $calendario->push($col);
+            $inicio = $inicio->addDay();
+
+        }
+        return view('calendariooc',[
+            'calendariooc' => $calendario,
+        ]);
+    }
+    public function generalo(Request $request){
+        $area = $request->area;
+        $oc =  Ocupacion::where('id','>',0);
+       
+        if ($area!=""){
+            $oc = $oc->where('area',$area);
+        }
+        
+        if (($request->fechaInicioOcup1 !="")&&($request->fechaFinalOcup1 !="")){
+            $oc = $oc->where('dia','>=',$request->fechaInicioOcup1)->where('dia','<=',$request->fechaFinalOcup1);
+        }
+        $ocs = $oc->orderBy('dia','asc')->orderBy('area','asc')->get();
+        //dd($ocs);
+        return view('generalo',[
+            'ocs' => $ocs,
+        ]);
     }
 }

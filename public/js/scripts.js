@@ -1164,4 +1164,40 @@ function consultaroc(){
             }
     });   
 }
+function seguimiento(){
+    data=$( "#formReportesOcupacion" ).serialize(); 
+    url = '/seguimiento'
+    $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) {
+                $("#tablareporteo").html(data);
+            }
+    });   
+}
+function generalo(){
+    data=$( "#formReportesOcupacion" ).serialize(); 
+    url = '/generalo'
+    $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) {
+                $("#tablareporteo").html(data);
+            }
+    });   
+}
+function distribuciono(){
+    data=$( "#formReportesOcupacion" ).serialize(); 
+    url = '/distribuciono'
+    $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) {
+                $("#tablareporteo").html(data);
+            }
+    });   
+}
 

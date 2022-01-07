@@ -16,6 +16,6 @@ class Hora extends Model
 
     public function empleado()
     {
-    return $this->belongsTo(Empleado::class, 'trabajador', 'cc');
+        return $this->belongsTo(Empleado::class, 'trabajador', 'cc');
     }
 }

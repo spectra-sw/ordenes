@@ -8,6 +8,13 @@
     <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#misregistros">Mis registros</a>
     </li>
+    
+    @if (session('tipo')==0)
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#reporteso">Reportes</a>
+    </li>
+    @endif
+
 </ul>
 <div class="tab-content">
     <div class="tab-pane container active" id="registrar">
@@ -115,7 +122,40 @@
                         <div id="tablaocupacion">
                         </div>
                     
+            
+        </form>       
+    </div>
+    <div class="tab-pane container fade" id="reporteso">
+        <br>
+        <form id="formReportesOcupacion" action="" method="get" target="_blank">  
+            <div class="row">
+                <div class="col-6 col-md-2 cajaAzul">Área</div>
+                <div class="col-6 col-md-2 ">
+                    <select class="form-control" id="area" name="area">
+                        <option value="">Todas</option>
+                        @foreach ($areas as $a)
+                        <option value="{{ $a->id }}">{{ $a->area }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>  
+            
+            <div class="row">
+                            <div class="col-6 col-md-2 cajaAzul">Fecha Inicio</div>
+                            <div class="col-6 col-md-2 "><input type="date" name="fechaInicioOcup1" id="fechaInicioOcup1" class="form-control"></div>
+                            <div class="col-6 col-md-2 cajaAzul">Fecha Final</div>
+                            <div class="col-6 col-md-2 "><input type="date" name="fechaFinalOcup1" id="fechaFinalOcup1" class="form-control"></div>
+            </div>     
+            <div class="row">
+               <!-- <button type="button" class="btn btn-primary" onclick="seguimiento()">Seguimiento</button>&nbsp;    -->
+                <button type="button" class="btn btn-primary" onclick="generalo()">General</button>&nbsp;    
+                <!--<button type="button" class="btn btn-primary" onclick="distribuciono()">Archivo Distribución</button>&nbsp;   --> 
             </div>
+
+            <div id="tablareporteo">
+            </div>
+                    
+            
         </form>       
     </div>
                     

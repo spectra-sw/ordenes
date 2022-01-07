@@ -44,11 +44,11 @@
                     <input type="text" class="form-control"  id="correo" name="correo">
                 </div>
                 <div class="form-group">
-                    <label for="correo">CIUDAD</label>
+                    <label for="ciudad">CIUDAD</label>
                     <input type="text" class="form-control"  id="ciudad" name="ciudad">
                 </div>
                 <div class="form-group">
-                    <label for="correo">HORARIO</label>
+                    <label for="horario">HORARIO</label>
                     <select class="form-control" id="horario" name="horario">
                         <option value=""></option>
                         @foreach ($horarios as $h)
@@ -57,10 +57,20 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label for="area">ÁREA</label>
+                    <select class="form-control" id="area" name="area">
+                        <option value=""></option>
+                        @foreach ($areas as $a)
+                        <option value="{{ $a->id }}">{{ $a->area }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="tipo">Tipo</label>
-                    <select id="tipo" name="tipo" class="form-control">
+                    <select id="area" name="tipo" class="form-control">
                         <option value="0">Admin</option>
-                        <option value="1">Registro</option>
+                        <option value="1">Registro OT</option>
+                        <option value="10">Registro Ocupación</option>
                     </select>
                 </div>
                 <button type="button" class="btn btn-primary" onclick="guardare()">Guardar</button>
