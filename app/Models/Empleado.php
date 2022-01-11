@@ -26,4 +26,8 @@ class Empleado extends Model
     {
         return $this->hasMany(Hora::class, 'trabajdor', 'cc');
     }
+    public function narea()
+    {
+        return $this->belongsTo(Area::class, 'area', 'id');
+    }
 }

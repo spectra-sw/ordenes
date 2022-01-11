@@ -1403,6 +1403,7 @@ class PagesController extends Controller
         if ($request->horas == 0 && $request->min == 0){
             return "El tiempo registrado no puede ser 0";
         }
+        
         if ($dia >= $hoy){
             return "No es posible registrar una fecha posterior";
         }
@@ -1432,277 +1433,20 @@ class PagesController extends Controller
         }
         return 'no';
     }
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public function apiyoursix(Request $request){
-        //dd($request);
-        $call = $request['arg']['call'];
-        //dd($call);
-        if ($call === "fetch") {
-            $this->fetchCap($request);
-        }
-        else if ($call === "login") {
-            $this->user_login($request);
-        }
-        else if ($call === "trigger") {
-            $this->triggerIO($request);
-        }	
-    }
-    public function fetchCap($request) {
-        $host = "security.yoursix.com";
-        $user_sid = $request['arg']['sid'];
-        
-        $path="https://$host/portal/device.php?a=capabilities";
-        $data = array("api"=>"JSON", "v" => 4);
-        $json = json_encode($data);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL,$path);    
-        curl_setopt($ch, CURLOPT_FAILONERROR,1);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION,1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
-        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-        'Content-Type: application/json',
-        'x-avhs-authentication: ' .$user_sid));
-        $retValue = curl_exec($ch);          
-        curl_close($ch);
-        $io_devices = array();
-        
-        $json = json_decode($retValue, true);
-        foreach ($json as $key => $value)
-        {
-            if ($key === "devices") {
-                foreach ($value as $devices) {
-                        $io = array();
-                        $online = $this->retrieveDevice($devices['id'],$user_sid);
-                        foreach ($devices['output'] as $output) {				
-                            $state = false;
-                            if ($online === 1) {
-                                $state = $this->fetchIOState($devices['id'], $output['id'],$user_sid);
-                            }
-                            
-                            $io[] = array('id' => $output['id'], 'name' => $output['name'], 'state' => $state);
-                        }
-                        $io_devices[] = array("device" => $devices['id'], "outputs" => $io, "online" => $online);
-                }
-            }
-        }
-        echo json_encode(array("devices" => $io_devices));
-    }
-    
-    public function fetchIOState($mac, $portid,$user_sid) {
-        $host = "security.yoursix.com";
-        //$user_sid = $_POST['arg']['sid'];
-        
-        $path="https://$host/portal/device.php?a=get_output_state";
-    
-        $data = array("api"=>"JSON",  "deviceid" => $mac, "portid" => $portid);
-        error_log("SID: " . $user_sid);
-        $json = json_encode($data);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL,$path);    
-        curl_setopt($ch, CURLOPT_FAILONERROR,1);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION,1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
-        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-        'Content-Type: application/json',
-        'x-avhs-authentication: ' .$user_sid));
-        $retValue = curl_exec($ch);    
-        if(curl_errno($ch))
-        {
-            error_log('Curl error: ' . curl_error($ch));
-            error_log("ErrOR = " . curl_errno($ch));
-        }	
-        curl_close($ch);
-    
-        $json = json_decode($retValue, true);
-        return $json['device']['state'];
-    
-    }
-    
-    public function retrieveDevice($mac,$user_sid) {
-        $host = "security.yoursix.com";
-        //$user_sid = $_POST['arg']['sid'];
-        $path="https://$host/portal/device.php?a=retrieve";
-        
-        $data = array("api"=>"JSON", "sid"=> $user_sid, "v" => 3, "deviceid" => array($mac));
-        
-        $json = json_encode($data);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL,$path);    
-        curl_setopt($ch, CURLOPT_FAILONERROR,1);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION,1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
-        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-        'Content-Type: application/json',
-        'x-avhs-authentication: ' .$user_sid));
-        $retValue = curl_exec($ch);    
-        if(curl_errno($ch))
-        {
-            error_log('Curl error: ' . curl_error($ch));
-            error_log("ErrOR = " . curl_errno($ch));
-        }	
-        curl_close($ch);
-    
-        $json = json_decode($retValue, true);
-        foreach ($json['devices'] as $device) {
-            error_log($device['connected']);
-            if ($device['connected']) {
-                return 1;
-            }
-            return 0;
-        }
-    }
-    
-    public function triggerIO($request) {
-        $host = "security.yoursix.com";
-        $user_sid = $request['arg']['sid'];
-        $portid = $request['arg']['portid'];
-        $mac = $request['arg']['mac'];
-        $state = $request['arg']['state'];
-        if ($state == 1) {
-            $action = "\\";
-        } 
-        else {
-            $action = '/';
-        }
-        
-        $path="https://$host/portal/device.php?a=set_output_state";
-        error_log("Register url = ". $path."&api=JSON&deviceid=".$mac."&portid=".$portid."&action=".$action."&sid=".$user_sid);
-        $data = array("api"=>"JSON", "deviceid" => $mac, "action" => $action , "portid" => $portid);
-        $json = json_encode($data);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL,$path);    
-        curl_setopt($ch, CURLOPT_FAILONERROR,1);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION,1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
-        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-        'Content-Type: application/json',
-        'x-avhs-authentication: ' .$user_sid));
-        $retValue = curl_exec($ch);          
-        curl_close($ch);
-    
-        $json = json_decode($retValue, true);
-    
-        echo json_encode($json);
-    }
-    
-    public function user_login($request) {
-        //$user = $request['arg']['user'];
-        $user = "bogata";
-        //$user_pass = $request['arg']['pass'];
-        $user_pass = "Colombia1996@";
-        $host = "security.yoursix.com";
-        error_log($user . " - " . $user_pass . " - " . $host);
-        $url = "https://".$host.'/auth/v1.0/login';
-        $body = json_encode([
-            'data' => [
-                'type' => 'login',
-                'attributes' => [
-                    'username' => $user,
-                    'password' => $user_pass,
-                ],
-            ],
-        ]);
-        $httpHeaders = [
-            'Content-Type: application/json',
-            'Content-Length: ' . strlen($body)
-        ];
-        $resp = json_decode($this->curlRequest($url, $body, $httpHeaders),true);
-        //dd($resp);
-        foreach($resp['data'] as $data) {
-            if (isset($data['token'])) {
-               echo json_encode(array("sid" => $data['token']));
-               return;
-            }
-        }
-        echo json_encode(array("error" => "Failed to login user."));
-    }	
-    
-    public function curlRequest ($url, $body = null, $httpHeader = []) {
-        $curl = curl_init();
-        $curlOpts = [
-            CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_URL => $url,
-        ];
-        if ($body !== null) {
-            $curlOpts[CURLOPT_POSTFIELDS] = $body;
-        }
-        if (!empty($httpHeader)) {
-          $curlOpts[CURLOPT_HTTPHEADER] = $httpHeader;
-        }
-        curl_setopt_array($curl, $curlOpts);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        $resp = curl_exec($curl);
-        if(curl_errno($curl))
-        {
-            error_log('Curl error: ' . curl_error($curl));
-            error_log("ErrOR = " . curl_errno($curl));
-        }
-        curl_close($curl);
-        return $resp;
-    }
-
-    public function cargarprog(){
-        $url="https://sheet.zoho.com/sheet/open/h8b9e28859b38113f4c34ab88596ac808c3e1?sheet=2021";
-        $curl = curl_init();
-        $curlOpts = [
-            CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_URL => $url,
-            CURLOPT_FOLLOWLOCATION => 1,
-        ];
-    
-        curl_setopt_array($curl, $curlOpts);
-
-        $resp = curl_exec($curl);
-        dd($resp);
-        curl_close($curl);
-    }
 
     //ocupacion
     public function seguimiento(Request $request){
         $area = $request->area;
         $oc =  DB::table('ocupacion');
-       
-        
+
+        if ($area != ""){
+            $emp = Empleado::where('area',$area)->orderBy('area','asc')->get();
+        }
+        else{
+            $emp = Empleado::where('area','>',1)->orderBy('area','asc')->get();
+        }
+        //dd($emp);
+        /*
         if (($request->fechaInicioOcup1 !="")&&($request->fechaFinalOcup1 !="")){
             $oc = $oc->where('dia','>=',$request->fechaInicioOcup)->where('dia','<=',$request->fechaFinalOcup);
         }
@@ -1710,41 +1454,49 @@ class PagesController extends Controller
        
         $ocs = $oc->get();
         //dd($ocs);
+        */
+
+        $seguimiento  = collect([]);
+
+        $inicio = new Carbon($request->fechaInicioOcup1);
+        $fin = new Carbon($request->fechaFinalOcup1);
 
 
-        $calendario  = collect([]);
-
-        $inicio = new Carbon($request->fechaInicioOcup);
-        $fin = new Carbon($request->fechaFinalOcup);
-
-        while ($inicio <= $fin){
-           
-            $col = collect([]);
-
-            $col->put('fecha',$inicio->toDateString());
-            $col->put('registro','');
-
-            $oc = Ocupacion::where('cc',$cc)->where('dia','=',$inicio)->count();
-
-            if ($oc>0){
-                $totalh=0;
-                $registros= ocupacion::where('cc',$cc)->where('dia',$inicio)->get();
-                foreach($registros as $r){
-                    $totalh = $totalh + $r->horas + ($r->minutos/60);
+        foreach($emp as $e){
+            $inicio = new Carbon($request->fechaInicioOcup1);
+            $fin = new Carbon($request->fechaFinalOcup1);
+    
+            while ($inicio <= $fin){
+            
+                $fila = collect([]);
+                $fila->put('cc',$e->cc);
+                $fila->put('nombre',$e->nombre." ".$e->apellido1);
+                $fila->put('area',$e->narea->area);
+                $fila->put('fecha',$inicio->toDateString());
+                $hoc = Ocupacion::where('cc',$e->cc)->where('dia','=',$inicio)->sum('horas');
+                $moc = Ocupacion::where('cc',$e->cc)->where('dia','=',$inicio)->sum('minutos');
+                $totalh=$hoc + $moc/60;
+                $fila->put('registro',$totalh);
+                
+                if($totalh == 0){
+                    $fila->put('clase','table-danger');
                 }
-                $msg='OK Horas='.$totalh;
-                $col->put('registro',$msg);
-            }
-            else{
-                $col->put('registro','SR'); 
-            }
-           
-            $calendario->push($col);
-            $inicio = $inicio->addDay();
+                if(($totalh > 0)&&($totalh < 9.5)){
+                    $fila->put('clase','table-warning');
+                }
+                if($totalh == 9.5){
+                    $fila->put('clase','table-success');
+                }
 
+            
+                $seguimiento->push($fila);
+                $inicio = $inicio->addDay();
+
+            }
         }
-        return view('calendariooc',[
-            'calendariooc' => $calendario,
+        //dd($seguimiento);
+        return view('seguimiento',[
+            'seguimiento' => $seguimiento,
         ]);
     }
     public function generalo(Request $request){

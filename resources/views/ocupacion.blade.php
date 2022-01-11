@@ -147,7 +147,7 @@
                             <div class="col-6 col-md-2 "><input type="date" name="fechaFinalOcup1" id="fechaFinalOcup1" class="form-control"></div>
             </div>     
             <div class="row">
-               <!-- <button type="button" class="btn btn-primary" onclick="seguimiento()">Seguimiento</button>&nbsp;    -->
+                <button type="button" class="btn btn-primary" onclick="seguimiento()">Seguimiento</button>&nbsp;    
                 <button type="button" class="btn btn-primary" onclick="generalo()">General</button>&nbsp;    
                 <!--<button type="button" class="btn btn-primary" onclick="distribuciono()">Archivo Distribución</button>&nbsp;   --> 
             </div>
