@@ -1491,17 +1491,20 @@ class PagesController extends Controller
                 }
 
                 $fila->put('registro',$registro);
-                
-                if($totalh == 0){
+                $fila->put('clase','table-default');
+                    
+               
+                if($registro===0){
                     $fila->put('clase','table-danger');
                 }
+
                 if(($totalh > 0)&&($totalh < 9.5)){
-                    $fila->put('clase','table-warning');
+                        $fila->put('clase','table-warning');
                 }
                 if($totalh == 9.5){
                     $fila->put('clase','table-success');
                 }
-
+                
             
                 $seguimiento->push($fila);
                 $inicio = $inicio->addDay();
