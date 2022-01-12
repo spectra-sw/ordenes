@@ -1473,10 +1473,24 @@ class PagesController extends Controller
                 $fila->put('nombre',$e->nombre." ".$e->apellido1);
                 $fila->put('area',$e->narea->area);
                 $fila->put('fecha',$inicio->toDateString());
-                $hoc = Ocupacion::where('cc',$e->cc)->where('dia','=',$inicio)->sum('horas');
-                $moc = Ocupacion::where('cc',$e->cc)->where('dia','=',$inicio)->sum('minutos');
-                $totalh=$hoc + $moc/60;
-                $fila->put('registro',$totalh);
+
+                $dia = new Carbon($inicio);
+                $totalh =0;
+                $registro="";
+                if (Festivo::where('fecha',$inicio)->exists()){
+                    $registro="NH";
+                }
+                if(($dia->dayOfWeek == 0 || $dia->dayOfWeek == 6)){
+                    $registro="NH";
+                }
+                if($registro==""){
+                    $hoc = Ocupacion::where('cc',$e->cc)->where('dia','=',$inicio)->sum('horas');
+                    $moc = Ocupacion::where('cc',$e->cc)->where('dia','=',$inicio)->sum('minutos');
+                    $totalh=$hoc + $moc/60;
+                    $registro = $totalh;
+                }
+
+                $fila->put('registro',$registro);
                 
                 if($totalh == 0){
                     $fila->put('clase','table-danger');
