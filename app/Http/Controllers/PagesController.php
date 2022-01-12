@@ -1138,6 +1138,9 @@ class PagesController extends Controller
                 'director' => $request->director,
                 'lider' => $request->lider,
                 'ciudad' => $request->ciudad,
+                'creado_por' => session('user'),
+                'creacion' => date("Y-m-d")
+
             ]);
             $c =  Cdc::create([
                 'codigo' => $request->codigo,
@@ -1229,6 +1232,16 @@ class PagesController extends Controller
             'lider' => $request->lider,
             'ciudad' => $request->ciudad,
           ]);
+        
+        Cdc::where('codigo', $request->codigo)
+         ->update([
+            'descripcion' => $request->descripcion,
+            'centro_operacion' => $request->co,
+            'unidad_negocio' => $request->un,
+            
+         ]);
+
+         
           return "Proyecto actualizado";
     }
     public function updatep(Request $request){

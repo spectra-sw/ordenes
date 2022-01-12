@@ -28,6 +28,7 @@
                 <div class="form-group">
                     <label for="director">DIRECTOR</label>
                     <select class="form-control" id="director" name="director">
+                        <option value="0"></option>
                         @if ($p['director'] >0)
                         <option value="{{ $p->ndirector->id }}">{{ $p->ndirector->nombre. " " . $p->ndirector->apellido1 }}<option>
                         @endif
@@ -40,6 +41,7 @@
                     <label for="lider">LIDER</label>
                     
                     <select class="form-control" id="lider" name="lider">
+                        <option value="0"></option>
                         @if ($p['lider'] >0)
                         <option value="{{ $p->nlider->id }}">{{ $p->nlider->nombre. " " . $p->nlider->apellido1 }}<option>
                         @endif
@@ -52,7 +54,14 @@
                     <label for="lider">CIUDAD</label>
                     <input type="text" class="form-control"  id="ciudad" name="ciudad" value="{{ $p['ciudad'] }}">
                 </div>
-                
+                <div class="form-group">
+                    <label for="co">CENTRO DE OPERACIÓN</label>
+                    <input type="text" class="form-control"  id="co" name="co">
+                </div>
+                <div class="form-group">
+                    <label for="un">UNIDAD DE NEGOCIO</label>
+                    <input type="text" class="form-control"  id="un" name="un">
+                </div>
                 <button type="button" class="btn btn-primary" onclick="editarproy()">Guardar</button>
 
             </form>

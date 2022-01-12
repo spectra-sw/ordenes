@@ -39,6 +39,7 @@
                 <div class="form-group">
                     <label for="director">DIRECTOR</label>
                     <select class="form-control" id="director" name="director">
+                        <option value="0"></option>
                         @foreach ($emp as $e)
                             <option value="{{ $e->id }}" >{{ $e->nombre . " " . $e->apellido1 }}</option>
                         @endforeach
@@ -47,6 +48,7 @@
                 <div class="form-group">
                     <label for="lider">LIDER</label>
                     <select class="form-control" id="lider" name="lider">
+                        <option value="0"></option>
                         @foreach ($emp as $e)
                             <option value="{{ $e->id }}" >{{ $e->nombre . " " . $e->apellido1 }}</option>
                         @endforeach

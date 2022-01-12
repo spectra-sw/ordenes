@@ -12,7 +12,8 @@ class Proyecto extends Model
     protected $table = 'proyectos';
     public $timestamps = false;
     protected $fillable = [
-         'codigo','descripcion','cliente_id','sistema','ciudad', 'subportafolio', 'director', 'lider'
+         'codigo','descripcion','cliente_id','sistema','ciudad', 'subportafolio', 'director', 'lider',
+         'creado_por','creacion'
     ];
 
     public function cliente()
