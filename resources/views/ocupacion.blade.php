@@ -27,7 +27,15 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="dia">Día reportado</label>
-                        <input type="date" class="form-control"  id="dia" name="dia">
+                        <input type="date" class="form-control"  id="dia" name="dia" onchange="buscarInfoOc()">
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="display:none" id="divhoras">
+                <div class="col-md-12">
+                    <div class="alert alert-info alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <span id="msghoras"></span>
                     </div>
                 </div>
             </div>

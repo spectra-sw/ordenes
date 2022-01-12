@@ -1070,6 +1070,7 @@ function rocupacion(){
                 data: data,
                 success: function(data) {
                     alert(data);
+                    $('#formRegistro').trigger("reset");
                 }
         }); 
     }
@@ -1197,6 +1198,20 @@ function distribuciono(){
             data: data,
             success: function(data) {
                 $("#tablareporteo").html(data);
+            }
+    });   
+}
+function buscarInfoOc(){
+    data={fecha : $("#dia").val()}
+    url = '/buscarinfooc'
+    $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) {
+                
+                $("#msghoras").html(data); 
+                $("#divhoras").css('display','block');
             }
     });   
 }

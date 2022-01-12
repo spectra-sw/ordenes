@@ -133,3 +133,4 @@ Route::get('yoursix',[PagesController::class,'yoursix'])->name('yoursix');
 Route::get('/seguimiento',[PagesController::class,'seguimiento']);
 Route::get('/generalo',[PagesController::class,'generalo']);
 Route::get('/distribuciono',[PagesController::class,'distribuciono']);
+Route::get('/buscarinfooc',[PagesController::class,'buscarinfooc']);
