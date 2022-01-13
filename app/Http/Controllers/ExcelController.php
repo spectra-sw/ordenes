@@ -101,9 +101,9 @@ class ExcelController extends Controller
                     $rfin = intval($rfin[0]) + round(floatval($rfin[1]/60),1);
                     if($tecnico ==$h['trabajador']&&($d['fecha']=="2021-12-04")){
                        // dd($horas);
-                       //Log::info($d['fecha']." ".$inicio." ".$rinicio." ".$fin." ".$rfin);
-                       //Log::info($total[$h['trabajador']]);
-                      // Log::info("Hedf(008):".$hedf." Henf(009):".$henf);
+                       //::info($d['fecha']." ".$inicio." ".$rinicio." ".$fin." ".$rfin);
+                       //::info($total[$h['trabajador']]);
+                      // ::info("Hedf(008):".$hedf." Henf(009):".$henf);
                     }
                    
                     $sb = $hedo = $heno= $hedf = $henf = $rno = $dtsc = $rnd = 0;
@@ -273,7 +273,7 @@ class ExcelController extends Controller
                     }
                     if($tecnico ==$h['trabajador']){
                         // dd($horas);
-                        //Log::info("sb(001):".$sb." dtsc(011):".$dtsc." Hedo:".$hedo." Henf(009):".$henf." rno(012):".$rno." rnd(013):".$rnd);
+                        //::info("sb(001):".$sb." dtsc(011):".$dtsc." Hedo:".$hedo." Henf(009):".$henf." rno(012):".$rno." rnd(013):".$rnd);
                      }
                     if(($tecnico == "")||($tecnico != "" && $tecnico ==$h['trabajador'])) {
                         //dd($extra);
@@ -319,7 +319,7 @@ class ExcelController extends Controller
                                     $heno=0;
                                 }
                             }
-                            //Log::info("Hedf(008):".$hedf." Henf(009):".$henf);
+                            //::info("Hedf(008):".$hedf." Henf(009):".$henf);
                         }
                        
                    
@@ -543,4 +543,11 @@ class ExcelController extends Controller
         }
         return 'no';
     }
+    public function exporto(Request $request){
+        //dd($request);
+        $datos=app(PagesController::class)->getDatosDistribucionO($request);
+        //dd($datos);
+        return Excel::download(new NominaExport($datos[0]), 'ocupacion.xlsx');
+    }
+    
 }

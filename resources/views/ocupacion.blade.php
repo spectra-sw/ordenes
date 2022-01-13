@@ -135,7 +135,7 @@
     </div>
     <div class="tab-pane container fade" id="reporteso">
         <br>
-        <form id="formReportesOcupacion" action="" method="get" target="_blank">  
+        <form id="formReportesOcupacion" action="exportReporteO" method="get" target="_blank">  
             <div class="row">
                 <div class="col-6 col-md-2 cajaAzul">Área</div>
                 <div class="col-6 col-md-2 ">
@@ -157,7 +157,7 @@
             <div class="row">
                 <button type="button" class="btn btn-primary" onclick="seguimiento()">Seguimiento</button>&nbsp;    
                 <button type="button" class="btn btn-primary" onclick="generalo()">General</button>&nbsp;    
-                <!--<button type="button" class="btn btn-primary" onclick="distribuciono()">Archivo Distribución</button>&nbsp;   --> 
+                <button type="button" class="btn btn-primary" onclick="distribuciono()">Archivo Distribución</button>&nbsp;  
             </div>
 
             <div id="tablareporteo">

@@ -25,6 +25,7 @@ use App\Models\Area;
 use App\Models\Actividad;
 use App\Models\ocupacion;
 use App\Models\Festivo;
+use Log;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -1458,16 +1459,6 @@ class PagesController extends Controller
         else{
             $emp = Empleado::where('area','>',1)->orderBy('area','asc')->get();
         }
-        //dd($emp);
-        /*
-        if (($request->fechaInicioOcup1 !="")&&($request->fechaFinalOcup1 !="")){
-            $oc = $oc->where('dia','>=',$request->fechaInicioOcup)->where('dia','<=',$request->fechaFinalOcup);
-        }
-        
-       
-        $ocs = $oc->get();
-        //dd($ocs);
-        */
 
         $seguimiento  = collect([]);
 
@@ -1554,5 +1545,120 @@ class PagesController extends Controller
         $moc = Ocupacion::where('cc',$cc)->where('dia','=',$fecha)->sum('minutos');
         $restantes=(9.5-$hoc + $moc/60);
         return "Faltan ".$restantes." horas por reportar este día";
+    }
+    public function distribuciono(Request $request){
+        
+        $datos = $this->getDatosDistribucionO($request);
+       
+        //$datos2 = $datos2->sortBy(['codigo del empleado','fecha movimiento']);
+        //dd($datos2);
+        return view('tablan',[
+            'datos' => $datos[0],
+            'total' => $datos[1],
+        ]);
+    }
+    public function getDatosDistribucionO(Request $request){
+        $area = $request->area;
+
+        if ($area != ""){
+            $emp = Empleado::where('area',$area)->orderBy('cc','asc')->get();
+        }
+        else{
+            $emp = Empleado::where('area','>',1)->orderBy('area','asc')->orderBy('cc','asc')->get();
+        }
+
+        $datos  = collect([]);
+
+        $inicio = new Carbon($request->fechaInicioOcup1);
+        $fin = new Carbon($request->fechaFinalOcup1);
+
+        $total=array();
+        foreach($emp as $e){
+            $inicio = new Carbon($request->fechaInicioOcup1);
+            $fin = new Carbon($request->fechaFinalOcup1);
+    
+            while ($inicio <= $fin){
+            
+                
+                $ocs = Ocupacion::where('cc',$e->cc)->where('dia','=',$inicio)->get();
+
+                foreach ($ocs as $oc){
+                    $centro = Cdc::where('codigo',$oc->proyecto)->first();
+                    $totalh=$oc->horas + ($oc->minutos/60);
+                    //Log::info($oc);
+                    Log::info($totalh);
+                    $linea = collect([]);
+                    $linea->put('codigo del empleado', $e->cc);
+                    $linea->put('sucursal', '');
+                    $linea->put('codigo del concepto', '001');
+                    $linea->put('centro de operacion', $centro->centro_operacion);
+                    $linea->put('centro de costo', $centro->codigo);
+                    $linea->put('fecha movimiento', $oc->dia);
+                    $linea->put('horas', $totalh);
+                    $linea->put('valor', '');
+                    $linea->put('cantidad', '');
+                    $linea->put('proyecto', '');
+                    $linea->put('numero de contrato', '');
+                    $linea->put('unidad de negocio', $centro->unidad_negocio);
+                    $linea->put('fecha de causacion', '');
+                    $linea->put('numero de cuotas', '');
+                    $linea->put('notas', '');
+                    $datos->push($linea);
+                    //Log::info($linea);
+                    if (array_key_exists($e->cc, $total) ) {
+                        $total[$e->cc]= $total[$e->cc] + $totalh;
+                    }
+                    else{
+                        $total[$e->cc]= $totalh;
+                    }
+                
+            
+                
+                }
+                $inicio = $inicio->addDay();
+
+            }
+        }
+        $datos2 = collect([]);
+            foreach ($datos as $d){
+                if ($d['codigo del concepto']=='001'){
+                    $cc = $d['codigo del empleado'];
+                    $horas = $d['horas'];
+                    $emp=Empleado::where('cc',$cc)->first();
+
+                    if ($emp->auxilio>0){
+                
+                        $auxilio= round(($emp->auxilio/$total[$cc])*$horas,1);
+                        $linea=collect([]);
+                        /*$linea->put('total',$total[$cc]);
+                        $linea->put('auxilio',$emp->auxilio);
+                        $linea->put('horas',$horas);*/
+
+                        $linea->put('codigo del empleado',$cc);
+                        $linea->put('sucursal', '');
+                        $linea->put('codigo del concepto', '075');
+                        $linea->put('centro de operacion', $d['centro de operacion']);
+                        $linea->put('centro de costo', $d['centro de costo']);
+                        $linea->put('fecha movimiento', $d['fecha movimiento']);
+                        $linea->put('horas','');
+                        $linea->put('valor', $auxilio);
+                        $linea->put('cantidad', '');
+                        $linea->put('proyecto', '');
+                        $linea->put('numero de contrato', '');
+                        $linea->put('unidad de negocio', $d['unidad de negocio']);
+                        $linea->put('fecha de causacion', '');
+                        $linea->put('numero de cuotas', '');
+                        $linea->put('notas', '');
+                        $datos2->push($linea);
+                    }
+                }
+            }
+           // dd($datos2);
+            foreach ($datos2 as $d){
+                $datos->push($d);
+            }
+        
+        $datos = $datos->sortBy(['codigo del empleado','fecha movimiento','codigo del concepto']);
+        return [$datos,$total];
     }
 }

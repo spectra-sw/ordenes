@@ -122,6 +122,7 @@ Route::get('consfestivo',[PagesController::class,'consfestivo'])->name('consfest
 
 //Excel
 Route::get('exportReporte', [ExcelController::class, 'export'])->name('export');
+Route::get('exportReporteO', [ExcelController::class, 'exporto'])->name('exporto');
 
 //Auth
 Route::get('validar',[AuthController::class,'validar'])->name('validar');
