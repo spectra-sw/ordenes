@@ -1543,7 +1543,7 @@ class PagesController extends Controller
         $cc = Empleado::where('id',$user)->first()->cc;
         $hoc = Ocupacion::where('cc',$cc)->where('dia','=',$fecha)->sum('horas');
         $moc = Ocupacion::where('cc',$cc)->where('dia','=',$fecha)->sum('minutos');
-        $restantes=(9.5-$hoc + $moc/60);
+        $restantes=9.5-($hoc + $moc/60);
         return "Faltan ".$restantes." horas por reportar este día";
     }
     public function distribuciono(Request $request){
