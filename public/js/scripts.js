@@ -1070,7 +1070,11 @@ function rocupacion(){
                 data: data,
                 success: function(data) {
                     alert(data);
-                    $('#formRegistro').trigger("reset");
+                    //$('#formRegistro').trigger("reset");
+                    $('#proyecto').val("");
+                    $('#actividad').val("");
+                    $('#horas').val("");
+                    $('#min').val("");
                 }
         }); 
     }
