@@ -1073,8 +1073,8 @@ function rocupacion(){
                     //$('#formRegistro').trigger("reset");
                     $('#proyecto').val("");
                     $('#actividad').val("");
-                    $('#horas').val("");
-                    $('#min').val("");
+                    $('#horas').val("0");
+                    $('#min').val("0");
                 }
         }); 
     }
