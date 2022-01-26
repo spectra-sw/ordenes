@@ -1405,9 +1405,9 @@ class PagesController extends Controller
         foreach($registros as $r){
             $totalh = $totalh + $r->horas + ($r->minutos/60);
         }
-        if ($diff> 21){
+        /*if ($diff> 21){
             return 'No puede registrar actividades anteriores a tres semanas';
-        }
+        }*/
         if (Festivo::where('fecha',$request->dia)->exists()){
             return 'La fecha seleccionada es un día festivo';
         }
