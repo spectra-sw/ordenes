@@ -1559,12 +1559,17 @@ class PagesController extends Controller
     }
     public function getDatosDistribucionO(Request $request){
         $area = $request->area;
+        $responsable = $request->responsable;
 
         if ($area != ""){
             $emp = Empleado::where('area',$area)->orderBy('cc','asc')->get();
         }
         else{
             $emp = Empleado::where('area','>',1)->orderBy('area','asc')->orderBy('cc','asc')->get();
+        }
+
+        if ($responsable!=""){
+            $emp = Empleado::where('cc',$responsable)->get();
         }
 
         $datos  = collect([]);

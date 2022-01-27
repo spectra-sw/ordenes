@@ -153,7 +153,17 @@
                             <div class="col-6 col-md-2 "><input type="date" name="fechaInicioOcup1" id="fechaInicioOcup1" class="form-control"></div>
                             <div class="col-6 col-md-2 cajaAzul">Fecha Final</div>
                             <div class="col-6 col-md-2 "><input type="date" name="fechaFinalOcup1" id="fechaFinalOcup1" class="form-control"></div>
-            </div>     
+            </div>    
+            @if (session('tipo')==0)
+                <div class="row">
+                    <div class="col-6 col-md-2 cajaAzul">Responsable</div>
+                    <div class="col-6 col-md-10">                 
+                <select class="form-control basicAutoSelect" name="responsable" id="responsable"
+                        placeholder="buscar..."
+                        data-url="autoemp" autocomplete="off"></select>
+                    </div>
+                </div>
+            @endif 
             <div class="row">
                 <button type="button" class="btn btn-primary" onclick="seguimiento()">Seguimiento</button>&nbsp;    
                 <button type="button" class="btn btn-primary" onclick="generalo()">General</button>&nbsp;    
@@ -169,7 +179,10 @@
                     
                     
 </div>
-
+<script type="text/javascript">
+    $('#responsable').autoComplete();
+    
+</script>
 
 
 <script src="{{asset('js/scripts.js')}}"></script>                
