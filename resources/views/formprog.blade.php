@@ -39,11 +39,11 @@
                     <label for="">HORARIO</label>
                     <div class="row">
                     <div class="col-4 col-md-2 ">Inicio</div>
-                    <div class="col-4 col-md-2 "><input type="number" name="hi" id="hi" min="0" max="24" class="form-control"></div>
-                    <div class="col-4 col-md-2 "><input type="number" name="mi" id="mi" min="0" max="59" class="form-control"></div>
+                    <div class="col-4 col-md-2 "><input type="number" name="hi" id="hi" min="0" max="24" class="form-control" value="{{ $hi[0]}}"></div>
+                    <div class="col-4 col-md-2 "><input type="number" name="mi" id="mi" min="0" max="59" class="form-control" value="{{ $hi[1]}}"></div>
                     <div class="col-4 col-md-2 ">Fin</div>
-                    <div class="col-4 col-md-2 "><input type="number" name="hf" id="hf" min="0" max="24" class="form-control"></div>
-                    <div class="col-4 col-md-2 "><input type="number" name="mf" id="mf" min="0" max="59" class="form-control"></div>
+                    <div class="col-4 col-md-2 "><input type="number" name="hf" id="hf" min="0" max="24" class="form-control" value="{{ $hf[0]}}"></div>
+                    <div class="col-4 col-md-2 "><input type="number" name="mf" id="mf" min="0" max="59" class="form-control" value="{{ $hf[1]}}"></div>
                   </div>
                 <button type="button" class="btn btn-primary" onclick="editarprog()">Guardar</button>
 

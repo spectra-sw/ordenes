@@ -91,6 +91,7 @@ Route::get('/nuevaprog',[PagesController::class,'nuevaprog']);
 Route::get('/programacion',[PagesController::class,'programacion']);
 Route::get('/tablaprog',[PagesController::class,'tablaprog']);
 Route::get('/buscarprog',[PagesController::class,'buscarprog']);
+Route::get('/consprog',[PagesController::class,'consprog']);
 Route::get('/editarprog',[PagesController::class,'editarprog']);
 Route::get('/eliminarprog',[PagesController::class,'eliminarprog']);
 Route::get('/filtrarprog',[PagesController::class,'filtrarprog']);

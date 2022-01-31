@@ -1219,4 +1219,21 @@ function buscarInfoOc(){
             }
     });   
 }
+function consprog(proyecto,fecha,cc){
+    /*alert(proyecto);
+    alert(fecha);
+    alert(cc);*/
+    data = { proyecto : proyecto, fecha : fecha, cc:cc }
+        url="/consprog"
+        $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) { 
+                $("#editarprogBody").html(data);
+                $("#editarprog").modal();
+            }
+        }); 
+
+}
 

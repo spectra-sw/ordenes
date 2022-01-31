@@ -4,9 +4,11 @@
 
  <!-- Nav tabs -->
  <ul class="nav nav-tabs">
+                @if ($area == 6)
                 <li class="nav-item">
                     <a class="nav-link active" data-toggle="tab" href="#emp">Empleados</a>
                 </li>
+                @endif
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#centros">Centros</a>
                 </li>
@@ -22,7 +24,7 @@
                 <div class="tab-content">
                     <div class="tab-pane container active" id="emp">
                         <br>
-                        @if ($authpr == 1)
+                        @if ($area == 6)
                         <button class="btn btn-primary" onclick="nuevoemp()">Nuevo Empleado</button><br><br>
                         <div id ="te">
                             @include('tablaemp')

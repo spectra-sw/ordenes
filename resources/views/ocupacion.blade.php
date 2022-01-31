@@ -167,7 +167,9 @@
             <div class="row">
                 <button type="button" class="btn btn-primary" onclick="seguimiento()">Seguimiento</button>&nbsp;    
                 <button type="button" class="btn btn-primary" onclick="generalo()">General</button>&nbsp;    
+                @if ($area==6)
                 <button type="button" class="btn btn-primary" onclick="distribuciono()">Archivo Distribución</button>&nbsp;  
+                @endif
             </div>
 
             <div id="tablareporteo">

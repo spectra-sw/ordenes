@@ -165,7 +165,7 @@
                             <tbody>
                             @foreach ($d['Horas'] as $dato)     
                             <tr>
-                                <td>{{ $dato['Trabajador'] }}</td>
+                                <td>{{ $dato['Trabajador'] }}&nbsp;<input type="button" class="btn btn-success btn-sm" value="prog" onclick=consprog({{ $o->proyecto }},'{{ $d['fecha'] }}',{{ $dato['Trabajador'] }})></td>
                                 <td>{{ $dato['Nombre'] }}</td>
                                 <td>{{ $dato['Hi'] }}</td>
                                 <td>{{ $dato['Hf'] }}</td>
@@ -205,5 +205,23 @@
 </div>
 
 </body>
+<div class="modal fade bd-example-modal-xl" id="editarprog">
+    <div class="modal-dialog">
+      <div class="modal-content">  
+        <!-- Modal body -->
+        <div class="modal-header">
+            Editar programación
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body" id="editarprogBody">
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+      </div>      
+      </div>
+    </div>
+  </div>
 </html>
 <script src="{{asset('js/scripts.js')}}"></script>
