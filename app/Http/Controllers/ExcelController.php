@@ -332,7 +332,7 @@ class ExcelController extends Controller
                             $linea->put('codigo del concepto', '001');
                             $linea->put('centro de operacion', $centro->centro_operacion);
                             $linea->put('centro de costo', $centro->codigo);
-                            $linea->put('fecha movimiento', $d->fecha);
+                            $linea->put('fecha movimiento', str_replace("-","",$d->fecha));
                             $linea->put('horas', $sb);
                             $linea->put('valor', '');
                             $linea->put('cantidad', '');
@@ -359,7 +359,7 @@ class ExcelController extends Controller
                             $linea->put('codigo del concepto', '006');
                             $linea->put('centro de operacion', $centro->centro_operacion);
                             $linea->put('centro de costo', $centro->codigo);
-                            $linea->put('fecha movimiento', $d->fecha);
+                            $linea->put('fecha movimiento', str_replace("-","",$d->fecha));
                             $linea->put('horas', $hedo);
                             $linea->put('valor', '');
                             $linea->put('cantidad', '');
@@ -378,7 +378,7 @@ class ExcelController extends Controller
                             $linea->put('codigo del concepto', '007');
                             $linea->put('centro de operacion', $centro->centro_operacion);
                             $linea->put('centro de costo', $centro->codigo);
-                            $linea->put('fecha movimiento', $d->fecha);
+                            $linea->put('fecha movimiento', str_replace("-","",$d->fecha));
                             $linea->put('horas', $heno);
                             $linea->put('valor', '');
                             $linea->put('cantidad', '');
@@ -397,7 +397,7 @@ class ExcelController extends Controller
                             $linea->put('codigo del concepto', '008');
                             $linea->put('centro de operacion', $centro->centro_operacion);
                             $linea->put('centro de costo', $centro->codigo);
-                            $linea->put('fecha movimiento', $d->fecha);
+                            $linea->put('fecha movimiento', str_replace("-","",$d->fecha));
                             $linea->put('horas', $hedf);
                             $linea->put('valor', '');
                             $linea->put('cantidad', '');
@@ -416,7 +416,7 @@ class ExcelController extends Controller
                             $linea->put('codigo del concepto', '009');
                             $linea->put('centro de operacion', $centro->centro_operacion);
                             $linea->put('centro de costo', $centro->codigo);
-                            $linea->put('fecha movimiento', $d->fecha);
+                            $linea->put('fecha movimiento', str_replace("-","",$d->fecha));
                             $linea->put('horas', $henf);
                             $linea->put('valor', '');
                             $linea->put('cantidad', '');
@@ -435,7 +435,7 @@ class ExcelController extends Controller
                             $linea->put('codigo del concepto', '012');
                             $linea->put('centro de operacion', $centro->centro_operacion);
                             $linea->put('centro de costo', $centro->codigo);
-                            $linea->put('fecha movimiento', $d->fecha);
+                            $linea->put('fecha movimiento', str_replace("-","",$d->fecha));
                             $linea->put('horas', $rno);
                             $linea->put('valor', '');
                             $linea->put('cantidad', '');
@@ -455,7 +455,7 @@ class ExcelController extends Controller
                             $linea->put('codigo del concepto', '014');
                             $linea->put('centro de operacion', $centro->centro_operacion);
                             $linea->put('centro de costo', $centro->codigo);
-                            $linea->put('fecha movimiento', $d->fecha);
+                            $linea->put('fecha movimiento',str_replace("-","",$d->fecha));
                             $linea->put('horas', $rnd);
                             $linea->put('valor', '');
                             $linea->put('cantidad', '');
@@ -474,7 +474,7 @@ class ExcelController extends Controller
                             $linea->put('codigo del concepto', '011');
                             $linea->put('centro de operacion', $centro->centro_operacion);
                             $linea->put('centro de costo', $centro->codigo);
-                            $linea->put('fecha movimiento', $d->fecha);
+                            $linea->put('fecha movimiento', str_replace("-","",$d->fecha));
                             $linea->put('horas', $dtsc);
                             $linea->put('valor', '');
                             $linea->put('cantidad', '');

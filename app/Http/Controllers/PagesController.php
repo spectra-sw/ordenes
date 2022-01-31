@@ -1626,7 +1626,7 @@ class PagesController extends Controller
                     $linea->put('codigo del concepto', '001');
                     $linea->put('centro de operacion', $centro->centro_operacion);
                     $linea->put('centro de costo', $centro->codigo);
-                    $linea->put('fecha movimiento', $oc->dia);
+                    $linea->put('fecha movimiento', str_replace("-","",$oc->dia));
                     $linea->put('horas', $totalh);
                     $linea->put('valor', '');
                     $linea->put('cantidad', '');
