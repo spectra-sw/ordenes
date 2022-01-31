@@ -1108,6 +1108,9 @@ class PagesController extends Controller
     }
     public function consprog(Request $request){
         //dd($request);
+        if(!Programacion::where('cc',$request->cc)->where('fecha',$request->fecha)->where('proyecto',$request->proyecto)->exists()){
+            return 'No existe programación';
+        }
         $p = Programacion::where('cc',$request->cc)->where('fecha',$request->fecha)->where('proyecto',$request->proyecto)->first();
         //dd($p);
         $emp = Empleado::orderBy('apellido1','asc')->get();
