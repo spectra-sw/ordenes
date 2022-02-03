@@ -25,6 +25,7 @@ use App\Models\Area;
 use App\Models\Actividad;
 use App\Models\ocupacion;
 use App\Models\Festivo;
+use App\Models\Novedad;
 use Log;
 
 use Carbon\Carbon;
@@ -1580,7 +1581,7 @@ class PagesController extends Controller
        
         //$datos2 = $datos2->sortBy(['codigo del empleado','fecha movimiento']);
         //dd($datos2);
-        return view('tablan',[
+        return view('tablan2',[
             'datos' => $datos[0],
             'total' => $datos[1],
         ]);
@@ -1619,9 +1620,21 @@ class PagesController extends Controller
                     $centro = Cdc::where('codigo',$oc->proyecto)->first();
                     $totalh=$oc->horas + ($oc->minutos/60);
                     //Log::info($oc);
-                    Log::info($totalh);
+                    //Log::info($totalh);
+                    $lapso=substr(str_replace("-","",$oc->dia),0,6);
                     $linea = collect([]);
-                    $linea->put('codigo del empleado', $e->cc);
+                    
+                    $linea->put('ID', '1');
+                    $linea->put('ID TERCERO', $e->cc);
+                    $linea->put('NDC', '');
+                    $linea->put('LAPSO', $lapso);
+                    $linea->put('UNIDADES', $totalh);
+                    $linea->put('CENTRO OPERACION', $centro->centro_operacion);
+                    $linea->put('CENTRO COSTOS', $centro->codigo);
+                    $linea->put('ID PROYECTO', '');
+                    $linea->put('ID UNIDAD DE NEGOCIO', $centro->unidad_negocio);
+                    $linea->put('NOTAS', '');
+                    /*$linea->put('codigo del empleado', $e->cc);
                     $linea->put('sucursal', '');
                     $linea->put('codigo del concepto', '001');
                     $linea->put('centro de operacion', $centro->centro_operacion);
@@ -1635,7 +1648,8 @@ class PagesController extends Controller
                     $linea->put('unidad de negocio', $centro->unidad_negocio);
                     $linea->put('fecha de causacion', '');
                     $linea->put('numero de cuotas', '');
-                    $linea->put('notas', '');
+                    $linea->put('notas', '');*/
+
                     $datos->push($linea);
                     //Log::info($linea);
                     if (array_key_exists($e->cc, $total) ) {
@@ -1651,8 +1665,26 @@ class PagesController extends Controller
                 $inicio = $inicio->addDay();
 
             }
+                    $hl =240;
+                    if(Novedad::where('cc',$e->cc)->where('periodo',$lapso)->exists()){
+                        $hl=Novedad::where('cc',$e->cc)->where('periodo',$lapso)->first()->horas;
+                    }
+                    $linea = collect([]);
+                    
+                    $linea->put('ID', '1');
+                    $linea->put('ID TERCERO', $e->cc);
+                    $linea->put('NDC', '');
+                    $linea->put('LAPSO', $lapso);
+                    $linea->put('UNIDADES',$hl- $total[$e->cc]);
+                    $linea->put('CENTRO OPERACION', '001');
+                    $linea->put('CENTRO COSTOS', '300001');
+                    $linea->put('ID PROYECTO', '');
+                    $linea->put('ID UNIDAD DE NEGOCIO', '999');
+                    $linea->put('NOTAS', '');
+                    $datos->push($linea);
+
         }
-        $datos2 = collect([]);
+       /* $datos2 = collect([]);
             foreach ($datos as $d){
                 if ($d['codigo del concepto']=='001'){
                     $cc = $d['codigo del empleado'];
@@ -1663,9 +1695,7 @@ class PagesController extends Controller
                 
                         $auxilio= round(($emp->auxilio/$total[$cc])*$horas,1);
                         $linea=collect([]);
-                        /*$linea->put('total',$total[$cc]);
-                        $linea->put('auxilio',$emp->auxilio);
-                        $linea->put('horas',$horas);*/
+                       
 
                         $linea->put('codigo del empleado',$cc);
                         $linea->put('sucursal', '');
@@ -1690,8 +1720,49 @@ class PagesController extends Controller
             foreach ($datos2 as $d){
                 $datos->push($d);
             }
-        
-        $datos = $datos->sortBy(['codigo del empleado','fecha movimiento','codigo del concepto']);
+        */
+        $grouped = $datos->groupBy(['ID TERCERO', function ($item) {
+            return $item['CENTRO COSTOS'];
+
+        }], $preserveKeys = true);
+        //dd($grouped->all());
+        $grouped=$grouped->toArray();
+        $datosn = collect([]);
+        //dd($grouped);
+        foreach ($grouped as $cc){
+            
+            foreach($cc as $py){
+                $linea = collect([]);
+                $totalpy = 0;
+                foreach ($py as $detalle){
+                    $cc=$detalle['ID TERCERO'];
+                    $totalpy= $totalpy+ $detalle['UNIDADES'];
+                    $pty =$detalle['CENTRO COSTOS'];
+                    $lapso = $detalle['LAPSO'];
+                    $centro = $detalle['CENTRO OPERACION'];
+                    $unidad = $detalle['ID UNIDAD DE NEGOCIO'];
+                }
+                $linea->put('ID', '1');
+                $linea->put('ID TERCERO', $cc);
+                $linea->put('NDC', '');
+                $linea->put('LAPSO', $lapso);
+                $linea->put('UNIDADES', $totalpy);
+                $linea->put('CENTRO OPERACION', $centro);
+                $linea->put('CENTRO COSTOS', $pty);
+                $linea->put('ID PROYECTO', '');
+                $linea->put('ID UNIDAD DE NEGOCIO', $unidad);
+                $linea->put('NOTAS', '');
+               
+                    
+             
+                $datosn->push($linea);
+            }
+           
+
+        }
+        //dd($datosn);
+       
+        $datos = $datosn->sortBy(['ID TERCERO','LAPSO']);
         return [$datos,$total];
     }
 }

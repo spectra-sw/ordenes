@@ -10,6 +10,7 @@ use App\Models\Cdc;
 use App\Models\Empleado;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\NominaExport;
+use App\Exports\OcupacionExport;
 use App\Models\Detalleh;
 use App\Models\Festivo;
 use DB;
@@ -547,7 +548,7 @@ class ExcelController extends Controller
         //dd($request);
         $datos=app(PagesController::class)->getDatosDistribucionO($request);
         //dd($datos);
-        return Excel::download(new NominaExport($datos[0]), 'ocupacion.xlsx');
+        return Excel::download(new OcupacionExport($datos[0]), 'ocupacion.xlsx');
     }
     
 }
