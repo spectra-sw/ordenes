@@ -285,6 +285,20 @@ function archivo(){
               }
     }); 
 }
+function archivoc(){
+    data=$( "#formConsulta" ).serialize(); 
+    console.log(data);
+    url = '/archivoc'
+    $.ajax({
+              url: url,
+              type:'GET',
+              data: data,
+              success: function(data) {
+                $data = $(data);
+                $("#tablao").html($data);
+              }
+    }); 
+}
 function reportep(){
     data=$( "#formConsulta" ).serialize(); 
     url = '/reportep'

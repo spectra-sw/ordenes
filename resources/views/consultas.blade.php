@@ -42,6 +42,7 @@
                     <!--<button type="button" class="btn btn-primary" onclick="archivor()">Archivo Redistribución</button>&nbsp;-->
                     <button type="button" class="btn btn-primary" onclick="reportep()">Reporte personas</button>&nbsp;
                     <button type="button" class="btn btn-primary" onclick="archivo()">Archivo Distribución</button>&nbsp;&nbsp;
+                    <button type="button" class="btn btn-primary" onclick="archivoc()">Archivo Consolidado</button>&nbsp;&nbsp;
                     <div class="form-check">
                         <label class="form-check-label">
                             <input type="radio" class="form-check-input" name="auxilio" value="si" checked>Con auxilio

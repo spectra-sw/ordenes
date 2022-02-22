@@ -112,6 +112,7 @@ Route::get('consproyecto',[SearchController::class, 'consproyecto'])->name('cons
 Route::get('getordenes',[SearchController::class,'getordenes'])->name("getordenes");
 Route::get('buscarcontactos',[SearchController::class,'buscarcontactos'])->name("buscarcontactos");
 Route::get('archivon',[FilesController::class,'archivon'])->name("archivon");
+Route::get('archivoc',[FilesController::class,'archivoc'])->name("archivoc");
 Route::get('reportep',[FilesController::class,'reportep'])->name("reportep");
 
 //utilities

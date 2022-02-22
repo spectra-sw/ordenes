@@ -28,6 +28,7 @@ class ExcelController extends Controller
         $cliente = $request->cliente;
         $tecnico = $request->tecnico;
         $oauxilio=$request->auxilio;
+        //dd($auxilio);
         //dd($fin);
         //$o = DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->where('ordenes.cliente','<>',NULL)->where('dias.fecha','>=', '2021-05-10')->get();
 
@@ -45,7 +46,7 @@ class ExcelController extends Controller
         if(($inicio!=" 00:00:00")&&($fin!=" 11:59:59")){
                 $o=$o->where('dias.fecha','>=',$inicio)->where('dias.fecha','<=',$fin);
         }
-        $o=$o->orderBy('dias.fecha','asc')->get();
+        $o=$o->orderBy('dias.fecha','asc')->orderBy('dias.id','asc')->get();
        // $o=$o->orderBy('created_at','desc')->get();
 
         //dd($o);
@@ -55,6 +56,7 @@ class ExcelController extends Controller
         $datos = collect([]);
         $total = array();
         $tsb=array();
+        $conts =array();
         foreach($ordenes as $o){
             //dd($o['id']);
             //dd($o->ordenes_id);
@@ -63,7 +65,9 @@ class ExcelController extends Controller
             $bandextra=0;
             foreach($dias as $d){
                 $horas = Hora::where('ordenes_id',$o->ordenes_id)->where('dias_id',$d['id'])->get();
-                
+                if($tecnico =='1053835892'){
+                    //Log::info($horas);
+                }
                 $c = new Carbon($d['fecha']);
                 $festivo = $this->consfestivo($d['fecha']);
                 $numdia = $c->dayOfWeek;
@@ -73,6 +77,13 @@ class ExcelController extends Controller
                 foreach($horas as $h){
                     $extra=0;
                     $inicio = $fin =$rinicio=$rfin=0;
+                    if (array_key_exists($h['trabajador'], $conts) ) {
+                        $conts[$h['trabajador']] = $conts[$h['trabajador']] + 1;
+                    }
+                    else{
+                        $conts[$h['trabajador']]= 1;
+                    }
+
                     if ($ant==$h['trabajador']){
                         $cont = $cont+1;
                     }
@@ -81,7 +92,11 @@ class ExcelController extends Controller
                         $cont=1;
                     }
                     if(Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->exists()){
-                        $progs=Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->take($cont)->get();
+                        $progs=Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->take($conts[$h['trabajador']])->get();
+                        if($tecnico ==$h['trabajador']){
+                           // Log::info($conts[$h['trabajador']]);
+                           // Log::info($progs);
+                        }
                         //dd(Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->get());
                         foreach ($progs as $prog){
                             $detallei = explode(":", $prog->hi);
@@ -95,16 +110,17 @@ class ExcelController extends Controller
                     
                     
                     $emp=Empleado::where('cc',$h['trabajador'])->first();
+
                     $ri = explode(":", $h->hi);
                     $rinicio = intval($ri[0]) + round(floatval($ri[1]/60),1);
                     $rfin = explode(":", $h->hf);
                     //dd($rfin);
                     $rfin = intval($rfin[0]) + round(floatval($rfin[1]/60),1);
-                    if($tecnico ==$h['trabajador']&&($d['fecha']=="2021-12-04")){
+                    if($tecnico ==$h['trabajador']){
                        // dd($horas);
-                       //::info($d['fecha']." ".$inicio." ".$rinicio." ".$fin." ".$rfin);
-                       //::info($total[$h['trabajador']]);
-                      // ::info("Hedf(008):".$hedf." Henf(009):".$henf);
+                      // Log::info($d['fecha']." ".$inicio." ".$rinicio." ".$fin." ".$rfin);
+                       //Log::info($total[$h['trabajador']]);
+                      // Log::info("Hedf(008):".$hedf." Henf(009):".$henf);
                     }
                    
                     $sb = $hedo = $heno= $hedf = $henf = $rno = $dtsc = $rnd = 0;
@@ -274,7 +290,7 @@ class ExcelController extends Controller
                     }
                     if($tecnico ==$h['trabajador']){
                         // dd($horas);
-                        //::info("sb(001):".$sb." dtsc(011):".$dtsc." Hedo:".$hedo." Henf(009):".$henf." rno(012):".$rno." rnd(013):".$rnd);
+                       // Log::info("sb(001):".$sb." Hedo(006):".$hedo." Heno(007):".$heno);
                      }
                     if(($tecnico == "")||($tecnico != "" && $tecnico ==$h['trabajador'])) {
                         //dd($extra);
@@ -320,7 +336,7 @@ class ExcelController extends Controller
                                     $heno=0;
                                 }
                             }
-                            //::info("Hedf(008):".$hedf." Henf(009):".$henf);
+                            //Log::info("Hedf(008):".$hedf." Henf(009):".$henf);
                         }
                        
                    
@@ -456,7 +472,7 @@ class ExcelController extends Controller
                             $linea->put('codigo del concepto', '014');
                             $linea->put('centro de operacion', $centro->centro_operacion);
                             $linea->put('centro de costo', $centro->codigo);
-                            $linea->put('fecha movimiento',str_replace("-","",$d->fecha));
+                            $linea->put('fecha movimiento', str_replace("-","",$d->fecha));
                             $linea->put('horas', $rnd);
                             $linea->put('valor', '');
                             $linea->put('cantidad', '');
