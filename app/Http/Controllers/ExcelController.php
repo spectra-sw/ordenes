@@ -319,9 +319,11 @@ class ExcelController extends Controller
                                     }
                                 }
                                 else{
-                                    $hedo2=$total[$h['trabajador']]-47.5;
-                                    $hedo=$hedo2;
-                                    $sb=$sb-$hedo;
+                                    if ($hedo==0){
+                                        $hedo2=$total[$h['trabajador']]-47.5;
+                                        $hedo=$hedo2;
+                                        $sb=$sb-$hedo;
+                                        }
                                 }    
                             }
                             

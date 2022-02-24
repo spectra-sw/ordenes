@@ -287,7 +287,7 @@ class FilesController extends Controller
                     }
                     if($tecnico ==$h['trabajador']){
                         // dd($horas);
-                       // Log::info("sb(001):".$sb." Hedo(006):".$hedo." Heno(007):".$heno);
+                        Log::info("sb(001):".$sb." Hedo(006):".$hedo." Heno(007):".$heno);
                      }
                     if(($tecnico == "")||($tecnico != "" && $tecnico ==$h['trabajador'])) {
                         //dd($extra);
@@ -316,9 +316,11 @@ class FilesController extends Controller
                                     }
                                 }
                                 else{
+                                    if ($hedo==0){
                                     $hedo2=$total[$h['trabajador']]-47.5;
                                     $hedo=$hedo2;
                                     $sb=$sb-$hedo;
+                                    }
                                 }    
                             }
                             
