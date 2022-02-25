@@ -369,7 +369,7 @@ class ExcelController extends Controller
                                 $tsb[$h['trabajador']]= $sb;
                             }
                         }
-                        if ($hedo>0){
+                        if (($hedo>0)&&($sb>=0)){
                             //dd($hedo);
                            
                             $linea=collect([]);
