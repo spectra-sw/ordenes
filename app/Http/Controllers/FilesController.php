@@ -44,6 +44,7 @@ class FilesController extends Controller
                 $o=$o->where('dias.fecha','>=',$inicio)->where('dias.fecha','<=',$fin);
         }
         $o=$o->orderBy('dias.fecha','asc')->orderBy('dias.id','asc')->get();
+        //$o=$o->orderBy('dias.fecha','asc')->get();
        // $o=$o->orderBy('created_at','desc')->get();
 
         //dd($o);
@@ -61,16 +62,25 @@ class FilesController extends Controller
             $centro = Cdc::where('codigo',$o->proyecto)->first();
             $bandextra=0;
             foreach($dias as $d){
-                $horas = Hora::where('ordenes_id',$o->ordenes_id)->where('dias_id',$d['id'])->get();
-                if($tecnico =='1053835892'){
-                    //Log::info($horas);
+                if($tecnico ==""){
+                    $horas = Hora::where('ordenes_id',$o->ordenes_id)->where('dias_id',$d['id'])->get();
                 }
+                else{
+                    $horas = Hora::where('ordenes_id',$o->ordenes_id)->where('dias_id',$d['id'])->where('trabajador',$tecnico)->get();
+                }
+                //$horas = Hora::where('ordenes_id',$o->ordenes_id)->where('dias_id',$d['id'])->get();
+               
+                Log::info($horas);
+            
                 $c = new Carbon($d['fecha']);
                 $festivo = $this->consfestivo($d['fecha']);
                 $numdia = $c->dayOfWeek;
                 //dd($numdia);
                 $cont=1;
                 $ant =0;
+               
+                $conts[$d['fecha']] = 1;
+                
                 foreach($horas as $h){
                     $extra=0;
                     $inicio = $fin =$rinicio=$rfin=0;
@@ -89,10 +99,10 @@ class FilesController extends Controller
                         $cont=1;
                     }
                     if(Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->exists()){
-                        $progs=Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->take($conts[$h['trabajador']])->get();
+                        $progs=Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->take($cont)->get();
                         if($tecnico ==$h['trabajador']){
-                           // Log::info($conts[$h['trabajador']]);
-                           // Log::info($progs);
+                            Log::info($cont);
+                            Log::info($progs);
                         }
                         //dd(Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->get());
                         foreach ($progs as $prog){
@@ -115,7 +125,7 @@ class FilesController extends Controller
                     $rfin = intval($rfin[0]) + round(floatval($rfin[1]/60),1);
                     if($tecnico ==$h['trabajador']){
                        // dd($horas);
-                      // Log::info($d['fecha']." ".$inicio." ".$rinicio." ".$fin." ".$rfin);
+                       Log::info($d['fecha']." ".$inicio." ".$rinicio." ".$fin." ".$rfin);
                        //Log::info($total[$h['trabajador']]);
                       // Log::info("Hedf(008):".$hedf." Henf(009):".$henf);
                     }
@@ -366,7 +376,7 @@ class FilesController extends Controller
                                 $tsb[$h['trabajador']]= $sb;
                             }
                         }
-                        if ($hedo>0){
+                        if (($hedo>0)&&($sb>=0)){
                             //dd($hedo);
                            
                             $linea=collect([]);
