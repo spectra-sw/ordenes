@@ -52,6 +52,7 @@ class FilesController extends Controller
         $total = array();
         $tsb=array();
         $conts =array();
+        //dd($o);
         foreach($ordenes as $o){ 
             if (array_key_exists($o->fecha, $conts) ) {
                 $conts[$o->fecha] = $conts[$o->fecha] + 1;
@@ -71,10 +72,10 @@ class FilesController extends Controller
             $extra=0;
             $inicio = $fin =$rinicio=$rfin=0;
 
-                    if(Programacion::where('cc',$o->trabajador)->where('fecha',$o->fecha)->where('proyecto',$o->proyecto)->exists()){
-                        $prog=Programacion::where('cc',$o->trabajador)->where('fecha',$o->fecha)->where('proyecto',$o->proyecto)->skip($conts[$o->fecha])->first();
-                       // Log::info($conts[$o->fecha]);
-                       // Log::info($prog);
+                    if(Programacion::where('cc',$o->trabajador)->where('fecha',$o->fecha)->exists()){
+                        $prog=Programacion::where('cc',$o->trabajador)->where('fecha',$o->fecha)->skip($conts[$o->fecha])->first();
+                        Log::info($conts[$o->fecha]);
+                        Log::info($prog);
                         //dd(Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->get());
                        
                             $detallei = explode(":", $prog->hi);
