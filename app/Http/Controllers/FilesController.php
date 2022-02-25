@@ -25,12 +25,8 @@ class FilesController extends Controller
         $cliente = $request->cliente;
         $tecnico = $request->tecnico;
         $oauxilio=$request->auxilio;
-        //dd($auxilio);
-        //dd($fin);
-        //$o = DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->where('ordenes.cliente','<>',NULL)->where('dias.fecha','>=', '2021-05-10')->get();
-
-       // $o = Orden::where('id','>',0);
-        $o = DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->where('ordenes.cliente','<>',NULL)->where('dias.fecha','<>','1900-01-01');
+        
+        $o = DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->join('horas','dias.id','=','horas.dias_id')->where('ordenes.cliente','<>',NULL)->where('dias.fecha','<>','1900-01-01');
         if ($proyecto!=""){
             $o=$o->where('ordenes.proyecto',$proyecto);
         }
@@ -40,14 +36,15 @@ class FilesController extends Controller
         if($cliente!=""){
           $o=$o->where('ordenes.cliente','like','%'.$cliente.'%');
         }
+        if($tecnico!=""){
+          $o=$o->where('horas.trabajador',$tecnico);
+        }
         if(($inicio!=" 00:00:00")&&($fin!=" 11:59:59")){
                 $o=$o->where('dias.fecha','>=',$inicio)->where('dias.fecha','<=',$fin);
         }
         $o=$o->orderBy('dias.fecha','asc')->orderBy('dias.id','asc')->get();
-        //$o=$o->orderBy('dias.fecha','asc')->get();
-       // $o=$o->orderBy('created_at','desc')->get();
-
-        //dd($o);
+    
+            
         $ordenes=$o;
         $ordenes2=$o;
         
@@ -55,87 +52,53 @@ class FilesController extends Controller
         $total = array();
         $tsb=array();
         $conts =array();
-        foreach($ordenes as $o){
-            //dd($o['id']);
-            //dd($o->ordenes_id);
-            $dias = Dia::where('id',$o->id)->get();
+        foreach($ordenes as $o){ 
+            if (array_key_exists($o->fecha, $conts) ) {
+                $conts[$o->fecha] = $conts[$o->fecha] + 1;
+            }
+            else{
+                $conts[$o->fecha]= 0;
+            }
+
             $centro = Cdc::where('codigo',$o->proyecto)->first();
             $bandextra=0;
-            foreach($dias as $d){
-                if($tecnico ==""){
-                    $horas = Hora::where('ordenes_id',$o->ordenes_id)->where('dias_id',$d['id'])->get();
-                }
-                else{
-                    $horas = Hora::where('ordenes_id',$o->ordenes_id)->where('dias_id',$d['id'])->where('trabajador',$tecnico)->get();
-                }
-                //$horas = Hora::where('ordenes_id',$o->ordenes_id)->where('dias_id',$d['id'])->get();
-               
-                Log::info($horas);
             
-                $c = new Carbon($d['fecha']);
-                $festivo = $this->consfestivo($d['fecha']);
-                $numdia = $c->dayOfWeek;
-                //dd($numdia);
-                $cont=1;
-                $ant =0;
-               
-                $conts[$d['fecha']] = 1;
+            
+            $c = new Carbon($o->fecha);
+            $festivo = $this->consfestivo($o->fecha);
+            $numdia = $c->dayOfWeek;
                 
-                foreach($horas as $h){
-                    $extra=0;
-                    $inicio = $fin =$rinicio=$rfin=0;
-                    if (array_key_exists($h['trabajador'], $conts) ) {
-                        $conts[$h['trabajador']] = $conts[$h['trabajador']] + 1;
-                    }
-                    else{
-                        $conts[$h['trabajador']]= 1;
-                    }
+            $extra=0;
+            $inicio = $fin =$rinicio=$rfin=0;
 
-                    if ($ant==$h['trabajador']){
-                        $cont = $cont+1;
-                    }
-                    else{
-                        $ant=$h['trabajador'];
-                        $cont=1;
-                    }
-                    if(Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->exists()){
-                        $progs=Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->take($cont)->get();
-                        if($tecnico ==$h['trabajador']){
-                            Log::info($cont);
-                            Log::info($progs);
-                        }
+                    if(Programacion::where('cc',$o->trabajador)->where('fecha',$o->fecha)->where('proyecto',$o->proyecto)->exists()){
+                        $prog=Programacion::where('cc',$o->trabajador)->where('fecha',$o->fecha)->where('proyecto',$o->proyecto)->skip($conts[$o->fecha])->first();
+                       // Log::info($conts[$o->fecha]);
+                       // Log::info($prog);
                         //dd(Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->get());
-                        foreach ($progs as $prog){
+                       
                             $detallei = explode(":", $prog->hi);
                             $inicio = intval($detallei[0]) + round(floatval($detallei[1]/60),1);
                             $detallef = explode(":", $prog->hf);
                             $fin = intval($detallef[0]) + round(floatval($detallef[1]/60),1);
                             $extra = $prog->extra;
-                        }
                       
                     }
+                  
                     
-                    
-                    $emp=Empleado::where('cc',$h['trabajador'])->first();
+                    $emp=Empleado::where('cc',$o->trabajador)->first();
 
-                    $ri = explode(":", $h->hi);
+                    $ri = explode(":", $o->hi);
                     $rinicio = intval($ri[0]) + round(floatval($ri[1]/60),1);
-                    $rfin = explode(":", $h->hf);
-                    //dd($rfin);
+                    $rfin = explode(":", $o->hf);
                     $rfin = intval($rfin[0]) + round(floatval($rfin[1]/60),1);
-                    if($tecnico ==$h['trabajador']){
-                       // dd($horas);
-                       Log::info($d['fecha']." ".$inicio." ".$rinicio." ".$fin." ".$rfin);
-                       //Log::info($total[$h['trabajador']]);
-                      // Log::info("Hedf(008):".$hedf." Henf(009):".$henf);
-                    }
                    
                     $sb = $hedo = $heno= $hedf = $henf = $rno = $dtsc = $rnd = 0;
                    
                     if ($extra !=1){      
                         
                         if (($numdia > 0)&&($festivo=="no")){
-                            $sb = $h['ha'];    
+                            $sb = $o->ha;    
                             
                             //hedo
                             if (($rfin > $fin) && ($rfin <= 21)){
@@ -143,7 +106,7 @@ class FilesController extends Controller
                                 $sb = $sb  - ($rfin-$fin);
                                 $hedo = $rfin - $fin;  
                                 if($hedo>$sb){
-                                   $sb =  $sb = $h['ha'];  
+                                   $sb =  $sb = $o->ha;  
                                 }
                             }
                             if (($rinicio < $inicio ) && ($rinicio >= 6)){
@@ -182,10 +145,10 @@ class FilesController extends Controller
                         if (($numdia == 0)||($festivo=="si")){
                             
                             if($festivo=="si"){
-                                $sb=$h['ha'];
+                                $sb=$o->ha;
                             }
                             if($festivo=="no"){
-                                $dtsc=$h['ha'];
+                                $dtsc=$o->ha;
                             }
 
                             //hedf
@@ -210,21 +173,7 @@ class FilesController extends Controller
                                 $henf = ($inicio-$rinicio) - $hedf;
                             }
 
-                            /*if (($rinicio >= 6)&& ($rfin <= 21)){
-                                $hedf = $h['ha'];  
-                            }
-                            if (($rinicio < 6)&& ($rfin <= 21)){
-                                $henf = 6-$rinicio;
-                                $hedf = $h['ha'] - $henf;  
-                            }
-                            if (($rinicio >= 6)&& ($rfin > 21)){
-                                $henf = $rfin-21;
-                                $hedf = $h['ha'] - $henf;  
-                            }
-                            if (($rinicio < 6 )&& ($rfin > 21)){
-                                $henf = (6-$rinicio) + (21-$rfin);
-                                $hedf = $h['ha'] - $henf;  
-                            }*/
+                           
 
                             //rnd
                             if (($rinicio < 21)&&($rinicio > 6)&&($rfin>21)&&($rfin<=24)){
@@ -253,10 +202,10 @@ class FilesController extends Controller
                         if (($numdia > 0)&&($festivo!="si")){
 
                             if (($rfin >= 6) && ($rfin <= 21)){
-                                $hedo = $h['ha']; 
+                                $hedo = $o->ha; 
                             }
                             else{
-                                $heno = $h['ha']; 
+                                $heno = $o->ha; 
                             }   
                             
                             //rno
@@ -275,10 +224,10 @@ class FilesController extends Controller
                         }
                        if (($numdia == 0)||($festivo=="si")){
                             if (($rfin >= 6) && ($rfin <= 21)){
-                                $hedf = $h['ha']; 
+                                $hedf = $o->ha; 
                             }
                             else{
-                                $henf = $h['ha']; 
+                                $henf = $o->ha; 
                             }   
                             //rnd
                             if (($rinicio < 21)&&($rinicio > 6)&&($rfin>21)&&($rfin<=24)){
@@ -295,48 +244,45 @@ class FilesController extends Controller
                             }
                         }
                     }
-                    if($tecnico ==$h['trabajador']){
-                        // dd($horas);
-                        Log::info("sb(001):".$sb." Hedo(006):".$hedo." Heno(007):".$heno);
-                     }
-                    if(($tecnico == "")||($tecnico != "" && $tecnico ==$h['trabajador'])) {
+                    
+                    if(($tecnico == "")||($tecnico != "" && $tecnico ==$o->trabajador)) {
                         //dd($extra);
                         $auxilio=round((($emp->auxilio)/240)*$sb,1);
-                        if (array_key_exists($h['trabajador'], $total) ) {
-                            $total[$h['trabajador']] = $total[$h['trabajador']] + $h['ha'];
+                        if (array_key_exists($o->trabajador, $total) ) {
+                            $total[$o->trabajador] = $total[$o->trabajador] + $o->ha;
                         }
                         else{
-                            $total[$h['trabajador']]= $h['ha'];
+                            $total[$o->trabajador]= $o->ha;
                         }
                        
-                       if (array_key_exists($h['trabajador'], $total) ) {
-                            if(($total[$h['trabajador']]>47.5)&&($centro->codigo==9933)&&($bandextra==0)){
+                       if (array_key_exists($o->trabajador, $total) ) {
+                            if(($total[$o->trabajador]>47.5)&&($centro->codigo==9933)&&($bandextra==0)){
                                // dd($sb);
                                 $bandextra=1;
                                 if (($numdia == 0)){
                                     if($henf>0){
-                                        $henf2=$total[$h['trabajador']]-47.5;
+                                        $henf2=$total[$o->trabajador]-47.5;
                                         $henf=$henf2;
                                         $dtsc=$dtsc-$henf;
                                     }
                                     else{
-                                        $hedf2=$total[$h['trabajador']]-47.5;
+                                        $hedf2=$total[$o->trabajador]-47.5;
                                         $hedf=$hedf2;
                                         $dtsc=$dtsc-$hedf;
                                     }
                                 }
                                 else{
                                     if ($hedo==0){
-                                    $hedo2=$total[$h['trabajador']]-47.5;
+                                    $hedo2=$total[$o->trabajador]-47.5;
                                     $hedo=$hedo2;
                                     $sb=$sb-$hedo;
                                     }
                                 }    
                             }
                             
-                            if(($total[$h['trabajador']]<47.5)&&($centro->codigo==9933)){
+                            if(($total[$o->trabajador]<47.5)&&($centro->codigo==9933)){
                                 if (($festivo == 'no')){
-                                    $sb = $h['ha'];
+                                    $sb = $o->ha;
                                    // $dtsc=$h['ha']-$rnd;
                                     $dtsc=0;
                                     $hedf=0;
@@ -353,12 +299,12 @@ class FilesController extends Controller
                         if ($sb>0){
                             //dd($sb);
                             $linea=collect([]);
-                            $linea->put('codigo del empleado', $h['trabajador']);
+                            $linea->put('codigo del empleado', $o->trabajador);
                             $linea->put('sucursal', '');
                             $linea->put('codigo del concepto', '001');
                             $linea->put('centro de operacion', $centro->centro_operacion);
                             $linea->put('centro de costo', $centro->codigo);
-                            $linea->put('fecha movimiento', str_replace("-","",$d->fecha));
+                            $linea->put('fecha movimiento', str_replace("-","",$o->fecha));
                             $linea->put('horas', $sb);
                             $linea->put('valor', '');
                             $linea->put('cantidad', '');
@@ -369,23 +315,23 @@ class FilesController extends Controller
                             $linea->put('numero de cuotas', '');
                             $linea->put('notas', '');
                             $datos->push($linea);
-                            if (array_key_exists($h['trabajador'], $tsb) ) {
-                                $tsb[$h['trabajador']]= $tsb[$h['trabajador']] + $sb;
+                            if (array_key_exists($o->trabajador, $tsb) ) {
+                                $tsb[$o->trabajador]= $tsb[$o->trabajador] + $sb;
                             }
                             else{
-                                $tsb[$h['trabajador']]= $sb;
+                                $tsb[$o->trabajador]= $sb;
                             }
                         }
                         if (($hedo>0)&&($sb>=0)){
                             //dd($hedo);
                            
                             $linea=collect([]);
-                            $linea->put('codigo del empleado', $h['trabajador']);
+                            $linea->put('codigo del empleado', $o->trabajador);
                             $linea->put('sucursal', '');
                             $linea->put('codigo del concepto', '006');
                             $linea->put('centro de operacion', $centro->centro_operacion);
                             $linea->put('centro de costo', $centro->codigo);
-                            $linea->put('fecha movimiento', str_replace("-","",$d->fecha));
+                            $linea->put('fecha movimiento', str_replace("-","",$o->fecha));
                             $linea->put('horas', $hedo);
                             $linea->put('valor', '');
                             $linea->put('cantidad', '');
@@ -399,12 +345,12 @@ class FilesController extends Controller
                         }
                         if ($heno>0){
                             $linea=collect([]);
-                            $linea->put('codigo del empleado', $h['trabajador']);
+                            $linea->put('codigo del empleado', $o->trabajador);
                             $linea->put('sucursal', '');
                             $linea->put('codigo del concepto', '007');
                             $linea->put('centro de operacion', $centro->centro_operacion);
                             $linea->put('centro de costo', $centro->codigo);
-                            $linea->put('fecha movimiento', str_replace("-","",$d->fecha));
+                            $linea->put('fecha movimiento', str_replace("-","",$o->fecha));
                             $linea->put('horas', $heno);
                             $linea->put('valor', '');
                             $linea->put('cantidad', '');
@@ -418,12 +364,12 @@ class FilesController extends Controller
                         }
                         if ($hedf>0){
                             $linea=collect([]);
-                            $linea->put('codigo del empleado', $h['trabajador']);
+                            $linea->put('codigo del empleado', $o->trabajador);
                             $linea->put('sucursal', '');
                             $linea->put('codigo del concepto', '008');
                             $linea->put('centro de operacion', $centro->centro_operacion);
                             $linea->put('centro de costo', $centro->codigo);
-                            $linea->put('fecha movimiento', str_replace("-","",$d->fecha));
+                            $linea->put('fecha movimiento', str_replace("-","",$o->fecha));
                             $linea->put('horas', $hedf);
                             $linea->put('valor', '');
                             $linea->put('cantidad', '');
@@ -437,12 +383,12 @@ class FilesController extends Controller
                         }
                         if ($henf>0){
                             $linea=collect([]);
-                            $linea->put('codigo del empleado', $h['trabajador']);
+                            $linea->put('codigo del empleado', $o->trabajador);
                             $linea->put('sucursal', '');
                             $linea->put('codigo del concepto', '009');
                             $linea->put('centro de operacion', $centro->centro_operacion);
                             $linea->put('centro de costo', $centro->codigo);
-                            $linea->put('fecha movimiento', str_replace("-","",$d->fecha));
+                            $linea->put('fecha movimiento', str_replace("-","",$o->fecha));
                             $linea->put('horas', $henf);
                             $linea->put('valor', '');
                             $linea->put('cantidad', '');
@@ -456,12 +402,12 @@ class FilesController extends Controller
                         }
                         if( ($rno>0)&&($heno==0)){
                             $linea=collect([]);
-                            $linea->put('codigo del empleado', $h['trabajador']);
+                            $linea->put('codigo del empleado', $o->trabajador);
                             $linea->put('sucursal', '');
                             $linea->put('codigo del concepto', '012');
                             $linea->put('centro de operacion', $centro->centro_operacion);
                             $linea->put('centro de costo', $centro->codigo);
-                            $linea->put('fecha movimiento', str_replace("-","",$d->fecha));
+                            $linea->put('fecha movimiento', str_replace("-","",$o->fecha));
                             $linea->put('horas', $rno);
                             $linea->put('valor', '');
                             $linea->put('cantidad', '');
@@ -475,13 +421,13 @@ class FilesController extends Controller
                         }
                         if (($rnd>0)&&($henf==0)){
                             $linea=collect([]);
-                            $linea->put('codigo del empleado', $h['trabajador']);
+                            $linea->put('codigo del empleado', $o->trabajador);
                             $linea->put('sucursal', '');
                             //$linea->put('codigo del concepto', '013');
                             $linea->put('codigo del concepto', '014');
                             $linea->put('centro de operacion', $centro->centro_operacion);
                             $linea->put('centro de costo', $centro->codigo);
-                            $linea->put('fecha movimiento', str_replace("-","",$d->fecha));
+                            $linea->put('fecha movimiento', str_replace("-","",$o->fecha));
                             $linea->put('horas', $rnd);
                             $linea->put('valor', '');
                             $linea->put('cantidad', '');
@@ -495,12 +441,12 @@ class FilesController extends Controller
                         }
                         if ($dtsc>0){
                             $linea=collect([]);
-                            $linea->put('codigo del empleado', $h['trabajador']);
+                            $linea->put('codigo del empleado', $o->trabajador);
                             $linea->put('sucursal', '');
                             $linea->put('codigo del concepto', '011');
                             $linea->put('centro de operacion', $centro->centro_operacion);
                             $linea->put('centro de costo', $centro->codigo);
-                            $linea->put('fecha movimiento', str_replace("-","",$d->fecha));
+                            $linea->put('fecha movimiento', str_replace("-","",$o->fecha));
                             $linea->put('horas', $dtsc);
                             $linea->put('valor', '');
                             $linea->put('cantidad', '');
@@ -513,10 +459,6 @@ class FilesController extends Controller
                             $datos->push($linea);
                         }
                     }
-                }
-
-            }
-
         }
         //dd($tsb);
         if ($oauxilio=="si"){
