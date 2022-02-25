@@ -14,7 +14,7 @@ use App\Exports\OcupacionExport;
 use App\Models\Detalleh;
 use App\Models\Festivo;
 use DB;
-use Log;∫
+use Log;
 use Carbon\Carbon;
 use App\Models\Programacion;
 
