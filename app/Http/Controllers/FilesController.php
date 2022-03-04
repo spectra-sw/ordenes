@@ -93,7 +93,7 @@ class FilesController extends Controller
                     $rinicio = intval($ri[0]) + round(floatval($ri[1]/60),1);
                     $rfin = explode(":", $o->hf);
                     $rfin = intval($rfin[0]) + round(floatval($rfin[1]/60),1);
-                   
+                    Log::info($o->fecha." ".$inicio." ".$rinicio." ".$fin." ".$rfin);
                     $sb = $hedo = $heno= $hedf = $henf = $rno = $dtsc = $rnd = 0;
                    
                     if ($extra !=1){      
@@ -104,11 +104,13 @@ class FilesController extends Controller
                             //hedo
                             if (($rfin > $fin) && ($rfin <= 21)){
                                
-                                $sb = $sb  - ($rfin-$fin);
+                                /*$sb = $sb  - ($rfin-$fin);
                                 $hedo = $rfin - $fin;  
                                 if($hedo>$sb){
-                                   $sb =  $sb = $o->ha;  
-                                }
+                                   $sb = $o->ha;  
+                                }*/
+                                $sb = $fin -$inicio;
+                                $hedo = $o->ha - $sb;
                             }
                             if (($rinicio < $inicio ) && ($rinicio >= 6)){
                                 $sb = $sb - ($inicio-$rinicio);

@@ -60,11 +60,25 @@
                 </div>
                 <div class="form-group">
                     <label for="co">CENTRO DE OPERACIÓN</label>
-                    <input type="text" class="form-control"  id="co" name="co">
+                    <select class="form-control" id="co" name="co">
+                            <option value=" "></option>
+                            <option value="001">001</option>
+                            <option value="002">002</option>
+                    </select>
+                   <!-- <input type="text" class="form-control"  id="co" name="co">-->
                 </div>
                 <div class="form-group">
                     <label for="un">UNIDAD DE NEGOCIO</label>
-                    <input type="text" class="form-control"  id="un" name="un">
+                    <select class="form-control" id="un" name="un">
+                            <option value=" "></option>
+                            <option value="001">001</option>∫
+                            <option value="002">002</option>
+                            <option value="003">003</option>
+                            <option value="004">004</option>
+                            <option value="005">005</option>
+                            <option value="999">999</option>
+                    </select>
+                    <!--<input type="text" class="form-control"  id="un" name="un">-->
                 </div>
                 <button type="button" class="btn btn-primary" onclick="guardarproy()">Guardar</button>
 
