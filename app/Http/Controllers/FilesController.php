@@ -110,6 +110,9 @@ class FilesController extends Controller
                                    $sb = $o->ha;  
                                 }*/
                                 $sb = $fin -$inicio;
+                                if($sb> $o->ha){
+                                    $sb = $o->ha;  
+                                 }
                                 $hedo = $o->ha - $sb;
                             }
                             if (($rinicio < $inicio ) && ($rinicio >= 6)){
