@@ -90,9 +90,9 @@ class FilesController extends Controller
                     $emp=Empleado::where('cc',$o->trabajador)->first();
 
                     $ri = explode(":", $o->hi);
-                    $rinicio = intval($ri[0]) + round(floatval($ri[1]/60),1);
+                    $rinicio = intval($ri[0]) + round(floatval($ri[1]/60),2);
                     $rfin = explode(":", $o->hf);
-                    $rfin = intval($rfin[0]) + round(floatval($rfin[1]/60),1);
+                    $rfin = intval($rfin[0]) + round(floatval($rfin[1]/60),2);
                     Log::info($o->fecha." ".$inicio." ".$rinicio." ".$fin." ".$rfin);
                     $sb = $hedo = $heno= $hedf = $henf = $rno = $dtsc = $rnd = 0;
                    
@@ -104,16 +104,16 @@ class FilesController extends Controller
                             //hedo
                             if (($rfin > $fin) && ($rfin <= 21)){
                                
-                                /*$sb = $sb  - ($rfin-$fin);
+                                $sb = $sb  - ($rfin-$fin);
                                 $hedo = $rfin - $fin;  
                                 if($hedo>$sb){
                                    $sb = $o->ha;  
-                                }*/
-                                $sb = $fin -$inicio;
+                                }
+                               /* $sb = $fin -$inicio;
                                 if($sb> $o->ha){
                                     $sb = $o->ha;  
                                  }
-                                $hedo = $o->ha - $sb;
+                                $hedo = $o->ha - $sb;*/
                             }
                             if (($rinicio < $inicio ) && ($rinicio >= 6)){
                                 $sb = $sb - ($inicio-$rinicio);
