@@ -45,6 +45,15 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label for="area">ÁREA</label>
+                    <select class="form-control" id="area" name="area">
+                        <option value="{{ $datos['area'] }}">{{ $area}}</option>
+                        @foreach ($areas as $a)
+                        <option value="{{ $a->id }}">{{ $a->area }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="tipo">Tipo</label>
                     <select id="tipo" name="tipo" class="form-control" >
                         <option value="0" {{ $datos['tipo'] == 0 ? 'selected' : '' }}>Admin</option>

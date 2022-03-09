@@ -78,7 +78,8 @@ class PagesController extends Controller
         }
         //dd($tipo);
         if ($tipo ==0){
-            $emp = Empleado::orderBy('apellido1','asc')->get();
+            $emp = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();
+           // dd($emp);
             $cdc = Cdc::all();
             $clientes = Cliente::orderBy('cliente','asc')->get();
             $proyectos = Proyecto::orderBy('codigo','asc')->get();
@@ -107,7 +108,7 @@ class PagesController extends Controller
             //$prog = Programacion::orderBy('fecha','desc')->paginate(15);
             $prog =Programacion::where('fecha',date('Y-m-d'))->get();
 
-            $emp = Empleado::orderBy('apellido1','asc')->get();
+            $emp = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();
             $proyectos = Proyecto::orderBy('codigo','asc')->get();
             $ciudades= Empleado::select('ciudad')->orderby('ciudad','asc')->distinct()->get();
 
@@ -1091,7 +1092,7 @@ class PagesController extends Controller
     }
     public function buscarprog(Request $request){
         $p = Programacion::where('id',$request->id)->first();
-        $emp = Empleado::orderBy('apellido1','asc')->get();
+        $emp = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();
         $cdc = Cdc::all();
         $clientes = Cliente::orderBy('cliente','asc')->get();
         $proyectos = Proyecto::orderBy('codigo','asc')->get();
@@ -1114,7 +1115,7 @@ class PagesController extends Controller
         }
         $p = Programacion::where('cc',$request->cc)->where('fecha',$request->fecha)->where('proyecto',$request->proyecto)->first();
         //dd($p);
-        $emp = Empleado::orderBy('apellido1','asc')->get();
+        $emp = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();
         $cdc = Cdc::all();
         $clientes = Cliente::orderBy('cliente','asc')->get();
         $proyectos = Proyecto::orderBy('codigo','asc')->get();
@@ -1211,15 +1212,19 @@ class PagesController extends Controller
         $horario=$idh="";
         $e = Empleado::where('id',$request->id)->first();
         $horarios = Horario::all();
+        $areas = Area::all();
         if ($e->horario_id !=0){
             $horario =  $e->horario->nombre;
             $idh = $e->horario->id;
         } 
+        $area = $e->narea->area;
         return view('formemp',[
             'datos' => $e,
             'horarios' => $horarios,
             'horario' => $horario,
-            'idh' => $idh
+            'idh' => $idh,
+            'areas' => $areas,
+            'area' => $area
         ]);
     }
     public function editaremp(Request $request){
@@ -1234,14 +1239,15 @@ class PagesController extends Controller
             'correo' => $request->correo,
             'ciudad' => $request->ciudad,
             'horario_id' => $request->horario,
-            'tipo' => $request->tipo
+            'tipo' => $request->tipo,
+            'area' => $request->area
           ]);
           return "Empleado actualizado";
     }
     public function buscarproy(Request $request){
         $horario=$idh="";
         $p = Proyecto::where('id',$request->id)->first();
-        $emp = Empleado::orderBy('apellido1','asc')->get();
+        $emp = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();
         $clientes = Cliente::orderBy('cliente','asc')->get();
         //dd($p);
         return view('formproy',[
@@ -1282,16 +1288,20 @@ class PagesController extends Controller
           return "Contraseña actualizada";
     }
     public function eliminaremp(Request $request){
-        Empleado::where('id', $request->id )->delete();
+        Empleado::where('id', $request->id )
+        ->update([
+            'estado' =>0
+          ]);
+        
         return "Empleado eliminado";
     }
     public function tablaemp(Request $request){
         $campo = $request->campo;
         if ($campo == ''){
-            $emp = Empleado::orderBy('apellido1','asc')->get();  
+            $emp = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();  
         }
         else{
-            $emp = Empleado::orderBy($campo,'asc')->get();  
+            $emp = Empleado::where('estado',1)->orderBy($campo,'asc')->get();  
         }
         return view('tablaemp',[
             'emp' => $emp,
@@ -1483,10 +1493,10 @@ class PagesController extends Controller
         $oc =  DB::table('ocupacion');
 
         if ($area != ""){
-            $emp = Empleado::where('area',$area)->orderBy('area','asc')->get();
+            $emp = Empleado::where('estado',1)->where('area',$area)->orderBy('area','asc')->get();
         }
         else{
-            $emp = Empleado::where('area','>',1)->orderBy('area','asc')->get();
+            $emp = Empleado::where('estado',1)->where('area','>',1)->orderBy('area','asc')->get();
         }
 
         $seguimiento  = collect([]);
@@ -1591,10 +1601,10 @@ class PagesController extends Controller
         $responsable = $request->responsable;
 
         if ($area != ""){
-            $emp = Empleado::where('area',$area)->orderBy('cc','asc')->get();
+            $emp = Empleado::where('estado',1)->where('area',$area)->orderBy('cc','asc')->get();
         }
         else{
-            $emp = Empleado::where('area','>',1)->orderBy('area','asc')->orderBy('cc','asc')->get();
+            $emp = Empleado::where('estado',1)->where('area','>',1)->orderBy('area','asc')->orderBy('cc','asc')->get();
         }
 
         if ($responsable!=""){
