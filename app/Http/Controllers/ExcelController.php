@@ -107,15 +107,16 @@ class ExcelController extends Controller
                             
                             //hedo
                             if (($rfin > $fin) && ($rfin <= 21)){
-                                $sb = $sb  - ($rfin-$fin);
                                 if( $sb>9.5){
+                                    $sb = $sb  - ($rfin-$fin);
                                     $excede = $sb -9.5;
                                     $sb =9.5;
+                                    $hedo = $excede + ($rfin - $fin);  
                                 }
                                 else{
                                     $excede = 0;
                                 }
-                                $hedo = $excede + ($rfin - $fin);  
+                               
                                 if($hedo>$sb){
                                    $sb = $o->ha;  
                                 }
