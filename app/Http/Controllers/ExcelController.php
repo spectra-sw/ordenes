@@ -104,6 +104,14 @@ class ExcelController extends Controller
                         
                         if (($numdia > 0)&&($festivo=="no")){
                             $sb = $o->ha;    
+
+                            if (($rfin == $fin) && ($rinicio == $inicio)){
+                                if( $sb>9.5){
+                                    $excede = $sb -9.5;
+                                    $sb =9.5;
+                                    $hedo = $excede;  
+                                }
+                            }
                             
                             //hedo
                             if (($rfin > $fin) && ($rfin <= 21)){
