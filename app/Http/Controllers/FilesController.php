@@ -85,7 +85,8 @@ class FilesController extends Controller
                             $extra = $prog->extra;
                       
                     }
-                  
+                    
+
                     
                     $emp=Empleado::where('cc',$o->trabajador)->first();
 
@@ -95,16 +96,19 @@ class FilesController extends Controller
                     $rfin = intval($rfin[0]) + round(floatval($rfin[1]/60),2);
                     Log::info($o->fecha." ".$inicio." ".$rinicio." ".$fin." ".$rfin);
                     $sb = $hedo = $heno= $hedf = $henf = $rno = $dtsc = $rnd = 0;
-                   
+                    $rango = $fin-$inicio;
+                    $laborales =$rango -1;
+                    if ($rango>0){
+
                     if ($extra !=1){      
                         
                         if (($numdia > 0)&&($festivo=="no")){
                             $sb = $o->ha;   
                             
                             if (($rfin == $fin) && ($rinicio == $inicio)){
-                                if( $sb>9.5){
-                                    $excede = $sb -9.5;
-                                    $sb =9.5;
+                                if( $sb>$laborales){
+                                    $excede = $sb -$laborales;
+                                    $sb =$laborales;
                                     $hedo = $excede;  
                                 }
                             }
@@ -112,10 +116,10 @@ class FilesController extends Controller
                             //hedo
                             if (($rfin > $fin) && ($rfin <= 21)){
                                
-                                if( $sb>9.5){
+                                if( $sb>$laborales){
                                     $sb = $sb  - ($rfin-$fin);
-                                    $excede = $sb -9.5;
-                                    $sb =9.5;
+                                    $excede = $sb -$laborales;
+                                    $sb =$laborales;
                                     $hedo = $excede + ($rfin - $fin);  
                                 }
                                 else{
@@ -266,7 +270,8 @@ class FilesController extends Controller
                             }
                         }
                     }
-                    
+
+                    } //fin rango >0
                     if(($tecnico == "")||($tecnico != "" && $tecnico ==$o->trabajador)) {
                         //dd($extra);
                         $auxilio=round((($emp->auxilio)/240)*$sb,1);
