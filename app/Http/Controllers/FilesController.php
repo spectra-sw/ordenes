@@ -106,7 +106,7 @@ class FilesController extends Controller
                             $sb = $o->ha;   
                             
                             if (($rfin == $fin) && ($rinicio == $inicio)){
-                                if( $sb>$laborales){
+                                if(( $sb>$laborales)&&(($laborales == 8.5)||($laborales == 9.5))){
                                     $excede = $sb -$laborales;
                                     $sb =$laborales;
                                     $hedo = $excede;  
@@ -116,7 +116,7 @@ class FilesController extends Controller
                             //hedo
                             if (($rfin > $fin) && ($rfin <= 21)){
                                
-                                if( $sb>$laborales){
+                                if(( $sb>$laborales)&&(($laborales == 8.5)||($laborales == 9.5))){
                                     $sb = $sb  - ($rfin-$fin);
                                     $excede = $sb -$laborales;
                                     $sb =$laborales;
