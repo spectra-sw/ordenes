@@ -100,7 +100,18 @@ class ExcelController extends Controller
                    
                     $sb = $hedo = $heno= $hedf = $henf = $rno = $dtsc = $rnd = 0;
                     $rango = $fin-$inicio;
-                    $laborales =$rango -1;
+                    if (($o->proyecto ==14014) || ($o->proyeto==13155)){
+                        $almuerzo = 1.5;
+                    }
+                    else{
+                        $almuerzo = 1;
+                    }
+                    if($rango > 5){
+                        $laborales =$rango -$almuerzo;
+                    }
+                    else{
+                        $laborales=$rango;
+                    }
                     if ($rango>0){
 
                     if ($extra !=1){      
