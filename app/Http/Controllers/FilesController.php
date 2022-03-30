@@ -127,7 +127,7 @@ class FilesController extends Controller
                             //hedo
                             if (($rfin > $fin) && ($rfin <= 21)){
                                
-                                if(( $sb>$laborales)&&(($laborales == 8.5)||($laborales == 9.5)||($laborales == $rango))){
+                                if(( $sb>$laborales)&&($laborales <= $rango)){
                                     $sb = $sb  - ($rfin-$fin);
                                     $excede = $sb -$laborales;
                                     $sb =$laborales;
