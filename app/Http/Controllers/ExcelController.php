@@ -108,6 +108,9 @@ class ExcelController extends Controller
                     }
                     if($rango > 5){
                         $laborales =$rango -$almuerzo;
+                        if ($laborales>9.5){
+                            $laborales=9.5;
+                        }
                     }
                     else{
                         $laborales=$rango;
