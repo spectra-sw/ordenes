@@ -11,6 +11,8 @@ use App\Models\Empleado;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\NominaExport;
 use App\Exports\OcupacionExport;
+use App\Exports\AnaliticasExport;
+use App\Exports\ExtraExport;
 use App\Models\Detalleh;
 use App\Models\Festivo;
 use DB;
@@ -564,5 +566,16 @@ class ExcelController extends Controller
         //dd($datos);
         return Excel::download(new OcupacionExport($datos[0]), 'ocupacion.xlsx');
     }
-    
+    public function exporta(Request $request){
+        //dd($request);
+        $datos=app(PagesController::class)->getDatosAnaliticas($request);
+        //dd($datos);
+        return Excel::download(new AnaliticasExport($datos), 'analiticas.xlsx');
+    }
+    public function exportextra(Request $request){
+        //dd($request);
+        $datos=app(PagesController::class)->getDatosExtra($request);
+        //dd($datos);
+        return Excel::download(new ExtraExport($datos), 'extra.xlsx');
+    }
 }

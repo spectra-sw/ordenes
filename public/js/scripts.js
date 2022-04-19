@@ -1250,4 +1250,85 @@ function consprog(proyecto,fecha,cc){
         }); 
 
 }
+function extra(proyecto,fecha,cc,hi,hf){
+    /*alert(proyecto);
+    alert(fecha);
+    alert(cc);*/
+    data = { proyecto : proyecto, fecha : fecha, cc:cc, hi:hi, hf:hf }
+        url="/authextra"
+        $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) { 
+                $("#authExtraBody").html(data);
+                $("#authExtraModal").modal();
+            }
+        }); 
 
+}
+function guardarextra(){
+    data=$( "#formExtra" ).serialize(); 
+    url = '/saveextra'
+    $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) {
+                alert(data);
+            }
+    });   
+}
+
+
+function aprobar(id){
+    obs =$("#observacion").val();
+
+    data = { obs : obs, id:id }
+        url="/voboextra"
+        $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) { 
+               alert(data);
+               location.reload();
+            }
+        }); 
+}
+function analiticas(){
+    //alert();
+    data=$( "#formReportesOcupacion" ).serialize(); 
+    url = '/exportAnaliticas'
+    var url = "/exportAnaliticas?" + $.param(data)
+    window.location = url;
+    /*console.log(data);
+    $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) {
+                
+            }
+    });   */
+}
+function nuevaextra(){
+    
+        url="/nuevaextra"
+        $.ajax({
+            url: url,
+            type:'GET',
+           
+            success: function(data) { 
+                $("#authExtraBody").html(data);
+                $("#authExtraModal").modal();
+            }
+        }); 
+
+}
+function exportarextra(){
+    //alert();
+    data={ fechaInicio :$("#fechaInicio").val() , fechaFinal:  $("#fechaFinal").val() }
+    var url = "/exportExtra?" + $.param(data)
+    window.location = url;
+}

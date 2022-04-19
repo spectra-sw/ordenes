@@ -170,6 +170,7 @@
                 @if ($area==6)
                 <button type="button" class="btn btn-primary" onclick="distribuciono()">Archivo Distribución</button>&nbsp;  
                 @endif
+                <button type="button" class="btn btn-primary" onclick="analiticas()">Archivo Analíticas</button>&nbsp;
             </div>
 
             <div id="tablareporteo">

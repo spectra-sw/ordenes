@@ -50,6 +50,7 @@ Route::get('/deleteDia',[PagesController::class,'deleteDia']);
 Route::get('/login',[PagesController::class,'login']);
 Route::get('/logout',[PagesController::class,'login']);
 Route::get('/ocupacion',[PagesController::class,'ocupacion']);
+Route::get('/extra',[PagesController::class,'consextra']);
 Route::get('/rocupacion',[PagesController::class,'rocupacion']);
 
 
@@ -125,7 +126,8 @@ Route::get('consfestivo',[PagesController::class,'consfestivo'])->name('consfest
 //Excel
 Route::get('exportReporte', [ExcelController::class, 'export'])->name('export');
 Route::get('exportReporteO', [ExcelController::class, 'exporto'])->name('exporto');
-
+Route::get('exportAnaliticas', [ExcelController::class, 'exporta'])->name('exporta');
+Route::get('exportExtra', [ExcelController::class, 'exportextra'])->name('exportextra');
 //Auth
 Route::get('validar',[AuthController::class,'validar'])->name('validar');
 
@@ -137,3 +139,22 @@ Route::get('/seguimiento',[PagesController::class,'seguimiento']);
 Route::get('/generalo',[PagesController::class,'generalo']);
 Route::get('/distribuciono',[PagesController::class,'distribuciono']);
 Route::get('/buscarinfooc',[PagesController::class,'buscarinfooc']);
+
+//extra
+Route::get('/authextra',[PagesController::class,'authextra']);
+Route::get('/nuevaextra',[PagesController::class,'nuevaextra']);
+Route::get('/saveextra',[PagesController::class,'saveextra']);
+Route::get('/voboextra',[PagesController::class,'voboextra']);
+
+Route::get('send-mail', function () {
+   
+    $details = [
+        'title' => 'Solicitud de horas extras',
+        'body' => 'This is for testing email using smtp'
+    ];
+   
+    \Mail::to('dguerra@spectra.com.co')->send(new \App\Mail\MailSolicitudExtra($details));
+   
+    dd("Email is Sent.");
+});
+

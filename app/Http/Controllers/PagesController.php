@@ -26,6 +26,8 @@ use App\Models\Actividad;
 use App\Models\ocupacion;
 use App\Models\Festivo;
 use App\Models\Novedad;
+use App\Models\Autorizacion;
+
 use Log;
 
 use Carbon\Carbon;
@@ -1774,5 +1776,142 @@ class PagesController extends Controller
        
         $datos = $datosn->sortBy(['ID TERCERO','LAPSO']);
         return [$datos,$total];
+    }
+
+    //horas extras
+    public function authextra(Request $request){
+        $p = Proyecto::where('codigo',$request->proyecto)->first();
+        $e = Empleado::where('cc',$request->cc)->first();
+        return view('formextra',[
+            'p' => $p,
+            'e' => $e,
+            'fecha' => $request->fecha,
+            'hi' => $request->hi,
+            'hf' => $request->hf
+        ]);
+    }
+    public function nuevaextra(Request $request){
+        $proyectos = Proyecto::orderBy('codigo','asc')->get();
+        return view('formnuevaextra',[
+           'proyectos' => $proyectos
+        ]);
+    }
+    public function saveextra(Request $request){
+        try {
+              $autorizada_por = session('user');
+             
+              $p=Proyecto::where('codigo',$request->proyecto)->first();
+
+              $e = Autorizacion::create([
+              
+              'proyecto' => $request->proyecto,
+              'trabajador'=> $request->trabajador,
+              'motivo'=> $request->motivo,
+              'horario_habitual' => $request->horario_habitual,
+              'fecha' => $request->fecha,
+              'hora_entrada'=> $request->hora_entrada,
+              'hora_autorizada_salida'=> $request->hora_autorizada_salida,
+              'autorizado_por' => $autorizada_por,
+              'director' => $p->ndirector->id,
+              'fecha_autorizacion' => date("Y-m-d")
+            ]);
+            $details = [
+                'title' => 'Solicitud de horas extras',
+                'body' => "Ingresar a <a href='www.spectraoperaciones.com'>spectraoperaciones.com</a> para realizar la autorización"
+            ];
+           
+            \Mail::to('dguerra@spectra.com.co')->send(new \App\Mail\MailSolicitudExtra($details,$e));
+
+            return "Formato de autorización registrado";
+          } catch (QueryException $e) {
+              return $e;
+          }
+    }
+    public function consextra(Request $request){
+        $tipo = session('tipo');
+        $user = session('user');
+        $area = Empleado::where('id',$user)->first()->area;
+        if ($area==6){
+            $extra = Autorizacion::orderBy('fecha','asc')->get();
+        }
+        else{
+            $extra = Autorizacion::where('director',$user)->get();
+        }
+        return view('extra',[
+            'extra' => $extra
+        ]);
+    }
+    public function voboextra(Request $request){
+       // $tipo = session('tipo');
+        //$user = session('user');
+        Autorizacion::where('id',$request->id)->update([
+            'fecha_vobo_director' => date("Y-m-d"),
+            'observaciones' => $request->obs
+
+        ]);
+        return "Solicitud de tiempo extra aprobada";
+    }
+    public function getDatosAnaliticas(Request $request){
+        $area = $request->area;
+        $oc =  Ocupacion::where('id','>',0);
+       
+        if ($area!=""){
+            $oc = $oc->where('area',$area);
+        }
+        
+        if (($request->fechaInicioOcup1 !="")&&($request->fechaFinalOcup1 !="")){
+            $oc = $oc->where('dia','>=',$request->fechaInicioOcup1)->where('dia','<=',$request->fechaFinalOcup1);
+        }
+        $ocs = $oc->orderBy('dia','asc')->orderBy('area','asc')->get();
+        //dd($ocs);
+
+        $datos  = collect([]);
+        foreach($ocs as $oc){
+            $linea = collect([]);
+                    
+            $linea->put('Fecha en la que se hizo el reporte', $oc->created_at);
+            $linea->put('correo electrónico', '');
+            $linea->put('Día reportado', $oc->dia);
+            $linea->put('Area', $oc->narea->area);
+            $linea->put('Funcionario que reporta', $oc->empleado->nombre . " " . $oc->empleado->apellido1);
+            $linea->put('ID Proyecto', $oc->proyecto);
+            $linea->put('Tiempo de ocupación en el proyecto(horas)', $oc->horas + ($oc->minutos/60) );
+            $linea->put('Clasificación',  $oc->nactividad->actividad );
+            $linea->put('Actividad', '');
+            
+            $datos->push($linea);
+        }
+        return $datos;
+    }
+    public function getDatosExtra(Request $request){
+        $f1 = $request->fechaInicio;
+        $f2 = $request->fechaFinal;
+        if (($f1!="")&&($f2!="")){
+            $datos = Autorizacion::where('fecha','>=',$f1)->where('fecha','<=',$f2)->orderBy('fecha','asc')->get();
+        }
+        foreach ($datos as $d){
+            $d->trabajador=$d->ntrabajador->nombre." ".$d->ntrabajador->apellido1;
+            $d->autorizado_por = $d->nautorizado->nombre." ".$d->nautorizado->apellido1;
+            $d->director= $d->ndirector->nombre." ".$d->ndirector->apellido1;
+        }   
+        /*
+        $datos  = collect([]);
+        foreach($ocs as $oc){
+            $linea = collect([]);
+                    
+            $linea->put('Fecha en la que se hizo el reporte', $oc->created_at);
+            $linea->put('correo electrónico', '');
+            $linea->put('Día reportado', $oc->dia);
+            $linea->put('Area', $oc->narea->area);
+            $linea->put('Funcionario que reporta', $oc->empleado->nombre . " " . $oc->empleado->apellido1);
+            $linea->put('ID Proyecto', $oc->proyecto);
+            $linea->put('Tiempo de ocupación en el proyecto(horas)', $oc->horas + ($oc->minutos/60) );
+            $linea->put('Clasificación',  $oc->nactividad->actividad );
+            $linea->put('Actividad', '');
+            
+            $datos->push($linea);
+        }*/
+        //dd($datos);
+        return $datos;
     }
 }

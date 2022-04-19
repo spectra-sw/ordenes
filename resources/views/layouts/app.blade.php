@@ -82,6 +82,11 @@
                         <a class="nav-link active" href="ocupacion">REGISTRO DE OCUPACIÓN</a>
                     </li>
                     @endif
+                    @if (session('tipo')==0)
+                    <li class="nav-item ml-2">
+                        <a class="nav-link active" href="extra">TIEMPO EXTRA</a>
+                    </li>
+                    @endif
                    
                 </ul>
                 <br>
