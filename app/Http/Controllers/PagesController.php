@@ -1802,6 +1802,8 @@ class PagesController extends Controller
              
               $p=Proyecto::where('codigo',$request->proyecto)->first();
 
+              $director=Empleado::find($p->ndirector->id);
+      
               $e = Autorizacion::create([
               
               'proyecto' => $request->proyecto,
@@ -1820,7 +1822,7 @@ class PagesController extends Controller
                 'body' => "Ingresar a <a href='www.spectraoperaciones.com'>spectraoperaciones.com</a> para realizar la autorización"
             ];
            
-            \Mail::to('dguerra@spectra.com.co')->send(new \App\Mail\MailSolicitudExtra($details,$e));
+            \Mail::to($director->correo)->send(new \App\Mail\MailSolicitudExtra($details,$e));
 
             return "Formato de autorización registrado";
           } catch (QueryException $e) {
