@@ -250,7 +250,10 @@ class ExcelController extends Controller
                                 $hedo = $o->ha; 
                             }
                             else{
-                                $heno = $o->ha; 
+                                if ($rfin > 21){
+                                    $henf = $fin - 21;
+                                }
+                                $hedf = $o->ha - $henf;
                             }   
                             
                             //rno

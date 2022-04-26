@@ -268,7 +268,10 @@ class FilesController extends Controller
                                 $hedf = $o->ha; 
                             }
                             else{
-                                $henf = $o->ha; 
+                                if ($rfin > 21){
+                                    $henf = $fin - 21;
+                                }
+                                $hedf = $o->ha - $henf; 
                             }   
                             //rnd
                             if (($rinicio < 21)&&($rinicio > 6)&&($rfin>21)&&($rfin<=24)){
