@@ -236,7 +236,7 @@ class ExcelController extends Controller
                            
                             
                         }
-                        if (($festivo=="si")&&($centro->codigo!=9933)){
+                        if (($festivo=="si")&&(($centro->codigo!=9933)||($centro->codigo!=13920))){
                             $dtsc=$sb=0;
                         }  
                         
@@ -304,7 +304,7 @@ class ExcelController extends Controller
                         }
                        
                        if (array_key_exists($o->trabajador, $total) ) {
-                            if(($total[$o->trabajador]>47.5)&&($centro->codigo==9933)&&($bandextra==0)){
+                            if(($total[$o->trabajador]>47.5)&&(($centro->codigo==9933)||($centro->codigo!=13920))&&($bandextra==0)){
                                // dd($sb);
                                 $bandextra=1;
                                 if (($numdia == 0)){
@@ -328,7 +328,7 @@ class ExcelController extends Controller
                                 }    
                             }
                             
-                            if(($total[$o->trabajador]<47.5)&&($centro->codigo==9933)){
+                            if(($total[$o->trabajador]<47.5)&&(($centro->codigo==9933)||($centro->codigo!=13920))){
                                 if (($festivo == 'no')){
                                     $sb = $o->ha;
                                    // $dtsc=$h['ha']-$rnd;
