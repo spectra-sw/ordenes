@@ -97,7 +97,7 @@ class FilesController extends Controller
                     Log::info($o->fecha." ".$inicio." ".$rinicio." ".$fin." ".$rfin);
                     $sb = $hedo = $heno= $hedf = $henf = $rno = $dtsc = $rnd = 0;
                     $rango = $fin-$inicio;
-                    if (($o->proyecto ==14014) || ($o->proyecto==13155)){
+                    if (($o->proyecto ==14014) || ($o->proyecto==13155)|| ($o->proyecto==14002)|| ($o->proyecto==14293)){
                         $almuerzo = 1.5;
                     }
                     else{
