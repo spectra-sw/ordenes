@@ -91,15 +91,16 @@ class ExcelController extends Controller
                             $extra = $prog->extra;
                       
                     }
-                  
+                    
+
                     
                     $emp=Empleado::where('cc',$o->trabajador)->first();
 
                     $ri = explode(":", $o->hi);
-                    $rinicio = intval($ri[0]) + round(floatval($ri[1]/60),1);
+                    $rinicio = intval($ri[0]) + round(floatval($ri[1]/60),2);
                     $rfin = explode(":", $o->hf);
-                    $rfin = intval($rfin[0]) + round(floatval($rfin[1]/60),1);
-                   
+                    $rfin = intval($rfin[0]) + round(floatval($rfin[1]/60),2);
+                    Log::info($o->fecha." ".$inicio." ".$rinicio." ".$fin." ".$rfin);
                     $sb = $hedo = $heno= $hedf = $henf = $rno = $dtsc = $rnd = 0;
                     $rango = $fin-$inicio;
                     if (($o->proyecto ==14014) || ($o->proyecto==13155)|| ($o->proyecto==14002)|| ($o->proyecto==14293)){
@@ -109,6 +110,7 @@ class ExcelController extends Controller
                         $almuerzo = 1;
                     }
                     if($rango > 5){
+                        $laborales =$rango -$almuerzo;
                         $laborales =$rango -$almuerzo;
                         if ($laborales>9.5){
                             $laborales=9.5;
@@ -122,8 +124,8 @@ class ExcelController extends Controller
                     if ($extra !=1){      
                         
                         if (($numdia > 0)&&($festivo=="no")){
-                            $sb = $o->ha;    
-
+                            $sb = $o->ha;   
+                            
                             if (($rfin == $fin) && ($rinicio == $inicio)){
                                 if(( $sb>$laborales)&&(($laborales == 8.5)||($laborales == 9.5)||($laborales == $rango))){
                                     $excede = $sb -$laborales;
@@ -134,8 +136,8 @@ class ExcelController extends Controller
                             
                             //hedo
                             if (($rfin > $fin) && ($rfin <= 21)){
+                               
                                 if(( $sb>$laborales)&&($laborales <= $rango)){
-                                //if(( $sb>$laborales)&&(($laborales == 8.5)||($laborales == 9.5)||($laborales == $rango))){
                                     $sb = $sb  - ($rfin-$fin);
                                     $excede = $sb -$laborales;
                                     $sb =$laborales;
@@ -148,7 +150,7 @@ class ExcelController extends Controller
                                 if($hedo>$sb){
                                    $sb = $o->ha;  
                                 }
-                                /*$sb = $fin -$inicio;
+                               /* $sb = $fin -$inicio;
                                 if($sb> $o->ha){
                                     $sb = $o->ha;  
                                  }
@@ -250,10 +252,7 @@ class ExcelController extends Controller
                                 $hedo = $o->ha; 
                             }
                             else{
-                                if ($rfin > 21){
-                                    $henf = $fin - 21;
-                                }
-                                $hedf = $o->ha - $henf;
+                                $heno = $o->ha; 
                             }   
                             
                             //rno
@@ -275,7 +274,10 @@ class ExcelController extends Controller
                                 $hedf = $o->ha; 
                             }
                             else{
-                                $henf = $o->ha; 
+                                if ($rfin > 21){
+                                    $henf = $fin - 21;
+                                }
+                                $hedf = $o->ha - $henf; 
                             }   
                             //rnd
                             if (($rinicio < 21)&&($rinicio > 6)&&($rfin>21)&&($rfin<=24)){
@@ -292,7 +294,8 @@ class ExcelController extends Controller
                             }
                         }
                     }
-                    } // fin rango >0
+
+                    } //fin rango >0
                     if(($tecnico == "")||($tecnico != "" && $tecnico ==$o->trabajador)) {
                         //dd($extra);
                         $auxilio=round((($emp->auxilio)/240)*$sb,1);
@@ -304,7 +307,7 @@ class ExcelController extends Controller
                         }
                        
                        if (array_key_exists($o->trabajador, $total) ) {
-                            if(($total[$o->trabajador]>47.5)&&(($centro->codigo==9933)||($centro->codigo!=13920))&&($bandextra==0)){
+                            if(($total[$o->trabajador]>47.5)&&(($centro->codigo==9933)||($centro->codigo==13920))&&($bandextra==0)){
                                // dd($sb);
                                 $bandextra=1;
                                 if (($numdia == 0)){
@@ -328,7 +331,7 @@ class ExcelController extends Controller
                                 }    
                             }
                             
-                            if(($total[$o->trabajador]<47.5)&&(($centro->codigo==9933)||($centro->codigo!=13920))){
+                            if(($total[$o->trabajador]<47.5)&&(($centro->codigo==9933)||($centro->codigo==13920))){
                                 if (($festivo == 'no')){
                                     $sb = $o->ha;
                                    // $dtsc=$h['ha']-$rnd;
@@ -550,7 +553,7 @@ class ExcelController extends Controller
             }
         }
         //return $datos;
-        $datos = $datos->sortBy(['codigo del empleado','fecha movimiento']);
+        
        
         //$datos2 = $datos2->sortBy(['codigo del empleado','fecha movimiento']);
         //dd($datos2);
