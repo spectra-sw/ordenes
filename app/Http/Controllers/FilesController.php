@@ -42,9 +42,9 @@ class FilesController extends Controller
         if(($inicio!=" 00:00:00")&&($fin!=" 11:59:59")){
                 $o=$o->where('dias.fecha','>=',$inicio)->where('dias.fecha','<=',$fin);
         }
-        $o=$o->orderBy('dias.fecha','asc')->orderBy('dias.id','asc')->get();
+        $o=$o->orderBy('dias.fecha','asc')->orderBy('dias.id','asc')->orderBy('horas.hi','asc')->get();
     
-            
+        //dd($o);   
         $ordenes=$o;
         $ordenes2=$o;
         
@@ -73,7 +73,7 @@ class FilesController extends Controller
             $inicio = $fin =$rinicio=$rfin=0;
 
                     if(Programacion::where('cc',$o->trabajador)->where('fecha',$o->fecha)->exists()){
-                        $prog=Programacion::where('cc',$o->trabajador)->where('fecha',$o->fecha)->skip($conts[$o->fecha])->first();
+                        $prog=Programacion::where('cc',$o->trabajador)->where('fecha',$o->fecha)->orderBy('hi','asc')->skip($conts[$o->fecha])->first();
                         Log::info($conts[$o->fecha]);
                         Log::info($prog);
                         //dd(Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->get());
