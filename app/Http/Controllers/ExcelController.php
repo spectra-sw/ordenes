@@ -49,7 +49,7 @@ class ExcelController extends Controller
                 $o=$o->where('dias.fecha','>=',$inicio)->where('dias.fecha','<=',$fin);
         }
         //$o=$o->orderBy('dias.fecha','asc')->orderBy('dias.id','asc')->get();
-        $o=$o->orderBy('dias.fecha','asc')->orderBy('dias.id','asc')->orderBy('horas.hi','asc')->get();
+        $o=$o->orderBy('dias.fecha','asc')->orderBy('horas.id','asc')->orderBy('horas.hi','asc')->get();
             
         $ordenes=$o;
         $ordenes2=$o;

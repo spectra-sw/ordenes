@@ -42,11 +42,25 @@ class FilesController extends Controller
         if(($inicio!=" 00:00:00")&&($fin!=" 11:59:59")){
                 $o=$o->where('dias.fecha','>=',$inicio)->where('dias.fecha','<=',$fin);
         }
-        $o=$o->orderBy('dias.fecha','asc')->orderBy('dias.id','asc')->orderBy('horas.hi','asc')->get();
-    
-        //dd($o);   
+
+        $o=$o->orderBy('dias.fecha','asc')->orderBy('horas.id','asc')->orderBy('horas.hi','asc')->get();
+       
         $ordenes=$o;
-        $ordenes2=$o;
+        
+        /*foreach($ordenes as $o){ 
+           
+            $hi = explode(":", $o->hi);
+            $hi_num =intval($hi[0]) + round(floatval($hi[1]/60),1);
+            $o->hi_num=$hi_num;
+            
+        }
+       
+       /$ordenes=$o;
+        $ordenes = $ordenes->sortBy('fecha')->sortBy('hi_num');
+        
+        dd($ordenes->values()->all());*/
+       
+       // dd($ordenes);   
         
         $datos = collect([]);
         $total = array();
