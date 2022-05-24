@@ -43,11 +43,11 @@ class FilesController extends Controller
                 $o=$o->where('dias.fecha','>=',$inicio)->where('dias.fecha','<=',$fin);
         }
 
-        $o=$o->orderBy('dias.fecha','asc')->orderBy('horas.id','asc')->orderBy('horas.hi','asc')->get();
+        $o=$o->orderBy('dias.fecha','asc')->orderBy('dias.id','asc')->get();
        
         $ordenes=$o;
         
-        /*foreach($ordenes as $o){ 
+        foreach($ordenes as $o){ 
            
             $hi = explode(":", $o->hi);
             $hi_num =intval($hi[0]) + round(floatval($hi[1]/60),1);
@@ -55,12 +55,25 @@ class FilesController extends Controller
             
         }
        
-       /$ordenes=$o;
-        $ordenes = $ordenes->sortBy('fecha')->sortBy('hi_num');
-        
-        dd($ordenes->values()->all());*/
        
-       // dd($ordenes);   
+        $total = $ordenes->count();
+        for($i=0;$i<$total;$i++){
+            for($j=$i+1;$j<$total;$j++){
+                if ($ordenes[$i]->fecha == $ordenes[$j]->fecha){
+
+                    if ($ordenes[$i]->hi_num > $ordenes[$j]->hi_num){
+                        $aux = $ordenes[$i];
+                        $ordenes[$i]=$ordenes[$j];
+                        $ordenes[$j]=$aux;
+                    }
+                }
+            }
+        }
+
+        
+        
+       
+        //dd($ordenes);   
         
         $datos = collect([]);
         $total = array();

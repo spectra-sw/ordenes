@@ -49,11 +49,34 @@ class ExcelController extends Controller
                 $o=$o->where('dias.fecha','>=',$inicio)->where('dias.fecha','<=',$fin);
         }
         //$o=$o->orderBy('dias.fecha','asc')->orderBy('dias.id','asc')->get();
-        $o=$o->orderBy('dias.fecha','asc')->orderBy('horas.id','asc')->orderBy('horas.hi','asc')->get();
+        //$o=$o->orderBy('dias.fecha','asc')->orderBy('horas.id','asc')->orderBy('horas.hi','asc')->get();
             
+        $o=$o->orderBy('dias.fecha','asc')->orderBy('dias.id','asc')->get();
+       
         $ordenes=$o;
-        $ordenes2=$o;
         
+        foreach($ordenes as $o){ 
+           
+            $hi = explode(":", $o->hi);
+            $hi_num =intval($hi[0]) + round(floatval($hi[1]/60),1);
+            $o->hi_num=$hi_num;
+            
+        }
+       
+       
+        $total = $ordenes->count();
+        for($i=0;$i<$total;$i++){
+            for($j=$i+1;$j<$total;$j++){
+                if ($ordenes[$i]->fecha == $ordenes[$j]->fecha){
+
+                    if ($ordenes[$i]->hi_num > $ordenes[$j]->hi_num){
+                        $aux = $ordenes[$i];
+                        $ordenes[$i]=$ordenes[$j];
+                        $ordenes[$j]=$aux;
+                    }
+                }
+            }
+        }
         $datos = collect([]);
         $total = array();
         $tsb=array();
