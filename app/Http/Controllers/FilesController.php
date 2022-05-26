@@ -68,11 +68,7 @@ class FilesController extends Controller
                     }
                 }
             }
-        }
-
-        
-        
-       
+        }       
         //dd($ordenes);   
         
         $datos = collect([]);
@@ -100,7 +96,26 @@ class FilesController extends Controller
             $inicio = $fin =$rinicio=$rfin=0;
 
                     if(Programacion::where('cc',$o->trabajador)->where('fecha',$o->fecha)->exists()){
-                        $prog=Programacion::where('cc',$o->trabajador)->where('fecha',$o->fecha)->orderBy('hi','asc')->skip($conts[$o->fecha])->first();
+                        $progs=Programacion::where('cc',$o->trabajador)->where('fecha',$o->fecha)->get();
+                       
+                        foreach($progs as $p){ 
+                            $hi = explode(":", $p->hi);
+                            $hi_num =intval($hi[0]) + round(floatval($hi[1]/60),1);
+                            $p->hi_num=$hi_num;
+                            
+                        }
+                        for($i=0;$i<$progs->count();$i++){
+                            for($j=$i+1;$j<$progs->count();$j++){
+                                    if ($progs[$i]->hi_num > $progs[$j]->hi_num){
+                                        $aux = $progs[$i];
+                                        $progs[$i]=$progs[$j];
+                                        $progs[$j]=$aux;
+                                    }
+                            }
+                        }    
+                        //dd($progs);  
+                        //$prog=Programacion::where('cc',$o->trabajador)->where('fecha',$o->fecha)->orderBy('hi','asc')->skip($conts[$o->fecha])->first();
+                        $prog=$progs[$conts[$o->fecha]];
                         Log::info($conts[$o->fecha]);
                         Log::info($prog);
                         //dd(Programacion::where('cc',$h['trabajador'])->where('fecha',$d['fecha'])->where('proyecto',$o->proyecto)->get());
