@@ -57,7 +57,7 @@ class SearchController extends Controller
     {
         //dd($request->q);
         $q = "%".$request->q."%";
-        $datas = Empleado::where("apellido1","LIKE","%".$request->q."%")
+        $datas = Empleado::where("apellido1","LIKE","%".$request->q."%")->where('estado',1)
                 ->get();
         
                 $dataModified = array();
