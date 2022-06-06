@@ -1610,14 +1610,14 @@ class PagesController extends Controller
         }
 
         if ($responsable!=""){
-            $emp = Empleado::where('cc',$responsable)->get();
+            $emp = Empleado::where('cc',$responsable)->where('estado',1)->get();
         }
 
         $datos  = collect([]);
 
         $inicio = new Carbon($request->fechaInicioOcup1);
         $fin = new Carbon($request->fechaFinalOcup1);
-
+        //dd($emp);
         $total=array();
         foreach($emp as $e){
             $inicio = new Carbon($request->fechaInicioOcup1);
@@ -1627,7 +1627,7 @@ class PagesController extends Controller
             
                 
                 $ocs = Ocupacion::where('cc',$e->cc)->where('dia','=',$inicio)->get();
-
+                //dd($ocs);
                 foreach ($ocs as $oc){
                     $centro = Cdc::where('codigo',$oc->proyecto)->first();
                     $totalh=$oc->horas + ($oc->minutos/60);
