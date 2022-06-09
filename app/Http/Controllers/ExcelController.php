@@ -8,11 +8,13 @@ use App\Models\Dia;
 use App\Models\Hora;
 use App\Models\Cdc;
 use App\Models\Empleado;
+use App\Models\Proyecto;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\NominaExport;
 use App\Exports\OcupacionExport;
 use App\Exports\AnaliticasExport;
 use App\Exports\ExtraExport;
+use App\Exports\ProyectosExport;
 use App\Models\Detalleh;
 use App\Models\Festivo;
 use DB;
@@ -625,5 +627,9 @@ class ExcelController extends Controller
         $datos=app(PagesController::class)->getDatosExtra($request);
         //dd($datos);
         return Excel::download(new ExtraExport($datos), 'extra.xlsx');
+    }
+    public function exportProyectos(){
+        $datos = Proyecto::orderBy('codigo','asc')->get();
+        return Excel::download(new ProyectosExport($datos), 'proyectos.xlsx');
     }
 }

@@ -10,6 +10,7 @@
         <th>ACTIVIDAD</th>
         <th>HORAS</th>
         <th>MINUTOS</th>
+        <th></th>
         <!--<th>CREACIÓN</th>-->
       </tr>
     </thead>
@@ -24,6 +25,7 @@
             <td>{{ $oc->nactividad->actividad }}</td>
             <td>{{ $oc->horas}}</td>
             <td>{{ $oc->minutos }}</td>
+            <td><button class="btn btn-danger btn-sm" type="button" onclick="delOcupacion({{ $oc->id }})">x</button></td>
            <!-- <td>{{ $oc->created_at }}</td>-->
         </tr>
     @endforeach

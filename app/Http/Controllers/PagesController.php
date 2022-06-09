@@ -1557,6 +1557,9 @@ class PagesController extends Controller
             }
         }
         //dd($seguimiento);
+        if($request->responsable!=""){
+            $seguimiento = $seguimiento->where('cc',$request->responsable);
+        }
         return view('seguimiento',[
             'seguimiento' => $seguimiento,
         ]);
@@ -1568,10 +1571,13 @@ class PagesController extends Controller
         if ($area!=""){
             $oc = $oc->where('area',$area);
         }
-        
+        if($request->responsable!=""){
+            $oc = $oc->where('cc',$request->responsable);
+        }
         if (($request->fechaInicioOcup1 !="")&&($request->fechaFinalOcup1 !="")){
             $oc = $oc->where('dia','>=',$request->fechaInicioOcup1)->where('dia','<=',$request->fechaFinalOcup1);
         }
+
         $ocs = $oc->orderBy('dia','asc')->orderBy('area','asc')->get();
         //dd($ocs);
         return view('generalo',[
@@ -1915,5 +1921,13 @@ class PagesController extends Controller
         }*/
         //dd($datos);
         return $datos;
+    }
+    public function deleteOcupacion(Request $request){
+        try{
+            Ocupacion::where('id',$request->ocupacion_id)->delete();
+            return "Registro eliminado. Refresque su búsqueda para ver el listado actualizado";
+        } catch (QueryException $e) {
+            return "Error al eliminar el registro";
+        }
     }
 }

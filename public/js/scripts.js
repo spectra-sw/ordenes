@@ -1332,3 +1332,22 @@ function exportarextra(){
     var url = "/exportExtra?" + $.param(data)
     window.location = url;
 }
+function exportarproyectos(){
+    var url = "/exportProyectos" 
+    window.location = url;
+}
+function delOcupacion(ocupacion_id){
+    let text = "Desea eliminar este registro?";
+    if (confirm(text) == true) {
+        data = {  ocupacion_id : ocupacion_id}
+        url="/deleteOcupacion"
+        $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) { 
+               alert(data)
+            }
+        }); 
+    } 
+}

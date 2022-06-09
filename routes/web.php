@@ -128,10 +128,11 @@ Route::get('exportReporte', [ExcelController::class, 'export'])->name('export');
 Route::get('exportReporteO', [ExcelController::class, 'exporto'])->name('exporto');
 Route::get('exportAnaliticas', [ExcelController::class, 'exporta'])->name('exporta');
 Route::get('exportExtra', [ExcelController::class, 'exportextra'])->name('exportextra');
+Route::get('exportProyectos', [ExcelController::class, 'exportProyectos'])->name('exportProyectos');
 //Auth
 Route::get('validar',[AuthController::class,'validar'])->name('validar');
 
-Route::get('yoursix',[PagesController::class,'yoursix'])->name('yoursix');
+
 
 
 //ocupación
@@ -139,6 +140,7 @@ Route::get('/seguimiento',[PagesController::class,'seguimiento']);
 Route::get('/generalo',[PagesController::class,'generalo']);
 Route::get('/distribuciono',[PagesController::class,'distribuciono']);
 Route::get('/buscarinfooc',[PagesController::class,'buscarinfooc']);
+Route::get('/deleteOcupacion',[PagesController::class,'deleteOcupacion']);
 
 //extra
 Route::get('/authextra',[PagesController::class,'authextra']);

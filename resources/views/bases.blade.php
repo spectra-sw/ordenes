@@ -52,7 +52,8 @@
                     <div class="tab-pane container fade" id="proyectos">
                         <br>
                       
-                        <button class="btn btn-primary" onclick="nuevoproyecto()">Nuevo Proyecto</button><br><br>
+                        <button class="btn btn-primary" onclick="nuevoproyecto()">Nuevo Proyecto</button>
+                        <button class="btn btn-primary" onclick="exportarproyectos()">Exportar Proyectos</button><br><br>
                         @include('busquedaProy')
                         <br>
                         <div id ="tp">
