@@ -20,6 +20,7 @@ class AuthController extends Controller
             if (password_verify($request->pwd, $hashedPassword)) {
                 session(['user' => $id]);
                 session(['tipo' => $tipo]);
+                session(['area' => $e->area]);
                 session(['nombre' => $nombre]);
             //dd(session()->all());
                 return $tipo;

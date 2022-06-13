@@ -34,15 +34,22 @@
                 </div>
                 <div class="form-group">
                     <label for="auxilio">SUBPORTAFOLIO</label>
-                    <input type="text" class="form-control"  id="subportafolio" name="subportafolio">
+                    <!--<input type="text" class="form-control"  id="subportafolio" name="subportafolio">-->
+                    <select class="form-control"  id="subportafolio" name="subportafolio">
+                        <option value="Grandes cuentas">Grandes cuentas</option>
+                        <option value="Estratégicos">Estratégicos</option>
+                        <option value="Corporativos">Corporativos</option>
+                        <option value="NA">No aplica</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="director">DIRECTOR</label>
                     <select class="form-control" id="director" name="director">
                         <option value="0"></option>
                         @foreach ($emp as $e)
-                            <option value="{{ $e->id }}" >{{ $e->nombre . " " . $e->apellido1 }}</option>
+                            <option value="{{ $e->id }}">{{ $e->apellido1 . " " . $e->nombre}}</option>
                         @endforeach
+                       
                     </select>
                 </div>
                 <div class="form-group">
@@ -50,7 +57,7 @@
                     <select class="form-control" id="lider" name="lider">
                         <option value="0"></option>
                         @foreach ($emp as $e)
-                            <option value="{{ $e->id }}" >{{ $e->nombre . " " . $e->apellido1 }}</option>
+                            <option value="{{ $e->id }}">{{ $e->apellido1 . " " . $e->nombre}}</option>
                         @endforeach
                     </select>
                 </div>

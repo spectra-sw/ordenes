@@ -36,9 +36,7 @@ use Illuminate\Support\Facades\DB;
 class PagesController extends Controller
 {
     //
-    public function yoursix(){
-        return view('yoursix');
-    }
+    
     public function inicio(){
         session(['user' => '']);
         session(['tipo' => 3]);
@@ -1464,12 +1462,13 @@ class PagesController extends Controller
         }
         else{
             $totalh = $totalh + $request->horas + ($request->min/60);
+            $actividad_id=Actividad::where('actividad', $request->actividad)->first()->id;
             if (($totalh)<=9.5){
                 $e = ocupacion::create([
                     'cc' => $cc,
                     'dia' => $request->dia,
                     'area' => $request->area,
-                    'actividad' => $request->actividad,
+                    'actividad' => $actividad_id,
                     'proyecto' => $request->proyecto,
                     'horas' => $request->horas,
                     'minutos' => $request->min,
@@ -1630,10 +1629,9 @@ class PagesController extends Controller
             $fin = new Carbon($request->fechaFinalOcup1);
     
             while ($inicio <= $fin){
-            
-                
                 $ocs = Ocupacion::where('cc',$e->cc)->where('dia','=',$inicio)->get();
                 //dd($ocs);
+                $lapso="";
                 foreach ($ocs as $oc){
                     $centro = Cdc::where('codigo',$oc->proyecto)->first();
                     $totalh=$oc->horas + ($oc->minutos/60);
@@ -1647,10 +1645,10 @@ class PagesController extends Controller
                     $linea->put('NDC', '');
                     $linea->put('LAPSO', $lapso);
                     $linea->put('UNIDADES', $totalh);
-                    $linea->put('CENTRO OPERACION', $centro->centro_operacion);
-                    $linea->put('CENTRO COSTOS', $centro->codigo);
+                    $linea->put('CENTRO OPERACION', isset($centro->centro_operacion));
+                    $linea->put('CENTRO COSTOS', isset($centro->codigo));
                     $linea->put('ID PROYECTO', '');
-                    $linea->put('ID UNIDAD DE NEGOCIO', $centro->unidad_negocio);
+                    $linea->put('ID UNIDAD DE NEGOCIO', isset($centro->unidad_negocio));
                     $linea->put('NOTAS', '');
                     /*$linea->put('codigo del empleado', $e->cc);
                     $linea->put('sucursal', '');
@@ -1683,23 +1681,25 @@ class PagesController extends Controller
                 $inicio = $inicio->addDay();
 
             }
-                    $hl =240;
-                    if(Novedad::where('cc',$e->cc)->where('periodo',$lapso)->exists()){
-                        $hl=Novedad::where('cc',$e->cc)->where('periodo',$lapso)->first()->horas;
-                    }
-                    $linea = collect([]);
-                    
-                    $linea->put('ID', '1');
-                    $linea->put('ID TERCERO', $e->cc);
-                    $linea->put('NDC', '');
-                    $linea->put('LAPSO', $lapso);
-                    $linea->put('UNIDADES',$hl- $total[$e->cc]);
-                    $linea->put('CENTRO OPERACION', '001');
-                    $linea->put('CENTRO COSTOS', '300001');
-                    $linea->put('ID PROYECTO', '');
-                    $linea->put('ID UNIDAD DE NEGOCIO', '999');
-                    $linea->put('NOTAS', '');
-                    $datos->push($linea);
+            if ($lapso!=""){
+                $hl =240;
+                if(Novedad::where('cc',$e->cc)->where('periodo',$lapso)->exists()){
+                    $hl=Novedad::where('cc',$e->cc)->where('periodo',$lapso)->first()->horas;
+                }
+                $linea = collect([]);
+                
+                $linea->put('ID', '1');
+                $linea->put('ID TERCERO', $e->cc);
+                $linea->put('NDC', '');
+                $linea->put('LAPSO', $lapso);
+                $linea->put('UNIDADES',$hl- $total[$e->cc]);
+                $linea->put('CENTRO OPERACION', '001');
+                $linea->put('CENTRO COSTOS', '300001');
+                $linea->put('ID PROYECTO', '');
+                $linea->put('ID UNIDAD DE NEGOCIO', '999');
+                $linea->put('NOTAS', '');
+                $datos->push($linea);
+            }
 
         }
        /* $datos2 = collect([]);

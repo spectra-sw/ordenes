@@ -632,4 +632,6 @@ class ExcelController extends Controller
         $datos = Proyecto::orderBy('codigo','asc')->get();
         return Excel::download(new ProyectosExport($datos), 'proyectos.xlsx');
     }
+
+    
 }

@@ -129,6 +129,9 @@ Route::get('exportReporteO', [ExcelController::class, 'exporto'])->name('exporto
 Route::get('exportAnaliticas', [ExcelController::class, 'exporta'])->name('exporta');
 Route::get('exportExtra', [ExcelController::class, 'exportextra'])->name('exportextra');
 Route::get('exportProyectos', [ExcelController::class, 'exportProyectos'])->name('exportProyectos');
+
+Route::post('importHoras',[ExcelController::class,'importHoras'])->name('importHoras');
+
 //Auth
 Route::get('validar',[AuthController::class,'validar'])->name('validar');
 

@@ -28,4 +28,7 @@ class Proyecto extends Model
     {
         return $this->belongsTo(Empleado::class, 'lider', 'id');
     }
+    public function cdc(){
+        return $this->belongsTo(Cdc::class,'codigo','codigo');
+    }
 }

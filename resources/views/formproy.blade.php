@@ -28,12 +28,12 @@
                 <div class="form-group">
                     <label for="director">DIRECTOR</label>
                     <select class="form-control" id="director" name="director">
-                        <option value="0"></option>
+                       
                         @if ($p['director'] >0)
-                        <option value="{{ $p->ndirector->id }}">{{ $p->ndirector->nombre. " " . $p->ndirector->apellido1 }}<option>
+                        <option value="{{ $p->ndirector->id }}" selected>{{ $p->ndirector->nombre. " " . $p->ndirector->apellido1 }}<option>
                         @endif
                         @foreach ($emp as $e)
-                            <option value="{{ $e->id }}" >{{ $e->nombre . " " . $e->apellido1 }}</option>
+                            <option value="{{ $e->id }}">{{ $e->nombre . " " . $e->apellido1 }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -41,9 +41,8 @@
                     <label for="lider">LIDER</label>
                     
                     <select class="form-control" id="lider" name="lider">
-                        <option value="0"></option>
                         @if ($p['lider'] >0)
-                        <option value="{{ $p->nlider->id }}">{{ $p->nlider->nombre. " " . $p->nlider->apellido1 }}<option>
+                        <option value="{{ $p->nlider->id }}" selected>{{ $p->nlider->nombre. " " . $p->nlider->apellido1 }}<option>
                         @endif
                         @foreach ($emp as $e)
                             <option value="{{ $e->id }}" >{{ $e->nombre . " " . $e->apellido1 }}</option>
@@ -57,7 +56,7 @@
                 <div class="form-group">
                     <label for="co">CENTRO DE OPERACIÓN</label>
                     <select class="form-control" id="co" name="co">
-                            <option value=" "></option>
+                            <option value="{{ $p->cdc->centro_operacion }}">{{$p->cdc->centro_operacion}}</option>
                             <option value="001">001</option>
                             <option value="002">002</option>
                     </select>
@@ -66,7 +65,7 @@
                 <div class="form-group">
                     <label for="un">UNIDAD DE NEGOCIO</label>
                     <select class="form-control" id="un" name="un">
-                            <option value=" "></option>
+                            <option value="{{ $p->cdc->unidad_negocio }}">{{$p->cdc->unidad_negocio}}</option>
                             <option value="001">001</option>
                             <option value="002">002</option>
                             <option value="003">003</option>

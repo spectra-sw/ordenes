@@ -10,6 +10,8 @@
         <th>DIRECTOR</th>
         <th>LÍDER</th>
         <th>CIUDAD</th>
+        <th>C.O</th>
+        <th>U.N</th>
       </tr>
     </thead>
     <tbody>
@@ -32,6 +34,8 @@
         @endif
         
         <td>{{ $p->ciudad }}</td>
+        <td>{{ isset($p->cdc->centro_operacion) ? $p->cdc->centro_operacion : ''}}</td>
+        <td>{{ isset($p->cdc->unidad_negocio) ? $p->cdc->unidad_negocio : ''}}</td>
         <td><select class="form-control" id="{{ $p->id }}" onchange="accionesproyectos(this.value,this.id)">
             <option></option>
             <option value="1">Editar</option>

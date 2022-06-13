@@ -14,6 +14,12 @@
         <a class="nav-link" data-toggle="tab" href="#reporteso">Reportes</a>
     </li>
     @endif
+    @if (session('area')==6)
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#horas">Horas</a>
+    </li>
+    @endif
+    
 
 </ul>
 <div class="tab-content">
@@ -70,12 +76,18 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="actividad">Actividad</label>
-                            <select class="form-control" id="actividad" name="actividad">
+                            <!--<select class="form-control" id="actividad" name="actividad">
                                 <option value=""><option>
                                 @foreach ($actividades  as $a)
                                     <option value="{{ $a->id }}">{{ $a->actividad }}</option>
                                 @endforeach
-                            </select>
+                            </select>-->
+                            <input type="text" list="actividades" class="form-control" name="actividad" id="actividad">
+                            <datalist id="actividades">
+                                @foreach ($actividades  as $a)
+                                    <option value="{{ $a->actividad }}">
+                                @endforeach
+                            </datalist>
                         </select>
                     </div>
                 </div>
