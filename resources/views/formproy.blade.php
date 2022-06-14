@@ -28,7 +28,9 @@
                 <div class="form-group">
                     <label for="director">DIRECTOR</label>
                     <select class="form-control" id="director" name="director">
-                       
+                        @if ($p['director'] ==0)
+                        <option value="0" selected><option>
+                        @endif
                         @if ($p['director'] >0)
                         <option value="{{ $p->ndirector->id }}" selected>{{ $p->ndirector->nombre. " " . $p->ndirector->apellido1 }}<option>
                         @endif
@@ -41,6 +43,9 @@
                     <label for="lider">LIDER</label>
                     
                     <select class="form-control" id="lider" name="lider">
+                        @if ($p['lider'] ==0)
+                        <option value="0" selected><option>
+                        @endif
                         @if ($p['lider'] >0)
                         <option value="{{ $p->nlider->id }}" selected>{{ $p->nlider->nombre. " " . $p->nlider->apellido1 }}<option>
                         @endif
