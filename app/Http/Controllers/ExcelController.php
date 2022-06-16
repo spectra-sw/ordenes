@@ -22,6 +22,8 @@ use Log;
 use Carbon\Carbon;
 use App\Models\Programacion;
 
+use App\Imports\ImportNovedad;
+
 class ExcelController extends Controller
 {
     //
@@ -633,5 +635,8 @@ class ExcelController extends Controller
         return Excel::download(new ProyectosExport($datos), 'proyectos.xlsx');
     }
 
-    
+    public function importHoras(Request $request){
+        Excel::import(new ImportNovedad, $request->file('file')->store('files'));
+        return redirect()->back();
+    }
 }

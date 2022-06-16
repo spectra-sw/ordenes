@@ -16,7 +16,7 @@
     @endif
     @if (session('area')==6)
     <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#horas">Horas</a>
+        <a class="nav-link" data-toggle="tab" href="#horasNovedad">Horas</a>
     </li>
     @endif
     
@@ -189,16 +189,54 @@
             </div>
                     
             
-        </form>       
+        </form>    
     </div>
-                    
+    <div class="tab-pane container fade" id="horasNovedad">
+        <br>
+        <form action="{{ route('importHoras') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="form-group mb-4">
+                <div class="custom-file text-left">
+                    <input type="file" name="file" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label" for="customFile">Choose file</label>
+                </div>
+            </div>
+            <button class="btn btn-primary">Importar horas</button><br>
+                <table id="tableNovedades" class="display" style="width:100%;overflow:scroll;color:black">
+                    <thead>
+                        <tr>
+                            <th>CC</th>
+                            <th>NOMBRE</th>
+                            <th>HORAS</th>
+                            <th>PERIODO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($novedades  as $n)
+                        <tr>
+                            <td>{{ $n->cc}}</td>
+                            <td>{{ isset($n->empleado) ?  $n->empleado->apellido1 . " ". $n->empleado->apellido2 . " ". $n->empleado->nombre : '' }}</td>
+                            <td>{{ $n->horas}}</td>
+                            <td>{{ $n->periodo }}</td>
+                        </tr>
+                        @endforeach
+                        
+                    </tbody>
+                   
+                </table>
+        </form>
+    </div>                
                     
 </div>
 <script type="text/javascript">
     $('#responsable').autoComplete();
     
 </script>
-
+<script>
+    $(document).ready(function() {
+        $('#tableNovedades').DataTable();
+    } );
+</script>
 
 <script src="{{asset('js/scripts.js')}}"></script>                
 @endsection

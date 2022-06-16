@@ -85,6 +85,7 @@ class PagesController extends Controller
             $proyectos = Proyecto::orderBy('codigo','asc')->get();
             $horarios = Horario::all();
             $areas = Area::all();
+           
             return view('bases',[
                 'emp' => $emp,
                 'cdc' => $cdc,
@@ -93,7 +94,7 @@ class PagesController extends Controller
                 'horarios' => $horarios,
                 'authpr' => $authpr,
                 'areas' => $areas,
-                'area' => $area
+                'area' => $area,
             ]);
         }
         else{
@@ -1422,12 +1423,13 @@ class PagesController extends Controller
         $proyectos = Proyecto::orderBy('codigo','asc')->get();
         $u = session('user');
         $area = Empleado::where('id',$u)->first()->area;
-        
+        $novedades=Novedad::all();
         return view('ocupacion',[
             'areas' => $areas,
             'actividades' => $actividades,
             'proyectos' => $proyectos,
-            'area' => $area
+            'area' => $area,
+            'novedades' => $novedades
 
         ]);
     }

@@ -15,4 +15,8 @@ class Novedad extends Model
     protected $fillable = [
         'id', 'cc', 'horas', 'periodo'
     ];
+    public function empleado()
+    {
+        return $this->belongsTo(Empleado::class, 'cc', 'cc');
+    }
 }
