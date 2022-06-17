@@ -10,6 +10,8 @@
         <th>DIRECTOR</th>
         <th>LÍDER</th>
         <th>CIUDAD</th>
+        <th>C.O</th>
+        <th>U.N</th>
         <th>CREACION</th>
       </tr>
     </thead>
@@ -33,6 +35,8 @@
         @endif
         
         <td>{{ $p->ciudad }}</td>
+        <td>{{ isset($p->cdc->centro_operacion) ? $p->cdc->centro_operacion : ''}}</td>
+        <td>{{ isset($p->cdc->unidad_negocio) ? $p->cdc->unidad_negocio : ''}}</td>
         <td>{{ $p->creacion }}</td>
         
       </tr>
