@@ -42,12 +42,13 @@
         <td>{{ $e->fecha_vobo_director }}</td>
         <td>
             @if ($e->fecha_vobo_director == null)
-            <input type="text" id="observacion">
+            <input type="text" id="observacion" value="{{ $e->observaciones }}">
             @else
             {{ $e->observaciones }}
             @endif
         <td>
         <input type="button" class="btn btn-success btn-sm" value="aprobar" onclick="aprobar({{ $e->id}})">
+        <input type="button" class="btn btn-warning btn-sm" value="rechazar" onclick="rechazar({{ $e->id}})">
         </td>
       </tr>
     @endforeach 

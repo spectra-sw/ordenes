@@ -150,6 +150,7 @@ Route::get('/authextra',[PagesController::class,'authextra']);
 Route::get('/nuevaextra',[PagesController::class,'nuevaextra']);
 Route::get('/saveextra',[PagesController::class,'saveextra']);
 Route::get('/voboextra',[PagesController::class,'voboextra']);
+Route::get('/rechazarextra',[PagesController::class,'rechazarextra']);
 
 Route::get('send-mail', function () {
    

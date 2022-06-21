@@ -1268,16 +1268,23 @@ function extra(proyecto,fecha,cc,hi,hf){
 
 }
 function guardarextra(){
-    data=$( "#formExtra" ).serialize(); 
-    url = '/saveextra'
-    $.ajax({
-            url: url,
-            type:'GET',
-            data: data,
-            success: function(data) {
-                alert(data);
-            }
-    });   
+    hh=$("#horario_habitual").val();
+    autoriza=$("#autoriza").val();
+    if((hh!="")&&(autoriza!="")){
+        data=$( "#formExtra" ).serialize(); 
+        url = '/saveextra'
+        $.ajax({
+                url: url,
+                type:'GET',
+                data: data,
+                success: function(data) {
+                    alert(data);
+                }
+        });   
+    }
+    else{
+        alert("Diligencie todos los campos");
+    }
 }
 
 
@@ -1295,6 +1302,22 @@ function aprobar(id){
                location.reload();
             }
         }); 
+}
+function rechazar(id){
+    obs =$("#observacion").val();
+
+    data = { obs : obs, id:id }
+        url="/rechazarextra"
+        $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) { 
+               alert(data);
+               location.reload();
+            }
+        }); 
+
 }
 function analiticas(){
     //alert();

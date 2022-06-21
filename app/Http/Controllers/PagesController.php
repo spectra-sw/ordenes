@@ -51,6 +51,9 @@ class PagesController extends Controller
     public function menu(){
         $tipo = session('tipo');
         $user = session('user');
+        if ($user==""){
+            return redirect()->route('inicio');
+        }
         //dd($tipo);
         if (($tipo ==0)||($tipo ==1)||($tipo ==10)){
             $e = Empleado::where('id',$user)->first();
@@ -71,6 +74,9 @@ class PagesController extends Controller
     public function bases(){
         $tipo = session('tipo');
         $user = session('user');
+        if ($user==""){
+            return redirect()->route('inicio');
+        }
         $area = Empleado::where('id',$user)->first()->area;
         $authpr=0;
         if (($user ==32)||($user ==31)||($user ==82)||($user ==141)||($user ==187)){
@@ -179,6 +185,9 @@ class PagesController extends Controller
         //$proyectos = Proyecto::orderBy('codigo','asc')->get();
         $proyectos = collect([]);
         $user = session('user');
+        if ($user==""){
+            return redirect()->route('inicio');
+        }
         //$user = 108;
         $cc = Empleado::where('id',$user)->first()->cc;
         $ciudad = Empleado::where('id',$user)->first()->ciudad;
@@ -983,6 +992,9 @@ class PagesController extends Controller
     }
     public function calendariooc(Request $request){
         $user = session('user');
+        if ($user==""){
+            return redirect()->route('inicio');
+        }
         $cc =  Empleado::where('id',$user)->first()->cc;
         $oc =  DB::table('ocupacion')->where('cc',$cc);
        
@@ -1422,6 +1434,9 @@ class PagesController extends Controller
         $actividades = Actividad::all();
         $proyectos = Proyecto::orderBy('codigo','asc')->get();
         $u = session('user');
+        if ($u==""){
+            return redirect()->route('inicio');
+        }
         $area = Empleado::where('id',$u)->first()->area;
         $novedades=Novedad::all();
         return view('ocupacion',[
@@ -1436,6 +1451,9 @@ class PagesController extends Controller
     public function rocupacion(Request $request){
         //dd($request);
         $u = session('user');
+        if ($u==""){
+            return redirect()->route('inicio');
+        }
         $cc = Empleado::where('id',$u)->first()->cc;
         $existe = ocupacion::where('cc',$cc)->where('dia',$request->dia)->exists();
         $hoy = Carbon::now();
@@ -1588,6 +1606,9 @@ class PagesController extends Controller
     public function buscarinfooc(Request $request){
         $fecha = $request->fecha;
         $user = session('user');
+        if ($user==""){
+            return redirect()->route('inicio');
+        }
         $cc = Empleado::where('id',$user)->first()->cc;
         $hoc = Ocupacion::where('cc',$cc)->where('dia','=',$fecha)->sum('horas');
         $moc = Ocupacion::where('cc',$cc)->where('dia','=',$fecha)->sum('minutos');
@@ -1807,10 +1828,13 @@ class PagesController extends Controller
     public function saveextra(Request $request){
         try {
               $autorizada_por = session('user');
-             
+              if ($autorizada_por==""){
+                return "Debes iniciar sesión de nuevo";
+              }
               $p=Proyecto::where('codigo',$request->proyecto)->first();
 
               $director=Empleado::find($p->ndirector->id);
+              $autoriza = Empleado::where('cc',$request->autoriza)->first();
       
               $e = Autorizacion::create([
               
@@ -1830,7 +1854,7 @@ class PagesController extends Controller
                 'body' => "Ingresar a <a href='www.spectraoperaciones.com'>spectraoperaciones.com</a> para realizar la autorización"
             ];
            
-            \Mail::to($director->correo)->send(new \App\Mail\MailSolicitudExtra($details,$e));
+            \Mail::to($autoriza->correo)->send(new \App\Mail\MailSolicitudExtra($details,$e));
 
             return "Formato de autorización registrado";
           } catch (QueryException $e) {
@@ -1840,12 +1864,15 @@ class PagesController extends Controller
     public function consextra(Request $request){
         $tipo = session('tipo');
         $user = session('user');
+        if ($user==""){
+            return redirect()->route('inicio');
+        }
         $area = Empleado::where('id',$user)->first()->area;
         if ($area==6){
-            $extra = Autorizacion::orderBy('fecha','asc')->get();
+            $extra = Autorizacion::orderBy('fecha','desc')->get();
         }
         else{
-            $extra = Autorizacion::where('director',$user)->get();
+            $extra = Autorizacion::where('director',$user)->orderBy('fecha','desc')->get();
         }
         return view('extra',[
             'extra' => $extra
@@ -1861,6 +1888,16 @@ class PagesController extends Controller
         ]);
         return "Solicitud de tiempo extra aprobada";
     }
+    public function rechazarextra(Request $request){
+        // $tipo = session('tipo');
+         //$user = session('user');
+         Autorizacion::where('id',$request->id)->update([
+          
+             'observaciones' => "RECHAZADA"
+ 
+         ]);
+         return "Solicitud de tiempo extra rechazada";
+     }
     public function getDatosAnaliticas(Request $request){
         $area = $request->area;
         $oc =  Ocupacion::where('id','>',0);

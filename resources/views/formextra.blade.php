@@ -30,9 +30,19 @@
                     <div class="col-12 col-md-4 ">Horario entrada<input type="text" name="hora_entrada" id="hora_entrada"  class="form-control" value="{{ $hi}}" ></div>
                     <div class="col-12 col-md-4 ">Horario autorizada salida<input type="text" name="hora_autorizada_salida" id="hora_autorizada_salida"  class="form-control" value="{{ $hf}}" ></div>
                   </div>
+                <div class="form-group">
+                    <div class="row">
+                    <div class="col-12">Quien autoriza?  <select class="form-control basicAutoSelect" name="autoriza" id="autoriza"
+                        placeholder="buscar..."
+                        data-url="../autoemp" autocomplete="off"></select>
+                    </div>
+                    <script type="text/javascript">
+                            $('#autoriza').autoComplete();
+                    </script>
+    
+                </div>
                 <br>
                 <button type="button" class="btn btn-primary" onclick="guardarextra()">Guardar</button>
 
             </form>
-
-
+        
