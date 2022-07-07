@@ -1659,6 +1659,7 @@ class PagesController extends Controller
                     $centro = Cdc::where('codigo',$oc->proyecto)->first();
                     $totalh=$oc->horas + ($oc->minutos/60);
                     //Log::info($oc);
+                    //Log::info($centro);
                     //Log::info($totalh);
                     $lapso=substr(str_replace("-","",$oc->dia),0,6);
                     $linea = collect([]);
@@ -1668,10 +1669,10 @@ class PagesController extends Controller
                     $linea->put('NDC', '');
                     $linea->put('LAPSO', $lapso);
                     $linea->put('UNIDADES', $totalh);
-                    $linea->put('CENTRO OPERACION', isset($centro->centro_operacion));
-                    $linea->put('CENTRO COSTOS', isset($centro->codigo));
+                    $linea->put('CENTRO OPERACION', $centro->centro_operacion);
+                    $linea->put('CENTRO COSTOS', $centro->codigo);
                     $linea->put('ID PROYECTO', '');
-                    $linea->put('ID UNIDAD DE NEGOCIO', isset($centro->unidad_negocio));
+                    $linea->put('ID UNIDAD DE NEGOCIO', $centro->unidad_negocio);
                     $linea->put('NOTAS', '');
                     /*$linea->put('codigo del empleado', $e->cc);
                     $linea->put('sucursal', '');
@@ -1690,7 +1691,7 @@ class PagesController extends Controller
                     $linea->put('notas', '');*/
 
                     $datos->push($linea);
-                    //Log::info($linea);
+                    Log::info($linea);
                     if (array_key_exists($e->cc, $total) ) {
                         $total[$e->cc]= $total[$e->cc] + $totalh;
                     }
