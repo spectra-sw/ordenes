@@ -1321,8 +1321,10 @@ function rechazar(id){
 }
 function analiticas(){
     //alert();
-    data=$( "#formReportesOcupacion" ).serialize(); 
-    url = '/exportAnaliticas'
+    /*data=$( "#formReportesOcupacion" ).serialize(); 
+    console.log(data);
+    url = '/exportAnaliticas'*/
+    data={ fechaInicioOcup1 :$("#fechaInicioOcup1").val() ,fechaFinalOcup1:  $("#fechaFinalOcup1").val() }
     var url = "/exportAnaliticas?" + $.param(data)
     window.location = url;
     /*console.log(data);
