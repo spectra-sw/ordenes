@@ -1650,11 +1650,13 @@ class PagesController extends Controller
         foreach($emp as $e){
             $inicio = new Carbon($request->fechaInicioOcup1);
             $fin = new Carbon($request->fechaFinalOcup1);
-    
+            $x="";
+            $lapso="";
             while ($inicio <= $fin){
                 $ocs = Ocupacion::where('cc',$e->cc)->where('dia','=',$inicio)->get();
                 //dd($ocs);
-                $lapso="";
+                
+                
                 foreach ($ocs as $oc){
                     $centro = Cdc::where('codigo',$oc->proyecto)->first();
                     $totalh=$oc->horas + ($oc->minutos/60);
@@ -1662,6 +1664,8 @@ class PagesController extends Controller
                     //Log::info($centro);
                     //Log::info($totalh);
                     $lapso=substr(str_replace("-","",$oc->dia),0,6);
+                    $x=$x." ".$lapso;
+                    //dd($lapso);
                     $linea = collect([]);
                     
                     $linea->put('ID', '1');
@@ -1703,8 +1707,9 @@ class PagesController extends Controller
                 
                 }
                 $inicio = $inicio->addDay();
-
+                
             }
+            //dd($lapso);
             if ($lapso!=""){
                 $hl =240;
                 if(Novedad::where('cc',$e->cc)->where('periodo',$lapso)->exists()){
