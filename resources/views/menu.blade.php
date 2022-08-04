@@ -33,7 +33,10 @@
         <td>{{ $p->empleado->nombre . " ". $p->empleado->apellido1}}</td>
         <td>{{ $p->fecha }}</td>
         <td>{{ $p->datosproyecto->codigo . " - ". $p->datosproyecto->cliente->cliente }}</td>
-        <td>{{ $p->datosresponsable->nombre . " ". $p->datosresponsable->apellido1 }}</td>
+        <td>@if(!empty($p->datosresponsable))
+            {{ $p->datosresponsable->nombre . " ". $p->datosresponsable->apellido1 }}
+          @endif
+        </td>
         <td>{{ $p->observacion }}
         
         

@@ -59,7 +59,7 @@ class PagesController extends Controller
             $e = Empleado::where('id',$user)->first();
             $cc = $e->cc;
             $nombre = $e->nombre. " " . $e->apellido1;
-            $prog = Programacion::where('cc',$cc)->orderBy('fecha','asc')->get();
+            $prog = Programacion::where('cc',$cc)->orderBy('fecha','desc')->get();
             //dd($prog);
             return view('menu',[
                 'prog' => $prog,
