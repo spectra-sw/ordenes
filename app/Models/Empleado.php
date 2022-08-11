@@ -30,4 +30,5 @@ class Empleado extends Model
     {
         return $this->belongsTo(Area::class, 'area', 'id');
     }
+    
 }

@@ -19,10 +19,10 @@
         <th>HORARIO HABITUAL</th>
         <th>HORA ENTRADA</th>
         <th>HORA AUTORIZADA</th>
-        <th>DIRECTOR</th>
-        <th>AUTORIZADA POR</th>
-        <th>FECHA AUTORIZACION</th>
-        <th>FECHA VOBO DIRECTOR</th>
+        <th>AUTORIZA/RECHAZA</th>
+        <th>SOLICITADA POR</th>
+        <th>FECHA SOLICITUD</th>
+        <th>FECHA AUTORIZACION/RECHAZO</th>
         <th>OBSERVACIONES</th>
       </tr>
     </thead>
@@ -37,11 +37,12 @@
         <td>{{ $e->hora_entrada }}</td>
         <td>{{ $e->hora_autorizada_salida }}</td>
         <td>{{ $e->ndirector->nombre." ".$e->ndirector->apellido1 }}</td>
-        <td>{{ $e->nautorizado->nombre." ".$e->nautorizado->apellido1 }}</td>
-        <td>{{ $e->fecha_autorizacion }}</td>
-        <td>{{ $e->fecha_vobo_director }}</td>
+        <td>{{ $e->nsolicita->nombre." ".$e->nsolicita->apellido1 }}</td>
+        <td>{{ $e->fecha_solicitud }}</td>
+        <td>{{ $e->fecha_autorizacion_rechazo }}</td>
+        
         <td>
-            @if ($e->fecha_vobo_director == null)
+            @if ($e->autorizacion_rechazo == null)
             <input type="text" id="observacion" value="{{ $e->observaciones }}">
             @else
             {{ $e->observaciones }}

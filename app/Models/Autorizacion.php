@@ -9,11 +9,11 @@ class Autorizacion extends Model
 {
     use HasFactory;
     protected $table = 'autorizaciones';
-    public $timestamps = false;
+    public $timestamps = true;
     protected $fillable = [
         'id', 'proyecto','trabajador','motivo','horario_habitual','fecha','hora_entrada',
-        'hora_autorizada_salida','observaciones','autorizado_por','director','talento','fecha_vobo_director',
-        'fecha_autorizacion','fecha_vobo_talento'
+        'hora_autorizada_salida','observaciones','autorizado_rechazado_por','solicitado_por','fecha_autorizacion_rechazo',
+        'fecha_solicitud'
     ];
 
     public function ntrabajador()
@@ -22,11 +22,11 @@ class Autorizacion extends Model
     }
     public function ndirector()
     {
-        return $this->belongsTo(Empleado::class, 'director', 'id');
+        return $this->belongsTo(Empleado::class, 'autorizado_rechazado_por', 'id');
     }
-    public function nautorizado()
+    public function nsolicita()
     {
-        return $this->belongsTo(Empleado::class, 'autorizado_por', 'id');
+        return $this->belongsTo(Empleado::class, 'solicitado_por', 'id');
     }
 }
 

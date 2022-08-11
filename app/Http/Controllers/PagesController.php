@@ -1817,31 +1817,33 @@ class PagesController extends Controller
     public function authextra(Request $request){
         $p = Proyecto::where('codigo',$request->proyecto)->first();
         $e = Empleado::where('cc',$request->cc)->first();
+        $autoriza=Empleado::whereIn('cargo',[23,26,30,37,38])->get();
         return view('formextra',[
             'p' => $p,
             'e' => $e,
             'fecha' => $request->fecha,
             'hi' => $request->hi,
-            'hf' => $request->hf
+            'hf' => $request->hf,
+            'autoriza' => $autoriza
         ]);
     }
     public function nuevaextra(Request $request){
         $proyectos = Proyecto::orderBy('codigo','asc')->get();
+        $autoriza=Empleado::whereIn('cargo',[23,26,30,37,38])->get();
         return view('formnuevaextra',[
-           'proyectos' => $proyectos
+           'proyectos' => $proyectos,
+           'autoriza' => $autoriza
         ]);
     }
     public function saveextra(Request $request){
         try {
-              $autorizada_por = session('user');
-              if ($autorizada_por==""){
+              $solicitado_por = session('user');
+              if ($solicitado_por==""){
                 return "Debes iniciar sesión de nuevo";
               }
               $p=Proyecto::where('codigo',$request->proyecto)->first();
-
-              $director=Empleado::find($p->ndirector->id);
               $autoriza = Empleado::where('cc',$request->autoriza)->first();
-      
+              //dd($autoriza->correo);
               $e = Autorizacion::create([
               
               'proyecto' => $request->proyecto,
@@ -1851,15 +1853,15 @@ class PagesController extends Controller
               'fecha' => $request->fecha,
               'hora_entrada'=> $request->hora_entrada,
               'hora_autorizada_salida'=> $request->hora_autorizada_salida,
-              'autorizado_por' => $autorizada_por,
-              'director' => $p->ndirector->id,
-              'fecha_autorizacion' => date("Y-m-d")
+              'solicitado_por' => $solicitado_por,
+              'autorizado_rechazado_por' => $autoriza->id,
+              'fecha_solicitud' => date("Y-m-d")
             ]);
             $details = [
                 'title' => 'Solicitud de horas extras',
                 'body' => "Ingresar a <a href='www.spectraoperaciones.com'>spectraoperaciones.com</a> para realizar la autorización"
             ];
-           
+          
             \Mail::to($autoriza->correo)->send(new \App\Mail\MailSolicitudExtra($details,$e));
 
             return "Formato de autorización registrado";
@@ -1878,7 +1880,7 @@ class PagesController extends Controller
             $extra = Autorizacion::orderBy('fecha','desc')->get();
         }
         else{
-            $extra = Autorizacion::where('director',$user)->orderBy('fecha','desc')->get();
+            $extra = Autorizacion::where('autorizaod_rechazado_por',$user)->orderBy('fecha','desc')->get();
         }
         return view('extra',[
             'extra' => $extra
@@ -1888,7 +1890,7 @@ class PagesController extends Controller
        // $tipo = session('tipo');
         //$user = session('user');
         Autorizacion::where('id',$request->id)->update([
-            'fecha_vobo_director' => date("Y-m-d"),
+            'fecha_autorizacion_rechazo' => date("Y-m-d"),
             'observaciones' => $request->obs
 
         ]);
@@ -1898,7 +1900,7 @@ class PagesController extends Controller
         // $tipo = session('tipo');
          //$user = session('user');
          Autorizacion::where('id',$request->id)->update([
-          
+            'fecha_autorizacion_rechazo' => date("Y-m-d"),
              'observaciones' => "RECHAZADA"
  
          ]);
@@ -1944,8 +1946,8 @@ class PagesController extends Controller
         }
         foreach ($datos as $d){
             $d->trabajador=$d->ntrabajador->nombre." ".$d->ntrabajador->apellido1;
-            $d->autorizado_por = $d->nautorizado->nombre." ".$d->nautorizado->apellido1;
-            $d->director= $d->ndirector->nombre." ".$d->ndirector->apellido1;
+            $d->solicitado_por = $d->nsolicita->nombre." ".$d->nsolicita->apellido1;
+            $d->autorizado_rechazado_por= $d->ndirector->nombre." ".$d->ndirector->apellido1;
         }   
         /*
         $datos  = collect([]);

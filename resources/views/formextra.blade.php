@@ -32,12 +32,20 @@
                   </div>
                 <div class="form-group">
                     <div class="row">
-                    <div class="col-12">Quien autoriza?  <select class="form-control basicAutoSelect" name="autoriza" id="autoriza"
+                    <div class="col-12">Quien autoriza?  
+                        <select class="form-control" name="autoriza" id="autoriza">
+                            <option value=""><option>
+                            @foreach ($autoriza as $e)
+                                <option value="{{ $e->cc }}">{{ $e->apellido1. " " . $e->nombre}}</option>
+                            @endforeach
+                        </select>
+                        <!--<select class="form-control basicAutoSelect" name="autoriza" id="autoriza"
                         placeholder="buscar..."
-                        data-url="../autoemp" autocomplete="off"></select>
+                        data-url="../autoemp" autocomplete="off">
+                        </select>-->
                     </div>
                     <script type="text/javascript">
-                            $('#autoriza').autoComplete();
+                           // $('#autoriza').autoComplete();
                     </script>
     
                 </div>
