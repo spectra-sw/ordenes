@@ -1844,15 +1844,24 @@ class PagesController extends Controller
               $p=Proyecto::where('codigo',$request->proyecto)->first();
               $autoriza = Empleado::where('cc',$request->autoriza)->first();
               //dd($autoriza->correo);
+              $hie = $request->hi . ":" . $request->mi ;
+              $hfe = $request->hf . ":" . $request->mf ;
+              $hh =  $request->hhi . ":" . $request->mhi. "-". $request->hhf . ":" . $request->mhf ;
+              $hi = explode(":", $hie);
+              $hi_num =intval($hi[0]) + round(floatval($hi[1]/60),1);
+              $hf = explode(":", $hfe);
+              $hf_num =intval($hf[0]) + round(floatval($hf[1]/60),1);
+              $total_horas = $hf_num - $hi_num;
               $e = Autorizacion::create([
               
               'proyecto' => $request->proyecto,
               'trabajador'=> $request->trabajador,
               'motivo'=> $request->motivo,
-              'horario_habitual' => $request->horario_habitual,
+              'horario_habitual' => $hh,
               'fecha' => $request->fecha,
-              'hora_entrada'=> $request->hora_entrada,
-              'hora_autorizada_salida'=> $request->hora_autorizada_salida,
+              'hora_inicio_extra'=> $hie,
+              'hora_fin_extra'=> $hfe,
+              'total_horas' => $total_horas,
               'solicitado_por' => $solicitado_por,
               'autorizado_rechazado_por' => $autoriza->id,
               'fecha_solicitud' => date("Y-m-d")
@@ -1889,21 +1898,40 @@ class PagesController extends Controller
     public function voboextra(Request $request){
        // $tipo = session('tipo');
         //$user = session('user');
+        
         Autorizacion::where('id',$request->id)->update([
             'fecha_autorizacion_rechazo' => date("Y-m-d"),
             'observaciones' => $request->obs
 
         ]);
+        $e = Autorizacion::where('id',$request->id)->first();
+        $autoriza = Empleado::where('id',$e->solicitado_por)->first();
+        $details = [
+            'title' => 'Solicitud de horas extras - aprobada',
+            'body' => "Se ha aprobado la solicitud de horas extras"
+        ];
+      
+        \Mail::to($autoriza->correo)->send(new \App\Mail\MailSolicitudExtra($details,$e));
         return "Solicitud de tiempo extra aprobada";
     }
     public function rechazarextra(Request $request){
         // $tipo = session('tipo');
          //$user = session('user');
+         $e = Autorizacion::where('id',$request->id)->first();
+         $autoriza = Empleado::where('id',$e->solicitado_por)->first();
          Autorizacion::where('id',$request->id)->update([
             'fecha_autorizacion_rechazo' => date("Y-m-d"),
              'observaciones' => "RECHAZADA"
  
          ]);
+         $e = Autorizacion::where('id',$request->id)->first();
+         $autoriza = Empleado::where('id',$e->solicitado_por)->first();
+         $details = [
+            'title' => 'Solicitud de horas extras - rechazada',
+            'body' => "Se ha rechazado la solicitud de horas extras"
+        ];
+      
+        \Mail::to($autoriza->correo)->send(new \App\Mail\MailSolicitudExtra($details,$e));
          return "Solicitud de tiempo extra rechazada";
      }
     public function getDatosAnaliticas(Request $request){
@@ -1945,7 +1973,7 @@ class PagesController extends Controller
             $datos = Autorizacion::where('fecha','>=',$f1)->where('fecha','<=',$f2)->orderBy('fecha','asc')->get();
         }
         foreach ($datos as $d){
-            $d->trabajador=$d->ntrabajador->nombre." ".$d->ntrabajador->apellido1;
+            //$d->trabajador=$d->ntrabajador->nombre." ".$d->ntrabajador->apellido1;
             $d->solicitado_por = $d->nsolicita->nombre." ".$d->nsolicita->apellido1;
             $d->autorizado_rechazado_por= $d->ndirector->nombre." ".$d->ndirector->apellido1;
         }   

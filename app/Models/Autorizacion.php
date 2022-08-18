@@ -11,8 +11,8 @@ class Autorizacion extends Model
     protected $table = 'autorizaciones';
     public $timestamps = true;
     protected $fillable = [
-        'id', 'proyecto','trabajador','motivo','horario_habitual','fecha','hora_entrada',
-        'hora_autorizada_salida','observaciones','autorizado_rechazado_por','solicitado_por','fecha_autorizacion_rechazo',
+        'id', 'proyecto','trabajador','motivo','horario_habitual','fecha','hora_inicio_extra',
+        'hora_fin_extra','total_horas','observaciones','autorizado_rechazado_por','solicitado_por','fecha_autorizacion_rechazo',
         'fecha_solicitud'
     ];
 

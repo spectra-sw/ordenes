@@ -30,10 +30,46 @@
                 <div class="form-group">
                     <div class="row">
                 
-                    <div class="col-12 col-md-4 ">Horario habitual<input type="text" name="horario_habitual" id="horario_habitual"  class="form-control" ></div>
-                    <div class="col-12 col-md-4 ">Horario entrada<input type="text" name="hora_entrada" id="hora_entrada"  class="form-control" value="" ></div>
-                    <div class="col-12 col-md-4 ">Horario autorizada salida<input type="text" name="hora_autorizada_salida" id="hora_autorizada_salida"  class="form-control" value="" ></div>
-                  </div>
+                    <div class="col-12 ">
+                        Horario habitual
+                        <!--<input type="text" name="horario_habitual" id="horario_habitual"  class="form-control" >-->
+                        <div class="row">
+                            <div class="col-4 col-md-2 ">Inicio</div>
+                            <div class="col-4 col-md-2 "><input type="number" name="hhi" id="hhi" min="0" max="24" class="form-control" value=""></div>
+                            <div class="col-4 col-md-2 "><input type="number" name="mhi" id="mhi" min="0" max="59" class="form-control" value=""></div>
+                            <div class="col-4 col-md-2 ">Fin</div>
+                            <div class="col-4 col-md-2 "><input type="number" name="hhf" id="hhf" min="0" max="24" class="form-control" value=""></div>
+                            <div class="col-4 col-md-2 "><input type="number" name="mhf" id="mhf" min="0" max="59" class="form-control" value=""></div>
+                        </div>
+                    </div>
+                    </div>
+                    <br>
+                    <div class="col-12 col-md-12 ">
+                        Horario inicio jornada especial y/o extra
+                        <div class="row">
+                            <div class="col-4 col-md-2 "><input type="number" name="hi" id="hi" min="0" max="24" class="form-control" value=""></div>
+                            <div class="col-4 col-md-2 "><input type="number" name="mi" id="mi" min="0" max="59" class="form-control" value=""></div>
+                        </div>
+                       <!-- <input type="text" name="hora_entrada" id="hora_entrada"  class="form-control" value="" >-->
+                    </div>
+                    <br>
+                    <div class="col-12 col-md-12 ">
+                        Horario fin jornada especial y/o extra
+                        <!--<input type="text" name="hora_autorizada_salida" id="hora_autorizada_salida"  class="form-control" value="" >-->
+                        <div class="row"> 
+                            <div class="col-4 col-md-2 "><input type="number" name="hf" id="hf" min="0" max="24" class="form-control" value=""></div>
+                            <div class="col-4 col-md-2 "><input type="number" name="mf" id="mf" min="0" max="59" class="form-control" value=""></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">Quien autoriza?  
+                        <select class="form-control" name="autoriza" id="autoriza">
+                            <option value=""><option>
+                            @foreach ($autoriza as $e)
+                                <option value="{{ $e->cc }}">{{ $e->apellido1. " " . $e->nombre}}</option>
+                            @endforeach
+                        </select>
+                </div>
                 <br>
                 <button type="button" class="btn btn-primary" onclick="guardarextra()">Guardar</button>
 

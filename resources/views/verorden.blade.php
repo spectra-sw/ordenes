@@ -167,7 +167,7 @@
                             <tr>
                                 <td>{{ $dato['Trabajador'] }}&nbsp;
                                     <input type="button" class="btn btn-success btn-sm" value="prog" onclick=consprog({{ $o->proyecto }},'{{ $d['fecha'] }}',{{ $dato['Trabajador'] }})>
-                                    <input type="button" class="btn btn-warning btn-sm" value="extra" onclick=extra({{ $o->proyecto }},'{{ $d['fecha'] }}',{{ $dato['Trabajador'] }},'{{ $dato['Hi'] }}','{{ $dato['Hf'] }}')>
+                                   <!-- <input type="button" class="btn btn-warning btn-sm" value="extra" onclick=extra({{ $o->proyecto }},'{{ $d['fecha'] }}',{{ $dato['Trabajador'] }},'{{ $dato['Hi'] }}','{{ $dato['Hf'] }}')>-->
                                 </td>
                                 <td>{{ $dato['Nombre'] }}</td>
                                 <td>{{ $dato['Hi'] }}</td>

@@ -1268,19 +1268,27 @@ function extra(proyecto,fecha,cc,hi,hf){
 
 }
 function guardarextra(){
-    hh=$("#horario_habitual").val();
-    autoriza=$("#autoriza").val();
-    if((hh!="")&&(autoriza!="")){
-        data=$( "#formExtra" ).serialize(); 
-        url = '/saveextra'
-        $.ajax({
-                url: url,
-                type:'GET',
-                data: data,
-                success: function(data) {
-                    alert(data);
-                }
-        });   
+    data=$( "#formExtra" ).serialize(); 
+    dataArray=data.split("&");
+    band =0;
+    dataArray.forEach(function(datos) {
+        x=datos.split("=")
+        if (x[1]==""){
+            band=1;
+        }  
+    });
+    if(band==0){
+        
+           
+            url = '/saveextra'
+            $.ajax({
+                    url: url,
+                    type:'GET',
+                    data: data,
+                    success: function(data) {
+                        alert(data);
+                    }
+            });   
     }
     else{
         alert("Diligencie todos los campos");

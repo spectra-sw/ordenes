@@ -17,8 +17,9 @@
         <th>MOTIVO</th>
         <th>FECHA</th>
         <th>HORARIO HABITUAL</th>
-        <th>HORA ENTRADA</th>
-        <th>HORA AUTORIZADA</th>
+        <th>HORA INICIO EXTRA</th>
+        <th>HORA FIN EXTRA</th>
+        <th>TOTAL HORAS</th>
         <th>AUTORIZA/RECHAZA</th>
         <th>SOLICITADA POR</th>
         <th>FECHA SOLICITUD</th>
@@ -34,8 +35,9 @@
         <td>{{ $e->motivo }}</td>
         <td>{{ $e->fecha }}</td>
         <td>{{ $e->horario_habitual }}</td>
-        <td>{{ $e->hora_entrada }}</td>
-        <td>{{ $e->hora_autorizada_salida }}</td>
+        <td>{{ $e->hora_inicio_extra }}</td>
+        <td>{{ $e->total_horas }}</td>
+        <td>{{ $e->hora_fin_extra }}</td>
         <td>{{ $e->ndirector->nombre." ".$e->ndirector->apellido1 }}</td>
         <td>{{ $e->nsolicita->nombre." ".$e->nsolicita->apellido1 }}</td>
         <td>{{ $e->fecha_solicitud }}</td>
