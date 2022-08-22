@@ -27,6 +27,7 @@ use App\Models\ocupacion;
 use App\Models\Festivo;
 use App\Models\Novedad;
 use App\Models\Autorizacion;
+use App\Models\Cargo;
 
 use Log;
 
@@ -91,7 +92,7 @@ class PagesController extends Controller
             $proyectos = Proyecto::orderBy('codigo','asc')->get();
             $horarios = Horario::all();
             $areas = Area::all();
-           
+            $cargos = Cargo::all();
             return view('bases',[
                 'emp' => $emp,
                 'cdc' => $cdc,
@@ -101,6 +102,7 @@ class PagesController extends Controller
                 'authpr' => $authpr,
                 'areas' => $areas,
                 'area' => $area,
+                'cargos' => $cargos
             ]);
         }
         else{
@@ -1163,6 +1165,7 @@ class PagesController extends Controller
             'ciudad' => strtoupper($request->ciudad),
             'horario_id' => $request->horario,
             'area' => $request->area,
+            'cargo'=> $request->cargo,
             'password' => bcrypt($request->cc)
         ]);
 
@@ -1226,18 +1229,22 @@ class PagesController extends Controller
         $e = Empleado::where('id',$request->id)->first();
         $horarios = Horario::all();
         $areas = Area::all();
+        $cargos = Cargo::all();
         if ($e->horario_id !=0){
             $horario =  $e->horario->nombre;
             $idh = $e->horario->id;
         } 
         $area = $e->narea->area;
+        $cargo = $e->ncargo->cargo;
         return view('formemp',[
             'datos' => $e,
             'horarios' => $horarios,
             'horario' => $horario,
             'idh' => $idh,
             'areas' => $areas,
-            'area' => $area
+            'area' => $area,
+            'cargo' => $cargo,
+            'cargos' => $cargos
         ]);
     }
     public function editaremp(Request $request){
@@ -1253,7 +1260,8 @@ class PagesController extends Controller
             'ciudad' => $request->ciudad,
             'horario_id' => $request->horario,
             'tipo' => $request->tipo,
-            'area' => $request->area
+            'area' => $request->area,
+            'cargo' => $request->cargo
           ]);
           return "Empleado actualizado";
     }
@@ -1829,7 +1837,10 @@ class PagesController extends Controller
     }
     public function nuevaextra(Request $request){
         $proyectos = Proyecto::orderBy('codigo','asc')->get();
-        $autoriza=Empleado::whereIn('cargo',[23,26,30,37,38])->get();
+        $cargos=Cargo::where('extra',2)->get();
+        $autoriza=Empleado::whereIn('cargo',$cargos)->get();
+        $autoriza = DB::table('empleados')->join('cargos','empleados.cargo','=','cargos.id')->where('cargos.extra',2)->get();
+        //dd($autoriza);
         return view('formnuevaextra',[
            'proyectos' => $proyectos,
            'autoriza' => $autoriza
@@ -1881,6 +1892,9 @@ class PagesController extends Controller
     public function consextra(Request $request){
         $tipo = session('tipo');
         $user = session('user');
+        //dd($user);
+        $solicitar = DB::table('empleados')->where('empleados.id',$user)->join('cargos','empleados.cargo','=','cargos.id')->first();
+        //dd($solicitar->extra);
         if ($user==""){
             return redirect()->route('inicio');
         }
@@ -1889,10 +1903,11 @@ class PagesController extends Controller
             $extra = Autorizacion::orderBy('fecha','desc')->get();
         }
         else{
-            $extra = Autorizacion::where('autorizaod_rechazado_por',$user)->orderBy('fecha','desc')->get();
+            $extra = Autorizacion::where('autorizado_rechazado_por',$user)->orderBy('fecha','desc')->get();
         }
         return view('extra',[
-            'extra' => $extra
+            'extra' => $extra,
+            'solicitar' => $solicitar->extra
         ]);
     }
     public function voboextra(Request $request){

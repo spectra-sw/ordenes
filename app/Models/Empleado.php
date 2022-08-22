@@ -11,7 +11,7 @@ class Empleado extends Model
     protected $table = 'empleados';
     public $timestamps = false;
     protected $fillable = [
-        'cc','apellido1','apellido2','nombre','auxilio','correo','tipo','password','ciudad','horario_id','auxiliot','ndc','area','estado'
+        'cc','apellido1','apellido2','nombre','auxilio','correo','tipo','password','ciudad','horario_id','auxiliot','ndc','area','cargo','estado'
     ];
     
     public function ordenes()
@@ -30,5 +30,8 @@ class Empleado extends Model
     {
         return $this->belongsTo(Area::class, 'area', 'id');
     }
-    
+    public function ncargo()
+    {
+        return $this->belongsTo(Cargo::class, 'cargo', 'id');
+    }
 }

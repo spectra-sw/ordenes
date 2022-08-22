@@ -1,7 +1,9 @@
 @extends('layouts.app')
 @section('content')
 <br>
+@if ($solicitar == 1)
 <button class="btn btn-primary" onclick="nuevaextra()">Nueva Solicitud</button><br><br>
+@endif
 <div class="row">
                             <div class="col-6 col-md-2 cajaAzul">Fecha Inicio</div>
                             <div class="col-6 col-md-2 "><input type="date" name="fechaInicio" id="fechaInicio" class="form-control"></div>

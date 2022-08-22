@@ -66,6 +66,15 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label for="area">CARGO</label>
+                    <select class="form-control" id="cargo" name="cargo">
+                       
+                        @foreach ($cargos as $c)
+                        <option value="{{ $c->id }}">{{ $c->cargo }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="tipo">Tipo</label>
                     <select id="area" name="tipo" class="form-control">
                         <option value="0">Admin</option>
