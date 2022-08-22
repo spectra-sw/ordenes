@@ -38,8 +38,9 @@
         <td>{{ $e->fecha }}</td>
         <td>{{ $e->horario_habitual }}</td>
         <td>{{ $e->hora_inicio_extra }}</td>
-        <td>{{ $e->total_horas }}</td>
+       
         <td>{{ $e->hora_fin_extra }}</td>
+        <td>{{ $e->total_horas }}</td>
         <td>{{ $e->ndirector->nombre." ".$e->ndirector->apellido1 }}</td>
         <td>{{ $e->nsolicita->nombre." ".$e->nsolicita->apellido1 }}</td>
         <td>{{ $e->fecha_solicitud }}</td>
