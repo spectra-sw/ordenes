@@ -29,7 +29,7 @@ class ExtraExport implements FromCollection, WithHeadings, ShouldAutoSize
         return [
             'id', 'proyecto','trabajador','motivo','fecha','horario habitual','hora inicio extra',
             'hora fin extra','total horas', 'observaciones','autorizado_rechazado_por','solicitado_por','fecha_autorizacion_rechazo',
-            'fecha_solicitud','creada','actualizada'
+            'fecha_solicitud','creada','actualizada','estado'
               								
         ];
     }

@@ -1988,9 +1988,15 @@ class PagesController extends Controller
             $datos = Autorizacion::where('fecha','>=',$f1)->where('fecha','<=',$f2)->orderBy('fecha','asc')->get();
         }
         foreach ($datos as $d){
-            //$d->trabajador=$d->ntrabajador->nombre." ".$d->ntrabajador->apellido1;
+            $d->trabajador=$d->trabajador."-".$d->ntrabajador->nombre." ".$d->ntrabajador->apellido1;
             $d->solicitado_por = $d->nsolicita->nombre." ".$d->nsolicita->apellido1;
             $d->autorizado_rechazado_por= $d->ndirector->nombre." ".$d->ndirector->apellido1;
+            if ($d->observaciones !="RECHAZADA"){
+                $d->estado="APROBADA";
+            }
+            else{
+                $d->estado="RECHAZADA";
+            }
         }   
         /*
         $datos  = collect([]);

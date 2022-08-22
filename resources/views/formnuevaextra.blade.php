@@ -45,7 +45,7 @@
                     </div>
                     <br>
                     <div class="col-12 col-md-12 ">
-                        Horario inicio jornada especial y/o extra
+                        Hora inicio jornada especial y/o extra
                         <div class="row">
                             <div class="col-4 col-md-2 "><input type="number" name="hi" id="hi" min="0" max="24" class="form-control" value=""></div>
                             <div class="col-4 col-md-2 "><input type="number" name="mi" id="mi" min="0" max="59" class="form-control" value=""></div>
@@ -54,7 +54,7 @@
                     </div>
                     <br>
                     <div class="col-12 col-md-12 ">
-                        Horario fin jornada especial y/o extra
+                        Hora fin jornada especial y/o extra
                         <!--<input type="text" name="hora_autorizada_salida" id="hora_autorizada_salida"  class="form-control" value="" >-->
                         <div class="row"> 
                             <div class="col-4 col-md-2 "><input type="number" name="hf" id="hf" min="0" max="24" class="form-control" value=""></div>
