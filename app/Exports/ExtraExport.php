@@ -26,11 +26,12 @@ class ExtraExport implements FromCollection, WithHeadings, ShouldAutoSize
     }
     public function headings(): array
     {
+      
         return [
-            'id', 'proyecto','trabajador','motivo','fecha','horario habitual','hora inicio extra',
-            'hora fin extra','total horas', 'observaciones','autorizado_rechazado_por','solicitado_por','fecha_autorizacion_rechazo',
-            'fecha_solicitud','creada','actualizada','estado'
-              								
+            'CC','NOMBRE','MOTIVO','FECHA','HOTARIO HABITUAL','HORA INICIO EXTRA','HORA FIN EXTRA',
+            'TOTAL HORAS','PROYECTO','SOLICITADO POR','FECHA SOLICITUD','AUTORIZADO/RECHAZADO POR',
+            'FECHA AUTORIZACIO/RECHAZO','ESTADO'
         ];
+        
     }
 }

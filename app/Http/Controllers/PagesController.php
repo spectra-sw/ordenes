@@ -674,6 +674,7 @@ class PagesController extends Controller
         $p = Orden::where('id',$o)->first()->proyecto;
         //$ts = Programacion::where('proyecto',$p)->get();
         $ts = Programacion::where('proyecto',$p)->get()->unique('cc');
+        dd($ts);
         return view('editDia',[
             'dias' => $dias,
             'horas' => $horas,
@@ -1987,7 +1988,32 @@ class PagesController extends Controller
         if (($f1!="")&&($f2!="")){
             $datos = Autorizacion::where('fecha','>=',$f1)->where('fecha','<=',$f2)->orderBy('fecha','asc')->get();
         }
+        $extras=collect([]);
         foreach ($datos as $d){
+            $extra = collect([]);
+            //proyecto	trabajador	motivo	fecha	horario habitual	hora inicio extra	hora fin extra	total horas	observaciones	autorizado_rechazado_por	solicitado_por	fecha_autorizacion_rechazo	fecha_solicitud	creada	actualizada	estado
+            $extra->put('CC',$d->trabajador);
+            $extra->put('NOMBRE',$d->ntrabajador->nombre." ".$d->ntrabajador->apellido1);
+            $extra->put('MOTIVO',$d->motivo);
+            $extra->put('FECHA',$d->fecha);
+            $extra->put('HORARIO HABITUAL',$d->horario_habitual);
+            $extra->put('HORA INICIO EXTRA',$d->hora_inicio_extra);
+            $extra->put('HORA FIN EXTRA',$d->hora_fin_extra);
+            $extra->put('TOTAL HORAS',$d->total_horas);
+            $extra->put('PROYECTO',$d->proyecto);
+            $extra->put('SOLICITADO POR',$d->nsolicita->nombre." ".$d->nsolicita->apellido1);
+            $extra->put('FECHA SOLICITUD',$d->fecha_solicitud);
+            $extra->put('AUTORIZADO/RECHAZADO POR',$d->ndirector->nombre." ".$d->ndirector->apellido1);
+            $extra->put('FECHA AUTORIZACION/RECHAZO',$d->fecha_autorizacion_rechazo);
+            $extra->put('ESTADO',$d->fecha_autorizacion_rechazo);
+            if ($d->observaciones !="RECHAZADA"){
+                $extra->put('ESTADO',"APROBADA");
+            }
+            else{
+                $extra->put('ESTADO',"RECHAZADA");
+            }
+
+            /*
             $d->trabajador=$d->trabajador."-".$d->ntrabajador->nombre." ".$d->ntrabajador->apellido1;
             $d->solicitado_por = $d->nsolicita->nombre." ".$d->nsolicita->apellido1;
             $d->autorizado_rechazado_por= $d->ndirector->nombre." ".$d->ndirector->apellido1;
@@ -1996,27 +2022,12 @@ class PagesController extends Controller
             }
             else{
                 $d->estado="RECHAZADA";
-            }
+            }*/
+            $extras->push($extra);
         }   
-        /*
-        $datos  = collect([]);
-        foreach($ocs as $oc){
-            $linea = collect([]);
-                    
-            $linea->put('Fecha en la que se hizo el reporte', $oc->created_at);
-            $linea->put('correo electrónico', '');
-            $linea->put('Día reportado', $oc->dia);
-            $linea->put('Area', $oc->narea->area);
-            $linea->put('Funcionario que reporta', $oc->empleado->nombre . " " . $oc->empleado->apellido1);
-            $linea->put('ID Proyecto', $oc->proyecto);
-            $linea->put('Tiempo de ocupación en el proyecto(horas)', $oc->horas + ($oc->minutos/60) );
-            $linea->put('Clasificación',  $oc->nactividad->actividad );
-            $linea->put('Actividad', '');
-            
-            $datos->push($linea);
-        }*/
-        //dd($datos);
-        return $datos;
+      
+        //dd($extras);
+        return $extras;
     }
     public function deleteOcupacion(Request $request){
         try{

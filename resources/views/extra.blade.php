@@ -21,7 +21,7 @@
         <th>HORARIO HABITUAL</th>
         <th>HORA INICIO EXTRA</th>
         <th>HORA FIN EXTRA</th>
-        <th>TOTAL HORAS</th>
+        <th>TOTAL HORAS EXTRAS</th>
         <th>AUTORIZA/RECHAZA</th>
         <th>SOLICITADA POR</th>
         <th>FECHA SOLICITUD</th>
@@ -65,13 +65,13 @@
       <div class="modal-content">  
         <!-- Modal body -->
         <div class="modal-header">
-            <b>AUTORIZACIÓN JORNADA ESPECIAL O TIEMPO EXTRA</b>
+            <b>SOLICITUD JORNADA ESPECIAL O TIEMPO EXTRA</b>
         </div>
         <!-- Modal body -->
         <div class="modal-body" id="authExtraBody">
         </div>
         
-        <!-- Modal footer -->
+        <!-- SModal footer -->
         <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
       </div>      
