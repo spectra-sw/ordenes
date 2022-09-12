@@ -674,7 +674,7 @@ class PagesController extends Controller
         $p = Orden::where('id',$o)->first()->proyecto;
         //$ts = Programacion::where('proyecto',$p)->get();
         $ts = Programacion::where('proyecto',$p)->get()->unique('cc');
-        dd($ts);
+        //dd($ts);
         return view('editDia',[
             'dias' => $dias,
             'horas' => $horas,
