@@ -1839,16 +1839,75 @@ class PagesController extends Controller
     public function nuevaextra(Request $request){
         $proyectos = Proyecto::orderBy('codigo','asc')->get();
         $cargos=Cargo::where('extra',2)->get();
-        $autoriza=Empleado::whereIn('cargo',$cargos)->get();
+        //$autoriza=Empleado::whereIn('cargo',$cargos)->get();
         $autoriza = DB::table('empleados')->join('cargos','empleados.cargo','=','cargos.id')->where('cargos.extra',2)->get();
+        $emp = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();
         //dd($autoriza);
         return view('formnuevaextra',[
            'proyectos' => $proyectos,
-           'autoriza' => $autoriza
+           'autoriza' => $autoriza,
+           'emp' => $emp
+        ]);
+    }
+    public function editarextra(Request $request){
+        $proyectos = Proyecto::orderBy('codigo','asc')->get();
+        $cargos=Cargo::where('extra',2)->get();
+        //$autoriza=Empleado::whereIn('cargo',$cargos)->get();
+        $autoriza = DB::table('empleados')->join('cargos','empleados.cargo','=','cargos.id')->where('cargos.extra',2)->get();
+        $emp = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();
+        $extra = Autorizacion::where('id',$request->id)->first();
+
+        $datos = array();
+        $datos['id'] = $request->id;
+        $ccs = $extra->trabajador;
+            $ccs = explode(",", $ccs);
+            $nombres = "";
+            foreach($ccs as $cc){
+                $e=Empleado::where('cc',$cc)->first();
+                $nombre =$e->apellido1." ".$e->nombre;
+                if ($nombres == "") { 
+                    $nombres.=$nombre; 
+                }
+                else{
+                    $nombres.=",".$nombre; 
+                }
+            }
+        $datos['nombres']=$nombres;
+
+        $hh = explode("-",$extra->horario_habitual);
+        //dd($hh);
+        $hhi = explode(":",$hh[0]);
+        $datos['hhi'] = $hhi[0];
+        $datos['mhi'] = $hhi[1];
+
+        $hhf = explode(":",$hh[1]);
+        $datos['hhf'] = $hhf[0];
+        $datos['mhf'] = $hhf[1];
+        //dd($autoriza);
+        //dd($datos['hhi']);
+
+        $hi = explode(":",$extra->hora_inicio_extra);
+        $datos['hi']=$hi[0];
+        $datos['mi']=$hi[1];
+
+        $hf = explode(":",$extra->hora_fin_extra);
+        $datos['hf']=$hf[0];
+        $datos['mf']=$hf[1];
+
+        return view('formeditarextra',[
+           'proyectos' => $proyectos,
+           'autoriza' => $autoriza,
+           'emp' => $emp,
+           'extra' => $extra,
+           'datos' => $datos
+
         ]);
     }
     public function saveextra(Request $request){
         try {
+              
+              //dd($request);
+            
               $solicitado_por = session('user');
               if ($solicitado_por==""){
                 return "Debes iniciar sesión de nuevo";
@@ -1890,6 +1949,54 @@ class PagesController extends Controller
               return $e;
           }
     }
+    public function actextra(Request $request){
+        try {
+              
+              //dd($request);
+            
+              $solicitado_por = session('user');
+              if ($solicitado_por==""){
+                return "Debes iniciar sesión de nuevo";
+              }
+              if ($request->trabajador == "NO"){
+                 $trab = Autorizacion::where('id',$request->id)->first()->trabajador;
+              }
+              else{
+                $trab = $request->trabajador;
+              }
+
+              $p=Proyecto::where('codigo',$request->proyecto)->first();
+              $autoriza = Empleado::where('cc',$request->autoriza)->first();
+              //dd($autoriza->correo);
+              $hie = $request->hi . ":" . $request->mi ;
+              $hfe = $request->hf . ":" . $request->mf ;
+              $hh =  $request->hhi . ":" . $request->mhi. "-". $request->hhf . ":" . $request->mhf ;
+              $hi = explode(":", $hie);
+              $hi_num =intval($hi[0]) + round(floatval($hi[1]/60),1);
+              $hf = explode(":", $hfe);
+              $hf_num =intval($hf[0]) + round(floatval($hf[1]/60),1);
+              $total_horas = $hf_num - $hi_num;
+              $e = Autorizacion::where('id',$request->id)->update([
+              
+              'proyecto' => $request->proyecto,
+              'trabajador'=> $trab,
+              'motivo'=> $request->motivo,
+              'horario_habitual' => $hh,
+              'fecha' => $request->fecha,
+              'hora_inicio_extra'=> $hie,
+              'hora_fin_extra'=> $hfe,
+              'total_horas' => $total_horas,
+              'solicitado_por' => $solicitado_por,
+              'autorizado_rechazado_por' => $autoriza->id,
+              //'fecha_solicitud' => date("Y-m-d")
+            ]);
+            
+
+            return "Formato de autorización actualizado";
+          } catch (QueryException $e) {
+              return $e;
+          }
+    }
     public function consextra(Request $request){
         $tipo = session('tipo');
         $user = session('user');
@@ -1906,6 +2013,26 @@ class PagesController extends Controller
         else{
             $extra = Autorizacion::where('autorizado_rechazado_por',$user)->orderBy('fecha','desc')->get();
         }
+        
+        $cont=0;
+        foreach($extra as $e){
+            $ccs = $e->trabajador;
+            $ccs = explode(",", $ccs);
+            $nombres = "";
+            foreach($ccs as $cc){
+                $e=Empleado::where('cc',$cc)->first();
+                $nombre =$e->apellido1." ".$e->nombre;
+                if ($nombres == "") { 
+                    $nombres.=$nombre; 
+                }
+                else{
+                    $nombres.=",".$nombre; 
+                }
+            }
+            $extra[$cont]->nombres=$nombres;
+            $cont++;
+        }
+        //dd($extra);
         return view('extra',[
             'extra' => $extra,
             'solicitar' => $solicitar->extra
@@ -1988,12 +2115,33 @@ class PagesController extends Controller
         if (($f1!="")&&($f2!="")){
             $datos = Autorizacion::where('fecha','>=',$f1)->where('fecha','<=',$f2)->orderBy('fecha','asc')->get();
         }
+        
+       
+        $cont=0;
         $extras=collect([]);
         foreach ($datos as $d){
             $extra = collect([]);
             //proyecto	trabajador	motivo	fecha	horario habitual	hora inicio extra	hora fin extra	total horas	observaciones	autorizado_rechazado_por	solicitado_por	fecha_autorizacion_rechazo	fecha_solicitud	creada	actualizada	estado
             $extra->put('CC',$d->trabajador);
-            $extra->put('NOMBRE',$d->ntrabajador->nombre." ".$d->ntrabajador->apellido1);
+            
+            $ccs = $d->trabajador;
+            $ccs = explode(",", $ccs);
+            $nombres = "";
+            foreach($ccs as $cc){
+                $e=Empleado::where('cc',$cc)->first();
+                $nombre =$e->apellido1." ".$e->nombre;
+                if ($nombres == "") { 
+                    $nombres.=$nombre; 
+                }
+                else{
+                    $nombres.=",".$nombre; 
+                }
+            }
+           
+            $cont++;
+
+            $extra->put('NOMBRE',$nombres);
+            //$extra->put('NOMBRE',$d->ntrabajador->nombre." ".$d->ntrabajador->apellido1);
             $extra->put('MOTIVO',$d->motivo);
             $extra->put('FECHA',$d->fecha);
             $extra->put('HORARIO HABITUAL',$d->horario_habitual);

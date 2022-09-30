@@ -1268,15 +1268,26 @@ function extra(proyecto,fecha,cc,hi,hf){
 
 }
 function guardarextra(){
+    let trabajador = "";
     data=$( "#formExtra" ).serialize(); 
     dataArray=data.split("&");
+    //console.log(dataArray);
     band =0;
     dataArray.forEach(function(datos) {
         x=datos.split("=")
+        if (x[0] == "cc"){
+            if (trabajador == ""){
+                trabajador =  x[1]
+            }
+            else{
+                trabajador = trabajador + "," + x[1]
+            }
+        }
         if (x[1]==""){
             band=1;
         }  
     });
+    data=data+"&trabajador="+trabajador
     if(band==0){
         
            
@@ -1295,6 +1306,44 @@ function guardarextra(){
     }
 }
 
+function actextra(){
+    let trabajador = "";
+    data=$( "#formExtra" ).serialize(); 
+    dataArray=data.split("&");
+    //console.log(dataArray);
+    band =0;
+    dataArray.forEach(function(datos) {
+        x=datos.split("=")
+        if (x[0] == "cc"){
+            if (trabajador == ""){
+                trabajador =  x[1]
+            }
+            else{
+                trabajador = trabajador + "," + x[1]
+            }
+        }
+        if (x[1]==""){
+            band=1;
+        }  
+    });
+    data=data+"&trabajador="+trabajador
+    if(band==0){
+        
+           
+            url = '/actextra'
+            $.ajax({
+                    url: url,
+                    type:'GET',
+                    data: data,
+                    success: function(data) {
+                        alert(data);
+                    }
+            });   
+    }
+    else{
+        alert("Diligencie todos los campos");
+    }
+}
 
 function aprobar(id){
     obs =$("#observacion").val();
@@ -1323,6 +1372,21 @@ function rechazar(id){
             success: function(data) { 
                alert(data);
                location.reload();
+            }
+        }); 
+
+}
+function editarextra(id){
+
+    data = { id:id }
+        url="/editarextra"
+        $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) { 
+                $("#authExtraBody").html(data);
+                $("#authExtraModal").modal();
             }
         }); 
 

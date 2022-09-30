@@ -14,6 +14,7 @@
 <table class="table table-bordered table-striped table-sm">
     <thead>
       <tr >
+        <th></th>
         <th>PROYECTO</th>
         <th>TRABAJADOR</th>
         <th>MOTIVO</th>
@@ -32,8 +33,13 @@
     <tbody>
     @foreach ($extra  as $e)     
       <tr>
+        <td>
+          @if ($e->fecha_autorizacion_rechazo == NULL) 
+          <input type="button" class="btn btn-primary btn-sm" value="Editar" onclick="editarextra({{ $e->id}})">
+          @endif
+        </td>
         <td>{{ $e->proyecto }}</td>
-        <td>{{ $e->ntrabajador->nombre." ".$e->ntrabajador->apellido1 }}</td>
+        <td>{{ $e->nombres }}</td>
         <td>{{ $e->motivo }}</td>
         <td>{{ $e->fecha }}</td>
         <td>{{ $e->horario_habitual }}</td>
