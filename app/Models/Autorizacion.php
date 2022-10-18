@@ -28,5 +28,18 @@ class Autorizacion extends Model
     {
         return $this->belongsTo(Empleado::class, 'solicitado_por', 'id');
     }
+    public function estado(){
+        if ($this->fecha_autorizacion_rechazo){
+            if ($this->observaciones !="RECHAZADA"){
+                return "APROBADA";
+            }
+            else{
+                return "RECHAZADA";
+            }
+        }
+        else{
+            return "PENDIENTE";
+        }
+    }
 }
 

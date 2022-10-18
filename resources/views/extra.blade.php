@@ -27,6 +27,7 @@
         <th>SOLICITADA POR</th>
         <th>FECHA SOLICITUD</th>
         <th>FECHA AUTORIZACION/RECHAZO</th>
+        <th>ESTADO</th>
         <th>OBSERVACIONES</th>
       </tr>
     </thead>
@@ -51,7 +52,7 @@
         <td>{{ $e->nsolicita->nombre." ".$e->nsolicita->apellido1 }}</td>
         <td>{{ $e->fecha_solicitud }}</td>
         <td>{{ $e->fecha_autorizacion_rechazo }}</td>
-        
+        <td>{{ $e->estado() }}</td>
         <td>
             @if ($e->autorizacion_rechazo == null)
             <input type="text" id="observacion" value="{{ $e->observaciones }}">

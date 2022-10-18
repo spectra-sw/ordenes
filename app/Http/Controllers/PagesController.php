@@ -1942,8 +1942,10 @@ class PagesController extends Controller
                 'body' => "Ingresar a <a href='www.spectraoperaciones.com'>spectraoperaciones.com</a> para realizar la autorización"
             ];
           
+            
+   
             \Mail::to($autoriza->correo)->send(new \App\Mail\MailSolicitudExtra($details,$e));
-
+            
             return "Formato de autorización registrado";
           } catch (QueryException $e) {
               return $e;
