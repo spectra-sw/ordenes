@@ -11,7 +11,7 @@
                             <div class="col-6 col-md-2 "><input type="date" name="fechaFinal" id="fechaFinal" class="form-control"></div>
                             <div class="col-6 col-md-2 "><button class="btn btn-primary" onclick="exportarextra()">Exportar</button></div>
             </div>    <br><br>
-<table class="table table-bordered table-striped table-sm">
+<table class="display" id="tableextra" style="width:100%;overflow:scroll;color:black">
     <thead>
       <tr >
         <th></th>
@@ -29,6 +29,7 @@
         <th>FECHA AUTORIZACION/RECHAZO</th>
         <th>ESTADO</th>
         <th>OBSERVACIONES</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -59,6 +60,7 @@
             @else
             {{ $e->observaciones }}
             @endif
+        </td>
         <td>
         <input type="button" class="btn btn-success btn-sm" value="aprobar" onclick="aprobar({{ $e->id}})">
         <input type="button" class="btn btn-warning btn-sm" value="rechazar" onclick="rechazar({{ $e->id}})">
@@ -87,5 +89,10 @@
   </div>
 
 
-<script src="{{asset('js/scripts.js')}}"></script>                
+<script src="{{asset('js/scripts.js')}}"></script>           
+<script>
+    $(document).ready(function() {
+        $('#tableextra').DataTable();
+    } );
+</script>     
 @endsection
