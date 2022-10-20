@@ -2013,7 +2013,7 @@ class PagesController extends Controller
             $extra = Autorizacion::orderBy('fecha','desc')->get();
         }
         else{
-            $extra = Autorizacion::where('autorizado_rechazado_por',$user)->orderBy('fecha','desc')->get();
+            $extra = Autorizacion::where('autorizado_rechazado_por',$user) ->orWhere('solicitado_por', $user)->orderBy('fecha','desc')->get();
         }
         
         $cont=0;
