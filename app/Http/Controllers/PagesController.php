@@ -1904,11 +1904,22 @@ class PagesController extends Controller
         ]);
     }
     public function saveextra(Request $request){
-        try {
+     
               
               //dd($request);
             
-              //$trabajadores =
+              $trabajadores = explode(",", trim($request->trabajador));
+             
+              foreach ($trabajadores as $t){
+                $esta = Autorizacion::where('trabajador','like','%'.$t.'%')
+                        ->where('fecha',$request->fecha)
+                        ->count() ;
+                if ($esta> 0){
+                    $message = "Ya existe una solicitud para el trabajador con cc ".$t." el día ".$request->fecha;
+                    return $message;
+                }
+
+              }
               
               
               
@@ -1941,19 +1952,21 @@ class PagesController extends Controller
               'autorizado_rechazado_por' => $autoriza->id,
               'fecha_solicitud' => date("Y-m-d")
             ]);
+            
+            
             $details = [
                 'title' => 'Solicitud de horas extras',
                 'body' => "Ingresar a <a href='www.spectraoperaciones.com'>spectraoperaciones.com</a> para realizar la autorización"
             ];
-          
-            
-   
-            \Mail::to($autoriza->correo)->send(new \App\Mail\MailSolicitudExtra($details,$e));
+            try{
+               \Mail::to($autoriza->correo)->send(new \App\Mail\MailSolicitudExtra($details,$e));
+            }
+            catch (QueryException $e) {
+                return "Error al enviar correo a la persona que autoriza";
+            }
             
             return "Formato de autorización registrado";
-          } catch (QueryException $e) {
-              return $e;
-          }
+       
     }
     public function actextra(Request $request){
         try {
