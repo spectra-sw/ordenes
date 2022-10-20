@@ -1908,6 +1908,10 @@ class PagesController extends Controller
               
               //dd($request);
             
+              //$trabajadores =
+              
+              
+              
               $solicitado_por = session('user');
               if ($solicitado_por==""){
                 return "Debes iniciar sesión de nuevo";

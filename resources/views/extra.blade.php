@@ -62,9 +62,11 @@
             @endif
         </td>
         <td>
+        @if ($solicitar == 2)
         <input type="button" class="btn btn-success btn-sm" value="aprobar" onclick="aprobar({{ $e->id}})">
         <input type="button" class="btn btn-warning btn-sm" value="rechazar" onclick="rechazar({{ $e->id}})">
-        </td>
+        @endif
+      </td>
       </tr>
     @endforeach 
     </tbody>
