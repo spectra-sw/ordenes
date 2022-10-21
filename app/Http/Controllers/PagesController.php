@@ -2053,6 +2053,7 @@ class PagesController extends Controller
         }
         //dd($extra);
         return view('extra',[
+            'area' => $area,
             'extra' => $extra,
             'solicitar' => $solicitar->extra
         ]);
