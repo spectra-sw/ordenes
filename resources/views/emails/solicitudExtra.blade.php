@@ -24,7 +24,7 @@
             
                 <tr>
                   <td>{{ $e->proyecto }}</td>
-                  <td>{{ $e->ntrabajador->nombre." ".$e->ntrabajador->apellido1 }}</td>
+                  <td>{{ $e->nombres }}</td>
                   <td>{{ $e->motivo }}</td>
                   <td>{{ $e->fecha }}</td>
                   <td>{{ $e->horario_habitual }}</td>

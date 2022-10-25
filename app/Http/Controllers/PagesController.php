@@ -1938,7 +1938,7 @@ class PagesController extends Controller
               $hf = explode(":", $hfe);
               $hf_num =intval($hf[0]) + round(floatval($hf[1]/60),1);
               $total_horas = $hf_num - $hi_num;
-              $e = Autorizacion::create([
+              $extra = Autorizacion::create([
               
               'proyecto' => $request->proyecto,
               'trabajador'=> $request->trabajador,
@@ -1952,14 +1952,28 @@ class PagesController extends Controller
               'autorizado_rechazado_por' => $autoriza->id,
               'fecha_solicitud' => date("Y-m-d")
             ]);
-            
-            
+            //nombres
+            $ccs = $extra->trabajador;
+            $ccs = explode(",", $ccs);
+            $nombres = "";
+            foreach($ccs as $cc){
+                $e=Empleado::where('cc',$cc)->first();
+                $nombre =$e->apellido1." ".$e->nombre;
+                if ($nombres == "") { 
+                    $nombres.=$nombre; 
+                }
+                else{
+                    $nombres.=",".$nombre; 
+                }
+            }
+            $extra->nombres=$nombres;
+            //dd($extra);
             $details = [
                 'title' => 'Solicitud de horas extras',
                 'body' => "Ingresar a <a href='www.spectraoperaciones.com'>spectraoperaciones.com</a> para realizar la autorización"
             ];
             try{
-               \Mail::to($autoriza->correo)->send(new \App\Mail\MailSolicitudExtra($details,$e));
+               \Mail::to($autoriza->correo)->send(new \App\Mail\MailSolicitudExtra($details,$extra));
             }
             catch (QueryException $e) {
                 return "Error al enviar correo a la persona que autoriza";
