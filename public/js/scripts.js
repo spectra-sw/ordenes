@@ -1315,11 +1315,13 @@ function actextra(){
     dataArray.forEach(function(datos) {
         x=datos.split("=")
         if (x[0] == "cc"){
-            if (trabajador == ""){
-                trabajador =  x[1]
-            }
-            else{
-                trabajador = trabajador + "," + x[1]
+            if (x[1]!="NO"){
+                if (trabajador == ""){
+                    trabajador =  x[1]
+                }
+                else{
+                    trabajador = trabajador + "," + x[1]
+                }
             }
         }
         if (x[1]==""){
