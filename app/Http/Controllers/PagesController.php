@@ -1910,7 +1910,7 @@ class PagesController extends Controller
             
               $trabajadores = explode(",", trim($request->trabajador));
              
-              foreach ($trabajadores as $t){
+              /*foreach ($trabajadores as $t){
                 $esta = Autorizacion::where('trabajador','like','%'.$t.'%')
                         ->where('fecha',$request->fecha)
                         ->count() ;
@@ -1919,7 +1919,7 @@ class PagesController extends Controller
                     return $message;
                 }
 
-              }
+              }*/
               
               
               
