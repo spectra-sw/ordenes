@@ -306,12 +306,19 @@ class FilesController extends Controller
                             } 
                         }
                        if (($numdia == 0)||($festivo=="si")){
-                            if (($rfin >= 6) && ($rfin <= 21)){
+                           
+                            if (($rfin > 6) && ($rfin <= 21)){
+                                //dd("extra1");
                                 $hedf = $o->ha; 
                             }
                             else{
                                 if ($rfin > 21){
+                                    //dd("extra2");
                                     $henf = $fin - 21;
+                                }
+                                if (($rfin <= 6)&&($rinicio>=0)){
+                                   // dd("extra3");
+                                    $henf = $fin -$inicio;
                                 }
                                 $hedf = $o->ha - $henf; 
                             }   
