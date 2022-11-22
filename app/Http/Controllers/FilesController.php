@@ -285,12 +285,18 @@ class FilesController extends Controller
                         if (($numdia > 0)&&($festivo!="si")){
 
                             if (($rfin >= 6) && ($rfin <= 21)){
-                                $hedo = $o->ha; 
+                                if($rinicio>=6){
+                                    $hedo = $o->ha; 
+                                }
+                                else{
+                                    $hedo = ($o->ha) - (6-$rinicio); 
+                                    $heno = (6-$rinicio);
+                                }
                             }
                             else{
                                 $heno = $o->ha; 
                             }   
-                            
+                            /*
                             //rno
                             if (($rinicio < 21)&&($rinicio > 6)&&($rfin>21)&&($rfin<=24)){
                                 $rno = $rfin - 21;
@@ -304,6 +310,7 @@ class FilesController extends Controller
                             if (($rinicio >= 0)&&($rfin<=6)){
                                 $rno = $rfin - $rinicio;
                             } 
+                            */
                         }
                        if (($numdia == 0)||($festivo=="si")){
                            
@@ -322,6 +329,8 @@ class FilesController extends Controller
                                 }
                                 $hedf = $o->ha - $henf; 
                             }   
+
+                            /*
                             //rnd
                             if (($rinicio < 21)&&($rinicio > 6)&&($rfin>21)&&($rfin<=24)){
                                 $rnd = $rfin - 21;
@@ -335,6 +344,7 @@ class FilesController extends Controller
                             if (($rinicio >= 0)&&($rfin<=6)){
                                 $rnd = $rfin - $rinicio;
                             }
+                            */
                         }
                     }
 
