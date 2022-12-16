@@ -231,7 +231,9 @@ class ExcelController extends Controller
                             if (($rinicio >= 0)&&($rfin<=6)){
                                 $rno = $rfin - $rinicio;
                             }
-                           
+                            if ($rno>$sb){
+                                $rno = $sb;
+                            }
                         }
                        
                         //hedf
