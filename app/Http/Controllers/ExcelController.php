@@ -306,9 +306,10 @@ class ExcelController extends Controller
                                 }
 
                             }
-                            else{
-                                $heno = $o->ha; 
-                            }   
+                            if (($rinicio >= 6) && ($rfin >21)){
+                                $heno = $rfin - 21;
+                                $hedo = $o->ha - $heno;
+                            }
                             
                             /*
                             //rno
@@ -329,7 +330,13 @@ class ExcelController extends Controller
                        if (($numdia == 0)||($festivo=="si")){
                             if (($rfin > 6) && ($rfin <= 21)){
                                 //dd("extra1");
-                                $hedf = $o->ha; 
+                                if ($rinicio < 6){
+                                    $henf = 6-$rinicio;
+                                    $hedf = $o->ha - $henf;
+                                }
+                                else{
+                                    $hedf = $o->ha; 
+                                }
                             }
                             else{
                                 if ($rfin > 21){
