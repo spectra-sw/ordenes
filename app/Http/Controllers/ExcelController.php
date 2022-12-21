@@ -320,6 +320,12 @@ class ExcelController extends Controller
                                 }
                                 $hedo = $o->ha - $heno;
                             }
+                            if (($rinicio >= 0)&&($rfin<=6)){
+                                $heno = $rfin - $rinicio;
+                                if ($heno>$o->ha){
+                                    $heno = $o->ha;
+                                }
+                            }
                             /*
                             //rno
                             if (($rinicio < 21)&&($rinicio > 6)&&($rfin>21)&&($rfin<=24)){
