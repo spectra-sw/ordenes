@@ -298,10 +298,16 @@ class FilesController extends Controller
                             }
                             if (($rinicio >= 6) && ($rfin >21)){
                                 $heno = $rfin - 21;
+                                if ($heno>$o->ha){
+                                    $heno = $o->ha;
+                                }
                                 $hedo = $o->ha - $heno;
                             }
                             if (($rinicio >21) && ($rfin <= 24)){
                                 $heno = $rfin - $rinicio;
+                                if ($heno>$o->ha){
+                                    $heno = $o->ha;
+                                }
                                 $hedo = $o->ha - $heno;
                             }
                             /*
