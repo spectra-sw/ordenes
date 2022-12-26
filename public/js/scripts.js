@@ -1393,6 +1393,20 @@ function editarextra(id){
         }); 
 
 }
+function eliminarextra(id){
+
+    data = { id:id }
+        url="/eliminarextra"
+        $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) { 
+                alert("Solicitud eliminada")
+            }
+        }); 
+
+}
 function analiticas(){
     //alert();
     /*data=$( "#formReportesOcupacion" ).serialize(); 

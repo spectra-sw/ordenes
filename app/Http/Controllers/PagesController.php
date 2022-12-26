@@ -1849,6 +1849,10 @@ class PagesController extends Controller
            'emp' => $emp
         ]);
     }
+    public function eliminarextra(Request $request){
+        $extra = Autorizacion::where('id',$request->id)->delete();
+        return true;
+    }
     public function editarextra(Request $request){
         $proyectos = Proyecto::orderBy('codigo','asc')->get();
         $cargos=Cargo::where('extra',2)->get();

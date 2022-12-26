@@ -152,6 +152,7 @@ Route::get('/saveextra',[PagesController::class,'saveextra']);
 Route::get('/voboextra',[PagesController::class,'voboextra']);
 Route::get('/rechazarextra',[PagesController::class,'rechazarextra']);
 Route::get('/editarextra',[PagesController::class,'editarextra']);
+Route::get('/eliminarextra',[PagesController::class,'eliminarextra']);
 Route::get('/actextra',[PagesController::class,'actextra']);
 
 

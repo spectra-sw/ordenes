@@ -40,6 +40,7 @@
         <td>
           @if ($e->fecha_autorizacion_rechazo == NULL) 
           <input type="button" class="btn btn-primary btn-sm" value="Editar" onclick="editarextra({{ $e->id}})">
+          <input type="button" class="btn btn-danger btn-sm" value="X" onclick="eliminarextra({{ $e->id}})">
           @endif
         </td>
         <td>{{ $e->proyecto }}</td>
