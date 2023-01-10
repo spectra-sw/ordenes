@@ -1407,6 +1407,8 @@ function eliminarextra(id){
         }); 
 
 }
+
+
 function analiticas(){
     //alert();
     /*data=$( "#formReportesOcupacion" ).serialize(); 

@@ -183,39 +183,7 @@ class PagesController extends Controller
         }
        
     }
-    public function ordenes(){
-        //$proyectos = Proyecto::orderBy('codigo','asc')->get();
-        $proyectos = collect([]);
-        $user = session('user');
-        if ($user==""){
-            return redirect()->route('inicio');
-        }
-        //$user = 108;
-        $cc = Empleado::where('id',$user)->first()->cc;
-        $ciudad = Empleado::where('id',$user)->first()->ciudad;
-        $ps = Programacion::where('cc',$cc)->get()->unique('proyecto');
-        foreach ($ps as $p){
-            $proyectos->push($p->proyecto);
-        }
-        //dd($proyectos->count());
-        if ($proyectos->count() == 0){
-            $ps = Proyecto::where('ciudad',$ciudad)->orderBy('codigo','asc')->get();
-            foreach ($ps as $p){
-                $proyectos->push($p->codigo);
-            }
-        }
-        $ps = Proyecto::where('director',$user)->orWhere('lider',$user)->get();
-        foreach ($ps as $p){
-            $proyectos->push($p->codigo);
-        }
-        //dd($proyectos);
-
-        
-        return view('ordenes',[
-            'proyectos' => $proyectos 
-
-        ]);
-    }
+    
     public function getConsec(){
         $total=Orden::all()->count();
         if ($total == 0){
@@ -1056,30 +1024,7 @@ class PagesController extends Controller
             'calendariooc' => $calendario,
         ]);
     }
-    public function filtrarproy(Request $request){
-        
-        $proy =  Proyecto::orderBy('codigo','asc');
-        
-        if ($request->fcodigo !=""){
-            $proy = $proy->where('codigo',$request->fcodigo );
-        }
-        if ($request->fcliente !=""){
-            $proy = $proy->where('cliente_id',$request->fcliente);
-        }
-        if ($request->fdirector !=""){
-            $proy = $proy->where('director',$request->fdirector );
-        }
-        if ($request->flider !=""){
-            $proy = $proy->where('lider',$request->flider);
-        }
-        if ($request->fciudad !=""){
-            $proy = $proy->where('ciudad',$request->fciudad);
-        }
-        $proy = $proy->get();
-        return view('tablaproyecto',[
-            'proyectos' => $proy,
-        ]);
-    }
+    
     public function filtrarcentro(Request $request){
         
         $cdc =  Cdc::orderBy('codigo','asc');
@@ -1172,39 +1117,7 @@ class PagesController extends Controller
 
         return "Empleado creado";
     }
-    public function nuevoproy(Request $request){
-        if(Proyecto::where('codigo',$request->codigo)->exists()){
-            return "Ya existe un proyecto con ese código";
-        }
-        else{
-            $e = Proyecto::create([
-                'codigo' => $request->codigo,
-                'descripcion' => $request->descripcion,
-                'cliente_id' => $request->cliente,
-                'sistema' => $request->sistema,
-                'subportafolio' => $request->subportafolio,
-                'director' => $request->director,
-                'lider' => $request->lider,
-                'ciudad' => $request->ciudad,
-                'creado_por' => session('user'),
-                'creacion' => date("Y-m-d")
-
-            ]);
-            $c =  Cdc::create([
-                'codigo' => $request->codigo,
-                'descripcion' => $request->descripcion,
-                'centro_operacion' => $request->co,
-                'unidad_negocio' => $request->un,
-                'responsable' => '',
-                'mayor' => 0,
-                'grupo' => 'CP',
-                'observaciones' => '',
-
-            ]);
-        }
-
-        return "Proyecto creado";
-    }
+    
     public function nuevocliente(Request $request){
         $e = Cliente::create([
             'cliente' => $request->cliente,
@@ -1266,42 +1179,8 @@ class PagesController extends Controller
           ]);
           return "Empleado actualizado";
     }
-    public function buscarproy(Request $request){
-        $horario=$idh="";
-        $p = Proyecto::where('id',$request->id)->first();
-        $emp = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();
-        $clientes = Cliente::orderBy('cliente','asc')->get();
-        //dd($p);
-        return view('formproy',[
-            'p' => $p,
-            'clientes' => $clientes,
-            'emp' => $emp
-        ]);
-    }
-    public function editarproy(Request $request){
-        Proyecto::where('id', $request->id )
-        ->update([
-            'codigo' => $request->codigo,
-            'descripcion' => $request->descripcion,
-            'cliente_id' => $request->cliente,
-            'sistema' => $request->sistema,
-            'subportafolio' => $request->subportafolio,
-            'director' => $request->director,
-            'lider' => $request->lider,
-            'ciudad' => $request->ciudad,
-          ]);
-        
-        Cdc::where('codigo', $request->codigo)
-         ->update([
-            'descripcion' => $request->descripcion,
-            'centro_operacion' => $request->co,
-            'unidad_negocio' => $request->un,
-            
-         ]);
-
-         
-          return "Proyecto actualizado";
-    }
+   
+    
     public function updatep(Request $request){
         Empleado::where('id', $request->id )
         ->update([
@@ -1329,18 +1208,7 @@ class PagesController extends Controller
             'emp' => $emp,
         ]);
     }
-    public function tablaproy(Request $request){
-        $campo = $request->campo;
-        if ($campo == ''){
-            $proyectos = Proyecto::orderBy('codigo','asc')->get();
-        }
-        else{
-            $proyectos= Proyecto::orderBy($campo,'asc')->get();  
-        }
-        return view('tablaproyecto',[
-            'proyectos' => $proyectos,
-        ]);
-    }
+    
 
 //cdc
 

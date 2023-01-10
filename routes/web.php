@@ -8,6 +8,8 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\FilesController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProyectosController;
+use App\Http\Controllers\OrdenesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -30,7 +32,7 @@ Route::get('/', function () {
 //Pages
 Route::get('/',[PagesController::class, 'inicio'])->name('inicio');
 Route::get('/menu',[PagesController::class, 'menu'])->name('menu');
-Route::get('/ordenes',[PagesController::class, 'ordenes']);
+Route::get('/ordenes',[OrdenesController::class, 'ordenes']);
 Route::get('/getConsec',[PagesController::class, 'getConsec']);
 Route::get('/agregarp',[PagesController::class, 'agregarp']);
 Route::get('/agregare',[PagesController::class, 'agregare']);
@@ -70,12 +72,12 @@ Route::get('/eliminarcliente',[PagesController::class,'eliminarcliente']);
 Route::get('/filtrarcliente',[PagesController::class,'filtrarcliente']);
 
 //proyectos
-Route::get('/nuevoproy',[PagesController::class,'nuevoproy']);
-Route::get('/buscarproy',[PagesController::class,'buscarproy']);
-Route::get('/editarproy',[PagesController::class,'editarproy']);
-Route::get('/tablaproy',[PagesController::class,'tablaproy']);
-Route::get('/eliminarproy',[PagesController::class,'eliminarproy']);
-Route::get('/filtrarproy',[PagesController::class,'filtrarproy']);
+Route::get('/nuevoproy',[ProyectosController::class,'nuevoproy']);
+Route::get('/buscarproy',[ProyectosController::class,'buscarproy']);
+Route::get('/editarproy',[ProyectosController::class,'editarproy']);
+Route::get('/tablaproy',[ProyectosController::class,'tablaproy']);
+Route::get('/eliminarproy',[ProyectosController::class,'eliminarproy']);
+Route::get('/filtrarproy',[ProyectosController::class,'filtrarproy']);
 
 
 //cdc
