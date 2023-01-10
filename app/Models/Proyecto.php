@@ -13,7 +13,7 @@ class Proyecto extends Model
     public $timestamps = false;
     protected $fillable = [
          'codigo','descripcion','cliente_id','sistema','ciudad', 'subportafolio', 'director', 'lider',
-         'creado_por','creacion'
+         'creado_por','creacion','registro'
     ];
 
     public function cliente()

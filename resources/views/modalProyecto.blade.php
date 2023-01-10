@@ -87,6 +87,13 @@
                     </select>
                     <!--<input type="text" class="form-control"  id="un" name="un">-->
                 </div>
+                <div class="form-group">
+                    <label for="un">REGISTRO DE HORAS</label>
+                    <select class="form-control" id="registro" name="registro">
+                        <option value="1" >Si</option>
+                        <option value="0" >No</option>
+                    </select>
+                </div>
                 <button type="button" class="btn btn-primary" onclick="guardarproy()">Guardar</button>
 
             </form>

@@ -51,7 +51,8 @@ class ProyectosController extends Controller
                 'lider' => $request->lider,
                 'ciudad' => $request->ciudad,
                 'creado_por' => session('user'),
-                'creacion' => date("Y-m-d")
+                'creacion' => date("Y-m-d"),
+                'registro' => $request->registro
             ]);
     
             $cdc =  Cdc::create([
