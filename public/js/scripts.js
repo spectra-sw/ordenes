@@ -1307,7 +1307,7 @@ function guardarextra(){
 }
 
 function actextra(){
-    let trabajador = "";
+    let trabajador = "NO";
     data=$( "#formExtra" ).serialize(); 
     dataArray=data.split("&");
     //console.log(dataArray);
