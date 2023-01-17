@@ -78,7 +78,9 @@ Route::get('/editarproy',[ProyectosController::class,'editarproy']);
 Route::get('/tablaproy',[ProyectosController::class,'tablaproy']);
 Route::get('/eliminarproy',[ProyectosController::class,'eliminarproy']);
 Route::get('/filtrarproy',[ProyectosController::class,'filtrarproy']);
-
+Route::get('/autorizadosproy',[ProyectosController::class,'autorizadosproy']);
+Route::get('/agautorizadoproy',[ProyectosController::class,'agautorizadoproy']);
+Route::get('/borrarautorizado',[ProyectosController::class,'borrarautorizado']);
 
 //cdc
 Route::get('/nuevocdc',[PagesController::class,'nuevocdc']);

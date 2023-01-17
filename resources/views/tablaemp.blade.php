@@ -1,5 +1,5 @@
 
-<table class="table table-bordered table-striped table-sm">
+<table class="display" id="tablaemp">
     <thead>
       <tr style="cursor:pointer">
         <th onclick="ordenar('cc')">CC</th>
@@ -41,3 +41,8 @@
     @endforeach 
     </tbody>
 </table>
+<script>
+  $(document).ready(function() {
+      $('#tablaemp').DataTable();
+  } );
+</script>

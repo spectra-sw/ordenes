@@ -143,3 +143,23 @@
     </div>
   </div>
 
+<!--autorizados proyecto-->
+  <div class="modal fade bd-example-modal-xl" id="autorizadosproy">
+    <div class="modal-dialog">
+      <div class="modal-content">  
+        <!-- Modal body -->
+        <div class="modal-header">
+            Autorizados proyecto
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body" id="autorizadosBodyProy">
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+      </div>      
+      </div>
+    </div>
+  </div>
+  

@@ -1,9 +1,11 @@
-
-<table class="table table-bordered table-striped table-sm">
+<br>
+<table class="display" id="tablaproyectos">
     <thead>
       <tr >
-        <th onclick="ordenarproy('codigo')" style="cursor:pointer">CODIGO</th>
-        <th onclick="ordenarproy('cliente_id')" style="cursor:pointer">CLIENTE</th>
+        <!--<th onclick="ordenarproy('codigo')" style="cursor:pointer">CODIGO</th>
+        <th onclick="ordenarproy('cliente_id')" style="cursor:pointer">CLIENTE</th>-->
+        <th>CODIGO</th>
+        <th>CLIENTE</th>
         <th >DESCRIPCION</th>
         <th>SISTEMA</th>
         <th>SUBPORTAFOLIO</th>
@@ -41,6 +43,7 @@
         <td><select class="form-control" id="{{ $p->id }}" onchange="accionesproyectos(this.value,this.id)">
             <option></option>
             <option value="1">Editar</option>
+            <option value="3">Autorizados</option>
             <!--<option value="2">Eliminar</option>-->
             
         </select></td>
@@ -49,3 +52,8 @@
     @endforeach 
     </tbody>
 </table>
+<script>
+  $(document).ready(function() {
+      $('#tablaproyectos').DataTable();
+  } );
+</script>

@@ -575,26 +575,79 @@ function acciones(op,id){
     }
     
 }
-function accionesproyectos(op,id){
-    //alert(op);
-    //alert(id);
-    if (op==1){
-        data = { id : id }
-        url="/buscarproy"
-        $.ajax({
-            url: url,
-            type:'GET',
-            data: data,
-            success: function(data) { 
-                $("#editarBodyProy").html(data);
-                $("#editarproy").modal();
-            }
-        }); 
+function accionesproyectos(op, id) {
+    switch (op) {
+        case "1":
+            buscarProyecto(id);
+            break;
+        case "2":
+            mostrarModalEliminar(id);
+            break;
+        case "3":
+            mostrarModalAutorizados(id);
+            break;
     }
-    if(op==2){
-        $("#id").val(id);
-        $("#eliminarproy").modal(); 
-    }   
+}
+
+function buscarProyecto(id) {
+    const data = { id };
+    const url = '/buscarproy';
+    $.ajax({
+        url,
+        type: 'GET',
+        data,
+        success(data) {
+            $('#editarBodyProy').html(data);
+            $('#editarproy').modal();
+        },
+    });
+}
+
+function mostrarModalEliminar(id) {
+    $('#id').val(id);
+    $('#eliminarproy').modal();
+}
+function mostrarModalAutorizados(id) {
+    const data = { id };
+    const url = '/autorizadosproy';
+    $.ajax({
+        url,
+        type: 'GET',
+        data,
+        success(data) {
+            $('#autorizadosBodyProy').html(data);
+            $('#autorizadosproy').modal();
+        },
+    });
+   
+}
+function agregarAutorizado(){
+   data=$( "#formAutProy" ).serialize(); 
+   url = '/agautorizadoproy'
+    $.ajax({
+              url: url,
+              type:'GET',
+              data: data,
+              success: function(data) {
+                alert(data);
+                $data = $(data);
+                $("#tablaautorizados").html($data);
+              }
+    });   
+}
+function borrarautorizado(id){
+    const data = { id };
+    url = '/borrarautorizado'
+    $.ajax({
+              url: url,
+              type:'GET',
+              data: data,
+              success: function(data) {
+                //alert(data);
+                $data = $(data);
+                $("#tablaautorizados").html($data);
+              }
+    });   
 }
 function accionescdc(op,id){
     //alert(op);

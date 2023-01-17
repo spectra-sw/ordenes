@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddRegistroColumnToProyectosTable extends Migration
+class CreateAutorizadosProyectosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class AddRegistroColumnToProyectosTable extends Migration
      */
     public function up()
     {
-        
-        Schema::table('proyectos', function (Blueprint $table) {
-            $table->integer('registro');
+        Schema::create('autorizados_proyectos', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('proyecto');
+            $table->integer('empleado_id');
         });
     }
 
@@ -26,9 +27,6 @@ class AddRegistroColumnToProyectosTable extends Migration
      */
     public function down()
     {
-        Schema::table('proyectos', function (Blueprint $table) {
-            //
-            $table->dropColumn(['registro']);
-        });
+        Schema::dropIfExists('autorizados_proyectos');
     }
 }

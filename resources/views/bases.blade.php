@@ -59,7 +59,25 @@
                         <div id ="tp">
                              @include('tablaproyecto')
                         </div>
-                       
+                        <table id="tableprueba" class="display" >
+                            <thead>
+                                <tr>
+                                    <th>CC</th>
+                                    <th>NOMBRE</th>
+                                    <th>HORAS</th>
+                                    <th>PERIODO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1234</td>
+                                    <td>sdgsgs</td>
+                                    <td>1</td>
+                                    <td>tewt</td>
+                                </tr>
+                            </tbody>
+                           
+                        </table>
                     </div>
                 </div>
 
@@ -90,6 +108,11 @@
       </div>
     </div>
 </div>
-<script src="{{asset('js/scripts.js')}}"></script>                
+<script src="{{asset('js/scripts.js')}}"></script>       
+<script>
+  $(document).ready(function() {
+      $('#tablaproyectos').DataTable();
+  } );
+</script>         
 @endsection
 

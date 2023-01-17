@@ -27,6 +27,7 @@ use App\Models\Festivo;
 use App\Models\Novedad;
 use App\Models\Autorizacion;
 use App\Models\Cargo;
+use App\Models\Autorizados;
 
 use Log;
 
@@ -77,6 +78,34 @@ class ProyectosController extends Controller
             'p' => $proyect,
             'clientes' => $clientes,
             'emp' => $employees
+        ]);
+    }
+    public function autorizadosproy(Request $request){
+        $idproy = Proyecto::where('id',$request->id)->first()->codigo;
+        $aut = Autorizados::where('proyecto',$idproy)->get();
+        return view('formautorizadosproy',[
+            'aut' => $aut,
+            'proyecto' => $request->id 
+        ]);
+    }
+    public function agautorizadoproy(Request $request){
+        $idemp = Empleado::where('cc',$request->empleado)->first()->id;
+        $idproy = Proyecto::where('id',$request->id)->first()->codigo;
+        Autorizados::create([
+            'proyecto' => $idproy,
+            'empleado_id' => $idemp
+        ]);
+        $aut = Autorizados::where('proyecto',$idproy)->get();
+        return view('tablaautorizadosproy',[
+            'aut' => $aut
+        ]);
+    }
+    public function borrarautorizado(Request $request){
+        $idproy = Autorizados::where('id',$request->id)->first()->proyecto;
+        Autorizados::where('id',$request->id)->delete();
+        $aut = Autorizados::where('proyecto',$idproy)->get();
+        return view('tablaautorizadosproy',[
+            'aut' => $aut
         ]);
     }
     public function editarproy(Request $request){

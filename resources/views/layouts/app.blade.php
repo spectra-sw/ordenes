@@ -61,8 +61,11 @@
             
 
                 <ul class="nav nav-pills">
-                    <li class="nav-item ml-1">
+                   <!-- <li class="nav-item ml-1">
                         <a class="nav-link active" href="/ordenes">CREAR ORDENES</a>
+                    </li>-->
+                    <li class="nav-item ml-1">
+                        <a class="nav-link active" href="/jornada">REGISTRO JORNADA</a>
                     </li>
                     @if (session('tipo')==0)
                     <li class="nav-item dropdown ml-2">
@@ -86,9 +89,9 @@
                     </li>
                     @endif
                     @if (session('tipo')==0)
-                    <li class="nav-item ml-2">
+                   <!-- <li class="nav-item ml-2">
                         <a class="nav-link active" href="extra">TIEMPO EXTRA</a>
-                    </li>
+                    </li>-->
                     @endif
                    
                 </ul>

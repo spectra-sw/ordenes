@@ -1,5 +1,5 @@
 
-<table class="table table-bordered table-striped table-sm">
+<table class="display">
     <thead>
       <tr >
         <th onclick="ordenarc('codigo')" style="cursor:pointer">CLIENTE</th>
@@ -22,3 +22,8 @@
     @endforeach 
     </tbody>
 </table>
+<script>
+  $(document).ready(function() {
+      $('#tablacliente').DataTable();
+  } );
+</script>
