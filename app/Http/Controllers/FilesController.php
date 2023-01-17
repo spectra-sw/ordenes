@@ -147,7 +147,6 @@ class FilesController extends Controller
                     }
                     if($rango > 5){
                         $laborales =$rango -$almuerzo;
-                        $laborales =$rango -$almuerzo;
                         if ($laborales>9.5){
                             $laborales=9.5;
                         }
@@ -177,7 +176,8 @@ class FilesController extends Controller
                                     $sb = $sb  - ($rfin-$fin);
                                     $excede = $sb -$laborales;
                                     $sb =$laborales;
-                                    $hedo = $excede + ($rfin - $fin);  
+                                    //$hedo = $excede + ($rfin - $fin);  
+                                    $hedo = ($rfin - $fin); 
                                 }
                                 else{
                                     $excede = 0;
