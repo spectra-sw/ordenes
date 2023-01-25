@@ -629,7 +629,7 @@ function agregarAutorizado(){
               type:'GET',
               data: data,
               success: function(data) {
-                alert(data);
+                //alert(data);
                 $data = $(data);
                 $("#tablaautorizados").html($data);
               }

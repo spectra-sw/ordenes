@@ -28,6 +28,7 @@ use App\Models\Festivo;
 use App\Models\Novedad;
 use App\Models\Autorizacion;
 use App\Models\Cargo;
+use App\Models\Autorizados;
 
 use Log;
 
@@ -71,6 +72,19 @@ class OrdenesController extends Controller
         //dd($proyectosf);
         return view('ordenes',[
             'proyectos' => $proyectos 
+
+        ]);
+    }
+    public function jornada(Request $request){
+        $proyectos = collect([]);
+        
+        $user = session('user');
+        if ($user==""){
+            return redirect()->route('inicio');
+        }
+        $aut = Autorizados::where('empleado_id',$user)->get();
+        return view('jornada',[
+            'proyectos' => $aut
 
         ]);
     }

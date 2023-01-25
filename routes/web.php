@@ -172,3 +172,4 @@ Route::get('send-mail', function () {
     dd("Email is Sent.");
 });
 
+Route::get('/jornada',[OrdenesController::class,'jornada']);
