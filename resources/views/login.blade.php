@@ -30,7 +30,7 @@
                         <input type="password" class="form-control" placeholder="Ingrese contraseña" id="pwd" required>
                     </div>
         
-                    <button type="button" class="btn btn-primary" onclick="login()">Ingresar</button>
+                    <button type="button" class="btn btn-2" onclick="login()">Ingresar</button>
                 </form>
                 
                 </div>

@@ -1,0 +1,45 @@
+.bg-1 {
+    background-color: rgb(134,169,189)
+  }
+  .bg-2{
+    background-color: rgb(111,188,176)
+  }
+  .bg-3{
+    background-color: rgb(70,156,87)
+  }
+  .bg-4{
+    background-color: rgb(221,221,221)
+  }
+  .border-2{
+    border-color: rgb(111,188,176)
+  }
+  .btn-2{
+    background-color: rgb(111,188,176);
+    border-color: rgb(111,188,176);
+    color: white;
+  }
+  .btn-2:hover{
+    background-color: rgb(134,169,189);
+    border-color: rgb(111,188,176);
+    color: white;
+  }
+  .btn-3{
+    background-color: rgb(70,156,87);
+    border-color: rgb(70,156,87);
+    color: white;
+  }
+  .btn-3:hover{
+    background-color: rgb(134,169,189);
+    border-color: rgb(111,188,176);
+    color: white;
+  }
+  .avatar {
+    background: url('../img/avatar2.png');
+    display: inline-block;
+    height: 500px;
+    width: 500px;
+  }
+ .avatar-error{
+    background-position: 10px -400px;
+ }
+

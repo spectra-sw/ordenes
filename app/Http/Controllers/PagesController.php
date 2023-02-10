@@ -37,11 +37,14 @@ use Illuminate\Support\Facades\DB;
 class PagesController extends Controller
 {
     //
-    
+    public function test(){
+        return view('layouts.test');
+    }
     public function inicio(){
         session(['user' => '']);
         session(['tipo' => 3]);
-        return view('login');
+       // return view('login');
+        return view('timetracker.login');
     }
     public function login(){
         session(['user' => '']);
@@ -62,10 +65,11 @@ class PagesController extends Controller
             $nombre = $e->nombre. " " . $e->apellido1;
             $prog = Programacion::where('cc',$cc)->orderBy('fecha','desc')->get();
             //dd($prog);
-            return view('menu',[
+           /* return view('menu',[
                 'prog' => $prog,
                 'nombre' => $nombre
-            ]);
+            ]);*/
+            return view('timetracker.menu');
         }
         else{
             return view('login');

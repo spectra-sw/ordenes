@@ -10,6 +10,7 @@ use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProyectosController;
 use App\Http\Controllers\OrdenesController;
+use App\Http\Controllers\MensajesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -30,6 +31,7 @@ Route::get('/', function () {
 */
 
 //Pages
+Route::get('/test',[PagesController::class, 'test']);
 Route::get('/',[PagesController::class, 'inicio'])->name('inicio');
 Route::get('/menu',[PagesController::class, 'menu'])->name('menu');
 Route::get('/ordenes',[OrdenesController::class, 'ordenes']);
@@ -172,4 +174,18 @@ Route::get('send-mail', function () {
     dd("Email is Sent.");
 });
 
+
+//jornada
 Route::get('/jornada',[OrdenesController::class,'jornada']);
+Route::get('/registrarJornada',[OrdenesController::class,'registrarJornada']);
+Route::get('/consecJornada',[OrdenesController::class,'consecJornada']);
+Route::get('/deleteJornada',[OrdenesController::class,'deleteJornada']);
+Route::get('/solapeJornada',[OrdenesController::class,'solapeJornada']);
+Route::get('/consultaJornada',[OrdenesController::class,'consultaJornada']);
+Route::get('/misjornadas',[OrdenesController::class,'misjornadas']);
+
+
+
+//mensajes
+Route::get('/mensaje/error',[MensajesController::class,'error']);
+Route::get('/mensaje/exito',[MensajesController::class,'exito']);
