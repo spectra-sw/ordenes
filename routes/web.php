@@ -10,6 +10,7 @@ use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProyectosController;
 use App\Http\Controllers\OrdenesController;
+use App\Models\Autorizacion;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -164,8 +165,9 @@ Route::get('send-mail', function () {
         'title' => 'Solicitud de horas extras',
         'body' => 'This is for testing email using smtp'
     ];
+    $e = Autorizacion::first();
    
-    \Mail::to('dguerra@spectra.com.co')->send(new \App\Mail\MailSolicitudExtra($details));
+    \Mail::to('dguerra@spectra.com.co')->send(new \App\Mail\MailSolicitudExtra($details,$e));
    
     dd("Email is Sent.");
 });
