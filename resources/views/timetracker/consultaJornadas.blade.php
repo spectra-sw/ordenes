@@ -1,8 +1,9 @@
 <div class="card" >
-    <div class="card-header">Registros</div>
+    <div class="card-header">Rango de fechas</div>
     <div class="card-body">
         <div class="row">
-            <div class="col-12 col-md-6">    
+            <div class="col-12 col-md-6">
+                <p>Total jornadas: {{ $total_jornadas }}</p>
                 <table class="table table-bordered table-striped table-sm" >
                     <thead>
                         <tr>

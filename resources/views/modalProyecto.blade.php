@@ -1,5 +1,6 @@
 <!--  Modal crear proyecto -->
-<div class="modal fade bd-example-modal-xl" id="nuevoproyecto">
+
+<div class="modal fade" id="nuevoproyecto">
     <div class="modal-dialog">
       <div class="modal-content">  
 
@@ -100,12 +101,12 @@
         </div>        
         <!-- Modal footer -->
         <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
       </div>      
       </div>
     </div>
 </div>
-<div class="modal fade bd-example-modal-xl" id="editarproy">
+<div class="modal fade " id="editarproy">
     <div class="modal-dialog">
       <div class="modal-content">  
         <!-- Modal body -->
@@ -118,12 +119,12 @@
         
         <!-- Modal footer -->
         <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
       </div>      
       </div>
     </div>
   </div>
-  <div class="modal fade bd-example-modal-sm" id="eliminarproy">
+  <div class="modal fade" id="eliminarproy">
     <div class="modal-dialog">
       <div class="modal-content">  
         <!-- Modal body -->
@@ -137,7 +138,7 @@
         
         <!-- Modal footer -->
         <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
       </div>      
       </div>
     </div>
@@ -157,7 +158,8 @@
         
         <!-- Modal footer -->
         <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+        
       </div>      
       </div>
     </div>

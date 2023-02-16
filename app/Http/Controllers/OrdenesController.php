@@ -163,7 +163,10 @@ class OrdenesController extends Controller
         $user = session()->get('user');
         $jornadas = Jornada::where('user_id',$user)->where('fecha','>=',$request->inicio)->where('fecha','<=',$request->fin)->get();
         $users = DB::table('users')->distinct()->select('email')->where('name', 'John')->get();
-        $total_jornadas = DB::table('jornada')->distinct()->select('jornada_id')->where('user_id',$user)->where('fecha','>=',$request->inicio)->where('fecha','<=',$request->fin)->get();
-        return $jornadas;
+        $total_jornadas = DB::table('jornada')->distinct()->select('jornada_id')->where('user_id',$user)->where('fecha','>=',$request->inicio)->where('fecha','<=',$request->fin)->count();
+        return view('timetracker.consultaJornadas',[
+            'jornadas' => $jornadas,
+            'total_jornadas' => $total_jornadas
+        ]);
     }
 }

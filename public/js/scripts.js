@@ -442,6 +442,7 @@ function nuevocdc(){
     $("#nuevocdc").modal();
 }
 function nuevoproyecto(){
+    alert("");
     $("#nuevoproyecto").modal();
 }
 function nuevocliente(){
@@ -598,7 +599,7 @@ function buscarProyecto(id) {
         data,
         success(data) {
             $('#editarBodyProy').html(data);
-            $('#editarproy').modal();
+            $("#editarproy").modal("show");
         },
     });
 }
@@ -616,7 +617,7 @@ function mostrarModalAutorizados(id) {
         data,
         success(data) {
             $('#autorizadosBodyProy').html(data);
-            $('#autorizadosproy').modal();
+            $('#autorizadosproy').modal("show");
         },
     });
    

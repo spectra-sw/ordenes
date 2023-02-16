@@ -9,6 +9,15 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap5.min.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
   <link rel="stylesheet" href="{{ URL::asset('css/style_tt.css') }}">
 </head>
 <body class="random-background-image">
@@ -31,17 +40,18 @@
             <i class="bi bi-search"></i>
             Consultas</a>
         </li>
-       
+        @if (session('tipo')==0)
         <li class="nav-item dropdown">
             <a class="nav-link active dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                 <i class="bi bi-person-circle"></i>
                 Administración</a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Personas</a></li>
-              <li><a class="dropdown-item" href="#">Proyectos</a></li>
-              <li><a class="dropdown-item" href="#">Clientes</a></li>
+              <li><a class="dropdown-item" href="/bases">Bases de datos</a></li>
+             <!--<li><a class="dropdown-item" href="#">Proyectos</a></li>
+              <li><a class="dropdown-item" href="#">Clientes</a></li>-->
             </ul>
         </li>
+        @endif
       </ul>
       <form class="d-flex">
         <input class="form-control me-2" type="text" placeholder="Buscar">
@@ -52,7 +62,6 @@
 </nav>
 
 <div class="container-fluid mt-3">
-  
     @yield('content')
 </div>
 

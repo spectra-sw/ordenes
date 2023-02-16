@@ -216,18 +216,20 @@ function successHandler(mensaje) {
     });
 }
 var btnConsultar = document.getElementById("btnConsultar");
+if (btnConsultar != null) {
 btnConsultar.addEventListener("click", function() {
-    alert("");
+    //alert("");
     var formData = $("#formConsultaJornada").serialize(); 
     $.ajax({
         type: "GET",
         url: "/consultaJornada",
         data: formData,
         success: function(response) {
-            $("#mensaje").html(response);
+            $("#consulta").html(response);
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.log(textStatus, errorThrown);
         }
     });
 });
+}

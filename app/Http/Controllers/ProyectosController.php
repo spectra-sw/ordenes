@@ -83,9 +83,11 @@ class ProyectosController extends Controller
     public function autorizadosproy(Request $request){
         $idproy = Proyecto::where('id',$request->id)->first()->codigo;
         $aut = Autorizados::where('proyecto',$idproy)->get();
+        $employees = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();
         return view('formautorizadosproy',[
             'aut' => $aut,
-            'proyecto' => $request->id 
+            'proyecto' => $request->id ,
+            'emp' => $employees
         ]);
     }
     public function agautorizadoproy(Request $request){

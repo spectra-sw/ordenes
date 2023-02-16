@@ -1,5 +1,7 @@
 
-<table class="display" id="tablaemp">
+
+  <table id="tablaemp" class="table table-striped" style="width:100%">
+
     <thead>
       <tr style="cursor:pointer">
         <th onclick="ordenar('cc')">CC</th>
@@ -13,6 +15,7 @@
         <th>AREA</th>
         <th>CARGO</th>
         <th onclick="ordenar('tipo')">TIPO</th>
+        <th>Acción</th>
       </tr>
     </thead>
     <tbody>
@@ -40,9 +43,19 @@
       </tr>
     @endforeach 
     </tbody>
+    <tfoot>
+      <tr style="cursor:pointer">
+        <th onclick="ordenar('cc')">CC</th>
+        <th onclick="ordenar('apellido1')">APELLIDO 1</th>
+        <th onclick="ordenar('apellido2')">APELLIDO 2</th>
+        <th onclick="ordenar('nombre')">NOMBRE</th>
+        <th onclick="ordenar('auxilio')">AUXILIO</th>
+        <th >AUXILIO TR.</th>
+        <th onclick="ordenar('correo')">CORREO</th>
+        <th>CIUDAD</th>
+        <th>AREA</th>
+        <th>CARGO</th>
+        <th onclick="ordenar('tipo')">TIPO</th>
+      </tr>
+  </tfoot>
 </table>
-<script>
-  $(document).ready(function() {
-      $('#tablaemp').DataTable();
-  } );
-</script>

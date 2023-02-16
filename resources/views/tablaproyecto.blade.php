@@ -1,5 +1,5 @@
 <br>
-<table class="display" id="tablaproyectos">
+<table id="tablaproyectos" class="table table-striped" style="width:100%">
     <thead>
       <tr >
         <!--<th onclick="ordenarproy('codigo')" style="cursor:pointer">CODIGO</th>
@@ -15,6 +15,7 @@
         <th>C.O</th>
         <th>U.N</th>
         <th>R.HORAS</th>
+        <th>ACCIÓN</th>
       </tr>
     </thead>
     <tbody>
