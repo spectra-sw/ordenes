@@ -2,7 +2,7 @@
     <div class="card-header">Registros</div>
     <div class="card-body">
         <div class="row">
-            <div class="col-12 col-md-6">    
+            <div class="col-12 col-md-12">    
                 <table class="table table-bordered table-striped table-sm" >
                     <thead>
                         <tr>
@@ -11,7 +11,7 @@
                             <th>Tipo</th>
                             <th>Hora Inicio</th>
                             <th>Hora Fin</th>
-                            
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>

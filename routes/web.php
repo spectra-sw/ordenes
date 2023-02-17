@@ -11,6 +11,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProyectosController;
 use App\Http\Controllers\OrdenesController;
 use App\Http\Controllers\MensajesController;
+use App\Http\Controllers\ConsultasController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -43,7 +44,8 @@ Route::get('/agregardia',[PagesController::class, 'agregardia']);
 Route::get('/almdia',[PagesController::class, 'almdia']);
 Route::get('/admin',[PagesController::class, 'admin']);
 Route::get('/bases',[PagesController::class, 'bases']);
-Route::get('/consultas',[PagesController::class, 'consultas']);
+//Route::get('/consultas',[PagesController::class, 'consultas']);
+Route::get('/consultas',[ConsultasController::class, 'consultas']);
 Route::get('/saveorden',[PagesController::class, 'saveorden']);
 Route::get('/updateorden',[PagesController::class, 'saveorden']);
 Route::get('/verorden/{id}',[PagesController::class,'verorden']);

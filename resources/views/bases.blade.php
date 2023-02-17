@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="container mt-3">
+<div class="container">
    
     <br>
     <!-- Nav tabs -->
