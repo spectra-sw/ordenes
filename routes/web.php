@@ -12,6 +12,7 @@ use App\Http\Controllers\ProyectosController;
 use App\Http\Controllers\OrdenesController;
 use App\Http\Controllers\MensajesController;
 use App\Http\Controllers\ConsultasController;
+use App\Http\Controllers\DistribucionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -132,7 +133,8 @@ Route::get('updatep',[PagesController::class,'updatep'])->name('updatep');
 Route::get('consfestivo',[PagesController::class,'consfestivo'])->name('consfestivo');
 
 //Excel
-Route::get('exportReporte', [ExcelController::class, 'export'])->name('export');
+//Route::get('exportReporte', [ExcelController::class, 'export'])->name('export');
+Route::get('exportReporte', [ExcelController::class, 'exportt'])->name('exporttt');
 Route::get('exportReporteO', [ExcelController::class, 'exporto'])->name('exporto');
 Route::get('exportAnaliticas', [ExcelController::class, 'exporta'])->name('exporta');
 Route::get('exportExtra', [ExcelController::class, 'exportextra'])->name('exportextra');
@@ -184,8 +186,12 @@ Route::get('/consecJornada',[OrdenesController::class,'consecJornada']);
 Route::get('/deleteJornada',[OrdenesController::class,'deleteJornada']);
 Route::get('/solapeJornada',[OrdenesController::class,'solapeJornada']);
 Route::get('/consultaJornada',[OrdenesController::class,'consultaJornada']);
+Route::get('/consultaJornadaAdmin',[OrdenesController::class,'consultaJornadaAdmin']);
+Route::get('/accionesJornada',[OrdenesController::class,'accionesJornada']);
 Route::get('/misjornadas',[OrdenesController::class,'misjornadas']);
 
+Route::get('/distribucion',[DistribucionController::class,'distribucion']);
+Route::get('/validarCorte',[OrdenesController::class,'validarCorte']);
 
 
 //mensajes

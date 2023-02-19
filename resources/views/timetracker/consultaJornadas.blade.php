@@ -23,7 +23,7 @@
                                 <td>{{ $j->tipo == 1 ? "Actividad" : "Almuerzo" }}</td>
                                 <td>{{ $j->hi }}</td>
                                 <td>{{ $j->hf }}</td>
-                                <td><button type="button" id="{{ $j->id}}" class="btn btn-danger btn-sm" onclick="delj(this.id)"><i class="bi bi-file-x-fill"></i></button></td>
+                                <td><button type="button" id="{{ $j->id}}" class="btn btn-danger btn-sm" onclick="delj(this.id)" {{ $estado == 0 ? 'disabled' : ''}}><i class="bi bi-file-x-fill"></i></button></td>
                                 
                             </tr>
                         @endforeach

@@ -13,7 +13,7 @@
     </thead>
     <tbody>
     @foreach ($datos as $dato)     
-      <tr>
+      <tr class="table-success">
         <td>{{ $dato['codigo del empleado'] }}</td>
         <td>{{ $dato['codigo del concepto'] }}</td>
         <td>{{ $dato['centro de operacion'] }}</td>

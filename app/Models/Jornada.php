@@ -13,4 +13,12 @@ class Jornada extends Model
     protected $fillable = [
         'id','jornada_id','user_id','proyecto','fecha','hi','hf','observacion','tipo','revisado_por','fecha_revision','estado'
     ];
+    public function trabajador()
+    {
+    return $this->belongsTo(Empleado::class, 'user_id', 'id');
+    }
+    public function proyectoinfo()
+    {
+    return $this->belongsTo(Proyecto::class, 'proyecto', 'codigo');
+    }
 }

@@ -72,7 +72,7 @@
                         <div id="datos2" style="display: none">
                             <div class="row">
                                 <div class="col-6 col-md-2 cajaAzul">Fecha *</div>
-                                <div class="col-6 col-md-2 "><input type="date" name="fecha" id="fecha" class="form-control" required></div>
+                                <div class="col-6 col-md-2 "><input type="date" name="fecha" id="fecha" class="form-control" onchange="validarCorte(this.value)" required></div>
                                 <div class="col-6 col-md-2 cajaAzul">Hora Inicio *</div>
                                 <div class="col-6 col-md-1 ">
                                     <select class="form-control" id="horaInicio" name="horaInicio" required>

@@ -16,6 +16,9 @@
       <li class="nav-item">
         <a class="nav-link" data-bs-toggle="tab" href="#menu2">Proyectos</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#cortes">Cortes</a>
+      </li>
     </ul>
   
     <!-- Tab panes -->
@@ -45,7 +48,14 @@
         <div id ="tp">
                 @include('tablaproyecto')
         </div>
-       
+      </div>
+      <div id="cortes" class="container tab-pane fade"><br>
+        <br>
+        <button class="btn btn-3" onclick="nuevocorte()">Nuevo Corte</button><br><br>
+        <br>
+        <div id ="tcl">
+            @include('tablacortes')
+        </div>
       </div>
     </div>
 </div>

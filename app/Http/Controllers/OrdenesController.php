@@ -30,6 +30,7 @@ use App\Models\Autorizacion;
 use App\Models\Cargo;
 use App\Models\Autorizados;
 use App\Models\Jornada;
+use App\Models\Corte;
 use Log;
 
 use Carbon\Carbon;
@@ -164,9 +165,77 @@ class OrdenesController extends Controller
         $jornadas = Jornada::where('user_id',$user)->where('fecha','>=',$request->inicio)->where('fecha','<=',$request->fin)->get();
         $users = DB::table('users')->distinct()->select('email')->where('name', 'John')->get();
         $total_jornadas = DB::table('jornada')->distinct()->select('jornada_id')->where('user_id',$user)->where('fecha','>=',$request->inicio)->where('fecha','<=',$request->fin)->count();
+        
+        $request = new Request();
+        $request->merge(['fecha' => Carbon::now()->format('Y-m-d')]);
+        $estado = $this->validarCorte($request);
+        
+    
+
         return view('timetracker.consultaJornadas',[
             'jornadas' => $jornadas,
-            'total_jornadas' => $total_jornadas
+            'total_jornadas' => $total_jornadas,
+            'estado' => $estado
         ]);
     }
+    public function consultaJornadaAdmin(Request $request){
+        $jornadas = Jornada::query();
+    
+        if ($request->proyecto) {
+            $jornadas->where('proyecto', $request->proyecto);
+        }
+    
+        if ($request->trabajador) {
+            $jornadas->where('user_id', $request->trabajador);
+        }
+    
+        if ($request->inicio && $request->fin) {
+            $jornadas->whereBetween('fecha', [$request->inicio, $request->fin]);
+        }
+    
+        if ($request->estado) {
+            $jornadas->where('estado', $request->estado);
+        }
+    
+        $jornadas = $jornadas->get();
+    
+        return view('timetracker.consultaJornadasAdmin', [
+            'jornadas' => $jornadas,
+            'total_jornadas' => 0
+        ]);
+    }
+    public function accionesJornada(Request $request){
+        $user = session()->get('user');
+        $jornada = Jornada::find($request->id);
+    
+        if ($request->op == "1"){
+            $jornada->estado = 2;
+            $result= "Aprobación realizada";
+        } elseif ($request->op == "2") {
+            $jornada->estado = 3;
+            $result= "Registro rechazado";
+        } elseif ($request->op == "3") {
+            $jornada->delete();
+            $result= "Registro eliminado";
+        }
+    
+        $jornada->observacion = $request->obs;
+        $jornada->revisado_por = $user;
+        $jornada->fecha_revision = Carbon::now()->format('Y-m-d');
+        $jornada->save();
+    
+        return $result;
+    }
+
+    public function validarCorte(Request $request){
+        $cortes = Corte::all();
+        $fecha = $request->fecha;
+        foreach ($cortes as $c){
+            if (($fecha >= $c->fecha_inicio)&& ($fecha<= $c->fecha_fin)){
+                return $c->estado;
+            }
+        }
+        return 1;
+    }
+    
 }

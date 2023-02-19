@@ -233,3 +233,86 @@ btnConsultar.addEventListener("click", function() {
     });
 });
 }
+var btnConsultarAdmin = document.getElementById("btnConsultarAdmin");
+if (btnConsultarAdmin != null) {
+btnConsultarAdmin.addEventListener("click", function() {
+    //alert("");
+    var formData = $("#formConsultaAdmin").serialize(); 
+    $.ajax({
+        type: "GET",
+        url: "/consultaJornadaAdmin",
+        data: formData,
+        success: function(response) {
+            $("#consultaAdmin").html(response);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log(textStatus, errorThrown);
+        }
+    });
+});
+}
+function refreshConsulta(){
+    var formData = $("#formConsultaAdmin").serialize(); 
+    $.ajax({
+        type: "GET",
+        url: "/consultaJornadaAdmin",
+        data: formData,
+        success: function(response) {
+            $("#consultaAdmin").html(response);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log(textStatus, errorThrown);
+        }
+    });
+}
+function accionj(op,id){
+    //alert(op);
+    //alert(id);
+        var obs = document.getElementById('obs'+id).value;
+        data = { id : id , op : op, obs:obs}
+        url="/accionesJornada"
+        $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) { 
+                refreshConsulta();
+                alert(data)
+            }
+        }); 
+    
+}
+var btnDistribucion = document.getElementById("btnDistribucion");
+if (btnDistribucion != null) {
+btnDistribucion.addEventListener("click", function() {
+    //alert("");
+    var formData = $("#formConsultaAdmin").serialize(); 
+    $.ajax({
+        type: "GET",
+        url: "/distribucion",
+        data: formData,
+        success: function(response) {
+            $("#consultaAdmin").html(response);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log(textStatus, errorThrown);
+        }
+    });
+});
+}
+function validarCorte(fecha){
+    $.ajax({
+        type: "GET",
+        url: "/validarCorte",
+        data: {fecha : fecha},
+        success: function(response) {
+           if (response==0){
+                alert("El corte para esta fecha se encuentra deshabilitado");
+                document.getElementById('fecha').value="";
+           }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log(textStatus, errorThrown);
+        }
+    });
+}

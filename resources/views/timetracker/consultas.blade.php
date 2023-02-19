@@ -2,9 +2,9 @@
 
 @section('content')
 
-<form id="formConsultaAdmin">
+<form id="formConsultaAdmin" action="exportReporte" method="get" target="_blank">
 <div class="row">
-    <div class="col-12 col-md-10">
+    <div class="col-12 col-md-12">
         <div class="card" >
             <div class="card-body">
                 <div class="row">
@@ -13,9 +13,9 @@
                         <input type="text" class="form-control" name="proyecto" id="proyecto">
                     </div>   
                     <div class="col-12 col-md-8">
-                        <label for="empleado" class="form-label">Trabajador</label>
-                        <select class="form-control" id="empleado" name="empleado">
-                            <option value="0"></option>
+                        <label for="trabajador" class="form-label">Trabajador</label>
+                        <select class="form-control" id="trabajador" name="trabajador">
+                            <option value=""></option>
                             @foreach ($emp as $e)
                                 <option value="{{ $e->id }}">{{ $e->apellido1 . " " . $e->nombre}}</option>
                             @endforeach
@@ -43,9 +43,10 @@
                     <div class="col-12 col-md-3">
                         <label for="inicio" class="form-label">Estado</label>
                         <select class="form-control" id="estado" name="estado">
-                            <option value="t">Todos</option>
-                            <option value="p">Pendientes</option>
-                            <option value="a">Aprobados</option>
+                            <option value="">Todos</option>
+                            <option value="1">Pendiente</option>
+                            <option value="2">Aprobada</option>
+                            <option value="3">Rechazada</option>
                         </select>
                     </div>
                    
@@ -55,7 +56,7 @@
                         <button class="btn btn-3" id="btnConsultarAdmin" type="button">Consultar</button> 
                     </div>
                     <div class="col-12 col-md-3">
-                        <button class="btn btn-3" id="btnConsultar" type="button">Distribución</button> 
+                        <button class="btn btn-3" id="btnDistribucion" type="button">Distribución</button> 
                     </div>
                 </div>
             </div>
@@ -63,8 +64,8 @@
     </div>
 </div><br>
 <div class="row">
-    <div class="col-12 col-md-10">
-        <div id="consulta">
+    <div class="col-12">
+        <div id="consultaAdmin">
 
         </div>
     </div>

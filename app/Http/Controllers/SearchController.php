@@ -77,9 +77,15 @@ class SearchController extends Controller
         $codigo = $request->codigo;
         $data = Proyecto::where("codigo",$codigo)->first();
         $data['cliente'] = $data->cliente->cliente;
-        $data['director'] = $data->ndirector->nombre." ".$data->ndirector->apellido1;
-        $data['lider'] = $data->nlider->nombre." ".$data->nlider->apellido1;
-
+        if($data->ndirector){
+           $data['director'] = $data->ndirector->nombre." ".$data->ndirector->apellido1;
+        }
+        else{
+          $data['director'] ="";
+        }
+        if($data->nlider){
+          $data['lider'] = $data->nlider->nombre." ".$data->nlider->apellido1;
+        }
         $ps = Programacion::where('proyecto',$request->codigo)->get();
         $ts = collect([]);
         foreach ($ps as $p){

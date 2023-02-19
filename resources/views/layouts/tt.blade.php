@@ -36,7 +36,7 @@
             Registros</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="javascript:void(0)">
+          <a class="nav-link active" href="/consultas">
             <i class="bi bi-search"></i>
             Consultas</a>
         </li>
@@ -53,15 +53,16 @@
         </li>
         @endif
       </ul>
-      <form class="d-flex">
+      <!--<form class="d-flex">
         <input class="form-control me-2" type="text" placeholder="Buscar">
         <button class="btn btn-primary" type="button">Buscar</button>
-      </form>
+      </form>-->
+      <p style="color:white">{{ session('nombre') }}&nbsp; <button class="btn btn-primary btn-3" onclick="window.open('/logout','_self')">Salir</button></p>
     </div>
   </div>
 </nav>
 
-<div class="container-fluid mt-3">
+<div class="container-fluid mt-1">
     @yield('content')
 </div>
 

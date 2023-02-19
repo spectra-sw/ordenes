@@ -28,7 +28,7 @@ use App\Models\Festivo;
 use App\Models\Novedad;
 use App\Models\Autorizacion;
 use App\Models\Cargo;
-
+use App\Models\Corte;
 use Log;
 
 use Carbon\Carbon;
@@ -97,6 +97,7 @@ class PagesController extends Controller
             $horarios = Horario::all();
             $areas = Area::all();
             $cargos = Cargo::all();
+            $cortes = Corte::all();
             return view('bases',[
                 'emp' => $emp,
                 'cdc' => $cdc,
@@ -106,7 +107,8 @@ class PagesController extends Controller
                 'authpr' => $authpr,
                 'areas' => $areas,
                 'area' => $area,
-                'cargos' => $cargos
+                'cargos' => $cargos,
+                'cortes' => $cortes
             ]);
         }
         else{
