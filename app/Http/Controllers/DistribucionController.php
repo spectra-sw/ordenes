@@ -13,7 +13,7 @@ class DistribucionController extends Controller
     //
     public function distribucion(Request $request){
         $datos = $this->getDatosDistribucion($request);
-
+        $datos = $datos->sortBy(['codigo del empleado','fecha movimiento']);
         return view('tablan',[
             'datos' => $datos,
             'total' => array(),

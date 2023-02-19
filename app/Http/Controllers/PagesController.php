@@ -49,7 +49,7 @@ class PagesController extends Controller
     public function login(){
         session(['user' => '']);
         session(['tipo' => 3]);
-        return view('login');
+        return view('timetracker.login');
 
     }
     public function menu(){

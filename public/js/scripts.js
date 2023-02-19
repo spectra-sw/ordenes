@@ -402,7 +402,7 @@ function login(){
     pwd = $("#pwd").val();
 
     if ((email =="")||(pwd=="")){
-        $("#mensaje").html("* Debe ingresar todos los campos");
+        errorHandler("* Debe ingresar todos los campos")
         $("#alerta").css('display','block');
     }
     else{
@@ -425,7 +425,7 @@ function login(){
                     window.open('menu','_self');
                 }
                 if ((data != 0)&&(data != 1)&&(data != 10)){
-                    $("#mensaje").html(data);
+                    errorHandler("* Datos inválidos");
                     $("#alerta").css('display','block');
                 }
             }
@@ -436,7 +436,7 @@ function login(){
 
 //admin
 function nuevoemp(){
-    $("#nuevoemp").modal();
+    $("#nuevoemp").modal("show");
 }
 function nuevocdc(){
     $("#nuevocdc").modal();
@@ -446,7 +446,7 @@ function nuevoproyecto(){
     $("#nuevoproyecto").modal();
 }
 function nuevocliente(){
-    $("#nuevocliente").modal();
+    $("#nuevocliente").modal("show");
 }
 function guardare(){
     band=0;
@@ -562,17 +562,17 @@ function acciones(op,id){
             data: data,
             success: function(data) { 
                 $("#editarBody").html(data);
-                $("#editaremp").modal();
+                $("#editaremp").modal("show");
             }
         }); 
     }
     if(op==2){
         $("#id").val(id);
-        $("#eliminaremp").modal(); 
+        $("#eliminaremp").modal("show"); 
     }
     if(op==3){
         $("#idup").val(id);
-        $("#password").modal();
+        $("#password").modal("show");
     }
     
 }
@@ -685,7 +685,7 @@ function accionescliente(op,id){
             success: function(data) { 
                 //alert(data);
                 $("#editarClienteBody").html(data);
-                $("#editarcliente").modal();
+                $("#editarcliente").modal("show");
             }
         }); 
     }
@@ -1519,4 +1519,14 @@ function delOcupacion(ocupacion_id){
             }
         }); 
     } 
+}
+function errorHandler(mensaje) {
+    $.ajax({
+        type: "GET",
+        url: '/mensaje/error',
+        data : { mensaje: mensaje },
+        success: function(response) {
+            $('#mensaje').html(response);
+        }
+    });
 }

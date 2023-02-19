@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-12 col-md-10">
-        <button class="btn  btn-2" id="btnNuevaJornada">Nueva jornada</button>&nbsp;<button class="btn  btn-2" id="btnMisjornadas" onclick="window.open('/misjornadas');">Mis jornadas</button><br><br>
+        <button class="btn  btn-2" id="btnNuevaJornada">Nueva jornada</button>&nbsp;<button class="btn  btn-2" id="btnMisjornadas" onclick="window.open('/misjornadas','_self');">Mis jornadas</button><br><br>
         <div id="formJornada" style="display: none">
             <form id="formRegistro">
                 <input type="hidden" id="jornada_id" name="jornada_id">

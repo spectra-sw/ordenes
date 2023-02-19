@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="container">
+<div class="container mt-0">
    
     <br>
     <!-- Nav tabs -->
@@ -61,8 +61,30 @@
 </div>
 
 @include('modalProyecto')
+@include('modalEmpleado')
+@include('modalCdc')
+@include('modalCliente') 
 
-
+<div class="modal fade" id="password">
+    <div class="modal-dialog">
+      <div class="modal-content">  
+        <!-- Modal body -->
+       
+        <!-- Modal body -->
+        <div class="modal-body" id="eliminarBody">
+        <p>Nueva contraseña</p>
+        <p><input type="password" id="pwd" name="pwd" class="form-control"></p>
+        <input type="hidden" id="idup" name="idup" value=""> 
+        <button type="button" class="btn btn-primary" onclick="updatepwd()">Actualizar</button>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+      </div>      
+      </div>
+    </div>
+</div>
 
   <script>
     $(document).ready(function () {
