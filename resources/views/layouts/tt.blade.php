@@ -44,7 +44,7 @@
         <li class="nav-item">
           <a class="nav-link active" href="/ocupacion">
             <i class="bi bi-clock"></i>
-            Ocupacion</a>
+            Ocupación</a>
         </li>            
         @endif
         @if (session('tipo')==0)

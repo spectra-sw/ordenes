@@ -6,7 +6,7 @@
    
     <br>
     <!-- Nav tabs -->
-    <ul class="nav nav-tabs" role="tablist">
+    <ul class="nav nav-tabs" role="tablist" id="tabAdmin">
       <li class="nav-item">
         <a class="nav-link active" data-bs-toggle="tab" href="#home">Empleados</a>
       </li>
