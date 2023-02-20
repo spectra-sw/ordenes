@@ -27,22 +27,21 @@
     </tbody>
 </table>
 <br>
+<!---->
 <table class="table table-bordered table-striped table-sm">
     <thead>
       <tr>
-        <th>Código</th>
+        <th>Concepto</th>
         <th>Total horas</th>
       </tr>
     </thead>
     <tbody>
-    @foreach ($total as $clave => $valor)     
       <tr>
-        <td>{{ $clave }}</td>
-        <td>{{ $valor }}</td>
+        <td>Almuerzo</td>
+        <td>{{ $talmuerzo }}</td>
       </tr>
-      @endforeach 
+    
     </tbody>
 </table>
-    
 <br>
 <button type="submit" class="btn btn-success">Exportar</button>

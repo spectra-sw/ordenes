@@ -13,16 +13,16 @@ class DistribucionController extends Controller
     //
     public function distribucion(Request $request){
         $datos = $this->getDatosDistribucion($request);
-        $datos = $datos->sortBy(['codigo del empleado','fecha movimiento']);
+        $datos[0] = $datos[0]->sortBy(['codigo del empleado','fecha movimiento']);
         return view('tablan',[
-            'datos' => $datos,
-            'total' => array(),
+            'datos' => $datos[0],
+            'talmuerzo' => $datos[1] ,
         ]);
 
     }
     function getDatosDistribucion($request){
-        $jornadas = Jornada::query()
-        ->where('tipo', 1);
+        $jornadas = Jornada::query();
+       
         if ($request->proyecto) {
             $jornadas->where('proyecto', $request->proyecto);
         }
@@ -39,6 +39,7 @@ class DistribucionController extends Controller
 
         $datos = collect([]);
         $tsb=0;
+        $talmuerzo = 0;
         foreach ($jornadas as $j){
             $hi = explode(":", $j->hi);
             $hi =intval($hi[0]) + round(floatval($hi[1]/60),1);
@@ -46,91 +47,97 @@ class DistribucionController extends Controller
             $hf = explode(":", $j->hf);
             $hf =intval($hf[0]) + round(floatval($hf[1]/60),1);
             //dd($hf);
-
-            $centro = Cdc::where('codigo',$j->proyecto)->first();
-            $festivo = app('App\Http\Controllers\FilesController')->consfestivo($j->fecha);
-            $c = new Carbon($j->fecha);
-            $numdia = $c->dayOfWeek;
-            $emp=Empleado::where('id',$j->user_id)->first();
-            $sb = $hedo = $heno= $hedf = $henf = $rno = $dtsc = $rnd = 0;
+            if ($j->tipo == 0){
+                $talmuerzo = $talmuerzo + ($hf-$hi);
             
-            $laborales = 8.5;
-            if (($numdia > 0)&&($festivo=="no")){
-                $sb = $hf - $hi;
-                if ($sb>$laborales){
-                    $excede = $sb -$laborales;
-                    $sb =$laborales;
-                    $hedo = $excede;  
-                }
-                $heno = $this->calcularHeno($hi,$hf);
-                $sb = $sb-$heno;
+            }
 
-                if($sb==0){
-                    $rno=$heno;
-                }
-        
-            }
-            if (($numdia == 0)||($festivo=="si")){
-                if($festivo=="si"){
-                    $hedf=$hf - $hi;
-                }
-                if($festivo=="no"){
-                    $dtsc=$hf - $hi;
-                }
-                $henf = $this->calcularHeno($hi,$hf);
-                $hedf = $hedf-$henf;
-            }
-            $valores = [
-                'emp' => $emp->cc,
-                'concepto' => '',
-                'centro' => $centro->centro_operacion,
-                'proyecto' => $j->proyecto,
-                'fecha' => str_replace("-","",$j->fecha),
-                'horas' => 0,
-                'unidad' => $centro->unidad_negocio
-            ];
+            if ($j->tipo == 1){
+                $centro = Cdc::where('codigo',$j->proyecto)->first();
+                $festivo = app('App\Http\Controllers\FilesController')->consfestivo($j->fecha);
+                $c = new Carbon($j->fecha);
+                $numdia = $c->dayOfWeek;
+                $emp=Empleado::where('id',$j->user_id)->first();
+                $sb = $hedo = $heno= $hedf = $henf = $rno = $dtsc = $rnd = 0;
+                
+                $laborales = 8.5;
+                if (($numdia > 0)&&($festivo=="no")){
+                    $sb = $hf - $hi;
+                    if ($sb>$laborales){
+                        $excede = $sb -$laborales;
+                        $sb =$laborales;
+                        $hedo = $excede;  
+                    }
+                    $heno = $this->calcularHeno($hi,$hf);
+                    $sb = $sb-$heno;
 
-            if ($sb>0){
-                //dd($sb);
-                $valores['concepto']="001";
-                $valores['horas'] = $sb;
-                $tsb = $tsb + $sb;
-                $linea = $this->addlinea($datos,$valores); 
-                $datos->push($linea); 
-            }
-            if ($hedo>0){
-                //dd($sb);
-                $valores['concepto']="006";
-                $valores['horas'] = $hedo;
-                $linea = $this->addlinea($datos,$valores); 
-                $datos->push($linea); 
-            }
-            if ($heno>0){
-                $valores['concepto']="007";
-                $valores['horas'] = $heno;
-                $linea = $this->addlinea($datos,$valores); 
-                $datos->push($linea); 
-            }
-            if($rno>0){
-                $valores['concepto']="012";
-                $valores['horas'] = $rno;
-                $linea = $this->addlinea($datos,$valores); 
-                $datos->push($linea); 
-            }
-            if($dtsc>0){
-                $valores['concepto']="011";
-                $valores['horas'] = $dtsc;
-                $linea = $this->addlinea($datos,$valores); 
-                $datos->push($linea); 
-            }
-            if($hedf>0){
-                $valores['concepto']="008";
-                $valores['horas'] = $hedf;
-                $linea = $this->addlinea($datos,$valores); 
-                $datos->push($linea); 
+                    if($sb==0){
+                        $rno=$heno;
+                    }
+            
+                }
+                if (($numdia == 0)||($festivo=="si")){
+                    if($festivo=="si"){
+                        $hedf=$hf - $hi;
+                    }
+                    if($festivo=="no"){
+                        $dtsc=$hf - $hi;
+                    }
+                    $henf = $this->calcularHeno($hi,$hf);
+                    $hedf = $hedf-$henf;
+                }
+                $valores = [
+                    'emp' => $emp->cc,
+                    'concepto' => '',
+                    'centro' => $centro->centro_operacion,
+                    'proyecto' => $j->proyecto,
+                    'fecha' => str_replace("-","",$j->fecha),
+                    'horas' => 0,
+                    'unidad' => $centro->unidad_negocio
+                ];
+
+                if ($sb>0){
+                    //dd($sb);
+                    $valores['concepto']="001";
+                    $valores['horas'] = $sb;
+                    $tsb = $tsb + $sb;
+                    $linea = $this->addlinea($datos,$valores); 
+                    $datos->push($linea); 
+                }
+                if ($hedo>0){
+                    //dd($sb);
+                    $valores['concepto']="006";
+                    $valores['horas'] = $hedo;
+                    $linea = $this->addlinea($datos,$valores); 
+                    $datos->push($linea); 
+                }
+                if ($heno>0){
+                    $valores['concepto']="007";
+                    $valores['horas'] = $heno;
+                    $linea = $this->addlinea($datos,$valores); 
+                    $datos->push($linea); 
+                }
+                if($rno>0){
+                    $valores['concepto']="012";
+                    $valores['horas'] = $rno;
+                    $linea = $this->addlinea($datos,$valores); 
+                    $datos->push($linea); 
+                }
+                if($dtsc>0){
+                    $valores['concepto']="011";
+                    $valores['horas'] = $dtsc;
+                    $linea = $this->addlinea($datos,$valores); 
+                    $datos->push($linea); 
+                }
+                if($hedf>0){
+                    $valores['concepto']="008";
+                    $valores['horas'] = $hedf;
+                    $linea = $this->addlinea($datos,$valores); 
+                    $datos->push($linea); 
+                }
             }
         }
-        return $datos;   
+        return [$datos,$talmuerzo]; 
     }
     function addLinea($datos,$valores){
         $linea=collect([]);

@@ -40,6 +40,13 @@
             <i class="bi bi-search"></i>
             Consultas</a>
         </li>
+        @if (session('tipo')!=1)
+        <li class="nav-item">
+          <a class="nav-link active" href="/ocupacion">
+            <i class="bi bi-clock"></i>
+            Ocupacion</a>
+        </li>            
+        @endif
         @if (session('tipo')==0)
         <li class="nav-item dropdown">
             <a class="nav-link active dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
