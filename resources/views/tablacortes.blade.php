@@ -20,7 +20,7 @@
         <td><select class="form-control" id="{{ $c->id }}" onchange="accionescortes(this.value,this.id)">
             <option></option>
             <option value="1">Habilitar</option>
-            <option value="2">Cerrar</option>
+            <option value="0">Cerrar</option>
         </select></td>
         
       </tr>

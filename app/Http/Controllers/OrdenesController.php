@@ -237,5 +237,14 @@ class OrdenesController extends Controller
         }
         return 1;
     }
-    
+    public function accionCorte(Request $request){
+        $op = $request->op;
+        $id = $request->id;
+
+        $c = Corte::where('id',$id)->update([
+            'estado' => $op
+        ]);
+
+        return "Acción realizada";
+    }
 }

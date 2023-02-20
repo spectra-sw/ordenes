@@ -193,6 +193,7 @@ Route::get('/misjornadas',[OrdenesController::class,'misjornadas']);
 Route::get('/distribucion',[DistribucionController::class,'distribucion']);
 Route::get('/validarCorte',[OrdenesController::class,'validarCorte']);
 
+Route::get('/accioncorte',[OrdenesController::class,'accionCorte']);
 
 //mensajes
 Route::get('/mensaje/error',[MensajesController::class,'error']);

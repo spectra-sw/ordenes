@@ -694,6 +694,24 @@ function accionescliente(op,id){
         $("#eliminarcliente").modal(); 
     }
 }
+function accionescortes(op,id){
+    //alert(op);
+    //alert(id);
+        data = { id : id, op :op }
+        url="/accioncorte"
+        $.ajax({
+            url: url,
+            type:'GET',
+            data: data,
+            success: function(data) { 
+                alert(data); 
+                location.reload();
+                $('#tabAdmin a[href="#cortes"]').tab('show');
+            }
+        }); 
+    
+   
+}
 function editare(){
     band=0;
     $('#formEdit input').each(function() { 
