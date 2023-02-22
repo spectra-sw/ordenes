@@ -16,7 +16,7 @@
                                 <select id="tipo" name="tipo" id="tipo" class="form-control">
                                     <option value="">Seleccione</option>
                                     <option value="1">Actividad</option>
-                                    <option value="0">Almuerzo</option>
+                                    <!--<option value="0">Almuerzo</option>-->
                                     
                                 <select>
                             </div>

@@ -29,6 +29,7 @@ use App\Models\Novedad;
 use App\Models\Autorizacion;
 use App\Models\Cargo;
 use App\Models\Corte;
+use App\Models\Autorizados;
 use Log;
 
 use Carbon\Carbon;
@@ -1322,12 +1323,17 @@ class PagesController extends Controller
         }
         $area = Empleado::where('id',$u)->first()->area;
         $novedades=Novedad::all();
+
+        $user = session('user');
+        $aut = Autorizados::where('empleado_id',$user)->get();
+        $employees = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();
         return view('ocupacion',[
             'areas' => $areas,
             'actividades' => $actividades,
-            'proyectos' => $proyectos,
+            'proyectos' => $aut,
             'area' => $area,
-            'novedades' => $novedades
+            'novedades' => $novedades,
+            'emp' => $employees
 
         ]);
     }

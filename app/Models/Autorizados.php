@@ -17,4 +17,8 @@ class Autorizados extends Model
     {
         return $this->belongsTo(Empleado::class, 'empleado_id', 'id');
     }
+    public function proyectoinfo()
+    {
+        return $this->belongsTo(Proyecto::class, 'proyecto', 'codigo');
+    }
 }

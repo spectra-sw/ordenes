@@ -68,7 +68,7 @@
                             <select class="form-control" id="proyecto" name="proyecto">
                                 <option value=""><option>
                                 @foreach ($proyectos as $p)
-                                    <option value="{{ $p->codigo }}">{{ $p->codigo . " " . $p->cliente->cliente }}</option>
+                                    <option value="{{ $p->proyecto }}">{{$p->proyecto . " " . $p->proyectoinfo->cliente->cliente }}</option>
                                 @endforeach
                             </select>
                         </select>
@@ -139,7 +139,9 @@
                             <div class="col-6 col-md-2 "><input type="date" name="fechaFinalOcup" id="fechaFinalOcup" class="form-control"></div>
             </div>     
                         <div class="row">
-                            <button type="button" class="btn btn-primary" onclick="consultaroc()">Consultar</button>&nbsp;       
+                            <div class="col-6 col-md-2">
+                                <button type="button" class="btn btn-3" onclick="consultaroc()">Consultar</button>&nbsp;       
+                            </div>
                         </div>
 
                         <div id="tablaocupacion">
@@ -173,19 +175,33 @@
                 <div class="row">
                     <div class="col-6 col-md-2 cajaAzul">Responsable</div>
                     <div class="col-6 col-md-10">                 
-                <select class="form-control basicAutoSelect" name="responsable" id="responsable"
+                <!--<select class="form-control basicAutoSelect" name="responsable" id="responsable"
                         placeholder="buscar..."
-                        data-url="autoemp" autocomplete="off"></select>
+                        data-url="autoemp" autocomplete="off"></select>-->
+                        <select class="form-control" id="responsable" name="responsable">
+                            <option value=""></option>
+                            @foreach ($emp as $e)
+                                <option value="{{ $e->cc }}">{{ $e->apellido1 . " " . $e->nombre}}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
             @endif 
             <div class="row">
-                <button type="button" class="btn btn-primary" onclick="seguimiento()">Seguimiento</button>&nbsp;    
-                <button type="button" class="btn btn-primary" onclick="generalo()">General</button>&nbsp;    
+                <div class="col-6 col-md-2">
+                    <button type="button" class="btn btn-3" onclick="seguimiento()">Seguimiento</button>&nbsp;    
+                </div>
+                <div class="col-6 col-md-2">
+                    <button type="button" class="btn btn-3" onclick="generalo()">General</button>&nbsp;    
+                </div>
                 @if ($area==6)
-                <button type="button" class="btn btn-primary" onclick="distribuciono()">Archivo Distribución</button>&nbsp;  
+                <div class="col-6 col-md-2">
+                 <button type="button" class="btn btn-3" onclick="distribuciono()">Archivo Distribución</button>&nbsp;  
+                </div>
                 @endif
-                <button type="button" class="btn btn-primary" onclick="analiticas()">Archivo Analíticas</button>&nbsp;
+                <div class="col-6 col-md-2">
+                    <button type="button" class="btn btn-3" onclick="analiticas()">Archivo Analíticas</button>&nbsp;
+                </div>
             </div>
 
             <div id="tablareporteo">
@@ -204,8 +220,8 @@
                     <label class="custom-file-label" for="customFile">Choose file</label>
                 </div>
             </div>
-            <button class="btn btn-primary">Importar horas</button><br>
-                <table id="tableNovedades" class="display" style="width:100%;overflow:scroll;color:black">
+            <button class="btn btn-3">Importar horas</button><br>
+                <table id="tableNovedades" class="table table-striped" style="width:100%;overflow:scroll;color:black">
                     <thead>
                         <tr>
                             <th>CC</th>
@@ -242,5 +258,6 @@
     } );
 </script>
 
-<script src="{{asset('js/scripts.js')}}"></script>                
+<script src="{{asset('js/scripts.js')}}"></script>   
+<script src="{{asset('js/scripts_jornada.js')}}"></script>               
 @endsection
