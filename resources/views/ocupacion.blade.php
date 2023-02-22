@@ -1,29 +1,32 @@
-@extends('layouts.app')
+@extends('layouts.tt')
 
 @section('content')
-<ul class="nav nav-tabs">
+<br>
+<div class="container mt-0"> 
+
+<ul class="nav nav-tabs" role="tablist" id="tabOcupacion">
     <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#registrar">Registrar</a>
+        <a class="nav-link active" data-bs-toggle="tab" href="#registrar">Registrar</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#misregistros">Mis registros</a>
+        <a class="nav-link" data-bs-toggle="tab" href="#misregistros">Mis registros</a>
     </li>
     
     @if (session('tipo')==0)
     <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#reporteso">Reportes</a>
+        <a class="nav-link" data-bs-toggle="tab" href="#reporteso">Reportes</a>
     </li>
     @endif
     @if (session('area')==6)
     <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#horasNovedad">Horas</a>
+        <a class="nav-link" data-bs-toggle="tab" href="#horasNovedad">Horas</a>
     </li>
     @endif
     
 
 </ul>
 <div class="tab-content">
-    <div class="tab-pane container active" id="registrar">
+    <div id="registrar" class="container tab-pane active">
         <br>
     <form id="formRegistro" >
         <div class="card">
@@ -117,7 +120,7 @@
             <br>
             <div class="row">
                 <div class="col-md-4">
-                    <button type="button" class="btn btn-primary" onclick="rocupacion()">REGISTRAR</button>
+                    <button type="button" class="btn btn-3" onclick="rocupacion()">REGISTRAR</button>
                 </div>
             </div>
         </div>
@@ -126,7 +129,7 @@
         </form>
                        
     </div>
-    <div class="tab-pane container fade" id="misregistros">
+    <div class="container tab-pane fade" id="misregistros">
         <br>
         <form id="formConsultaOcupacion" action="" method="get" target="_blank">    
             <div class="row">
@@ -227,6 +230,7 @@
         </form>
     </div>                
                     
+</div>
 </div>
 <script type="text/javascript">
     $('#responsable').autoComplete();
