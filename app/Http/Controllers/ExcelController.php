@@ -649,7 +649,7 @@ class ExcelController extends Controller
     public function exportt(Request $request){
         //dd($request);
         $datos=app(DistribucionController::class)->getDatosDistribucion($request);
-        $datos = $datos->sortBy(['codigo del empleado','fecha movimiento']);
+        $datos = $datos[0]->sortBy(['codigo del empleado','fecha movimiento']);
         return Excel::download(new NominaExport($datos), 'nomina.xlsx');
     }
     public function consfestivo($fecha){     
