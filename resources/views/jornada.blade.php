@@ -11,17 +11,18 @@
                 <div class="card" >
                 <div class="card-header">Registro jornada de trabajo</div>
                     <div class="card-body">
-                        <div class="row">
+                        <input type="hidden" id="tipo" name="tipo" value="1">
+                        <!--<div class="row">
                             <div class="col-12 col-md-10">
                                 <select id="tipo" name="tipo" id="tipo" class="form-control">
                                     <option value="">Seleccione</option>
                                     <option value="1">Actividad</option>
-                                    <!--<option value="0">Almuerzo</option>-->
+                                    <option value="0">Almuerzo</option
                                     
                                 <select>
                             </div>
-                        </div><br>
-                        <div id="datos" style="display: none">
+                        </div><br>-->
+                        <div id="datos" >
                             <div class="row">
                                 <div class="col-6 col-md-2 cajaAzul">Proyecto *</div>
                                 <div class="col-6 col-md-2 ">
@@ -69,7 +70,7 @@
                             </div>
                             <br>
                         </div>
-                        <div id="datos2" style="display: none">
+                        <div id="datos2">
                             <div class="row">
                                 <div class="col-6 col-md-2 cajaAzul">Fecha *</div>
                                 <div class="col-6 col-md-2 "><input type="date" name="fecha" id="fecha" class="form-control" onchange="validarCorte(this.value)" required></div>

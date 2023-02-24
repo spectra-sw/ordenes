@@ -198,3 +198,4 @@ Route::get('/accioncorte',[OrdenesController::class,'accionCorte']);
 //mensajes
 Route::get('/mensaje/error',[MensajesController::class,'error']);
 Route::get('/mensaje/exito',[MensajesController::class,'exito']);
+Route::get('/mensaje/info',[MensajesController::class,'info']);

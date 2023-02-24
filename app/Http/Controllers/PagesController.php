@@ -1201,7 +1201,7 @@ class PagesController extends Controller
             'estado' =>0
           ]);
         
-        return "Empleado eliminado";
+        return "Empleado inactivado";
     }
     public function tablaemp(Request $request){
         $campo = $request->campo;

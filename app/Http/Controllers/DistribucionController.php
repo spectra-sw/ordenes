@@ -60,7 +60,7 @@ class DistribucionController extends Controller
                 $emp=Empleado::where('id',$j->user_id)->first();
                 $sb = $hedo = $heno= $hedf = $henf = $rno = $dtsc = $rnd = 0;
                 
-                $laborales = 8.5;
+                $laborales = 9.5;
                 if (($numdia > 0)&&($festivo=="no")){
                     $sb = $hf - $hi;
                     if ($sb>$laborales){

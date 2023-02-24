@@ -118,9 +118,9 @@
        
         <!-- Modal body -->
         <div class="modal-body" id="eliminarBody">
-        <p>Desea eliminar a este empleado?</p>
+        <p>Desea inactivar a este empleado?</p>
         <input type="hidden" id="id" name="id" value=""> 
-        <button type="button" class="btn btn-primary" onclick="eliminare()">Eliminar</button>
+        <button type="button" class="btn btn-3" onclick="eliminare()">Inactivar</button>
         </div>
         
         <!-- Modal footer -->

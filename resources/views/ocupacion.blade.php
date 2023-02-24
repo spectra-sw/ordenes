@@ -40,13 +40,8 @@
                     </div>
                 </div>
             </div>
-            <div class="row" style="display:none" id="divhoras">
-                <div class="col-md-12">
-                    <div class="alert alert-info alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        <span id="msghoras"></span>
-                    </div>
-                </div>
+            <div id="mensaje">
+               
             </div>
             <div class="row">
                 <div class="col-md-6">

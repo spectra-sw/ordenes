@@ -21,6 +21,7 @@
                     </thead>
                     <tbody>
                         @foreach($jornadas as $j)
+                            
                             <tr>
                                 <td>{{ $j->trabajador->apellido1 . " " . $j->trabajador->apellido2 . " " . $j->trabajador->nombre}}</td>
                                 <td>{{ $j->fecha }}</td>
@@ -29,27 +30,28 @@
                                 <td>{{ $j->tipo == 1 ? "Actividad" : "Almuerzo" }}</td>
                                 <td>{{ $j->hi }}</td>
                                 <td>{{ $j->hf }}</td>
-                                <td>
+                                
                                 @switch($j->estado)
+                               
                                     @case(1)
-                                        Pendiente
+                                        <td class="table-warning">Pendiente</td>
                                         @break
                                     @case(2)
-                                        Aprobada
+                                        <td class="table-success">Aprobada</td>
                                         @break
                                     @case(3)
-                                        Rechazada
+                                        <td class="table-danger">Rechazada</td>
                                         @break
                                     @default
                                         Valor no reconocido
                                 @endswitch
-                                </td>
+                               
                                 <td>
-                                    <input type="text" id="obs{{ $j->id }}" name="obs" value={{ $j->observacion }}>
+                                    <input type="text" id="obs{{ $j->id }}" name="obs" value="{{ str_replace(' ', ' ', $j->observacion) }}">
                                 </td>    
                                 <td>
                                     <select class="form-control" onchange="accionj(this.value,this.id)" id="{{ $j->id }}" >
-                                        <option value=""></option>
+                                        <option value="">--Elige una opción--</option>
                                         <option value="1">Aprobar</option> 
                                         <option value="2">Rechazar</option> 
                                         <option value="3">Eliminar</option> 

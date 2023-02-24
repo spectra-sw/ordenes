@@ -206,6 +206,7 @@ class OrdenesController extends Controller
     }
     public function accionesJornada(Request $request){
         $user = session()->get('user');
+        //dd($request->obs);
         $jornada = Jornada::find($request->id);
     
         if ($request->op == "1"){
@@ -216,12 +217,13 @@ class OrdenesController extends Controller
             $result= "Registro rechazado";
         } elseif ($request->op == "3") {
             $jornada->delete();
-            $result= "Registro eliminado";
+            return  "Registro eliminado";
         }
     
         $jornada->observacion = $request->obs;
         $jornada->revisado_por = $user;
         $jornada->fecha_revision = Carbon::now()->format('Y-m-d');
+       //dd($jornada);
         $jornada->save();
     
         return $result;

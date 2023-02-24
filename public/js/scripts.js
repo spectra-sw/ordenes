@@ -588,6 +588,7 @@ function accionesproyectos(op, id) {
             mostrarModalAutorizados(id);
             break;
     }
+    document.getElementById(id).value =""
 }
 
 function buscarProyecto(id) {
@@ -1156,6 +1157,7 @@ function rocupacion(){
                 data: data,
                 success: function(data) {
                     alert(data);
+                    buscarInfoOc();
                     //$('#formRegistro').trigger("reset");
                     $('#proyecto').val("");
                     $('#actividad').val("");
@@ -1298,10 +1300,8 @@ function buscarInfoOc(){
             url: url,
             type:'GET',
             data: data,
-            success: function(data) {
-                
-                $("#msghoras").html(data); 
-                $("#divhoras").css('display','block');
+            success: function(data) {              
+                infoHandler(data);
             }
     });   
 }
@@ -1545,6 +1545,26 @@ function errorHandler(mensaje) {
         data : { mensaje: mensaje },
         success: function(response) {
             $('#mensaje').html(response);
+        }
+    });
+}
+function successHandler(mensaje) {
+    $.ajax({
+        type: "GET",
+        url: "/mensaje/info",
+        data: { mensaje: mensaje },
+        success: function (response) {
+            $("#mensaje").html(response);
+        }
+    });
+}
+function infoHandler(mensaje) {
+    $.ajax({
+        type: "GET",
+        url: "/mensaje/info",
+        data: { mensaje: mensaje },
+        success: function (response) {
+            $("#mensaje").html(response);
         }
     });
 }

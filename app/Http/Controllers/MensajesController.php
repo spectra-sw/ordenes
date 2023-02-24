@@ -17,4 +17,9 @@ class MensajesController extends Controller
             'mensaje' => $request->mensaje
         ]);
     }
+    public function info(Request $request){
+        return view('mensajes.info',[
+            'mensaje' => $request->mensaje
+        ]);
+    }
 }

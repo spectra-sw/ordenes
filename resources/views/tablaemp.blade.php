@@ -36,7 +36,7 @@
             <option value=""></option>
             <option value="1">Editar</option>
             <option value="3">Contraseña</option>
-            <option value="2">Eliminar</option>
+            <option value="2">Inactivar</option>
             
         </select></td>
         
