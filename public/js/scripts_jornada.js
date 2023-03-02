@@ -71,6 +71,8 @@ btnNuevaJornada.addEventListener("click", function() {
             //alert(response);
             document.getElementById("jornada_id").value = response;
             var div = document.getElementById("formJornada");
+            var registro = document.getElementById("formRegistro");
+            registro.reset();
             div.style.display = "block";
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -110,7 +112,7 @@ btnRegistrar.addEventListener("click", function() {
             }
         }
     }
-    hValid=validarHoras();
+    //hValid=validarHoras();
     sValid=validarSolape();
    
 });
@@ -158,7 +160,7 @@ function enviar(){
     if ((isValid) && (hValid) && (sValid)) {
         // Submit the form
         var formData = $("#formRegistro").serialize(); 
-        console.log(formData);
+       // console.log(formData);
         $.ajax({
             type: "GET",
             url: "/registrarJornada",

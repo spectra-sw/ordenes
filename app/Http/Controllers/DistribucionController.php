@@ -85,6 +85,20 @@ class DistribucionController extends Controller
                     }
                     $henf = $this->calcularHeno($hi,$hf);
                     $hedf = $hedf-$henf;
+
+                    //rnd
+                    if (($hi < 21)&&($hi > 6)&&($hf>21)&&($hf<=24)){
+                        $rnd = $hf - 21;
+                    }
+                    if (($hi >= 21)&&($hf<=24)){
+                        $rnd = $hf - $hi;
+                    }
+                    if (($hi >=0 )&&($hi <=6 )&&($hf>6)){
+                        $rnd = 6 - $hi;
+                    }
+                    if (($hi >= 0)&&($hf<=6)){
+                        $rnd = $hf - $hi;
+                    }
                 }
                 $valores = [
                     'emp' => $emp->cc,
@@ -131,6 +145,12 @@ class DistribucionController extends Controller
                 }
                 if($hedf>0){
                     $valores['concepto']="008";
+                    $valores['horas'] = $hedf;
+                    $linea = $this->addlinea($datos,$valores); 
+                    $datos->push($linea); 
+                }
+                if($rnd>0){
+                    $valores['concepto']="014";
                     $valores['horas'] = $hedf;
                     $linea = $this->addlinea($datos,$valores); 
                     $datos->push($linea); 

@@ -35,11 +35,13 @@
             <i class="bi bi-clock"></i>
             Registros</a>
         </li>
+        @if (session('tipo')==0)
         <li class="nav-item">
           <a class="nav-link active" href="/consultas">
             <i class="bi bi-search"></i>
             Consultas</a>
         </li>
+        @endif
         @if (session('tipo')!=1)
         <li class="nav-item">
           <a class="nav-link active" href="/ocupacion">

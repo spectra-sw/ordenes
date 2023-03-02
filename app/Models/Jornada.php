@@ -11,7 +11,7 @@ class Jornada extends Model
     protected $table = 'jornada';
     public $timestamps = true;
     protected $fillable = [
-        'id','jornada_id','user_id','proyecto','fecha','hi','hf','observacion','tipo','revisado_por','fecha_revision','estado'
+        'id','jornada_id','user_id','proyecto','fecha','hi','hf','duracion','fechaf','almuerzo','observacion','tipo','revisado_por','fecha_revision','estado'
     ];
     public function trabajador()
     {

@@ -4,7 +4,7 @@
 
 <form id="formConsultaJornada">
 <div class="row">
-    <div class="col-12 col-md-10">
+    <div class="col-12 col-md-12">
         <div class="card" >
             <div class="card-header">Rango de fechas</div>
             <div class="card-body">

@@ -92,7 +92,21 @@
                                         <option value="45">45</option>
                                     </select>
                                 </div>
-                                <div class="col-6 col-md-2 cajaAzul">Hora Fin *</div>
+                                <div class="col-6 col-md-1 cajaAzul">Duración</div>
+                                <div class="col-6 col-md-1 ">
+                                    <label for="duracion">Horas</label>
+                                    <input type="number" class="form-control" id="duracionh" name="duracionh" required>
+                                </div>
+                                <div class="col-6 col-md-1 ">
+                                    <label for="duracionm">Minutos</label>
+                                    <select class="form-control" id="duracionm" name="duracionm" required>
+                                        <option value="0">00</option>
+                                        <option value="15">15</option>
+                                        <option value="30">30</option>
+                                        <option value="45">45</option>
+                                    </select>
+                                </div>
+                                <!--<div class="col-6 col-md-2 cajaAzul">Hora Fin *</div>
                                 <div class="col-6 col-md-1 ">
                                     <select class="form-control" id="horaFin" name="horaFin" required>
                                         <option value=""></option>
@@ -109,7 +123,7 @@
                                         <option value="30">30</option>
                                         <option value="45">45</option>
                                     </select>
-                                </div>
+                                </div>-->
                             </div><br>
                             <button class="btn btn-3" id="btnRegistrar" type="button">Registrar</button> 
                         </div>
