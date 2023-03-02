@@ -168,9 +168,9 @@ class OrdenesController extends Controller
         //dd($fecha);
         //dd( $formatted_date_time );
 
-        $fechaf = Carbon::create($fecha);
-        $fechaf->addHours($request->duracionh);
-        $fechaf->addMinutes($request->duracionm);
+        $fechaf = Carbon::create($request->fecha);
+        $fechaf->addHours($hours + $request->duracionh);
+        $fechaf->addMinutes($minutes +$request->duracionm);
         $formatted_date_time = $fechaf->format('Y-m-d H:i:s');
        // dd( $formatted_date_time );
         $timestamp2_end = $fechaf->getTimestamp();
