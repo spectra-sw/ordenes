@@ -1,4 +1,4 @@
-<table class="table table-bordered table-striped table-sm" >
+<table class="table table-bordered table-striped table-sm table-responsive" >
     <thead>
         <tr>
             <th>Fecha Inicio</th>
