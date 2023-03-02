@@ -42,7 +42,7 @@
                                 @endswitch
                             
                                 <td>{{ $j->observacion }}</td>
-                                <td><button type="button" id="{{ $j->id}}" class="btn btn-danger btn-sm" onclick="delj(this.id)" {{ $estado == 0 ? 'disabled' : ''}}><i class="bi bi-file-x-fill"></i></button></td>
+                                <td><button type="button" id="{{ $j->id}}" class="btn btn-danger btn-sm" onclick="delj2(this.id)" {{ $estado == 0 ? 'disabled' : ''}}><i class="bi bi-file-x-fill"></i></button></td>
                                 
                             </tr>
                         @endforeach

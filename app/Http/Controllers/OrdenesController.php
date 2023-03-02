@@ -151,7 +151,7 @@ class OrdenesController extends Controller
         $fecha =$request->fecha;
        // $fecha = "2023-02-06";
         $jornadas = Jornada::where('user_id',$user)
-                            ->where('fecha','>=',$fecha)->get();
+                            ->where('fecha','>=',$fecha)->orWhere('fechaf','>=',$fecha)->get();
 
         //dd($jornadas->count());
         //$hi = intval($request->horaInicio) + floatval($request->minInicio);
@@ -199,7 +199,7 @@ class OrdenesController extends Controller
             $fecha4->addHours($hours+$hoursf);
             $fecha4->addMinutes($minutes+$minutesf);
           
-            //dd($fecha3  );
+            //dd($fecha  );
             if ($fecha >= $fecha4 || $fechaf <= $fecha3) {
                 $solape= "false";
             } else {
@@ -275,6 +275,10 @@ class OrdenesController extends Controller
         }
     
         $jornada->observacion = $request->obs;
+        $jornada->hi=$request->hi;
+        $jornada->hf=$request->hf;
+        $jornada->duracion=$request->duracion;
+        $jornada->almuerzo=$request->almuerzo;
         $jornada->revisado_por = $user;
         $jornada->fecha_revision = Carbon::now()->format('Y-m-d');
        //dd($jornada);

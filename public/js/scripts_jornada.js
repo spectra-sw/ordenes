@@ -96,6 +96,7 @@ btnRegistrar.addEventListener("click", function() {
         requiredSelects = document.querySelectorAll("select[required], input[required]");
         for (var i = 0; i < requiredSelects.length; i++) {
             if (requiredSelects[i].value === "") {
+                console.log(requiredSelects[i]);
                 isValid = false;
                 break;
             }
@@ -113,7 +114,13 @@ btnRegistrar.addEventListener("click", function() {
         }
     }
     //hValid=validarHoras();
-    sValid=validarSolape();
+    if (!isValid){
+        errorHandler('Debes ingresar todos los campos obligatorios (*)');
+    }
+    else{
+        sValid=validarSolape();
+    }
+    
    
 });
 }
@@ -197,6 +204,21 @@ function delj(id) {
         }
     });
 }
+function delj2(id) {
+    $.ajax({
+        type: "GET",
+        url: "/deleteJornada",
+        data: { id: id },
+        success: function (response) {
+            successHandler("El registro se ha eliminado con éxito");
+            consultar2();
+            //$("#tablaJornada").html(response);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error(textStatus, errorThrown);
+        }
+    });
+}
 function errorHandler(mensaje) {
     $.ajax({
         type: "GET",
@@ -267,23 +289,27 @@ function refreshConsulta(){
         }
     });
 }
-function accionj(op,id){
-    //alert(op);
-    //alert(id);
-        var obs = document.getElementById('obs'+id).value;
-        data = { id : id , op : op, obs:obs}
-        url="/accionesJornada"
-        $.ajax({
-            url: url,
-            type:'GET',
-            data: data,
-            success: function(data) { 
-                refreshConsulta();
-                alert(data)
-            }
-        }); 
+function accionj(op, id) {
+    const obs = document.getElementById(`obs${id}`).value;
+    const hi = document.getElementById(`hi${id}`).value;
+    const hf = document.getElementById(`hf${id}`).value;
+    const duracion = document.getElementById(`duracion${id}`).value;
+    const almuerzo = document.getElementById(`almuerzo${id}`).value;
+    const data = { id, hi, hf, duracion, almuerzo, op, obs };
+    const url = '/accionesJornada';
     
-}
+    $.ajax({
+      url,
+      type: 'GET',
+      data,
+      success: (data) => { 
+        refreshConsulta();
+        alert(data);
+      }
+    });
+  }
+  
+
 var btnDistribucion = document.getElementById("btnDistribucion");
 if (btnDistribucion != null) {
 btnDistribucion.addEventListener("click", function() {
@@ -312,6 +338,20 @@ function validarCorte(fecha){
                 alert("El corte para esta fecha se encuentra deshabilitado");
                 document.getElementById('fecha').value="";
            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log(textStatus, errorThrown);
+        }
+    });
+}
+function consultar2(){
+    var formData = $("#formConsultaJornada").serialize(); 
+    $.ajax({
+        type: "GET",
+        url: "/consultaJornada",
+        data: formData,
+        success: function(response) {
+            $("#consulta").html(response);
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.log(textStatus, errorThrown);

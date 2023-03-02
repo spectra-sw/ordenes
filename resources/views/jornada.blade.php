@@ -95,7 +95,7 @@
                                 <div class="col-6 col-md-1 cajaAzul">Duración</div>
                                 <div class="col-6 col-md-1 ">
                                     <label for="duracion">Horas</label>
-                                    <input type="number" class="form-control" id="duracionh" name="duracionh" required>
+                                    <input type="number" min="0" max="24" class="form-control" id="duracionh" name="duracionh" required>
                                 </div>
                                 <div class="col-6 col-md-1 ">
                                     <label for="duracionm">Minutos</label>

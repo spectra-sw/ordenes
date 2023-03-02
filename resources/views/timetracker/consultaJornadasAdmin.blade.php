@@ -8,12 +8,14 @@
                     <thead>
                         <tr>
                             <th>Nombre</th>
-                            <th>Fecha</th>
+                            <th>Fecha Inicio</th>
                             <th>Proyecto</th>
                             <th>Cliente</th>
-                            <th>Tipo</th>
                             <th>Hora Inicio</th>
+                            <th>Fecha Fin</th>
                             <th>Hora Fin</th>
+                            <th>Duración</th>
+                            <th>Almuerzo</th>
                             <th>Aprobación</th>
                             <th>Observaciones</th>
                             <th>Acción</th>
@@ -27,9 +29,12 @@
                                 <td>{{ $j->fecha }}</td>
                                 <td>{{ $j->proyecto }}</td>
                                 <td>{{ $j->proyectoinfo->cliente->cliente }}</td>
-                                <td>{{ $j->tipo == 1 ? "Actividad" : "Almuerzo" }}</td>
-                                <td>{{ $j->hi }}</td>
-                                <td>{{ $j->hf }}</td>
+                                <td><input type="text"  id="hi{{ $j->id }}" name="hi{{ $j->id }}" value="{{ $j->hi }}"></td>
+                                <td>{{ $j->fechaf }}</td>
+                                <td><input type="text"  id="hf{{ $j->id }}" name="hf{{ $j->id }}" value="{{ $j->hf }}"></td>
+                                <td><input type="text"  id="duracion{{ $j->id }}" name="duracion{{ $j->id }}" value="{{ $j->duracion }}"></td>
+                                <td ><input type="number"   min="0" id="almuerzo{{ $j->id }}" name="almuerzo{{ $j->id }}" value="{{ $j->almuerzo }}"></td>
+
                                 
                                 @switch($j->estado)
                                
@@ -47,7 +52,7 @@
                                 @endswitch
                                
                                 <td>
-                                    <input type="text" id="obs{{ $j->id }}" name="obs" value="{{ str_replace(' ', ' ', $j->observacion) }}">
+                                    <input type="text" id="obs{{ $j->id }}" name="obs{{ $j->id }}" value="{{ str_replace(' ', ' ', $j->observacion) }}">
                                 </td>    
                                 <td>
                                     <select class="form-control" onchange="accionj(this.value,this.id)" id="{{ $j->id }}" >

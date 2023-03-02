@@ -17,7 +17,8 @@ class AddColummsToJornada extends Migration
             //
             $table->string('duracion')->after('hf')->nullable();
             $table->date('fechaf')->after('duracion')->nullable();
-            $table->integer('almuerzo')->after('fechaf')->default(0);
+            $table->float('almuerzo')->after('fechaf')->default(0);
+          
         });
     }
 
