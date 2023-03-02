@@ -75,7 +75,7 @@
                                 <div class="col-6 col-md-2 cajaAzul">Fecha *</div>
                                 <div class="col-6 col-md-2 "><input type="date" name="fecha" id="fecha" class="form-control" onchange="validarCorte(this.value)" required></div>
                                 <div class="col-6 col-md-2 cajaAzul">Hora Inicio *</div>
-                                <div class="col-6 col-md-1 ">
+                                <div class="col-3 col-md-1 ">
                                     <select class="form-control" id="horaInicio" name="horaInicio" required>
                                         <option value=""></option>
                                         @for ($i = 0; $i <= 23; $i++)
@@ -83,7 +83,7 @@
                                         @endfor
                                     </select>
                                 </div>
-                                <div class="col-6 col-md-1 ">
+                                <div class="col-3 col-md-1 ">
                                     <select class="form-control" id="minInicio" name="minInicio" required>
                                         <option value=""></option>
                                         <option value="0">00</option>
@@ -93,11 +93,11 @@
                                     </select>
                                 </div>
                                 <div class="col-6 col-md-1 cajaAzul">Duración</div>
-                                <div class="col-6 col-md-1 ">
+                                <div class="col-3 col-md-1 ">
                                     <label for="duracion">Horas</label>
                                     <input type="number" min="0" max="24" class="form-control" id="duracionh" name="duracionh" required>
                                 </div>
-                                <div class="col-6 col-md-1 ">
+                                <div class="col-3 col-md-1 ">
                                     <label for="duracionm">Minutos</label>
                                     <select class="form-control" id="duracionm" name="duracionm" required>
                                         <option value="0">00</option>
