@@ -150,10 +150,16 @@ class OrdenesController extends Controller
         $user = session()->get('user');
         $fecha =$request->fecha;
        // $fecha = "2023-02-06";
-        $jornadas = Jornada::where('user_id',$user)
-                            ->where('fecha','>=',$fecha)->orWhere('fechaf','>=',$fecha)->get();
+        //$jornadas = Jornada::where('user_id',$user)
+                            //->where('fecha','>=',$fecha)->orWhere('fechaf','>=',$fecha)->get();
 
-        //dd($jornadas->count());
+                            $jornadas = Jornada::where('user_id', $user)
+                            ->where(function ($query) use ($fecha) {
+                                $query->where('fecha', '>=', $fecha)
+                                      ->orWhere('fechaf', '>=', $fecha);
+                            })
+                            ->get();
+        //dd($jornadas);
         //$hi = intval($request->horaInicio) + floatval($request->minInicio);
         //$hf = intval($request->horaFin) + floatval($request->minFin);
         $fecha = $request->fecha; 
