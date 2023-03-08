@@ -30,6 +30,7 @@ class DistribucionController extends Controller
             $jornadas->where('user_id', $request->trabajador);
         }
         if ($request->inicio && $request->fin) {
+            
             $jornadas->whereBetween('fecha', [$request->inicio, $request->fin]);
         }
         if ($request->estado) {
@@ -46,11 +47,11 @@ class DistribucionController extends Controller
             //dd($hi);
             $hf = explode(":", $j->hf);
             $hf =intval($hf[0]) + round(floatval($hf[1]/60),1);
+
             //dd($hf);
-            if ($j->tipo == 0){
+            /*if ($j->tipo == 0){
                 $talmuerzo = $talmuerzo + ($hf-$hi);
-            
-            }
+            }*/
 
             if ($j->tipo == 1){
                 $centro = Cdc::where('codigo',$j->proyecto)->first();
@@ -59,18 +60,22 @@ class DistribucionController extends Controller
                 $numdia = $c->dayOfWeek;
                 $emp=Empleado::where('id',$j->user_id)->first();
                 $sb = $hedo = $heno= $hedf = $henf = $rno = $dtsc = $rnd = 0;
-                
+
+                $duracion  = explode(":", $j->duracion);
+                $duracion =intval($duracion[0]) + round(floatval($duracion[1]/60),1);
                 $laborales = 9.5;
                 if (($numdia > 0)&&($festivo=="no")){
-                    $sb = $hf - $hi;
+                    $sb = $duracion - $j->almuerzo;
+                    //dd($sb);
                     if ($sb>$laborales){
                         $excede = $sb -$laborales;
                         $sb =$laborales;
                         $hedo = $excede;  
                     }
                     $heno = $this->calcularHeno($hi,$hf);
+                    //dd($heno);
                     $sb = $sb-$heno;
-
+                    //dd($sb);
                     if($sb==0){
                         $rno=$heno;
                     }
@@ -109,7 +114,7 @@ class DistribucionController extends Controller
                     'horas' => 0,
                     'unidad' => $centro->unidad_negocio
                 ];
-
+                //dd($sb);
                 if ($sb>0){
                     //dd($sb);
                     $valores['concepto']="001";
@@ -157,6 +162,7 @@ class DistribucionController extends Controller
                 }
             }
         }
+        //dd($datos);
         return [$datos,$talmuerzo]; 
     }
     function addLinea($datos,$valores){
@@ -182,8 +188,24 @@ class DistribucionController extends Controller
     }
     function calcularHeno($hi,$hf){
         $heno = 0;
-        
-        if (($hi < 21)&&($hi > 6)&&($hf > 21)&&($hf<=24)){
+
+        if ($hi>$hf){
+            if ($hi >= 21){
+                $heno = $heno + (24-$hi);
+            }
+            if ($hi < 21){
+                $heno = 3;
+            }
+        }        
+        if ($hf < $hi){
+            if ($hf >6){
+                $heno = $heno + 6;
+            }
+            if ($hf <=6 ){
+                $heno = $heno + $hf;
+            }
+        }
+       /* if (($hi < 21)&&($hi > 6)&&($hf > 21)&&($hf<=24)){
             $heno = $hf - 21;
         }
         if (($hi >= 21)&&($hf<=24)){
@@ -194,7 +216,7 @@ class DistribucionController extends Controller
         }
         if (($hi >= 0)&&($hf<=6)){
             $heno = $hf - $hi;
-        }
+        }*/
         
         return $heno;
     }
