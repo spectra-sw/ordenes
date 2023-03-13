@@ -16,6 +16,7 @@
                             <th>Hora Fin</th>
                             <th>Duración</th>
                             <th>Almuerzo</th>
+                            <th>Laborales</th>
                             <th>Aprobación</th>
                             <th>Observaciones</th>
                             <th>Acción</th>
@@ -23,19 +24,20 @@
                     </thead>
                     <tbody>
                         @foreach($jornadas as $j)
-                            
+                            <?php $duracion =intval(explode(":", $j->duracion)[0]) + round(floatval(explode(":", $j->duracion)[1]/60),1) ?>
+    
                             <tr>
                                 <td>{{ $j->trabajador->apellido1 . " " . $j->trabajador->apellido2 . " " . $j->trabajador->nombre}}</td>
                                 <td>{{ $j->fecha }}</td>
                                 <td>{{ $j->proyecto }}</td>
-                                <td>{{ $j->proyectoinfo->cliente->cliente }}</td>
+                                <td>{{ $j->proyectoinfo->cliente->cliente ?? 'N/A' }}</td>
                                 <td><input type="text"  id="hi{{ $j->id }}" name="hi{{ $j->id }}" value="{{ $j->hi }}"></td>
                                 <td>{{ $j->fechaf }}</td>
                                 <td><input type="text"  id="hf{{ $j->id }}" name="hf{{ $j->id }}" value="{{ $j->hf }}"></td>
                                 <td><input type="text"  id="duracion{{ $j->id }}" name="duracion{{ $j->id }}" value="{{ $j->duracion }}"></td>
                                 <td ><input type="number"   min="0" id="almuerzo{{ $j->id }}" name="almuerzo{{ $j->id }}" value="{{ $j->almuerzo }}"></td>
 
-                                
+                                <td>{{ $duracion - $j->almuerzo }}</td>
                                 @switch($j->estado)
                                
                                     @case(1)
