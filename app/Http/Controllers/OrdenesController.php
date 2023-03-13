@@ -257,7 +257,7 @@ class OrdenesController extends Controller
             $jornadas->where('estado', $request->estado);
         }
     
-        $jornadas = $jornadas->get();
+        $jornadas = $jornadas->orderBy('fecha','asc')->get();
     
         return view('timetracker.consultaJornadasAdmin', [
             'jornadas' => $jornadas,
