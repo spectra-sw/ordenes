@@ -1926,7 +1926,14 @@ class PagesController extends Controller
             $nombres = "";
             foreach($ccs as $cc){
                 $e=Empleado::where('cc',$cc)->first();
-                $nombre =$e->apellido1." ".$e->nombre;
+                $nombre="";
+                if ($e instanceof \App\Models\Empleado) {
+                    $nombre = $e->apellido1 . ' ' . $e->nombre;
+                } else {
+                    // Si $e no es un objeto válido, puedes establecer un valor predeterminado para $nombre
+                    $nombre = '';
+                }
+               
                 if ($nombres == "") { 
                     $nombres.=$nombre; 
                 }
