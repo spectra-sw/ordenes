@@ -115,7 +115,7 @@ class OrdenesController extends Controller
         //$hf = strval($request->horaFin) . ":" . strval($request->minFin);
         $duracion = strval($request->duracionh) . ":" . strval($request->duracionm);
         $request->merge(['user_id' => $user_id, 'hi' => $hi, 'hf' => $fechaf->format('H:i'),'fechaf' => $fechaf->format('Y-m-d'), 'estado' => 1,
-         'duracion' => $duracion, 'almuerzo' => 1]);
+         'duracion' => $duracion, 'almuerzo' => 0]);
         $data = $request->all();
         
         $j = Jornada::create($data);
@@ -283,7 +283,7 @@ class OrdenesController extends Controller
         $jornada->observacion = $request->obs;
         $jornada->hi=$request->hi;
         $jornada->hf=$request->hf;
-        $jornada->duracion=$request->duracion;
+        //$jornada->duracion=$request->duracion;
         $jornada->almuerzo=$request->almuerzo;
         $jornada->revisado_por = $user;
         $jornada->fecha_revision = Carbon::now()->format('Y-m-d');

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Jornada;
 use App\Models\Cdc;
 use App\Models\Empleado;
+use App\Models\Turno;
+use App\Models\Horario;
 use Carbon\Carbon;
 
 class DistribucionController extends Controller
@@ -36,34 +38,49 @@ class DistribucionController extends Controller
         if ($request->estado) {
             $jornadas->where('estado', $request->estado);
         }
-        $jornadas = $jornadas->get();
+        $jornadas = $jornadas->orderBy('fecha','asc')->get();
 
         $datos = collect([]);
         $tsb=0;
         $talmuerzo = 0;
+        $laborales = 9.5;
+
+        $inicio_diurno = 6; 
+        $fin_diurno  = 21; 
+        $inicio_nocturno = 21; 
+        $fin_nocturno  = 6; 
         foreach ($jornadas as $j){
             $hi = explode(":", $j->hi);
             $hi =intval($hi[0]) + round(floatval($hi[1]/60),1);
-            //dd($hi);
             $hf = explode(":", $j->hf);
             $hf =intval($hf[0]) + round(floatval($hf[1]/60),1);
+            $duracion  = explode(":", $j->duracion);
+            $duracion =intval($duracion[0]) + round(floatval($duracion[1]/60),1);
+                
 
-            //dd($hf);
-            /*if ($j->tipo == 0){
-                $talmuerzo = $talmuerzo + ($hf-$hi);
-            }*/
+            $centro = Cdc::where('codigo',$j->proyecto)->first();
+            $festivo = app('App\Http\Controllers\FilesController')->consfestivo($j->fecha);
+            $c = new Carbon($j->fecha);
+            $cf = new Carbon($j->fechaf);
+            $numdia = $c->dayOfWeek;
+            $emp=Empleado::where('id',$j->user_id)->first();
+            $sb = $hedo = $heno= $hedf = $henf = $rno = $dtsc = $rnd = 0;
 
-            if ($j->tipo == 1){
-                $centro = Cdc::where('codigo',$j->proyecto)->first();
-                $festivo = app('App\Http\Controllers\FilesController')->consfestivo($j->fecha);
-                $c = new Carbon($j->fecha);
-                $numdia = $c->dayOfWeek;
-                $emp=Empleado::where('id',$j->user_id)->first();
-                $sb = $hedo = $heno= $hedf = $henf = $rno = $dtsc = $rnd = 0;
-
-                $duracion  = explode(":", $j->duracion);
-                $duracion =intval($duracion[0]) + round(floatval($duracion[1]/60),1);
-                $laborales = 9.5;
+                
+            //horario laboral
+            $turno = Turno::where('user_id', $j->user_id)
+            ->where('fecha_inicio','<=', $j->fecha)
+            ->where('fecha_fin','>=', $j->fechaf)
+            ->first();
+        
+            if ($turno === null) {
+                $turno = Horario::first();
+                $especial = false;
+            }
+            else{
+                $especial = true;
+            }
+            if (($especial == false)&&($numdia >= $turno->dia_inicio)&&($numdia <= $turno->dia_fin)){
                 if (($numdia > 0)&&($festivo=="no")){
                     $sb = $duracion - $j->almuerzo;
                     //dd($sb);
@@ -105,6 +122,35 @@ class DistribucionController extends Controller
                         $rnd = $hf - $hi;
                     }
                 }
+            }
+            
+            $horas_diurnas =0;
+            $horas_nocturnas=0;
+            if (($especial == false)&&(($numdia < $turno->dia_inicio)||($numdia > $turno->dia_fin))){
+               
+                
+                if ($hi < $fin_diurno && $hf > $inicio_diurno) { // si hay alguna intersección entre los intervalos
+                    // calculamos las horas dentro del intervalo de 6 a 21
+                    $horas_diurnas = min($hf, $fin_diurno) - max($hi, $inicio_diurno);
+                    // imprimimos el resultado
+
+                } else {
+                    // no hay intersección entre los intervalos
+                    //echo "No hay horas dentro del rango de 6 a 21.";
+                    $horas_nocturnas = min($hf, $fin_diurno) - max($hi, $inicio_diurno);
+                }
+
+                if (($numdia > 0)&&($festivo=="no")){
+                    $hedo = $horas_diurnas;
+                    $heno = $horas_nocturnas;
+                }
+                if (($numdia == 0)||($festivo=="si")){
+                    $hedf = $horas_diurnas;
+                    $henf= $horas_nocturnas;
+                }
+            }
+
+               
                 $valores = [
                     'emp' => $emp->cc,
                     'concepto' => '',
@@ -160,7 +206,7 @@ class DistribucionController extends Controller
                     $linea = $this->addlinea($datos,$valores); 
                     $datos->push($linea); 
                 }
-            }
+            
         }
         //dd($datos);
         return [$datos,$talmuerzo]; 

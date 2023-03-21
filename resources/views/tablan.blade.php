@@ -28,7 +28,7 @@
 </table>
 <br>
 <!---->
-<table class="table table-bordered table-striped table-sm">
+<!--<table class="table table-bordered table-striped table-sm">
     <thead>
       <tr>
         <th>Concepto</th>
@@ -42,6 +42,6 @@
       </tr>
     
     </tbody>
-</table>
+</table>-->
 <br>
 <button type="submit" class="btn btn-success">Exportar</button>

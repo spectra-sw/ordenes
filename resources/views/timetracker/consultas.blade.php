@@ -55,9 +55,11 @@
                     <div class="col-12 col-md-3">
                         <button class="btn btn-3" id="btnConsultarAdmin" type="button">Consultar</button> 
                     </div>
+                    @if (session('area')==6)
                     <div class="col-12 col-md-3">
                         <button class="btn btn-3" id="btnDistribucion" type="button">Distribución</button> 
                     </div>
+                    @endif
                 </div>
             </div>
         <div>
