@@ -30,6 +30,7 @@ use App\Models\Autorizacion;
 use App\Models\Cargo;
 use App\Models\Corte;
 use App\Models\Autorizados;
+use App\Models\Turno;
 use Log;
 
 use Carbon\Carbon;
@@ -99,6 +100,7 @@ class PagesController extends Controller
             $areas = Area::all();
             $cargos = Cargo::all();
             $cortes = Corte::all();
+            $turnos = Turno::all();
             return view('bases',[
                 'emp' => $emp,
                 'cdc' => $cdc,
@@ -109,7 +111,8 @@ class PagesController extends Controller
                 'areas' => $areas,
                 'area' => $area,
                 'cargos' => $cargos,
-                'cortes' => $cortes
+                'cortes' => $cortes,
+                'turnos' => $turnos
             ]);
         }
         else{

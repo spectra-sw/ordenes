@@ -19,6 +19,9 @@
       <li class="nav-item">
         <a class="nav-link" data-bs-toggle="tab" href="#cortes">Cortes</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#turnos">Turnos</a>
+      </li>
     </ul>
   
     <!-- Tab panes -->
@@ -57,6 +60,44 @@
             @include('tablacortes')
         </div>
       </div>
+      <div id="turnos" class="container tab-pane fade"><br>
+        <br>
+        <form action="{{ route('importTurnos') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="form-group mb-4">
+                <div class="custom-file text-left">
+                    <input type="file" name="file" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label" for="customFile">Escoger Archivo</label>
+                </div>
+            </div>
+            <button class="btn btn-3">Importar turnos</button><br>
+                <table id="tableTurnos" class="table table-striped" style="width:100%;overflow:scroll;color:black">
+                    <thead>
+                        <tr>
+                            <th>CC</th>
+                            <th>NOMBRE</th>
+                            <th>FECHA_INICIO</th>
+                            <th>HORA_INICIO</th>
+                            <th>FECHA_FIN</th>
+                            <th>HORA_FIN</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      @foreach($turnos as $t)
+                      <tr>
+                          <td>{{ isset($t->empleado) ?  $t->empleado->cc : '' }} </td>
+                          <td>{{ isset($t->empleado) ?  $t->empleado->apellido1 . " ". $t->empleado->apellido2 . " ". $t->empleado->nombre : '' }}</td>
+                          <td>{{ $t->fecha_inicio}}</td>
+                          <td>{{ $t->hora_inicio }}</td>
+                          <td>{{ $t->fecha_fin}}</td>
+                          <td>{{ $t->hora_fin}}</td>
+                      </tr>
+                      @endforeach
+                    </tbody>
+                   
+                </table>
+        </form>
+      </div>
     </div>
 </div>
 
@@ -89,6 +130,7 @@
   <script>
     $(document).ready(function () {
       $('#tablaemp').DataTable();
+      $('#tableTurnos').DataTable();
     });
     </script>
     <script src="{{asset('js/scripts.js')}}"></script>    

@@ -141,6 +141,7 @@ Route::get('exportExtra', [ExcelController::class, 'exportextra'])->name('export
 Route::get('exportProyectos', [ExcelController::class, 'exportProyectos'])->name('exportProyectos');
 
 Route::post('importHoras',[ExcelController::class,'importHoras'])->name('importHoras');
+Route::post('importTurnos',[ExcelController::class,'importTurnos'])->name('importTurnos');
 
 //Auth
 Route::get('validar',[AuthController::class,'validar'])->name('validar');

@@ -14,4 +14,9 @@ class Turno extends Model
     protected $fillable = [
         'user_id','fecha_inicio', 'fecha_fin','hora_inicio','hora_fin'
     ];
+
+    public function empleado()
+    {
+        return $this->belongsTo(Empleado::class, 'user_id', 'id');
+    }
 }

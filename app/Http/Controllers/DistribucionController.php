@@ -9,6 +9,7 @@ use App\Models\Empleado;
 use App\Models\Turno;
 use App\Models\Horario;
 use Carbon\Carbon;
+use Log;
 
 class DistribucionController extends Controller
 {
@@ -41,7 +42,6 @@ class DistribucionController extends Controller
         $jornadas = $jornadas->orderBy('fecha','asc')->get();
 
         $datos = collect([]);
-        $tsb=0;
         $talmuerzo = 0;
         $laborales = 9.5;
 
@@ -49,6 +49,7 @@ class DistribucionController extends Controller
         $fin_diurno  = 21; 
         $inicio_nocturno = 21; 
         $fin_nocturno  = 6; 
+        $tsb=0;
         foreach ($jornadas as $j){
             $hi = explode(":", $j->hi);
             $hi =intval($hi[0]) + round(floatval($hi[1]/60),1);
@@ -72,13 +73,45 @@ class DistribucionController extends Controller
             ->where('fecha_inicio','<=', $j->fecha)
             ->where('fecha_fin','>=', $j->fechaf)
             ->first();
-        
+            //dd($turno);
             if ($turno === null) {
                 $turno = Horario::first();
                 $especial = false;
             }
             else{
                 $especial = true;
+            }
+            //dd($especial);
+            Log::info($especial);
+            if($especial==true){
+                if ($turno->fecha_inicio == $turno->fecha_fin){
+                    $laborales = $turno->hora_fin - $turno->hora_inicio;
+                }
+                else{
+                    $laborales = (24-$turno->hora_inicio) + $turno->hora_fin;
+                }
+                $sb = $duracion - $j->almuerzo;
+                if (($numdia > 0)&&($festivo=="no")){
+                    //Log::info($turno->id.":".$sb);
+                    if ($sb>$laborales){
+                        $excede = $sb -$laborales;
+                        $sb =$laborales;
+                        $hedo = $excede;  
+                    }
+                    $rno = $this->calcularHeno($hi,$hf);
+                    //dd($heno);
+                    //$sb = $sb-$rno;
+                    if ($sb == $rno){
+                        $sb = 0;
+                    }
+
+                }
+                if (($numdia == 0)||($festivo=="si")){
+                    $rnd = $this->calcularHeno($hi,$hf);
+                    if ($rnd >0){
+                        $sb = $rnd;
+                    }
+                }
             }
             if (($especial == false)&&($numdia >= $turno->dia_inicio)&&($numdia <= $turno->dia_fin)){
                 if (($numdia > 0)&&($festivo=="no")){
@@ -150,7 +183,7 @@ class DistribucionController extends Controller
                 }
             }
 
-               
+            
                 $valores = [
                     'emp' => $emp->cc,
                     'concepto' => '',
@@ -170,7 +203,7 @@ class DistribucionController extends Controller
                     $datos->push($linea); 
                 }
                 if ($hedo>0){
-                    //dd($sb);
+                
                     $valores['concepto']="006";
                     $valores['horas'] = $hedo;
                     $linea = $this->addlinea($datos,$valores); 
@@ -202,11 +235,50 @@ class DistribucionController extends Controller
                 }
                 if($rnd>0){
                     $valores['concepto']="014";
-                    $valores['horas'] = $hedf;
+                    $valores['horas'] = $rnd;
                     $linea = $this->addlinea($datos,$valores); 
                     $datos->push($linea); 
                 }
             
+        }
+        //dd($tsb);
+        $datos2 = collect([]);
+        foreach ($datos as $d){
+            if ($d['codigo del concepto']=='001'){
+                $cc = $d['codigo del empleado'];
+                $horas = $d['horas'];
+                $emp=Empleado::where('cc',$cc)->first();
+
+                if ($emp->auxilio>0){
+            
+                    $auxilio= round(($emp->auxilio/$tsb)*$horas,1);
+                    $linea=collect([]);
+                    /*$linea->put('total',$total[$cc]);
+                    $linea->put('auxilio',$emp->auxilio);
+                    $linea->put('horas',$horas);*/
+
+                    $linea->put('codigo del empleado',$cc);
+                    $linea->put('sucursal', '');
+                    $linea->put('codigo del concepto', '075');
+                    $linea->put('centro de operacion', $d['centro de operacion']);
+                    $linea->put('centro de costo', $d['centro de costo']);
+                    $linea->put('fecha movimiento', $d['fecha movimiento']);
+                    $linea->put('horas','');
+                    $linea->put('valor', $auxilio);
+                    $linea->put('cantidad', '');
+                    $linea->put('proyecto', '');
+                    $linea->put('numero de contrato', '');
+                    $linea->put('unidad de negocio', $d['unidad de negocio']);
+                    $linea->put('fecha de causacion', '');
+                    $linea->put('numero de cuotas', '');
+                    $linea->put('notas', '');
+                    $datos2->push($linea);
+                }
+            }
+        }
+       // dd($datos2);
+        foreach ($datos2 as $d){
+            $datos->push($d);
         }
         //dd($datos);
         return [$datos,$talmuerzo]; 
@@ -233,37 +305,29 @@ class DistribucionController extends Controller
 
     }
     function calcularHeno($hi,$hf){
+        $l1 = 21;
+        $l2 = 0;
+        $l3 = 6;
         $heno = 0;
-
-        if ($hi>$hf){
-            if ($hi >= 21){
-                $heno = $heno + (24-$hi);
-            }
-            if ($hi < 21){
-                $heno = 3;
-            }
-        }        
-        if ($hf < $hi){
-            if ($hf >6){
-                $heno = $heno + 6;
-            }
-            if ($hf <=6 ){
-                $heno = $heno + $hf;
-            }
+      
+        // intervalo 1
+        if ($hi < $l1 && $hf > $l1) {
+          $heno += $hf - $l1;
+        } else if ($hi >= $l1 && $hf > $l1) {
+          $heno += $hf - $hi;
+        } else if ($hi >= $l1 && $hf < $hi) {
+          $heno += 24 - $hi;
         }
-       /* if (($hi < 21)&&($hi > 6)&&($hf > 21)&&($hf<=24)){
-            $heno = $hf - 21;
+      
+        // intervalo 2
+        if ($hi >= $l1 && $hf > $l2) {
+          $heno += $hf;
+        } else if ($hi >= $l2 && $hf <= $l3) {
+          $heno += $hf - $hi;
+        } else if ($hi >= $l2 && $hi <= $l3 && $hf > $l3) {
+          $heno += $l3 - $hi;
         }
-        if (($hi >= 21)&&($hf<=24)){
-            $heno = $hf - $hi;
-        }
-        if (($hi >=0 )&&($hi <=6 )&&($hf>6)){
-            $heno = 6 - $hi;
-        }
-        if (($hi >= 0)&&($hf<=6)){
-            $heno = $hf - $hi;
-        }*/
-        
+      
         return $heno;
-    }
+     }
 }
