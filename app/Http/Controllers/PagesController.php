@@ -1954,10 +1954,15 @@ class PagesController extends Controller
     public function voboextra(Request $request){
        // $tipo = session('tipo');
         //$user = session('user');
-        
+        if ($request->obs =="RECHAZADA"){
+            $obs = "";
+        }
+        else{
+            $obs = $request->obs;
+        }
         Autorizacion::where('id',$request->id)->update([
             'fecha_autorizacion_rechazo' => date("Y-m-d"),
-            'observaciones' => $request->obs
+            'observaciones' => $obs
 
         ]);
         $e = Autorizacion::where('id',$request->id)->first();
