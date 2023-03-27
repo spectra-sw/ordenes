@@ -42,8 +42,6 @@ class DistribucionController extends Controller
         $jornadas = $jornadas->orderBy('fecha','asc')->get();
 
         $datos = collect([]);
-        $talmuerzo = 0;
-        $laborales = 9.5;
 
         $inicio_diurno = 6; 
         $fin_diurno  = 21; 
