@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ordenes de trabajo - Spectra</title>
+    <title>Spectra - Time Tracker</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -97,6 +97,7 @@ height: 100%;
         </div>
       </div>
     </div>
+    <a href="https://wa.me/573165265937"><img src="{{ URL::asset('img/whatsapp.png') }}" class="helpIcon"></a>
     <div
       class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-1">
       <!-- Copyright -->
@@ -122,7 +123,8 @@ height: 100%;
       </div>
       <!-- Right -->
     </div>
+   
   </section>
-
+  
 </body>
 <script src="{{asset('js/scripts.js')}}"></script>

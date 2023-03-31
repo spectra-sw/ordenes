@@ -73,6 +73,7 @@
 
 <div class="container-fluid mt-1">
     @yield('content')
+    <a href="https://wa.me/573165265937" target="_blank"><img src="{{ URL::asset('img/whatsapp.png') }}" class="helpIcon"></a>
 </div>
 
 </body>

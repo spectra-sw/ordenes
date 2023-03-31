@@ -12,7 +12,7 @@ class Turno extends Model
     protected $table = 'turnos';
     public $timestamps = false;
     protected $fillable = [
-        'user_id','fecha_inicio', 'fecha_fin','hora_inicio','hora_fin'
+        'user_id','fecha_inicio', 'fecha_fin','hora_inicio','hora_fin','almuerzo'
     ];
 
     public function empleado()

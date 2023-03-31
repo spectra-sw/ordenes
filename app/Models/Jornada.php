@@ -21,4 +21,8 @@ class Jornada extends Model
     {
     return $this->belongsTo(Proyecto::class, 'proyecto', 'codigo');
     }
+    public function cdcinfo()
+    {
+    return $this->belongsTo(Cdc::class, 'proyecto', 'codigo');
+    }
 }

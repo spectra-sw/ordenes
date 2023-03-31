@@ -11,7 +11,7 @@ class Horario extends Model
     protected $table = 'horarios';
   
     protected $fillable = [
-       'nombre','observacion'
+       'nombre','observacion','dia_inicio','dia_fin','hora_inicio','hora_fin','almuerzo'
     ];
     public function empleados()
     {
