@@ -45,5 +45,9 @@ body{
  .avatar-error{
     background-position: 10px -400px;
  }
-
+.helpIcon{
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+}
  

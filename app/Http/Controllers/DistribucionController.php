@@ -93,12 +93,14 @@ class DistribucionController extends Controller
                         $excede = $sb -$laborales;
                         $sb =$laborales;
                         $heno = $this->calcularHeno($turno->hora_fin,$hf);
+                        //dd($heno);
                         if ($heno ==0){
                             $hedo = $excede;  
                         }
                         else{
                             $hedo = $excede - $heno;
                         }
+                        $rno = $this->calcularHeno($hi,$hf);
                     }
                     else{
                         $rno = $this->calcularHeno($hi,$hf);
@@ -124,6 +126,7 @@ class DistribucionController extends Controller
                         else{
                             $hedf = $excede - $henf;
                         }
+                        $rnd = $this->calcularHeno($hi,$hf);
                     }
                     else{
                         $rnd = $this->calcularHeno($hi,$hf);
@@ -149,9 +152,10 @@ class DistribucionController extends Controller
                         else{
                             $hedo = $excede - $heno;
                         }
+                        $rno = $this->calcularHeno($hi,$hf);
                     }
                     else{
-                        $heno = $this->calcularHeno($hi,$hf);
+                        $rno = $this->calcularHeno($hi,$hf);
                         /*//dd($heno);
                         $sb = $sb-$heno;
                         //dd($sb);
