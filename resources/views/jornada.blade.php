@@ -92,7 +92,7 @@
                                         <option value="45">45</option>
                                     </select>
                                 </div>
-                                <div class="col-6 col-md-1 cajaAzul">Duración</div>
+                                <div class="col-6 col-md-1 cajaAzul">Duración * (incluyendo tiempo de almuerzo y/o cena)</div>
                                 <div class="col-3 col-md-1 ">
                                     <label for="duracion">Horas</label>
                                     <input type="number" min="0" max="24" class="form-control" id="duracionh" name="duracionh" required>
