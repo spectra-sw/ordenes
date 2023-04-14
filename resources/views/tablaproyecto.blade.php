@@ -22,7 +22,7 @@
     @foreach ($proyectos  as $p)     
       <tr>
         <td>{{ $p->codigo }}</td>
-        <td>{{ $p->cliente->cliente }}</td>
+        <td>{{ $p->cliente ? $p->cliente->cliente : ''}}</td>
         <td>{{ $p->descripcion }}</td>
         <td>{{ $p->sistema }}</td>
         <td>{{ $p->subportafolio }}</td>
