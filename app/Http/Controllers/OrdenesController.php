@@ -206,10 +206,13 @@ class OrdenesController extends Controller
             $fecha4->addMinutes($minutes+$minutesf);
           
             //dd($fecha  );
-            if ($fecha >= $fecha4 || $fechaf <= $fecha3) {
+            if (($fecha >= $fecha4 || $fechaf <= $fecha3) ) {
                 $solape= "false";
             } else {
                 $solape= "true";
+                if($j->estado == 3){
+                    $solape= "false";
+                }
             }
 
             
