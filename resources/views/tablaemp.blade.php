@@ -30,7 +30,7 @@
         <td>{{ $e->correo }}</td>
         <td>{{ $e->ciudad }}</td>
         <td>{{ $e->narea->area }}</td>
-        <td>{{ $e->ncargo->cargo }}</td>
+        <td>{{ $e->ncargo ? $e->ncargo->cargo :'' }}</td>
         <td>{{ $e->tipo == 0 ? 'Admin' : 'Registro' }}</td>
         <td><select class="form-control" id="{{ $e->id }}" onchange="acciones(this.value,this.id)">
             <option value=""></option>
