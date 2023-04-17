@@ -1333,7 +1333,7 @@ class PagesController extends Controller
         return view('ocupacion',[
             'areas' => $areas,
             'actividades' => $actividades,
-            'proyectos' => $aut,
+            'proyectos' => $proyectos,
             'area' => $area,
             'novedades' => $novedades,
             'emp' => $employees
