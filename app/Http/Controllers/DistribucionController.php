@@ -84,6 +84,7 @@ class DistribucionController extends Controller
             else{
                 $laborales = (24-$turno->hora_inicio) + $turno->hora_fin - $turno->almuerzo;
             }
+            //dd($laborales);
             if($especial==true){               
                
                 if (($numdia > 0)&&($festivo=="no")){
