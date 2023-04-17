@@ -26,12 +26,12 @@
         @if ($p->director ==0)
           <td></td>
         @else
-          <td>{{ $p->ndirector->nombre . " " . $p->ndirector->apellido1 }}</td>
+          <td>{{ $p->ndirector ? $p->ndirector->nombre . " " . $p->ndirector->apellido1 : '' }}</td>
         @endif
         @if ($p->lider ==0)
           <td></td>
         @else
-          <td>{{ $p->nlider->nombre . " ". $p->nlider->apellido1 }}</td>
+          <td>{{ $p->nlider ? $p->nlider->nombre . " ". $p->nlider->apellido1 : ''}}</td>
         @endif
         
         <td>{{ $p->ciudad }}</td>
