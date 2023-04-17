@@ -139,7 +139,7 @@
                             </div>
                         </div>
 
-                        <div id="tablaocupacion">
+                        <div id="tablaocupacion" style="background-color:white">
                         </div>
                     
             
@@ -199,7 +199,7 @@
                 </div>
             </div>
 
-            <div id="tablareporteo">
+            <div id="tablareporteo" style="background-color:white">
             </div>
                     
             
