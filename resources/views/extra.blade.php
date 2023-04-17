@@ -52,8 +52,8 @@
        
         <td>{{ $e->hora_fin_extra }}</td>
         <td>{{ $e->total_horas }}</td>
-        <td>{{ $e->ndirector->nombre." ".$e->ndirector->apellido1 }}</td>
-        <td>{{ $e->nsolicita->nombre." ".$e->nsolicita->apellido1 }}</td>
+        <td>{{ $e->ndirector ? $e->ndirector->nombre." ".$e->ndirector->apellido1 : '' }}</td>
+        <td>{{ $e->nsolicita ? $e->nsolicita->nombre." ".$e->nsolicita->apellido1 : '' }}</td>
         <td>{{ $e->fecha_solicitud }}</td>
         <td>{{ $e->fecha_autorizacion_rechazo }}</td>
         <td>{{ $e->estado() }}</td>
