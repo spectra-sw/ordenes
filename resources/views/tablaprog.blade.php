@@ -22,7 +22,7 @@
         <td>{{ $p->empleado->nombre . " ". $p->empleado->apellido1}}</td>
         <td>{{ $p->fecha }}</td>
         <td>{{ $p->proyecto . " - ". $p->datosproyecto->cliente->cliente }}</td>
-        <td>{{ p->datosresponsable ? $p->datosresponsable->nombre . " ". $p->datosresponsable->apellido1 : '' }}</td>
+        <td>{{ $p->datosresponsable ? $p->datosresponsable->nombre . " ". $p->datosresponsable->apellido1 : '' }}</td>
         <td>{{ $p->hi }}</td>
         <td>{{ $p->hf }}</td>
         <td>{{ $p->observacion }}</td>
