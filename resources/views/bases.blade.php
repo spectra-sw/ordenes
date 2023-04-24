@@ -80,6 +80,7 @@
                             <th>HORA_INICIO</th>
                             <th>FECHA_FIN</th>
                             <th>HORA_FIN</th>
+                            <th>ALMUERZO</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -91,6 +92,7 @@
                           <td>{{ $t->hora_inicio }}</td>
                           <td>{{ $t->fecha_fin}}</td>
                           <td>{{ $t->hora_fin}}</td>
+                          <td>{{ $t->almuerzo}}</td>
                       </tr>
                       @endforeach
                     </tbody>

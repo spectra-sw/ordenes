@@ -23,6 +23,7 @@ use Carbon\Carbon;
 use App\Models\Programacion;
 
 use App\Imports\ImportNovedad;
+use App\Imports\ImportTurnos;
 
 class ExcelController extends Controller
 {
@@ -683,6 +684,10 @@ class ExcelController extends Controller
 
     public function importHoras(Request $request){
         Excel::import(new ImportNovedad, $request->file('file')->store('files'));
+        return redirect()->back();
+    }
+    public function importTurnos(Request $request){
+        Excel::import(new ImportTurnos, $request->file('file')->store('files'));
         return redirect()->back();
     }
 }
