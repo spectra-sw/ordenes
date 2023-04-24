@@ -16,7 +16,7 @@ class importTurnos implements ToModel
     public function model(array $row)
     {
         if ($row[0] != 'cc'){
-            dd($row);
+            dd($row[0]);
             $user_id = Empleado::where('cc',$row[0])->first()->id;
             return new Turno([
                 //
