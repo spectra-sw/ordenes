@@ -155,6 +155,9 @@ class ExcelController extends Controller
                     else{
                         $almuerzo = 1;
                     }
+                    if (($o->proyecto ==14418) || ($o->proyecto==13696)|| ($o->proyecto==10125)|| ($o->proyecto==14959)|| ($o->proyecto==13833)|| ($o->proyecto==14294)|| ($o->proyecto==15201)){
+                        $almuerzo = 0.5;
+                    }
                     if($rango > 5){
                         $laborales =$rango -$almuerzo;
                         $laborales =$rango -$almuerzo;
