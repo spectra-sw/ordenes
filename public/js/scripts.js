@@ -824,6 +824,7 @@ function acttablaemp(){
         data: data,
         success: function(data) { 
             $("#te").html(data);
+            $('#tablaemp').DataTable();
         }
     }); 
 }
