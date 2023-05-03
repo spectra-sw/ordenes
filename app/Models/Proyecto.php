@@ -31,4 +31,8 @@ class Proyecto extends Model
     public function cdc(){
         return $this->belongsTo(Cdc::class,'codigo','codigo');
     }
+    public function jornadas()
+    {
+        return $this->hasMany(Jornada::class, 'codigo', 'proyecto');
+    }
 }

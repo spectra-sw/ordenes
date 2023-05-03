@@ -12,12 +12,21 @@
                         <label for="proyecto" class="form-label">Proyecto</label>
                         <input type="text" class="form-control" name="proyecto" id="proyecto">
                     </div>   
-                    <div class="col-12 col-md-8">
+                    <div class="col-12 col-md-4">
                         <label for="trabajador" class="form-label">Trabajador</label>
                         <select class="form-control" id="trabajador" name="trabajador">
                             <option value=""></option>
                             @foreach ($emp as $e)
                                 <option value="{{ $e->id }}">{{ $e->apellido1 . " " . $e->nombre}}</option>
+                            @endforeach
+                        </select>
+                    </div>   
+                    <div class="col-12 col-md-4">
+                        <label for="cliente" class="form-label">Cliente</label>
+                        <select class="form-control" id="cliente" name="cliente">
+                            <option value=""></option>
+                            @foreach ($clientes as $c)
+                                <option value="{{ $c->id }}">{{ $c->cliente}}</option>
                             @endforeach
                         </select>
                     </div>   
