@@ -32,13 +32,19 @@ class DistribucionController extends Controller
         if ($request->trabajador) {
             $jornadas->where('user_id', $request->trabajador);
         }
+        if( $request->cliente){
+            $clientId = $request->cliente;
+            $jornadas = $jornadas->whereHas('proyectoinfo', function ($query) use ($clientId) {$query->where('cliente_id', $clientId);});
+
+        }
         if ($request->inicio && $request->fin) {
             
             $jornadas->whereBetween('fecha', [$request->inicio, $request->fin]);
         }
-        if ($request->estado) {
+       /* if ($request->estado) {
             $jornadas->where('estado', $request->estado);
-        }
+        }*/
+        $jornadas->where('estado', 2);
         $jornadas = $jornadas->orderBy('fecha','asc')->get();
 
         $datos = collect([]);

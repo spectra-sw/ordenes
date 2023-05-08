@@ -196,6 +196,7 @@ class OrdenesController extends Controller
             $fecha3 = Carbon::create($fecha3);
             $fecha3->addHours($hours);
             $fecha3->addMinutes($minutes);
+            //dd($fecha3);
 
             $hoursf = intval($fin[0]); 
             $minutesf = floatval($fin[1]/60); 
@@ -205,15 +206,21 @@ class OrdenesController extends Controller
             $fecha4->addHours($hours+$hoursf);
             $fecha4->addMinutes($minutes+$minutesf);
           
-            //dd($fecha  );
-            if (($fecha >= $fecha4 || $fechaf <= $fecha3) ) {
+            //dd($fecha4);
+           /* if (($fecha >= $fecha4 || $fechaf <= $fecha3) ) {
                 $solape= "false";
             } else {
                 $solape= "true";
                 if($j->estado == 3){
                     $solape= "false";
                 }
+            }*/
+            //dd($fechaf <= $fecha4);
+            if (($fecha < $fecha3 && $fechaf > $fecha3) || ($fecha>= $fecha3 && $fechaf <= $fecha4) || ($fecha >= $fecha3 && $fechaf >= $fecha4)){
+                $solape="true";
+                return $solape;
             }
+            
 
             
            
@@ -265,7 +272,7 @@ class OrdenesController extends Controller
         if ($request->estado) {
             $jornadas->where('estado', $request->estado);
         }
-    
+        
         $jornadas = $jornadas->orderBy('fecha','asc')->get();
     
         return view('timetracker.consultaJornadasAdmin', [
