@@ -448,6 +448,9 @@ function nuevoproyecto(){
 function nuevocliente(){
     $("#nuevocliente").modal("show");
 }
+function nuevocorte(){
+    $("#nuevocorte").modal("show");
+}
 function guardare(){
     band=0;
     $('#formEmp input').each(function() { 
@@ -514,6 +517,35 @@ function guardarcliente(){
                 success: function(data) {
                     alert(data);
                     acttablacliente();
+                }
+        });   
+    }
+    else{
+        alert("Debes ingresar todos los campos");
+    }
+}
+function guardarcorte(){
+    band=0;
+    $('#formCorte input').each(function() { 
+        if (($(this).val() == '')) {
+            band=1;
+        }        
+    });
+    $('#formCorte select').each(function() { 
+        if (($(this).val() == '')) {
+            band=1;
+        }        
+    })
+    if (band==0){
+        data=$( "#formCorte" ).serialize(); 
+        url = '/nuevocorte'
+        $.ajax({
+                url: url,
+                type:'GET',
+                data: data,
+                success: function(data) {
+                    alert(data);
+                    acttablacorte();
                 }
         });   
     }
@@ -864,6 +896,19 @@ function acttablacliente(){
         type:'GET',
         success: function(data) { 
             $("#tcl").html(data);
+        }
+    }); 
+}
+function acttablacorte(){
+    campo = ''
+    data = {campo : campo}
+    url="/tablacorte"
+    $.ajax({
+        url: url,
+        data:data,
+        type:'GET',
+        success: function(data) { 
+            $("#tco").html(data);
         }
     }); 
 }

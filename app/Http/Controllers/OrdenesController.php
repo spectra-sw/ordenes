@@ -215,8 +215,8 @@ class OrdenesController extends Controller
                     $solape= "false";
                 }
             }*/
-            //dd($fechaf <= $fecha4);
-            if (($fecha < $fecha3 && $fechaf > $fecha3) || ($fecha>= $fecha3 && $fechaf <= $fecha4) || ($fecha >= $fecha3 && $fechaf >= $fecha4)){
+            //dd($fecha > $fecha3 && $fechaf >= $fecha4 &&  $fecha < $fecha4);
+            if (($fecha < $fecha3 && $fechaf > $fecha3) || ($fecha>= $fecha3 && $fechaf <= $fecha4) || ($fecha >= $fecha3 && $fechaf >= $fecha4 && $fecha < $fecha4)){
                 $solape="true";
                 return $solape;
             }

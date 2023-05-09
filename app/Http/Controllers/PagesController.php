@@ -1136,6 +1136,15 @@ class PagesController extends Controller
 
         return "Cliente creado";
     }
+    public function nuevocorte(Request $request){
+        $c = Corte::create([
+            'fecha_inicio' => $request->fechainicio,
+            'fecha_fin' => $request->fechafin,
+            'estado' => $request->estado
+        ]);
+
+        return "Corte creado";
+    }
     public function tablacliente(Request $request){
         $campo = $request->campo;
         if ($campo == ''){
@@ -1146,6 +1155,12 @@ class PagesController extends Controller
         }
         return view('tablacliente',[
             'clientes' => $clientes,
+        ]);
+    }
+    public function tablacorte(Request $request){
+        $cortes = Corte::all();   
+        return view('tablacortes',[
+            'cortes' => $cortes,
         ]);
     }
     public function buscaremp(Request $request){

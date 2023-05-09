@@ -200,3 +200,7 @@ Route::get('/accioncorte',[OrdenesController::class,'accionCorte']);
 Route::get('/mensaje/error',[MensajesController::class,'error']);
 Route::get('/mensaje/exito',[MensajesController::class,'exito']);
 Route::get('/mensaje/info',[MensajesController::class,'info']);
+
+//corte
+Route::get('/nuevocorte',[PagesController::class,'nuevocorte']);
+Route::get('/tablacorte',[PagesController::class,'tablacorte']);

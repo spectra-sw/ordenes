@@ -56,7 +56,7 @@
         <br>
         <button class="btn btn-3" onclick="nuevocorte()">Nuevo Corte</button><br><br>
         <br>
-        <div id ="tcl">
+        <div id ="tco">
             @include('tablacortes')
         </div>
       </div>
@@ -107,7 +107,7 @@
 @include('modalEmpleado')
 @include('modalCdc')
 @include('modalCliente') 
-
+@include('modalCorte') 
 <div class="modal fade" id="password">
     <div class="modal-dialog">
       <div class="modal-content">  
