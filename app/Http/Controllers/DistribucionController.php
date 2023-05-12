@@ -215,11 +215,11 @@ class DistribucionController extends Controller
                 }
 
                 if (($numdia > 0)&&($festivo=="no")){
-                    $hedo = $horas_diurnas;
+                    $hedo = $horas_diurnas -  $j->almuerzo;
                     $heno = $horas_nocturnas;
                 }
                 if (($numdia == 0)||($festivo=="si")){
-                    $hedf = $horas_diurnas;
+                    $hedf = $horas_diurnas -  $j->almuerzo;
                     $henf= $horas_nocturnas;
                 }
             }
