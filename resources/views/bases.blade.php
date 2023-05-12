@@ -29,7 +29,7 @@
       <div id="home" class="container tab-pane active"><br>
         <br>
         @if ($area == 6)
-        <!--<button class="btn btn-3" onclick="nuevoemp()">Nuevo Empleado</button><br><br>-->
+        <button class="btn btn-3" onclick="nuevoemp()">Nuevo Empleado</button><br><br>
         <div id ="te">
             @include('tablaemp')
         </div>
@@ -45,7 +45,7 @@
       </div>
       <div id="menu2" class="container tab-pane fade"><br>
         <br>                 
-        <button type="button" class="btn btn-3" data-bs-toggle="modal" data-bs-target="#nuevoproyecto">Nuevo Proyecto</button>
+        <!--<button type="button" class="btn btn-3" data-bs-toggle="modal" data-bs-target="#nuevoproyecto">Nuevo Proyecto</button>-->
         <button class="btn btn-3" onclick="exportarproyectos()">Exportar Proyectos</button><br><br>
         <br>
         <div id ="tp">
