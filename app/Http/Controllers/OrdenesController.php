@@ -153,7 +153,7 @@ class OrdenesController extends Controller
         //$jornadas = Jornada::where('user_id',$user)
                             //->where('fecha','>=',$fecha)->orWhere('fechaf','>=',$fecha)->get();
 
-                            $jornadas = Jornada::where('user_id', $user)
+                            $jornadas = Jornada::where('user_id', $user)->where('estado','<>',3)
                             ->where(function ($query) use ($fecha) {
                                 $query->where('fecha', '>=', $fecha)
                                       ->orWhere('fechaf', '>=', $fecha);
