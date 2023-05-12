@@ -29,7 +29,7 @@
       <div id="home" class="container tab-pane active"><br>
         <br>
         @if ($area == 6)
-        <button class="btn btn-3" onclick="nuevoemp()">Nuevo Empleado</button><br><br>
+        <!--<button class="btn btn-3" onclick="nuevoemp()">Nuevo Empleado</button><br><br>-->
         <div id ="te">
             @include('tablaemp')
         </div>

@@ -19,20 +19,18 @@
     @foreach ($proyectos  as $p)     
       <tr>
         <td>{{ $p->codigo }}</td>
-        <td>{{ $p->cliente->cliente }}</td>
+        <td>{{ $p->cliente ? $p->cliente->cliente : '' }}</td>
         <td>{{ $p->descripcion }}</td>
         <td>{{ $p->sistema }}</td>
         <td>{{ $p->subportafolio }}</td>
         @if ($p->director ==0)
           <td></td>
         @else
-          <td>{{ $p->ndirector->nombre . " " . $p->ndirector->apellido1 }}</td>
+          <td>{{ $p->ndirector ? $p->ndirector->nombre . " " . $p->ndirector->apellido1 : ''}}</td>
         @endif
-        @if ($p->lider ==0)
-          <td></td>
-        @else
-          <td>{{ $p->nlider->nombre . " ". $p->nlider->apellido1 }}</td>
-        @endif
+      
+        <td>{{ $p->nlider ? $p->nlider->nombre . " ". $p->nlider->apellido1 : ''  }}</td>
+        
         
         <td>{{ $p->ciudad }}</td>
         <td>{{ isset($p->cdc->centro_operacion) ? $p->cdc->centro_operacion : ''}}</td>
