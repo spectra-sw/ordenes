@@ -82,10 +82,11 @@ class DistribucionController extends Controller
             else{
                 $especial = true;
             }
-            //dd($especial);
+            //dd($turno);
             //Log::info($especial);
             if ($turno->fecha_inicio == $turno->fecha_fin){
                 $laborales = $turno->hora_fin - $turno->hora_inicio - $turno->almuerzo;
+               // dd($laborales);
             }
             else{
                 $laborales = (24-$turno->hora_inicio) + $turno->hora_fin - $turno->almuerzo;
@@ -95,9 +96,11 @@ class DistribucionController extends Controller
                
                 if (($numdia > 0)&&($festivo=="no")){
                     $sb = $duracion - $j->almuerzo;
+                    
                     //Log::info($turno->id.":".$sb);
                     if ($sb>$laborales){
                         $excede = $sb -$laborales;
+                        //dd($excede);
                         $sb =$laborales;
                         $heno = $this->calcularHeno($turno->hora_fin,$hf);
                         //dd($heno);

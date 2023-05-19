@@ -16,8 +16,13 @@ class importTurnos implements ToModel
     public function model(array $row)
     {
         if ($row[0] != 'cc'){
-            //dd($row[0]);
-            $user_id = Empleado::where('cc',$row[0])->first()->id;
+            //dd($row);
+            try {
+                $user_id = Empleado::where('cc',$row[0])->first()->id;
+            } catch (\Exception $e) {
+                dd($row);
+            }
+           
             $fecha_inicio = date('Y-m-d', (int) ($row[1] +1 - 25569) * 86400);
             $fecha_fin = date('Y-m-d', (int) ($row[2] + 1 - 25569) * 86400);
             return new Turno([
