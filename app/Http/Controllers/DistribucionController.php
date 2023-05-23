@@ -46,7 +46,7 @@ class DistribucionController extends Controller
         }*/
         $jornadas->where('estado', 2);
         $jornadas = $jornadas->orderBy('fecha','asc')->get();
-
+        //dd($jornadas);
         $datos = collect([]);
 
         $inicio_diurno = 6; 
@@ -55,6 +55,7 @@ class DistribucionController extends Controller
         $fin_nocturno  = 6; 
         $tsb=0;
         foreach ($jornadas as $j){
+            //Log::info($tsb);
             $hi = explode(":", $j->hi);
             $hi =intval($hi[0]) + round(floatval($hi[1]/60),1);
             $hf = explode(":", $j->hf);
@@ -96,13 +97,13 @@ class DistribucionController extends Controller
             if($especial==true){               
                
                 if (($numdia > 0)&&($festivo=="no")){
-                    $sb = $duracion - $j->almuerzo;
+                    $sb = $tsb + ($duracion - $j->almuerzo);
                     //dd($sb);
                     //Log::info($turno->id.":".$sb);
                     if ($sb>$laborales){
                         $excede = $sb -$laborales;
                         //dd($excede);
-                        $sb =$laborales;
+                        $sb =$laborales - $tsb;
                         $heno = $this->calcularHeno($turno->hora_fin,$hf);
                        // dd($sb);
                         if ($heno ==0){
@@ -239,6 +240,7 @@ class DistribucionController extends Controller
                     'unidad' => $j->cdcinfo->unidad_negocio
                 ];
                 //dd($sb);
+               
                 if ($sb>0){
                     //dd($sb);
                     $valores['concepto']="001";
