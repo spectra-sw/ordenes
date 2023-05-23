@@ -73,6 +73,7 @@ class DistribucionController extends Controller
             $turno = Turno::where('user_id', $j->user_id)
             ->where('fecha_inicio','<=', $j->fecha)
             ->where('fecha_fin','>=', $j->fechaf)
+            
             ->first();
             //dd($turno);
             if ($turno === null) {
@@ -96,14 +97,14 @@ class DistribucionController extends Controller
                
                 if (($numdia > 0)&&($festivo=="no")){
                     $sb = $duracion - $j->almuerzo;
-                    
+                    //dd($sb);
                     //Log::info($turno->id.":".$sb);
                     if ($sb>$laborales){
                         $excede = $sb -$laborales;
                         //dd($excede);
                         $sb =$laborales;
                         $heno = $this->calcularHeno($turno->hora_fin,$hf);
-                        //dd($heno);
+                       // dd($sb);
                         if ($heno ==0){
                             $hedo = $excede;  
                         }
@@ -175,16 +176,16 @@ class DistribucionController extends Controller
                     }
             
                 }
-                /*if (($numdia == 0)||($festivo=="si")){
+                if (($numdia == 0)||($festivo=="si")){
                     if($festivo=="si"){
-                        $hedf=$hf - $hi;
+                        $hedf=$hf - $hi - $j->almuerzo;
                     }
                     if($festivo=="no"){
-                        $dtsc=$hf - $hi;
+                        $dtsc=$hf - $hi -  $j->almuerzo;
                     }
                     $henf = $this->calcularHeno($hi,$hf);
                     $hedf = $hedf-$henf;
-
+                    //dd($hedf);
                     //rnd
                     if (($hi < 21)&&($hi > 6)&&($hf>21)&&($hf<=24)){
                         $rnd = $hf - 21;
@@ -198,7 +199,7 @@ class DistribucionController extends Controller
                     if (($hi >= 0)&&($hf<=6)){
                         $rnd = $hf - $hi;
                     }
-                }*/
+                }
             }
             
             $horas_diurnas =0;

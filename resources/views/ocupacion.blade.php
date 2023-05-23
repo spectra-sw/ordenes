@@ -63,7 +63,7 @@
                             <select class="form-control" id="proyecto" name="proyecto">
                                 <option value=""><option>
                                 @foreach ($proyectos as $p)
-                                    <option value="{{ $p->codigo }}">{{$p->cliente ? $p->codigo . " " . $p->cliente->cliente : '' }}</option>
+                                    <option value="{{ $p->codigo }}">{{$p->cliente ? $p->codigo . " " . $p->cliente->cliente : $p->codigo }}</option>
                                 @endforeach
                             </select>
                         </select>
