@@ -58,7 +58,7 @@ class DistribucionController extends Controller
         $cont = 0;
         foreach ($jornadas as $j){
             $cont = $cont + 1;
-            //Log::info($tsb);
+            Log::info($tsb);
             $hi = explode(":", $j->hi);
             $hi =intval($hi[0]) + round(floatval($hi[1]/60),1);
             $hf = explode(":", $j->hf);
@@ -121,6 +121,7 @@ class DistribucionController extends Controller
                         $rno = $this->calcularHeno($hi,$hf);
                     }
                     else{
+                        $sb =  ($duracion - $j->almuerzo);
                         $rno = $this->calcularHeno($hi,$hf);
                         //dd($heno);
                         //$sb = $sb-$rno;
