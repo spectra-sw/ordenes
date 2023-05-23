@@ -54,6 +54,7 @@ class DistribucionController extends Controller
         $inicio_nocturno = 21; 
         $fin_nocturno  = 6; 
         $tsb=array();
+        $ttsb=0;
         $cont = 0;
         foreach ($jornadas as $j){
             $cont = $cont + 1;
@@ -251,6 +252,7 @@ class DistribucionController extends Controller
                     $valores['concepto']="001";
                     $valores['horas'] = $sb;
                     $tsb[$j->fecha] = $tsb[$j->fecha] + $sb;
+                    $ttsb = $ttsb + $sb;
                     $linea = $this->addlinea($datos,$valores); 
                     $datos->push($linea); 
                 }
@@ -309,7 +311,7 @@ class DistribucionController extends Controller
 
                 if ($j->trabajador->auxilio>0){
             
-                    $auxilio= round(($j->trabajador->auxilio/$tsb[$j->fecha])*$horas,1);
+                    $auxilio= round(($j->trabajador->auxilio/$ttsb)*$horas,1);
                     $linea=collect([]);
                     /*$linea->put('total',$total[$cc]);
                     $linea->put('auxilio',$emp->auxilio);
