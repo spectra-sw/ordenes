@@ -53,8 +53,10 @@ class DistribucionController extends Controller
         $fin_diurno  = 21; 
         $inicio_nocturno = 21; 
         $fin_nocturno  = 6; 
-        $tsb=0;
+        $tsb=array();
+        $cont = 0;
         foreach ($jornadas as $j){
+            $cont = $cont + 1;
             //Log::info($tsb);
             $hi = explode(":", $j->hi);
             $hi =intval($hi[0]) + round(floatval($hi[1]/60),1);
@@ -65,6 +67,9 @@ class DistribucionController extends Controller
                 
             $festivo = app('App\Http\Controllers\FilesController')->consfestivo($j->fecha);
             $c = new Carbon($j->fecha);
+            if (!array_key_exists($j->fecha, $tsb) ) {
+                $tsb[$j->fecha] = 0;
+            }
             $cf = new Carbon($j->fechaf);
             $numdia = $c->dayOfWeek;
             $sb = $hedo = $heno= $hedf = $henf = $rno = $dtc = $rnd = 0;
@@ -97,13 +102,13 @@ class DistribucionController extends Controller
             if($especial==true){               
                
                 if (($numdia > 0)&&($festivo=="no")){
-                    $sb = $tsb + ($duracion - $j->almuerzo);
+                    $sb = $tsb[$j->fecha] + ($duracion - $j->almuerzo);
                     //dd($sb);
                     //Log::info($turno->id.":".$sb);
                     if ($sb>$laborales){
                         $excede = $sb -$laborales;
                         //dd($excede);
-                        $sb =$laborales - $tsb;
+                        $sb =$laborales - $tsb[$j->fecha];
                         $heno = $this->calcularHeno($turno->hora_fin,$hf);
                        // dd($sb);
                         if ($heno ==0){
@@ -245,7 +250,7 @@ class DistribucionController extends Controller
                     //dd($sb);
                     $valores['concepto']="001";
                     $valores['horas'] = $sb;
-                    $tsb = $tsb + $sb;
+                    $tsb[$j->fecha] = $tsb[$j->fecha] + $sb;
                     $linea = $this->addlinea($datos,$valores); 
                     $datos->push($linea); 
                 }
@@ -304,7 +309,7 @@ class DistribucionController extends Controller
 
                 if ($j->trabajador->auxilio>0){
             
-                    $auxilio= round(($j->trabajador->auxilio/$tsb)*$horas,1);
+                    $auxilio= round(($j->trabajador->auxilio/$tsb[$j->fecha])*$horas,1);
                     $linea=collect([]);
                     /*$linea->put('total',$total[$cc]);
                     $linea->put('auxilio',$emp->auxilio);
