@@ -82,9 +82,11 @@ class DistribucionController extends Controller
             ->where('fecha_fin','>=', $j->fechaf)
             
             ->first();
-            //dd($turno);
+           // dd( $j->fechaf);
             if ($turno === null) {
-                $turno = Horario::first();
+                $horario_id = Empleado::where('id',$request->trabajador)->first()->horario_id;
+                //dd($horario_id);
+                $turno = Horario::where('id',$horario_id)->first();
                 $especial = false;
             }
             else{
@@ -118,7 +120,9 @@ class DistribucionController extends Controller
                         else{
                             $hedo = $excede - $heno;
                         }
-                        $rno = $this->calcularHeno($hi,$hf);
+                        if ($heno ==0){
+                            $rno = $this->calcularHeno($hi,$hf);
+                        }
                     }
                     else{
                         $sb =  ($duracion - $j->almuerzo);
@@ -145,7 +149,9 @@ class DistribucionController extends Controller
                         else{
                             $hedf = $excede - $henf;
                         }
+                        if ($hedf ==0){
                         $rnd = $this->calcularHeno($hi,$hf);
+                        }
                     }
                     else{
                         $rnd = $this->calcularHeno($hi,$hf);
@@ -163,6 +169,9 @@ class DistribucionController extends Controller
                         $excede = $sb -$laborales;
                         $sb =$laborales;
                         //dd($sb);
+                        if ($hf == 0){
+                            $hf = 24;
+                        }
                         $heno = $this->calcularHeno($turno->hora_fin,$hf);
                         //dd($heno);
                         if ($heno ==0){
@@ -171,7 +180,9 @@ class DistribucionController extends Controller
                         else{
                             $hedo = $excede - $heno;
                         }
-                        $rno = $this->calcularHeno($hi,$hf);
+                        if ($heno ==0){
+                            $rno = $this->calcularHeno($hi,$hf);
+                        }
                     }
                     else{
                         $rno = $this->calcularHeno($hi,$hf);
