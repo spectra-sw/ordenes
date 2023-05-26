@@ -201,7 +201,8 @@
 
             <div id="tablareporteo" style="background-color:white">
             </div>
-                    
+            <iframe title="Reporte Ocupacion" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=eada343c-1efb-4f6c-a2e2-7ac1309811c0&autoAuth=true&ctid=e752c1c1-100f-43ab-99fd-b6dd93dceb62"
+ frameborder="0" allowFullScreen="true"></iframe>
             
         </form>    
     </div>
