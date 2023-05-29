@@ -126,8 +126,14 @@ class DistribucionController extends Controller
                     }
                     else{
                         $sb =  ($duracion - $j->almuerzo);
-                        $rno = $this->calcularHeno($hi,$hf);
-                        //dd($heno);
+                        if($hf > $hi){
+                            $rno = $this->calcularHeno($hi,$hf);
+                        }
+                        else{
+                            $rno = $this->calcularHeno($hi,24);
+                            $rno = $rno +  $this->calcularHeno(0,$hf);
+                        }
+                        //dd($rno);
                         //$sb = $sb-$rno;
                         /*if ($sb == $rno){
                             $sb = 0;
