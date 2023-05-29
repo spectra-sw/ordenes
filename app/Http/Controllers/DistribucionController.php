@@ -163,11 +163,13 @@ class DistribucionController extends Controller
             }
             if (($especial == false)&&($numdia >= $turno->dia_inicio)&&($numdia <= $turno->dia_fin)){
                 if (($numdia > 0)&&($festivo=="no")){
-                    $sb = $duracion - $j->almuerzo;
+                    $sb = $tsb[$j->fecha] + ($duracion - $j->almuerzo);
+                    //$sb = $duracion - $j->almuerzo;
                     //dd($sb);
                     if ($sb>$laborales){
                         $excede = $sb -$laborales;
-                        $sb =$laborales;
+                        $sb =$laborales - $tsb[$j->fecha];
+                        //$sb =$laborales;
                         //dd($sb);
                         if ($hf == 0){
                             $hf = 24;
