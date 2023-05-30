@@ -857,8 +857,10 @@ $('#actualizarTurno').on("click", (e) => {
             printTablaTurnos();
         },
         error: (error) => {
-            for (const [key, value] of Object.entries(error.responseJSON.errors.almuerzo)) {
-                alert(value)
+            console.log(error.responseJSON.errors.hora_fin[0]);
+            // alert all errors
+            for (const key in error.responseJSON.errors) {
+                alert(error.responseJSON.errors[key])
             }
         }
     });
