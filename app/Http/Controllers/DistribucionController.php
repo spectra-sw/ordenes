@@ -57,6 +57,7 @@ class DistribucionController extends Controller
         $ttsb=0;
         $cont = 0;
         foreach ($jornadas as $j){
+            $valores['proyecto'] = "";
             $cont = $cont + 1;
             $bandlinea= false;
             Log::info($tsb);
@@ -106,9 +107,13 @@ class DistribucionController extends Controller
             if($especial==true){               
                
                 if (($numdia > 0)&&($festivo=="no")){
-                    
-                    $sb = $tsb[$j->fecha] + ($duracion - $j->almuerzo);
-                   
+                    if ($valores['proyecto'] == $j->proyecto){
+                        $sb = $tsb[$j->fecha] + ($duracion - $j->almuerzo);
+                    }
+                    else{
+                        $sb = ($duracion - $j->almuerzo);
+                    }
+                  
                     //dd($sb);
                     //Log::info($turno->id.":".$sb);
                     if ($sb>$laborales){
@@ -226,7 +231,12 @@ class DistribucionController extends Controller
             }
             if (($especial == false)&&($numdia >= $turno->dia_inicio)&&($numdia <= $turno->dia_fin)){
                 if (($numdia > 0)&&($festivo=="no")){
-                    $sb = $tsb[$j->fecha] + ($duracion - $j->almuerzo);
+                    if ($valores['proyecto'] == $j->proyecto){
+                        $sb = $tsb[$j->fecha] + ($duracion - $j->almuerzo);
+                    }
+                    else{
+                        $sb = ($duracion - $j->almuerzo);
+                    }
                     //$sb = $duracion - $j->almuerzo;
                     //dd($sb);
                     if ($sb>$laborales){
