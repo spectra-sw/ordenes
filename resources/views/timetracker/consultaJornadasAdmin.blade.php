@@ -17,6 +17,7 @@
                             <th>Duración</th>
                             <th>Almuerzo</th>
                             <th>Laborales</th>
+                            <th>Creación</th>
                             <th>Aprobación</th>
                             <th>Observaciones</th>
                             <th>Acción</th>
@@ -36,9 +37,11 @@
                                 <td>{{ $j->fechaf }}</td>
                                 <td><input type="text"  id="hf{{ $j->id }}" name="hf{{ $j->id }}" value="{{ $j->hf }}"></td>
                                 <td><input type="text"  id="duracion{{ $j->id }}" name="duracion{{ $j->id }}" value="{{ $duracion }}" disabled></td>
+                              
                                 <td ><input type="number"   min="0" id="almuerzo{{ $j->id }}" name="almuerzo{{ $j->id }}" value="{{ $j->almuerzo }}"></td>
 
                                 <td>{{ $duracion - $j->almuerzo }}</td>
+                                <td>{{ $j->created_at }}</td>
                                 @switch($j->estado)
                                
                                     @case(1)
@@ -56,7 +59,8 @@
                                
                                 <td>
                                     <input type="text" id="obs{{ $j->id }}" name="obs{{ $j->id }}" value="{{ str_replace(' ', ' ', $j->observacion) }}">
-                                </td>    
+                                </td>   
+
                                 <td>
                                     <select class="form-control" onchange="accionj(this.value,this.id)" id="{{ $j->id }}" >
                                         <option value="">--Elige una opción--</option>
