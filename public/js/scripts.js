@@ -1,11 +1,11 @@
 function nueva(){
-    data=$( "#f1" ).serialize(); 
+    data=$( "#f1" ).serialize();
     dataArray=data.split("&");
     dataArray.forEach(function(datos) {
-        x=datos.split("=")    
+        x=datos.split("=")
         var sel = "#"+x[0]
         $( sel ).val("");
-                
+
     });
     $("#datos").css('display','block');
     url="/getConsec";
@@ -117,8 +117,8 @@ function agregarh(){
     hf = $("#hf").val();
     mf = $("#mf").val();
     //ht = $("#th").val();
-   
-    //$("#th").val(ht) 
+
+    //$("#th").val(ht)
     trabajador = $("#cct").val();
     if ((hi=="")||(mi=="")||(hf=="")||(mf=="")||(trabajador=="")){
         $("#mensajeh").html("* Debe ingresar todos los campos");
@@ -175,10 +175,10 @@ function nuevodia(){
                 $("#tablah").html("");
                 $("#dias").css('display','block');*/
                 $data = $(data);
-                $('#dias').html(data); 
+                $('#dias').html(data);
                 $("#dias").css('display','block');
               }
-    });   
+    });
 }
 function calchoras(){
     hi = parseInt($("#hi").val());
@@ -191,7 +191,7 @@ function calchoras(){
     //alert(mf);
     ht = (hf + mf/60)- (hi + mi/60)
     //alert(ht);
-    $("#th").val(ht) 
+    $("#th").val(ht)
 }
 function almdia(){
     id=parseInt($("#id").val());
@@ -212,14 +212,14 @@ function almdia(){
                 }
                 else{
                     $data = $(data);
-                    $("#tablad").html($data); 
+                    $("#tablad").html($data);
                     $("#dias").css('display','none');
                 }
               }
-    });   
+    });
 }
 function enviarorden(a){
-    data=$( "#f1" ).serialize(); 
+    data=$( "#f1" ).serialize();
     //console.log(data)
     dataArray=data.split("&");
     //console.log(dataArray);
@@ -250,16 +250,16 @@ function enviarorden(a){
                 type:'GET',
                 data: data,
                 success: function(data) {
-                    alert(data)            
+                    alert(data)
                 }
-        });  
+        });
     }
     else{
         alert("Ingrese todos los campos obligatorios marcados con *")
-    } 
+    }
 }
 function consultar(){
-    data=$( "#formConsulta" ).serialize(); 
+    data=$( "#formConsulta" ).serialize();
     url = '/getordenes'
     $.ajax({
               url: url,
@@ -269,10 +269,10 @@ function consultar(){
                 $data = $(data);
                 $("#tablao").html($data);
               }
-    });   
+    });
 }
 function archivo(){
-    data=$( "#formConsulta" ).serialize(); 
+    data=$( "#formConsulta" ).serialize();
     console.log(data);
     url = '/archivon'
     $.ajax({
@@ -283,10 +283,10 @@ function archivo(){
                 $data = $(data);
                 $("#tablao").html($data);
               }
-    }); 
+    });
 }
 function archivoc(){
-    data=$( "#formConsulta" ).serialize(); 
+    data=$( "#formConsulta" ).serialize();
     console.log(data);
     url = '/archivoc'
     $.ajax({
@@ -297,10 +297,10 @@ function archivoc(){
                 $data = $(data);
                 $("#tablao").html($data);
               }
-    }); 
+    });
 }
 function reportep(){
-    data=$( "#formConsulta" ).serialize(); 
+    data=$( "#formConsulta" ).serialize();
     url = '/reportep'
     $.ajax({
               url: url,
@@ -310,7 +310,7 @@ function reportep(){
                 $data = $(data);
                 $("#tablao").html($data);
               }
-    }); 
+    });
 }
 
 function verorden(id){
@@ -345,7 +345,7 @@ function auto(id,dia){
                 }
             }
         }
-    }); 
+    });
 }
 function del(tipo,id,diaid){
     //alert(tipo);
@@ -370,7 +370,7 @@ function del(tipo,id,diaid){
           $data = $(data);
           $(sel).html($data);
         }
-    }); 
+    });
 }
 function del2(tipo,id){
     //alert(tipo);
@@ -395,7 +395,7 @@ function del2(tipo,id){
           $data = $(data);
           $(sel).html($data);
         }
-    }); 
+    });
 }
 function login(){
     email = $("#email").val();
@@ -429,7 +429,7 @@ function login(){
                     $("#alerta").css('display','block');
                 }
             }
-        }); 
+        });
     }
 }
 
@@ -453,13 +453,13 @@ function nuevocorte(){
 }
 function guardare(){
     band=0;
-    $('#formEmp input').each(function() { 
+    $('#formEmp input').each(function() {
         if (($(this).val() == '') && ($(this).attr('id') != 'apellido2')) {
             band=1;
-        }        
+        }
     })
     if (band==0){
-        data=$( "#formEmp" ).serialize(); 
+        data=$( "#formEmp" ).serialize();
         url = '/nuevoemp'
         $.ajax({
                 url: url,
@@ -469,7 +469,7 @@ function guardare(){
                     alert(data);
                     acttablaemp();
                 }
-        });   
+        });
     }
     else{
         alert("Debes ingresar todos los campos");
@@ -477,13 +477,13 @@ function guardare(){
 }
 function guardarcdc(){
     band=0;
-    $('#formCdc input').each(function() { 
+    $('#formCdc input').each(function() {
         if (($(this).val() == '') && ($(this).attr('id') != 'observaciones')) {
             band=1;
-        }        
+        }
     })
     if (band==0){
-        data=$( "#formCdc" ).serialize(); 
+        data=$( "#formCdc" ).serialize();
         url = '/nuevocdc'
         $.ajax({
                 url: url,
@@ -493,7 +493,7 @@ function guardarcdc(){
                     alert(data);
                     acttablacdc();
                 }
-        });   
+        });
     }
     else{
 
@@ -502,13 +502,13 @@ function guardarcdc(){
 }
 function guardarcliente(){
     band=0;
-    $('#formCliente input').each(function() { 
+    $('#formCliente input').each(function() {
         if (($(this).val() == '')) {
             band=1;
-        }        
+        }
     })
     if (band==0){
-        data=$( "#formCliente" ).serialize(); 
+        data=$( "#formCliente" ).serialize();
         url = '/nuevocliente'
         $.ajax({
                 url: url,
@@ -518,7 +518,7 @@ function guardarcliente(){
                     alert(data);
                     acttablacliente();
                 }
-        });   
+        });
     }
     else{
         alert("Debes ingresar todos los campos");
@@ -526,18 +526,18 @@ function guardarcliente(){
 }
 function guardarcorte(){
     band=0;
-    $('#formCorte input').each(function() { 
+    $('#formCorte input').each(function() {
         if (($(this).val() == '')) {
             band=1;
-        }        
+        }
     });
-    $('#formCorte select').each(function() { 
+    $('#formCorte select').each(function() {
         if (($(this).val() == '')) {
             band=1;
-        }        
+        }
     })
     if (band==0){
-        data=$( "#formCorte" ).serialize(); 
+        data=$( "#formCorte" ).serialize();
         url = '/nuevocorte'
         $.ajax({
                 url: url,
@@ -547,7 +547,7 @@ function guardarcorte(){
                     alert(data);
                     acttablacorte();
                 }
-        });   
+        });
     }
     else{
         alert("Debes ingresar todos los campos");
@@ -555,18 +555,18 @@ function guardarcorte(){
 }
 function guardarproy(){
     band=0;
-    $('#formProy input').each(function() { 
+    $('#formProy input').each(function() {
         if (($(this).val() == '')) {
             band=1;
-        }        
+        }
     })
-    $('#formProy select').each(function() { 
+    $('#formProy select').each(function() {
         if (($(this).val() == '')) {
             band=1;
-        }        
+        }
     })
     if (band==0){
-        data=$( "#formProy" ).serialize(); 
+        data=$( "#formProy" ).serialize();
         url = '/nuevoproy'
         $.ajax({
                 url: url,
@@ -576,9 +576,8 @@ function guardarproy(){
                     alert(data);
                     acttablaproy();
                 }
-        });   
-    }
-    else{
+        });
+    } else{
         alert("Debes ingresar todos los campos");
     }
 }
@@ -592,21 +591,21 @@ function acciones(op,id){
             url: url,
             type:'GET',
             data: data,
-            success: function(data) { 
+            success: function(data) {
                 $("#editarBody").html(data);
                 $("#editaremp").modal("show");
             }
-        }); 
+        });
     }
     if(op==2){
         $("#id").val(id);
-        $("#eliminaremp").modal("show"); 
+        $("#eliminaremp").modal("show");
     }
     if(op==3){
         $("#idup").val(id);
         $("#password").modal("show");
     }
-    
+
 }
 function accionesproyectos(op, id) {
     switch (op) {
@@ -653,10 +652,10 @@ function mostrarModalAutorizados(id) {
             $('#autorizadosproy').modal("show");
         },
     });
-   
+
 }
 function agregarAutorizado(){
-   data=$( "#formAutProy" ).serialize(); 
+   data=$( "#formAutProy" ).serialize();
    url = '/agautorizadoproy'
     $.ajax({
               url: url,
@@ -667,7 +666,7 @@ function agregarAutorizado(){
                 $data = $(data);
                 $("#tablaautorizados").html($data);
               }
-    });   
+    });
 }
 function borrarautorizado(id){
     const data = { id };
@@ -681,7 +680,7 @@ function borrarautorizado(id){
                 $data = $(data);
                 $("#tablaautorizados").html($data);
               }
-    });   
+    });
 }
 function accionescdc(op,id){
     //alert(op);
@@ -693,16 +692,16 @@ function accionescdc(op,id){
             url: url,
             type:'GET',
             data: data,
-            success: function(data) { 
+            success: function(data) {
                 //alert(data);
                 $("#cdceditBody").html(data);
                 $("#editarcdc").modal();
             }
-        }); 
+        });
     }
     if(op==2){
         $("#id").val(id);
-        $("#eliminarcdc").modal(); 
+        $("#eliminarcdc").modal();
     }
 }
 function accionescliente(op,id){
@@ -715,16 +714,16 @@ function accionescliente(op,id){
             url: url,
             type:'GET',
             data: data,
-            success: function(data) { 
+            success: function(data) {
                 //alert(data);
                 $("#editarClienteBody").html(data);
                 $("#editarcliente").modal("show");
             }
-        }); 
+        });
     }
     if(op==2){
         $("#id").val(id);
-        $("#eliminarcliente").modal(); 
+        $("#eliminarcliente").modal();
     }
 }
 function accionescortes(op,id){
@@ -736,24 +735,24 @@ function accionescortes(op,id){
             url: url,
             type:'GET',
             data: data,
-            success: function(data) { 
-                alert(data); 
+            success: function(data) {
+                alert(data);
                 location.reload();
                 $('#tabAdmin a[href="#cortes"]').tab('show');
             }
-        }); 
-    
-   
+        });
+
+
 }
 function editare(){
     band=0;
-    $('#formEdit input').each(function() { 
+    $('#formEdit input').each(function() {
         if (($(this).val() == '') && ($(this).attr('id') != 'apellido2')) {
             band=1;
-        }        
+        }
     })
     if (band==0){
-        data=$( "#formEdit" ).serialize(); 
+        data=$( "#formEdit" ).serialize();
         url = '/editaremp'
         $.ajax({
                 url: url,
@@ -763,7 +762,7 @@ function editare(){
                     alert(data);
                     acttablaemp();
                 }
-        });   
+        });
     }
     else{
         alert("Debes ingresar todos los campos");
@@ -771,13 +770,13 @@ function editare(){
 }
 function editarcliente(){
     band=0;
-    $('#formEditCliente input').each(function() { 
+    $('#formEditCliente input').each(function() {
         if (($(this).val() == '')) {
             band=1;
-        }        
+        }
     })
     if (band==0){
-        data=$( "#formEditCliente" ).serialize(); 
+        data=$( "#formEditCliente" ).serialize();
         url = '/editarcliente'
         $.ajax({
                 url: url,
@@ -787,7 +786,7 @@ function editarcliente(){
                     alert(data);
                     acttablacliente();
                 }
-        });   
+        });
     }
     else{
         alert("Debes ingresar todos los campos");
@@ -795,18 +794,18 @@ function editarcliente(){
 }
 function editarproy(){
     band=0;
-    $('#formEditProy input').each(function() { 
+    $('#formEditProy input').each(function() {
         if (($(this).val() == '') && ($(this).attr('id') != 'apellido2')) {
             band=1;
-        }        
+        }
     })
-    $('#formEditProy select').each(function() { 
+    $('#formEditProy select').each(function() {
         if (($(this).val() == '')) {
             band=1;
-        }        
+        }
     })
     if (band==0){
-        data=$( "#formEditProy" ).serialize(); 
+        data=$( "#formEditProy" ).serialize();
         url = '/editarproy'
         $.ajax({
                 url: url,
@@ -816,21 +815,65 @@ function editarproy(){
                     alert(data);
                     acttablaproy();
                 }
-        });   
+        });
     }
     else{
         alert("Debes ingresar todos los campos");
     }
 }
+const printTablaTurnos = () => {
+    url="/print-tabla-turnos"
+    $.ajax({
+        url: url,
+        type:'GET',
+        success: (data) => {
+            $("#printTablaTurnos").html(data);
+        }
+    });
+}
+$('#actualizarTurno').on("click", (e) => {
+    // get data json from formEditarTurno
+    const formData = new FormData($('#formEditarTurno')[0])
+    const object = {};
+    const data = {}
+    formData.forEach(function(value, key){
+        object[key] = value;
+    });
+    data.user_id = object.t_user_id
+    data.fecha_inicio = object.t_fecha_inicio
+    data.hora_inicio = object.t_hora_inicio
+    data.fecha_fin = object.t_fecha_fin
+    data.hora_fin = object.t_hora_fin
+    data.almuerzo = object.t_almuerzo
+
+    console.log(object.t_id);
+    url = `/update-turnos-form/${object.t_id}`
+    $.ajax({
+        url: url,
+        type:'GET',
+        data: data,
+        success: (data) => {
+            alert('Actualizado correctamente');
+            printTablaTurnos();
+        },
+        error: (error) => {
+            for (const [key, value] of Object.entries(error.responseJSON.errors.almuerzo)) {
+                alert(value)
+            }
+        }
+    });
+});
+
+
 function editarcdc(){
     band=0;
-    $('#formCdce input').each(function() { 
+    $('#formCdce input').each(function() {
         if (($(this).val() == '') && ($(this).attr('id') != 'observaciones')) {
             band=1;
-        }        
+        }
     })
     if (band==0){
-        data=$( "#formCdce" ).serialize(); 
+        data=$( "#formCdce" ).serialize();
         url = '/editarcdc'
         $.ajax({
                 url: url,
@@ -840,7 +883,7 @@ function editarcdc(){
                     alert(data);
                     acttablacdc();
                 }
-        });   
+        });
     }
     else{
         alert("Debes ingresar todos los campos");
@@ -854,11 +897,11 @@ function acttablaemp(){
         url: url,
         type:'GET',
         data: data,
-        success: function(data) { 
+        success: function(data) {
             $("#te").html(data);
             $('#tablaemp').DataTable();
         }
-    }); 
+    });
 }
 function acttablaproy(){
     campo='';
@@ -868,10 +911,10 @@ function acttablaproy(){
         url: url,
         type:'GET',
         data: data,
-        success: function(data) { 
+        success: function(data) {
             $("#tp").html(data);
         }
-    }); 
+    });
 }
 function acttablacdc(){
     campo = ''
@@ -881,10 +924,10 @@ function acttablacdc(){
         url: url,
         data:data,
         type:'GET',
-        success: function(data) { 
+        success: function(data) {
             $("#tc").html(data);
         }
-    }); 
+    });
 }
 function acttablacliente(){
     campo = ''
@@ -894,10 +937,10 @@ function acttablacliente(){
         url: url,
         data:data,
         type:'GET',
-        success: function(data) { 
+        success: function(data) {
             $("#tcl").html(data);
         }
-    }); 
+    });
 }
 function acttablacorte(){
     campo = ''
@@ -907,10 +950,10 @@ function acttablacorte(){
         url: url,
         data:data,
         type:'GET',
-        success: function(data) { 
+        success: function(data) {
             $("#tco").html(data);
         }
-    }); 
+    });
 }
 function eliminare(){
     id = $("#id").val();
@@ -925,7 +968,7 @@ function eliminare(){
                 alert(data);
                 acttablaemp();
             }
-    });   
+    });
 }
 function eliminarproy(){
     id = $("#id").val();
@@ -940,7 +983,7 @@ function eliminarproy(){
                 alert(data);
                 acttablaproy();
             }
-    });   
+    });
 }
 function eliminarcdc(){
     id = $("#id").val();
@@ -955,7 +998,7 @@ function eliminarcdc(){
                 alert(data);
                 acttablacdc();
             }
-    });   
+    });
 }
 function updatepwd(){
     id = $("#idup").val();
@@ -970,7 +1013,7 @@ function updatepwd(){
             success: function(data) {
                 alert(data);
             }
-    });   
+    });
 }
 function ordenar(campo){
     //alert(campo);
@@ -980,10 +1023,10 @@ function ordenar(campo){
         url: url,
         type:'GET',
         data: data,
-        success: function(data) { 
+        success: function(data) {
             $("#te").html(data);
         }
-    }); 
+    });
 }
 function ordenarc(campo){
     url="/tablacdc"
@@ -992,10 +1035,10 @@ function ordenarc(campo){
         url: url,
         data: data,
         type:'GET',
-        success: function(data) { 
+        success: function(data) {
             $("#tc").html(data);
         }
-    }); 
+    });
 }
 function buscarcontactos(){
     cliente = $("#cliente").val();
@@ -1005,12 +1048,12 @@ function buscarcontactos(){
         url: url,
         type:'GET',
         data: data,
-        success: function(data) { 
-              //alert(data);     
-              $("#contacto").val(data); 
-             
+        success: function(data) {
+              //alert(data);
+              $("#contacto").val(data);
+
         }
-    });   
+    });
 }
 function modalconfirm(){
     $("#cproyecto").val($("#proyecto").val());
@@ -1032,10 +1075,10 @@ function infoDia(id){
           data: data,
           success: function(data) {
                 $data = $(data);
-                $("#infoBody").html($data); 
+                $("#infoBody").html($data);
                 $("#info").modal();
-            } 
-        });   
+            }
+        });
 }
 function editDia(id){
     /*
@@ -1049,10 +1092,10 @@ function editDia(id){
           success: function(data) {
                //alert(data);
                 $data = $(data);
-                $("#infoBody").html($data); 
+                $("#infoBody").html($data);
                 $("#info").modal();
-            } 
-        });  
+            }
+        });
     */
    url = '/editDia'
    data = {id : id}
@@ -1062,10 +1105,10 @@ function editDia(id){
              data: data,
              success: function(data) {
                $data = $(data);
-               $('#dias').html(data); 
+               $('#dias').html(data);
                $("#dias").css('display','block');
              }
-   });    
+   });
 }
 function deleteDia(id){
    url = '/deleteDia'
@@ -1076,28 +1119,28 @@ function deleteDia(id){
              data: data,
              success: function(data) {
                $data = $(data);
-               $("#tablad").html($data); 
-               
+               $("#tablad").html($data);
+
              }
-   });    
+   });
 }
 function nuevaprog(){
     $("#prog").modal();
 }
 function guardarprog(){
     band=0;
-    $('#formProg input').each(function() { 
+    $('#formProg input').each(function() {
         if (($(this).val() == '') && ($(this).attr('id') != 'observaciones')) {
             band=1;
-        }        
+        }
     })
-    $('#formProg select').each(function() { 
+    $('#formProg select').each(function() {
         if (($(this).val() == '') && ($(this).attr('id') != 'observaciones')) {
             band=1;
-        }        
+        }
     })
     if (band==0){
-        data=$( "#formProg" ).serialize(); 
+        data=$( "#formProg" ).serialize();
         console.log(data);
         url = '/nuevaprog'
         $.ajax({
@@ -1108,7 +1151,7 @@ function guardarprog(){
                     alert(data);
                     acttablaprog();
                 }
-        });   
+        });
     }
     else{
         alert("Debes ingresar todos los campos");
@@ -1122,12 +1165,12 @@ function acttablaprog(){
         url: url,
         type:'GET',
         data: data,
-        success: function(data) { 
+        success: function(data) {
             $("#tprog").html(data);
         }
-    }); 
+    });
 }
-function accionesprog(op,id){ 
+function accionesprog(op,id){
     if (op==1){
         data = { id : id }
         url="/buscarprog"
@@ -1135,26 +1178,26 @@ function accionesprog(op,id){
             url: url,
             type:'GET',
             data: data,
-            success: function(data) { 
+            success: function(data) {
                 $("#editarprogBody").html(data);
                 $("#editarprog").modal();
             }
-        }); 
+        });
     }
     if(op==2){
         $("#id").val(id);
-        $("#eliminarprog").modal(); 
-    }  
+        $("#eliminarprog").modal();
+    }
 }
 function editarprog(){
     band=0;
-    $('#formProgEdit input').each(function() { 
+    $('#formProgEdit input').each(function() {
         if (($(this).val() == '') && ($(this).attr('id') != 'observaciones')) {
             band=1;
-        }        
+        }
     })
     if (band==0){
-        data=$( "#formProgEdit" ).serialize(); 
+        data=$( "#formProgEdit" ).serialize();
         url = '/editarprog'
         $.ajax({
                 url: url,
@@ -1164,7 +1207,7 @@ function editarprog(){
                     alert(data);
                     acttablaprog();
                 }
-        });   
+        });
     }
     else{
         alert("Debes ingresar todos los campos");
@@ -1183,17 +1226,17 @@ function eliminarprog(){
                 alert(data);
                 acttablaprog();
             }
-    });   
+    });
 }
 function rocupacion(){
-    data=$( "#formRegistro" ).serialize(); 
+    data=$( "#formRegistro" ).serialize();
     dataArray=data.split("&");
     band =0;
     dataArray.forEach(function(datos) {
         x=datos.split("=")
         if (x[1]==""){
             band=1;
-        }  
+        }
     });
     if(band==0){
         url = '/rocupacion'
@@ -1210,7 +1253,7 @@ function rocupacion(){
                     $('#horas').val("0");
                     $('#min').val("0");
                 }
-        }); 
+        });
     }
     else{
         alert("Debe ingresar todos los campos");
@@ -1229,10 +1272,10 @@ function validarfest(fecha){
                     alert("La fecha seleccionada es un día festivo");
                 }
             }
-    }); 
+    });
 }
 function filtrarprog(){
-    data=$( "#filtrarProg" ).serialize(); 
+    data=$( "#filtrarProg" ).serialize();
     url = '/filtrarprog'
     $.ajax({
             url: url,
@@ -1241,10 +1284,10 @@ function filtrarprog(){
             success: function(data) {
                 $("#tprog").html(data);
             }
-    });   
+    });
 }
 function calendario(){
-    data=$( "#filtrarProg" ).serialize(); 
+    data=$( "#filtrarProg" ).serialize();
     url = '/calendarioprog'
     $.ajax({
             url: url,
@@ -1253,10 +1296,10 @@ function calendario(){
             success: function(data) {
                 $("#tprog").html(data);
             }
-    });   
+    });
 }
 function filtrarproy(){
-    data=$( "#filtrarProy" ).serialize(); 
+    data=$( "#filtrarProy" ).serialize();
     url = '/filtrarproy'
     $.ajax({
             url: url,
@@ -1265,10 +1308,10 @@ function filtrarproy(){
             success: function(data) {
                 $("#tp").html(data);
             }
-    });   
+    });
 }
 function filtrarcentro(){
-    data=$( "#filtrarCentro" ).serialize(); 
+    data=$( "#filtrarCentro" ).serialize();
     url = '/filtrarcentro'
     $.ajax({
             url: url,
@@ -1277,10 +1320,10 @@ function filtrarcentro(){
             success: function(data) {
                 $("#tc").html(data);
             }
-    });   
+    });
 }
 function filtrarcliente(){
-    data=$( "#filtrarCliente" ).serialize(); 
+    data=$( "#filtrarCliente" ).serialize();
     url = '/filtrarcliente'
     $.ajax({
             url: url,
@@ -1289,10 +1332,10 @@ function filtrarcliente(){
             success: function(data) {
                 $("#tcl").html(data);
             }
-    });   
+    });
 }
 function consultaroc(){
-    data=$( "#formConsultaOcupacion" ).serialize(); 
+    data=$( "#formConsultaOcupacion" ).serialize();
     url = '/calendariooc'
     $.ajax({
             url: url,
@@ -1301,10 +1344,10 @@ function consultaroc(){
             success: function(data) {
                 $("#tablaocupacion").html(data);
             }
-    });   
+    });
 }
 function seguimiento(){
-    data=$( "#formReportesOcupacion" ).serialize(); 
+    data=$( "#formReportesOcupacion" ).serialize();
     url = '/seguimiento'
     $.ajax({
             url: url,
@@ -1313,10 +1356,10 @@ function seguimiento(){
             success: function(data) {
                 $("#tablareporteo").html(data);
             }
-    });   
+    });
 }
 function generalo(){
-    data=$( "#formReportesOcupacion" ).serialize(); 
+    data=$( "#formReportesOcupacion" ).serialize();
     url = '/generalo'
     $.ajax({
             url: url,
@@ -1325,10 +1368,10 @@ function generalo(){
             success: function(data) {
                 $("#tablareporteo").html(data);
             }
-    });   
+    });
 }
 function distribuciono(){
-    data=$( "#formReportesOcupacion" ).serialize(); 
+    data=$( "#formReportesOcupacion" ).serialize();
     url = '/distribuciono'
     $.ajax({
             url: url,
@@ -1337,7 +1380,7 @@ function distribuciono(){
             success: function(data) {
                 $("#tablareporteo").html(data);
             }
-    });   
+    });
 }
 function buscarInfoOc(){
     data={fecha : $("#dia").val()}
@@ -1346,10 +1389,10 @@ function buscarInfoOc(){
             url: url,
             type:'GET',
             data: data,
-            success: function(data) {              
+            success: function(data) {
                 infoHandler(data);
             }
-    });   
+    });
 }
 function consprog(proyecto,fecha,cc){
     /*alert(proyecto);
@@ -1361,11 +1404,11 @@ function consprog(proyecto,fecha,cc){
             url: url,
             type:'GET',
             data: data,
-            success: function(data) { 
+            success: function(data) {
                 $("#editarprogBody").html(data);
                 $("#editarprog").modal();
             }
-        }); 
+        });
 
 }
 function extra(proyecto,fecha,cc,hi,hf){
@@ -1378,16 +1421,16 @@ function extra(proyecto,fecha,cc,hi,hf){
             url: url,
             type:'GET',
             data: data,
-            success: function(data) { 
+            success: function(data) {
                 $("#authExtraBody").html(data);
                 $("#authExtraModal").modal();
             }
-        }); 
+        });
 
 }
 function guardarextra(){
     let trabajador = "";
-    data=$( "#formExtra" ).serialize(); 
+    data=$( "#formExtra" ).serialize();
     dataArray=data.split("&");
     //console.log(dataArray);
     band =0;
@@ -1403,12 +1446,12 @@ function guardarextra(){
         }
         if (x[1]==""){
             band=1;
-        }  
+        }
     });
     data=data+"&trabajador="+trabajador
     if(band==0){
-        
-           
+
+
             url = '/saveextra'
             $.ajax({
                     url: url,
@@ -1417,7 +1460,7 @@ function guardarextra(){
                     success: function(data) {
                         alert(data);
                     }
-            });   
+            });
     }
     else{
         alert("Diligencie todos los campos");
@@ -1426,7 +1469,7 @@ function guardarextra(){
 
 function actextra(){
     let trabajador = "NO";
-    data=$( "#formExtra" ).serialize(); 
+    data=$( "#formExtra" ).serialize();
     dataArray=data.split("&");
     //console.log(dataArray);
     band =0;
@@ -1444,12 +1487,12 @@ function actextra(){
         }
         if (x[1]==""){
             band=1;
-        }  
+        }
     });
     data=data+"&trabajador="+trabajador
     if(band==0){
-        
-           
+
+
             url = '/actextra'
             $.ajax({
                     url: url,
@@ -1458,7 +1501,7 @@ function actextra(){
                     success: function(data) {
                         alert(data);
                     }
-            });   
+            });
     }
     else{
         alert("Diligencie todos los campos");
@@ -1474,11 +1517,11 @@ function aprobar(id){
             url: url,
             type:'GET',
             data: data,
-            success: function(data) { 
+            success: function(data) {
                alert(data);
                location.reload();
             }
-        }); 
+        });
 }
 function rechazar(id){
     obs =$("#observacion").val();
@@ -1489,11 +1532,11 @@ function rechazar(id){
             url: url,
             type:'GET',
             data: data,
-            success: function(data) { 
+            success: function(data) {
                alert(data);
                location.reload();
             }
-        }); 
+        });
 
 }
 function editarextra(id){
@@ -1504,11 +1547,11 @@ function editarextra(id){
             url: url,
             type:'GET',
             data: data,
-            success: function(data) { 
+            success: function(data) {
                 $("#authExtraBody").html(data);
                 $("#authExtraModal").modal();
             }
-        }); 
+        });
 
 }
 function eliminarextra(id){
@@ -1519,17 +1562,17 @@ function eliminarextra(id){
             url: url,
             type:'GET',
             data: data,
-            success: function(data) { 
+            success: function(data) {
                 alert("Solicitud eliminada")
             }
-        }); 
+        });
 
 }
 
 
 function analiticas(){
     //alert();
-    /*data=$( "#formReportesOcupacion" ).serialize(); 
+    /*data=$( "#formReportesOcupacion" ).serialize();
     console.log(data);
     url = '/exportAnaliticas'*/
     data={ fechaInicioOcup1 :$("#fechaInicioOcup1").val() ,fechaFinalOcup1:  $("#fechaFinalOcup1").val() }
@@ -1541,22 +1584,22 @@ function analiticas(){
             type:'GET',
             data: data,
             success: function(data) {
-                
+
             }
     });   */
 }
 function nuevaextra(){
-    
+
         url="/nuevaextra"
         $.ajax({
             url: url,
             type:'GET',
-           
-            success: function(data) { 
+
+            success: function(data) {
                 $("#authExtraBody").html(data);
                 $("#authExtraModal").modal();
             }
-        }); 
+        });
 
 }
 function exportarextra(){
@@ -1566,7 +1609,7 @@ function exportarextra(){
     window.location = url;
 }
 function exportarproyectos(){
-    var url = "/exportProyectos" 
+    var url = "/exportProyectos"
     window.location = url;
 }
 function delOcupacion(ocupacion_id){
@@ -1578,11 +1621,11 @@ function delOcupacion(ocupacion_id){
             url: url,
             type:'GET',
             data: data,
-            success: function(data) { 
+            success: function(data) {
                alert(data)
             }
-        }); 
-    } 
+        });
+    }
 }
 function errorHandler(mensaje) {
     $.ajax({

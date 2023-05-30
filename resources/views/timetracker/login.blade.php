@@ -38,7 +38,7 @@ height: 100%;
         </div>
         <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
           <form>
-            <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+            <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start mb-4">
               <img src="{{ URL::asset('img/logo.png') }}">
               <!--<p class="lead fw-normal mb-0 me-3">Sign in with</p>
               <button type="button" class="btn btn-primary btn-floating mx-1">
@@ -52,11 +52,6 @@ height: 100%;
               <button type="button" class="btn btn-primary btn-floating mx-1">
                 <i class="fab fa-linkedin-in"></i>
               </button>-->
-            </div>
-  
-            <div class="divider d-flex align-items-center my-4">
-              <p class="text-center fw-bold mx-3 mb-0">
-              </p>
             </div>
   
             <!-- Email input -->
@@ -73,7 +68,7 @@ height: 100%;
               <label class="form-label" for="pwd">Contraseña</label>
             </div>
   
-          <!--  <div class="d-flex justify-content-between align-items-center">
+            <!--  <div class="d-flex justify-content-between align-items-center">
            
               <div class="form-check mb-0">
                 <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
@@ -90,16 +85,16 @@ height: 100%;
              <!-- <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#!"
                   class="link-danger">Register</a></p>-->
             </div>
-            <div id="mensaje">
-             
-            </div>
+            <div id="mensaje" class="mt-2"></div>
           </form>
         </div>
       </div>
     </div>
     <a href="https://wa.me/573165265937"><img src="{{ URL::asset('img/whatsapp.png') }}" class="helpIcon"></a>
     <div
-      class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-1">
+      class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-1"
+      style="margin-top: 7px;"
+    >
       <!-- Copyright -->
       <div class="text-white mb-3 mb-md-0">
         Copyright © 2023. All rights reserved.
@@ -107,24 +102,14 @@ height: 100%;
       <!-- Copyright -->
   
       <!-- Right -->
-      <div>
+      <!-- <div>
         <a href="#!" class="text-white me-4">
-          <i class="fab fa-facebook-f"></i>
+          <i class="fab fa-facebook-f">sfsfs</i>
         </a>
-        <a href="#!" class="text-white me-4">
-          <i class="fab fa-twitter"></i>
-        </a>
-        <a href="#!" class="text-white me-4">
-          <i class="fab fa-google"></i>
-        </a>
-        <a href="#!" class="text-white">
-          <i class="fab fa-linkedin-in"></i>
-        </a>
-      </div>
+      </div> -->
       <!-- Right -->
     </div>
    
   </section>
-  
 </body>
 <script src="{{asset('js/scripts.js')}}"></script>

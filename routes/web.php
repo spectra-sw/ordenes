@@ -13,6 +13,7 @@ use App\Http\Controllers\OrdenesController;
 use App\Http\Controllers\MensajesController;
 use App\Http\Controllers\ConsultasController;
 use App\Http\Controllers\DistribucionController;
+use  App\Http\Controllers\TurnoController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -95,6 +96,10 @@ Route::get('/tablacdc',[PagesController::class,'tablacdc']);
 Route::get('/eliminarcdc',[PagesController::class,'eliminarcdc']);
 Route::get('/filtrarcentro',[PagesController::class,'filtrarcentro']);
 
+// turnos
+Route::get('/editar-turnos-form/{turno}',[TurnoController::class,'modalFormularioEdit']);
+Route::get('/update-turnos-form/{turno}',[TurnoController::class,'modalFormularioUpdate']);
+Route::get('/print-tabla-turnos',[TurnoController::class,'printTablaTurnos']);
 
 //programacion
 Route::get('/nuevaprog',[PagesController::class,'nuevaprog']);
@@ -168,14 +173,14 @@ Route::get('/actextra',[PagesController::class,'actextra']);
 
 
 Route::get('send-mail', function () {
-   
+
     $details = [
         'title' => 'Solicitud de horas extras',
         'body' => 'This is for testing email using smtp'
     ];
-   
+
     \Mail::to('dguerra@spectra.com.co')->send(new \App\Mail\MailSolicitudExtra($details));
-   
+
     dd("Email is Sent.");
 });
 

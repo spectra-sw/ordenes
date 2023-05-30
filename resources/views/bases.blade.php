@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container mt-0">
-   
+
     <br>
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist" id="tabAdmin">
@@ -23,7 +23,7 @@
         <a class="nav-link" data-bs-toggle="tab" href="#turnos">Turnos</a>
       </li>
     </ul>
-  
+
     <!-- Tab panes -->
     <div class="tab-content">
       <div id="home" class="container tab-pane active"><br>
@@ -44,12 +44,12 @@
         </div>
       </div>
       <div id="menu2" class="container tab-pane fade"><br>
-        <br>                 
+        <br>
         <!--<button type="button" class="btn btn-3" data-bs-toggle="modal" data-bs-target="#nuevoproyecto">Nuevo Proyecto</button>-->
         <button class="btn btn-3" onclick="exportarproyectos()">Exportar Proyectos</button><br><br>
         <br>
         <div id ="tp">
-                @include('tablaproyecto')
+          @include('tablaproyecto')
         </div>
       </div>
       <div id="cortes" class="container tab-pane fade"><br>
@@ -61,8 +61,8 @@
         </div>
       </div>
       <div id="turnos" class="container tab-pane fade"><br>
-        <br>
-        <form action="{{ route('importTurnos') }}" method="POST" enctype="multipart/form-data">
+      <br>
+      <form action="{{ route('importTurnos') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group mb-4">
                 <div class="custom-file text-left">
@@ -70,71 +70,48 @@
                     <label class="custom-file-label" for="customFile">Escoger Archivo</label>
                 </div>
             </div>
-            <button class="btn btn-3">Importar turnos</button><br>
-                <table id="tableTurnos" class="table table-striped" style="width:100%;overflow:scroll;color:black">
-                    <thead>
-                        <tr>
-                            <th>CC</th>
-                            <th>NOMBRE</th>
-                            <th>FECHA_INICIO</th>
-                            <th>HORA_INICIO</th>
-                            <th>FECHA_FIN</th>
-                            <th>HORA_FIN</th>
-                            <th>ALMUERZO</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                      @foreach($turnos as $t)
-                      <tr>
-                          <td>{{ isset($t->empleado) ?  $t->empleado->cc : '' }} </td>
-                          <td>{{ isset($t->empleado) ?  $t->empleado->apellido1 . " ". $t->empleado->apellido2 . " ". $t->empleado->nombre : '' }}</td>
-                          <td>{{ $t->fecha_inicio}}</td>
-                          <td>{{ $t->hora_inicio }}</td>
-                          <td>{{ $t->fecha_fin}}</td>
-                          <td>{{ $t->hora_fin}}</td>
-                          <td>{{ $t->almuerzo}}</td>
-                      </tr>
-                      @endforeach
-                    </tbody>
-                   
-                </table>
+            <button class="btn btn-3 mb-4">Importar turnos</button>
+            <div id="printTablaTurnos">
+                @include('tablaTurnos')
+            </div>
         </form>
       </div>
     </div>
 </div>
 
+<!-- modals -->
+@include('modalEditarTurno')
 @include('modalProyecto')
 @include('modalEmpleado')
 @include('modalCdc')
-@include('modalCliente') 
-@include('modalCorte') 
+@include('modalCliente')
+@include('modalCorte')
+
 <div class="modal fade" id="password">
     <div class="modal-dialog">
-      <div class="modal-content">  
+      <div class="modal-content">
         <!-- Modal body -->
-       
+
         <!-- Modal body -->
         <div class="modal-body" id="eliminarBody">
         <p>Nueva contraseña</p>
         <p><input type="password" id="pwd" name="pwd" class="form-control"></p>
-        <input type="hidden" id="idup" name="idup" value=""> 
+        <input type="hidden" id="idup" name="idup" value="">
         <button type="button" class="btn btn-primary" onclick="updatepwd()">Actualizar</button>
         </div>
-        
+
         <!-- Modal footer -->
         <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-      </div>      
+      </div>
       </div>
     </div>
 </div>
-
   <script>
     $(document).ready(function () {
       $('#tablaemp').DataTable();
-      $('#tableTurnos').DataTable();
     });
     </script>
-    <script src="{{asset('js/scripts.js')}}"></script>    
+    <script src="{{asset('js/scripts.js')}}"></script>
 @endsection
 
