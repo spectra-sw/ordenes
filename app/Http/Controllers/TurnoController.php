@@ -91,12 +91,8 @@ class TurnoController extends Controller
         $turno->save();
 
         return response()->json([
-            'user_id' => $request->user_id,
-            'fecha_inicio' => $request->fecha_inicio,
-            'fecha_fin' => $request->fecha_fin,
-            'hora_inicio' => $request->hora_inicio,
-            'hora_fin' => $request->hora_fin,
-            'almuerzo' => $request->almuerzo,
+            'message' => 'Turno actualizado correctamente',
+            'data' => $turno
         ]);
     }
 

@@ -118,7 +118,7 @@ class PagesController extends Controller
         else{
             return view('login');
         }
-        
+
     }
     public function programacion(){
         $tipo = session('tipo');
@@ -179,7 +179,7 @@ class PagesController extends Controller
         else{
             return view('login');
         }
-        
+
     }
     public function consultas(){
         $tipo = session('tipo');
@@ -191,9 +191,9 @@ class PagesController extends Controller
         else{
             return view('login');
         }
-       
+
     }
-    
+
     public function getConsec(){
         $total=Orden::all()->count();
         if ($total == 0){
@@ -201,7 +201,7 @@ class PagesController extends Controller
                 'proyecto' => 1
             ]);
             return "00001";
-        } 
+        }
         else{
             $id = Orden::orderBy('created_at','desc')->first()->id;
             $id+=1;
@@ -209,7 +209,7 @@ class PagesController extends Controller
                 'proyecto' => $id
             ]);
             return "0000".$id;
-        }      
+        }
     }
     public function agregardia(Request $request){
         $proyecto = $request->proyecto;
@@ -228,7 +228,7 @@ class PagesController extends Controller
             'ciudad' => $ciudad
         ]);
        // return $d->id;
-        
+
     }
     public function agregarp(Request $request){
         //dd($request->cant);
@@ -258,7 +258,7 @@ class PagesController extends Controller
         return view('tablae',[
             'datos' => $datos
         ]);
-        
+
     }
     public function agregarh(Request $request){
         $rhi =$request->hi;
@@ -272,17 +272,17 @@ class PagesController extends Controller
             ->where('dias.ordenes_id','=',$oid)
             ->where('dias.fecha',$fecha)
             ->where('horas.trabajador',$request->trabajador);
-        
+
         $conteo = $datos->count();
         //dd($conteo);
         $datos = $datos->get();
        // dd($datos);
         if ($conteo>0){
             foreach($datos as $d){
-                
+
                 $hi = explode(":", $d->hi);
                 $hf = explode(":", $d->hf);
-                
+
                 $hi = intval($hi[0]) + round(floatval($hi[1]/60),1);
                 $hf = intval($hf[0]) + round(floatval($hf[1]/60),1);
 
@@ -302,14 +302,14 @@ class PagesController extends Controller
                     return 'no';
                 }
 
-    
-            }  
-            
+
+            }
+
         }
 
-       
 
-       
+
+
 
             $hi = $request->hi.":".$request->mi;
             $hf = $request->hf.":".$request->mf;
@@ -327,14 +327,14 @@ class PagesController extends Controller
             return view('tablah',[
                 'datos' => $datos
             ]);
-        
-        
+
+
     }
     public function almdia(Request $request){
 
-        //if (Hora::where('ordenes_id',$request->id)->where('dias_id',$request->diaid)->exists()){   
+        //if (Hora::where('ordenes_id',$request->id)->where('dias_id',$request->diaid)->exists()){
 
-            $d=Dia::where('id', $request->diaid) 
+            $d=Dia::where('id', $request->diaid)
             ->update(['fecha' => $request->fecha,
                         'observacion' => $request->observaciond]);
             $datos = Dia::where('ordenes_id',$request->id)->where('fecha','<>','1900-01-01')->get();
@@ -350,14 +350,14 @@ class PagesController extends Controller
     public function saveorden(Request $request){
         $id = $request->id;
 
-        if (Dia::where('ordenes_id',$id)->where('fecha','<>','1900-01-01')->exists()){   
+        if (Dia::where('ordenes_id',$id)->where('fecha','<>','1900-01-01')->exists()){
 
             $tipou = session('tipo');
             $creada = 0;
             if ($tipou !=3){
                 $creada = session('user');
             }
-        
+
         $tipo = $request->sistema;
         if ($tipo==""){
             return "Ingrese el tipo de sistema solicitado";
@@ -365,37 +365,37 @@ class PagesController extends Controller
         /*$tipo="";
         if ($request->filled('cctv')) {
             if($tipo==""){ $tipo= "cctv";}
-            else{ $tipo= $tipo." cctv";}    
+            else{ $tipo= $tipo." cctv";}
         }
         if ($request->filled('incendio')) {
             if($tipo==""){ $tipo= "incendio";}
-            else{ $tipo= $tipo." incendio";}    
+            else{ $tipo= $tipo." incendio";}
         }
         if ($request->filled('cablestr')) {
             if($tipo==""){ $tipo= "cabl.estr";}
-            else{ $tipo= $tipo." cabl.estr";}    
+            else{ $tipo= $tipo." cabl.estr";}
         }
         if ($request->filled('otro')) {
             if($tipo==""){ $tipo= "otro";}
-            else{ $tipo= $tipo." otro";}    
+            else{ $tipo= $tipo." otro";}
         }
         if ($request->filled('acceso')) {
             if($tipo==""){ $tipo= "acceso";}
-            else{ $tipo= $tipo." acceso";}    
+            else{ $tipo= $tipo." acceso";}
         }
         if ($request->filled('intrusion')) {
             if($tipo==""){ $tipo= "instrusion";}
-            else{ $tipo= $tipo." intrusion";}    
+            else{ $tipo= $tipo." intrusion";}
         }
         if ($request->filled('integracion')) {
             if($tipo==""){ $tipo= "integracion";}
-            else{ $tipo= $tipo." integracion";}    
+            else{ $tipo= $tipo." integracion";}
         }
         if ($request->filled('documentacion')) {
             if($tipo==""){ $tipo= "documentacion";}
-            else{ $tipo= $tipo." documentacion";}    
+            else{ $tipo= $tipo." documentacion";}
         }
-        
+
         if ($tipo==""){
             return "Ingrese el tipo de sistema solicitado";
         }*/
@@ -403,25 +403,25 @@ class PagesController extends Controller
         /*$objeto="";
         if ($request->filled('instalacion')) {
             if($objeto==""){ $objeto= "instalacion";}
-            else{ $objeto= $objeto." instalacion";}    
+            else{ $objeto= $objeto." instalacion";}
         }
         if ($request->filled('MntoPrev')) {
             if($objeto==""){ $objeto= "Mnto.Prev";}
-            else{ $objeto= $objeto." Mnto.Prev";}    
+            else{ $objeto= $objeto." Mnto.Prev";}
         }
         if ($request->filled('TrabInt')) {
             if($objeto==""){ $objeto= "Trab.Int";}
-            else{ $objeto= $objeto." Trab.Int";}    
+            else{ $objeto= $objeto." Trab.Int";}
         }
         if ($request->filled('revision')) {
             if($objeto==""){ $objeto= "revision";}
-            else{ $objeto= $objeto." revision";}    
+            else{ $objeto= $objeto." revision";}
         }
         if ($request->filled('otro')) {
             if($objeto==""){ $objeto= "otro";}
-            else{ $objeto= $objeto." otro";}    
+            else{ $objeto= $objeto." otro";}
         }
-    
+
         if($objeto==""){
             return "Ingrese el objeto de la orden de trabajo";
         }*/
@@ -431,10 +431,10 @@ class PagesController extends Controller
         if($objeto==""){
             return "Ingrese el objeto de la orden de trabajo";
         }
-        
-       $o=Orden::where('id', $id) 
+
+       $o=Orden::where('id', $id)
        ->update([
-      
+
             'proyecto' => $request->proyecto,
             'fecha_inicio' => $request->fechaInicio,
             'fecha_final' => $request->fechaFinal,
@@ -446,7 +446,7 @@ class PagesController extends Controller
             'objeto' => $objeto,
             'observaciones' => $request->observacionesg  ,
             'autorizada_por' => 0,
-            'creada_por' => $creada   
+            'creada_por' => $creada
         ]);
 
         return "Orden de trabajo almacenada";
@@ -471,7 +471,7 @@ class PagesController extends Controller
                 $dia->put('id',$d['id']);
                 $dia->put('fecha',$d['fecha']);
                 $dia->put('observacion',$d['observacion']);
-                $horas = Hora::where('ordenes_id',$o['id'])->where('dias_id',$d['id'])->get();      
+                $horas = Hora::where('ordenes_id',$o['id'])->where('dias_id',$d['id'])->get();
                 $horast=collect([]);
                 //dd($horas);
                 foreach($horas as $h){
@@ -486,7 +486,7 @@ class PagesController extends Controller
                     $horasc->put('Autorizada',$h->autorizada);
                     $horast->push($horasc);
                 }
-                $pl= Planificacion::where('ordenes_id',$o['id'])->where('dias_id',$d['id'])->get();      
+                $pl= Planificacion::where('ordenes_id',$o['id'])->where('dias_id',$d['id'])->get();
                 $plt=collect([]);
                 foreach($pl as $p){
                     $pc=collect([]);
@@ -495,7 +495,7 @@ class PagesController extends Controller
                     $pc->put('Materiales',$p->materiales);
                     $plt->push($pc);
                 }
-                $ej= Ejecucion::where('ordenes_id',$o['id'])->where('dias_id',$d['id'])->get();      
+                $ej= Ejecucion::where('ordenes_id',$o['id'])->where('dias_id',$d['id'])->get();
                 $ejt=collect([]);
                 foreach($ej as $e){
                     $ec=collect([]);
@@ -511,7 +511,7 @@ class PagesController extends Controller
                 $diasc->push($dia);
                 //dd($diasc);
             }
-        } 
+        }
         //dd($diasc);
         return view('verorden',[
             'o' => $o,
@@ -528,7 +528,7 @@ class PagesController extends Controller
         $diasc = collect([]);
         foreach($ordenes as $o){
            // dd($o['id']);
-           
+
             $dias = Dia::where('ordenes_id',$o['id'])->where('fecha','<>','1900-01-01')->get();
             foreach($dias as $d){
                 //dd($d);
@@ -536,7 +536,7 @@ class PagesController extends Controller
                 $dia->put('id',$d['id']);
                 $dia->put('fecha',$d['fecha']);
                 $dia->put('observacion',$d['observacion']);
-                $horas = Hora::where('ordenes_id',$o['id'])->where('dias_id',$d['id'])->get();      
+                $horas = Hora::where('ordenes_id',$o['id'])->where('dias_id',$d['id'])->get();
                 $horast=collect([]);
 
                 //dd($horas);
@@ -551,7 +551,7 @@ class PagesController extends Controller
                     $horasc->put('Ha',$h->ha);
                     $horast->push($horasc);
                 }
-                $pl= Planificacion::where('ordenes_id',$o['id'])->where('dias_id',$d['id'])->get();      
+                $pl= Planificacion::where('ordenes_id',$o['id'])->where('dias_id',$d['id'])->get();
                 $plt=collect([]);
                 foreach($pl as $p){
                     $pc=collect([]);
@@ -560,7 +560,7 @@ class PagesController extends Controller
                     $pc->put('Materiales',$p->materiales);
                     $plt->push($pc);
                 }
-                $ej= Ejecucion::where('ordenes_id',$o['id'])->where('dias_id',$d['id'])->get();      
+                $ej= Ejecucion::where('ordenes_id',$o['id'])->where('dias_id',$d['id'])->get();
                 $ejt=collect([]);
                 foreach($ej as $e){
                     $ec=collect([]);
@@ -576,7 +576,7 @@ class PagesController extends Controller
                 $diasc->push($dia);
                 //dd($diasc);
             }
-        } 
+        }
         //dd($diasc);
         return view('ordenese',[
             'o' => $o,
@@ -586,9 +586,9 @@ class PagesController extends Controller
         );
     }
     public function getdia(Request $request){
-        
+
         $diasc = collect([]);
-       
+
            // dd($o['id']);
             $dias = Dia::where('id',$request->id)->get();
             foreach($dias as $d){
@@ -597,7 +597,7 @@ class PagesController extends Controller
                 $dia->put('id',$d['id']);
                 $dia->put('fecha',$d['fecha']);
                 $dia->put('observacion',$d['observacion']);
-                $horas = Hora::where('dias_id',$d['id'])->get();      
+                $horas = Hora::where('dias_id',$d['id'])->get();
                 $horast=collect([]);
                 foreach($horas as $h){
                     $horasc=collect([]);
@@ -610,7 +610,7 @@ class PagesController extends Controller
                     $horasc->put('Ha',$h->ha);
                     $horast->push($horasc);
                 }
-                $pl= Planificacion::where('dias_id',$d['id'])->get();      
+                $pl= Planificacion::where('dias_id',$d['id'])->get();
                 $plt=collect([]);
                 foreach($pl as $p){
                     $pc=collect([]);
@@ -619,7 +619,7 @@ class PagesController extends Controller
                     $pc->put('Materiales',$p->materiales);
                     $plt->push($pc);
                 }
-                $ej= Ejecucion::where('dias_id',$d['id'])->get();      
+                $ej= Ejecucion::where('dias_id',$d['id'])->get();
                 $ejt=collect([]);
                 foreach($ej as $e){
                     $ec=collect([]);
@@ -635,7 +635,7 @@ class PagesController extends Controller
                 $diasc->push($dia);
                 //dd($diasc);
             }
-        
+
         //dd($diasc);
         return view('infodia',[
             'dias' => $diasc,
@@ -644,9 +644,9 @@ class PagesController extends Controller
     }
     public function editDia(Request $request){
         $dias = Dia::where('id',$request->id)->first();
-        $horas = Hora::where('dias_id',$request->id)->get();  
-        $pl= Planificacion::where('dias_id',$request->id)->get(); 
-        $ej= Ejecucion::where('dias_id',$request->id)->get();   
+        $horas = Hora::where('dias_id',$request->id)->get();
+        $pl= Planificacion::where('dias_id',$request->id)->get();
+        $ej= Ejecucion::where('dias_id',$request->id)->get();
         //dd($pl);
         $o = Dia::where('id',$request->id)->first()->ordenes_id;
         $p = Orden::where('id',$o)->first()->proyecto;
@@ -663,15 +663,15 @@ class PagesController extends Controller
     }
     public function deleteDia(Request $request){
         $orden_id = Dia::where('id',$request->id)->first()->ordenes_id;
-        $horas = Hora::where('dias_id',$request->id)->delete();  
-        $pl= Planificacion::where('dias_id',$request->id)->delete(); 
-        $ej= Ejecucion::where('dias_id',$request->id)->delete();   
+        $horas = Hora::where('dias_id',$request->id)->delete();
+        $pl= Planificacion::where('dias_id',$request->id)->delete();
+        $ej= Ejecucion::where('dias_id',$request->id)->delete();
         $dias = Dia::where('id',$request->id)->delete();
         $datos = Dia::where('ordenes_id',$orden_id)->where('fecha','<>','1900-01-01')->get();
             return view('tablad',[
                 'datos' => $datos
             ]);
-        
+
     }
     public function autorizadas(Request $request){
         $datos = Hora::where('id', $request->id) ->first();
@@ -686,7 +686,7 @@ class PagesController extends Controller
         }
         $hi = explode(":", $datos->hi);
         $hf = explode(":", $datos->hf);
-        
+
         $hi = intval($hi[0]) + round(floatval($hi[1]/60),1);
         $hf = intval($hf[0]) + round(floatval($hf[1]/60),1);
         $tiempo = $hf-$hi;
@@ -695,16 +695,16 @@ class PagesController extends Controller
             return 'limite';
         }
 
-        $o=Orden::where('id', $datos->ordenes_id) 
+        $o=Orden::where('id', $datos->ordenes_id)
           ->update(['autorizada_por' => $autorizada]);
-        
-        $h=Hora::where('id', $request->id) 
+
+        $h=Hora::where('id', $request->id)
           ->update(['ha' => $request->valor,
                     'autorizada' =>  date('Y-m-d H:i:s')
                 ]);
 
           $dia = collect([]);
-          $horas = Hora::where('ordenes_id',$datos->ordenes_id)->where('dias_id',$datos->dias_id)->get();      
+          $horas = Hora::where('ordenes_id',$datos->ordenes_id)->where('dias_id',$datos->dias_id)->get();
           $horast=collect([]);
           foreach($horas as $h){
               $horasc=collect([]);
@@ -720,7 +720,7 @@ class PagesController extends Controller
           $dia->put('Horas',$horast);
         //dd($dia);
         return view('tablah2',[
-            'dia' => $dia, 
+            'dia' => $dia,
             'ndia' => $datos->dias_id
         ]);
     }
@@ -769,11 +769,11 @@ class PagesController extends Controller
                               ->where('hi',$hi)
                               ->where('hf',$hf)
                               ->exists();
-       
+
         if($existe){
             return "Programacion ya existe";
         }
-        else{                     
+        else{
             $p = Programacion::create([
                 'cc' => $request->cc,
                 'fecha' => $request->fecha,
@@ -783,7 +783,7 @@ class PagesController extends Controller
                 'hi' => $hi,
                 'hf' => $hf,
                 'grupo' => $grupo  ,
-                'extra' => $extra 
+                'extra' => $extra
             ]);
         // dd($p);
             return "Programacion creada";
@@ -802,20 +802,20 @@ class PagesController extends Controller
     public function tablaprog(Request $request){
         $campo = $request->campo;
         if ($campo == ''){
-            $prog = Programacion::orderBy('fecha','asc')->get();  
+            $prog = Programacion::orderBy('fecha','asc')->get();
         }
         else{
-            $prog = Programacion::orderBy($campo,'asc')->get();  
+            $prog = Programacion::orderBy($campo,'asc')->get();
         }
         return view('tablaprog',[
             'prog' => $prog,
         ]);
     }
     public function filtrarprog(Request $request){
-        
+
         $prog =  Programacion::orderBy('fecha','asc');
-       
-        
+
+
         if ($request->filtrocc !=""){
             $prog = $prog->where('programacion.cc',$request->filtrocc );
         }
@@ -835,7 +835,7 @@ class PagesController extends Controller
         $estados = collect([]);
         $dato=array();
             foreach($prog as $p){
-                
+
                 /*$dato[$p->id]=1;
                 $o = DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->where('ordenes.proyecto',$p->proyecto)
                 ->where('dias.fecha',$p->fecha)->exists();
@@ -875,15 +875,15 @@ class PagesController extends Controller
                 if($o && $pl && $e && $h){
                     $dato[$p->id] = 3;
                 }
-               
+
                 /*$o = DB::table('ordenes')->join('dias','ordenes.id','=','dias.ordenes_id')->where('ordenes.proyecto',$p->proyecto)
                 ->where('dias.fecha',$p->fecha)->where('ordenes.autorizada_por','<>',0)->exists();*/
-                
+
                 if($a && $p && $e && $h){
                     $dato[$p->id] = 4;
                 }
                 $estados->push($dato);
-               
+
             }
         return view('tablaprog',[
             'prog' => $prog,
@@ -908,10 +908,10 @@ class PagesController extends Controller
         if ($request->filtrociudad !=""){
             $prog = $prog->where('grupo',$request->filtrociudad );
         }
-       
+
         $cedulas = $prog->groupby('cc')->get(['cc']);
         //dd($cedulas);
-       
+
         if (($request->filtrofecha1 !="")&&($request->filtrofecha2 !="")){
             $fechas=DB::table('programacion')->where('fecha','>=',$request->filtrofecha1)->where('fecha','<=',$request->filtrofecha2)->groupby('fecha')->get(['fecha']);
         }
@@ -922,14 +922,14 @@ class PagesController extends Controller
         $calendario = collect([]);
         foreach($cedulas as $c){
             $linea = collect([]);
-            foreach ($fechas as $f){  
-               
+            foreach ($fechas as $f){
+
                 $e = Empleado::where('cc',$c->cc)->first();
-                
+
                 $nombre= $e->nombre. " ". $e->apellido1;
 
                 $p = Programacion::where('cc',$c->cc)->where('fecha',$f->fecha)->first();
-                
+
 
                 $col = collect([]);
                 if($p){
@@ -961,10 +961,10 @@ class PagesController extends Controller
             }
             $calendario->push($linea);
         }
-        
-        
+
+
        // dd($calendario);
-        
+
 
 
         return view('calendarioprog',[
@@ -978,25 +978,25 @@ class PagesController extends Controller
         }
         $cc =  Empleado::where('id',$user)->first()->cc;
         $oc =  DB::table('ocupacion')->where('cc',$cc);
-       
-        
+
+
         if (($request->fechaInicioOcup !="")&&($request->fechaFinalOcup !="")){
             $oc = $oc->where('dia','>=',$request->fechaInicioOcup)->where('dia','<=',$request->fechaFinalOcup);
         }
-        
-       
+
+
         $ocs = $oc->get();
         //dd($ocs);
 
-       
-       
+
+
         $calendario  = collect([]);
 
         $inicio = new Carbon($request->fechaInicioOcup);
         $fin = new Carbon($request->fechaFinalOcup);
 
         while ($inicio <= $fin){
-           
+
             $col = collect([]);
 
             $col->put('fecha',$inicio->toDateString());
@@ -1014,38 +1014,38 @@ class PagesController extends Controller
                 $col->put('registro',$msg);
             }
             else{
-                $col->put('registro','SR'); 
+                $col->put('registro','SR');
             }
-           
+
             $calendario->push($col);
             $inicio = $inicio->addDay();
 
         }
         //dd($calendario);
 
-       
-        
-        
+
+
+
        // dd($calendario);
-        
+
 
 
         return view('calendariooc',[
             'calendariooc' => $calendario,
         ]);
     }
-    
+
     public function filtrarcentro(Request $request){
-        
+
         $cdc =  Cdc::orderBy('codigo','asc');
-        
+
         if ($request->fcodigo !=""){
             $cdc = $cdc->where('codigo',$request->fcodigo );
         }
         if ($request->fresponsable !=""){
             $cdc = $cdc->where('responsable','like' ,'%'.$request->fresponsable.'%');
         }
-       
+
         $cdc = $cdc->get();
         return view('tablacdc',[
             'cdc' => $cdc,
@@ -1127,7 +1127,7 @@ class PagesController extends Controller
 
         return "Empleado creado";
     }
-    
+
     public function nuevocliente(Request $request){
         $e = Cliente::create([
             'cliente' => $request->cliente,
@@ -1137,28 +1137,38 @@ class PagesController extends Controller
         return "Cliente creado";
     }
     public function nuevocorte(Request $request){
+        // validate $request
+        $validated = $request->validate([
+            'fecha_inicio' => 'required|date',
+            'fecha_fin' => 'required|date|after_or_equal:fecha_inicio',
+            'estado' => 'required',
+        ]);
+
         $c = Corte::create([
-            'fecha_inicio' => $request->fechainicio,
-            'fecha_fin' => $request->fechafin,
+            'fecha_inicio' => $request->fecha_inicio,
+            'fecha_fin' => $request->fecha_fin,
             'estado' => $request->estado
         ]);
 
-        return "Corte creado";
+        return response()->json([
+            'message' => 'Turno actualizado correctamente',
+            'data' => $c
+        ]);
     }
     public function tablacliente(Request $request){
         $campo = $request->campo;
         if ($campo == ''){
-            $clientes = Cliente::orderBy('cliente','asc')->get();  
+            $clientes = Cliente::orderBy('cliente','asc')->get();
         }
         else{
-            $clientes = Cliente::orderBy($campo,'asc')->get();  
+            $clientes = Cliente::orderBy($campo,'asc')->get();
         }
         return view('tablacliente',[
             'clientes' => $clientes,
         ]);
     }
     public function tablacorte(Request $request){
-        $cortes = Corte::all();   
+        $cortes = Corte::all();
         return view('tablacortes',[
             'cortes' => $cortes,
         ]);
@@ -1172,7 +1182,7 @@ class PagesController extends Controller
         if ($e->horario_id !=0){
             $horario =  $e->horario->nombre;
             $idh = $e->horario->id;
-        } 
+        }
         $area = $e->narea->area;
         $cargo = $e->ncargo->cargo;
         return view('formemp',[
@@ -1204,8 +1214,8 @@ class PagesController extends Controller
           ]);
           return "Empleado actualizado";
     }
-   
-    
+
+
     public function updatep(Request $request){
         Empleado::where('id', $request->id )
         ->update([
@@ -1218,22 +1228,22 @@ class PagesController extends Controller
         ->update([
             'estado' =>0
           ]);
-        
+
         return "Empleado inactivado";
     }
     public function tablaemp(Request $request){
         $campo = $request->campo;
         if ($campo == ''){
-            $emp = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();  
+            $emp = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();
         }
         else{
-            $emp = Empleado::where('estado',1)->orderBy($campo,'asc')->get();  
+            $emp = Empleado::where('estado',1)->orderBy($campo,'asc')->get();
         }
         return view('tablaemp',[
             'emp' => $emp,
         ]);
     }
-    
+
 
 //cdc
 
@@ -1283,7 +1293,7 @@ class PagesController extends Controller
         ->update([
             'cliente' => $request->cliente,
             'contactos' => $request->contactos,
-            
+
         ]);
         return "Cliente actualizado";
     }
@@ -1297,7 +1307,7 @@ class PagesController extends Controller
             $cdc = Cdc::all();
         }
         else{
-            $cdc = Cdc::orderBy($campo,'asc')->get();  
+            $cdc = Cdc::orderBy($campo,'asc')->get();
         }
         return view('tablacdc',[
             'cdc' => $cdc,
@@ -1317,7 +1327,7 @@ class PagesController extends Controller
     public function editarprog(Request $request){
         $hi = $request->hi.":".$request->mi;
         $hf = $request->hf.":".$request->mf;
-        
+
         Programacion::where('id', $request->id )
         ->update([
             'cc' => $request->cc,
@@ -1326,7 +1336,7 @@ class PagesController extends Controller
             'responsable' => $request->responsable,
             'observacion' => $request->observaciones,
             'hi' => $hi,
-            'hf' => $hf  
+            'hf' => $hf
         ]);
         return "Programación actualizada";
     }
@@ -1383,7 +1393,7 @@ class PagesController extends Controller
         if ($request->horas == 0 && $request->min == 0){
             return "El tiempo registrado no puede ser 0";
         }
-        
+
         if ($dia >= $hoy){
             return "No es posible registrar una fecha posterior";
         }
@@ -1436,9 +1446,9 @@ class PagesController extends Controller
         foreach($emp as $e){
             $inicio = new Carbon($request->fechaInicioOcup1);
             $fin = new Carbon($request->fechaFinalOcup1);
-    
+
             while ($inicio <= $fin){
-            
+
                 $fila = collect([]);
                 $fila->put('cc',$e->cc);
                 $fila->put('nombre',$e->nombre." ".$e->apellido1);
@@ -1463,8 +1473,8 @@ class PagesController extends Controller
 
                 $fila->put('registro',$registro);
                 $fila->put('clase','table-default');
-                    
-               
+
+
                 if($registro===0){
                     $fila->put('clase','table-danger');
                 }
@@ -1475,8 +1485,8 @@ class PagesController extends Controller
                 if($totalh == 9.5){
                     $fila->put('clase','table-success');
                 }
-                
-            
+
+
                 $seguimiento->push($fila);
                 $inicio = $inicio->addDay();
 
@@ -1493,7 +1503,7 @@ class PagesController extends Controller
     public function generalo(Request $request){
         $area = $request->area;
         $oc =  Ocupacion::where('id','>',0);
-       
+
         if ($area!=""){
             $oc = $oc->where('area',$area);
         }
@@ -1523,9 +1533,9 @@ class PagesController extends Controller
         return "Faltan ".$restantes." horas por reportar este día";
     }
     public function distribuciono(Request $request){
-        
+
         $datos = $this->getDatosDistribucionO($request);
-       
+
         //$datos2 = $datos2->sortBy(['codigo del empleado','fecha movimiento']);
         //dd($datos2);
         return view('tablan2',[
@@ -1562,8 +1572,8 @@ class PagesController extends Controller
             while ($inicio <= $fin){
                 $ocs = Ocupacion::where('cc',$e->cc)->where('dia','=',$inicio)->get();
                 //dd($ocs);
-                
-                
+
+
                 foreach ($ocs as $oc){
                     $centro = Cdc::where('codigo',$oc->proyecto)->first();
                     $totalh=$oc->horas + ($oc->minutos/60);
@@ -1574,7 +1584,7 @@ class PagesController extends Controller
                     $x=$x." ".$lapso;
                     //dd($lapso);
                     $linea = collect([]);
-                    
+
                     $linea->put('ID', '1');
                     $linea->put('ID TERCERO', $e->cc);
                     $linea->put('NDC', '');
@@ -1609,12 +1619,12 @@ class PagesController extends Controller
                     else{
                         $total[$e->cc]= $totalh;
                     }
-                
-            
-                
+
+
+
                 }
                 $inicio = $inicio->addDay();
-                
+
             }
             //dd($lapso);
             if ($lapso!=""){
@@ -1623,7 +1633,7 @@ class PagesController extends Controller
                     $hl=Novedad::where('cc',$e->cc)->where('periodo',$lapso)->first()->horas;
                 }
                 $linea = collect([]);
-                
+
                 $linea->put('ID', '1');
                 $linea->put('ID TERCERO', $e->cc);
                 $linea->put('NDC', '');
@@ -1646,10 +1656,10 @@ class PagesController extends Controller
                     $emp=Empleado::where('cc',$cc)->first();
 
                     if ($emp->auxilio>0){
-                
+
                         $auxilio= round(($emp->auxilio/$total[$cc])*$horas,1);
                         $linea=collect([]);
-                       
+
 
                         $linea->put('codigo del empleado',$cc);
                         $linea->put('sucursal', '');
@@ -1684,7 +1694,7 @@ class PagesController extends Controller
         $datosn = collect([]);
         //dd($grouped);
         foreach ($grouped as $cc){
-            
+
             foreach($cc as $py){
                 $linea = collect([]);
                 $totalpy = 0;
@@ -1706,16 +1716,16 @@ class PagesController extends Controller
                 $linea->put('ID PROYECTO', '');
                 $linea->put('ID UNIDAD DE NEGOCIO', $unidad);
                 $linea->put('NOTAS', '');
-               
-                    
-             
+
+
+
                 $datosn->push($linea);
             }
-           
+
 
         }
         //dd($datosn);
-       
+
         $datos = $datosn->sortBy(['ID TERCERO','LAPSO']);
         return [$datos,$total];
     }
@@ -1767,11 +1777,11 @@ class PagesController extends Controller
             foreach($ccs as $cc){
                 $e=Empleado::where('cc',$cc)->first();
                 $nombre =$e->apellido1." ".$e->nombre;
-                if ($nombres == "") { 
-                    $nombres.=$nombre; 
+                if ($nombres == "") {
+                    $nombres.=$nombre;
                 }
                 else{
-                    $nombres.=",".$nombre; 
+                    $nombres.=",".$nombre;
                 }
             }
         $datos['nombres']=$nombres;
@@ -1806,12 +1816,12 @@ class PagesController extends Controller
         ]);
     }
     public function saveextra(Request $request){
-     
-              
+
+
               //dd($request);
-            
+
               $trabajadores = explode(",", trim($request->trabajador));
-             
+
               /*foreach ($trabajadores as $t){
                 $esta = Autorizacion::where('trabajador','like','%'.$t.'%')
                         ->where('fecha',$request->fecha)
@@ -1822,9 +1832,9 @@ class PagesController extends Controller
                 }
 
               }*/
-              
-              
-              
+
+
+
               $solicitado_por = session('user');
               if ($solicitado_por==""){
                 return "Debes iniciar sesión de nuevo";
@@ -1841,7 +1851,7 @@ class PagesController extends Controller
               $hf_num =intval($hf[0]) + round(floatval($hf[1]/60),1);
               $total_horas = $hf_num - $hi_num;
               $extra = Autorizacion::create([
-              
+
               'proyecto' => $request->proyecto,
               'trabajador'=> $request->trabajador,
               'motivo'=> $request->motivo,
@@ -1861,11 +1871,11 @@ class PagesController extends Controller
             foreach($ccs as $cc){
                 $e=Empleado::where('cc',$cc)->first();
                 $nombre =$e->apellido1." ".$e->nombre;
-                if ($nombres == "") { 
-                    $nombres.=$nombre; 
+                if ($nombres == "") {
+                    $nombres.=$nombre;
                 }
                 else{
-                    $nombres.=",".$nombre; 
+                    $nombres.=",".$nombre;
                 }
             }
             $extra->nombres=$nombres;
@@ -1880,15 +1890,15 @@ class PagesController extends Controller
             catch (QueryException $e) {
                 return "Error al enviar correo a la persona que autoriza";
             }
-            
+
             return "Formato de autorización registrado";
-       
+
     }
     public function actextra(Request $request){
         try {
-              
+
               //dd($request);
-            
+
               $solicitado_por = session('user');
               if ($solicitado_por==""){
                 return "Debes iniciar sesión de nuevo";
@@ -1912,7 +1922,7 @@ class PagesController extends Controller
               $hf_num =intval($hf[0]) + round(floatval($hf[1]/60),1);
               $total_horas = $hf_num - $hi_num;
               $e = Autorizacion::where('id',$request->id)->update([
-              
+
               'proyecto' => $request->proyecto,
               'trabajador'=> $trab,
               'motivo'=> $request->motivo,
@@ -1925,7 +1935,7 @@ class PagesController extends Controller
               'autorizado_rechazado_por' => $autoriza->id,
               //'fecha_solicitud' => date("Y-m-d")
             ]);
-            
+
 
             return "Formato de autorización actualizado";
           } catch (QueryException $e) {
@@ -1948,7 +1958,7 @@ class PagesController extends Controller
         else{
             $extra = Autorizacion::where('autorizado_rechazado_por',$user) ->orWhere('solicitado_por', $user)->orderBy('fecha','desc')->get();
         }
-        
+
         $cont=0;
         foreach($extra as $e){
             $ccs = $e->trabajador;
@@ -1957,11 +1967,11 @@ class PagesController extends Controller
             foreach($ccs as $cc){
                 $e=Empleado::where('cc',$cc)->first();
                 $nombre =$e->apellido1." ".$e->nombre;
-                if ($nombres == "") { 
-                    $nombres.=$nombre; 
+                if ($nombres == "") {
+                    $nombres.=$nombre;
                 }
                 else{
-                    $nombres.=",".$nombre; 
+                    $nombres.=",".$nombre;
                 }
             }
             $extra[$cont]->nombres=$nombres;
@@ -1977,7 +1987,7 @@ class PagesController extends Controller
     public function voboextra(Request $request){
        // $tipo = session('tipo');
         //$user = session('user');
-        
+
         Autorizacion::where('id',$request->id)->update([
             'fecha_autorizacion_rechazo' => date("Y-m-d"),
             'observaciones' => $request->obs
@@ -1989,7 +1999,7 @@ class PagesController extends Controller
             'title' => 'Solicitud de horas extras - aprobada',
             'body' => "Se ha aprobado la solicitud de horas extras"
         ];
-      
+
         \Mail::to($autoriza->correo)->send(new \App\Mail\MailSolicitudExtra($details,$e));
         return "Solicitud de tiempo extra aprobada";
     }
@@ -2001,7 +2011,7 @@ class PagesController extends Controller
          Autorizacion::where('id',$request->id)->update([
             'fecha_autorizacion_rechazo' => date("Y-m-d"),
              'observaciones' => "RECHAZADA"
- 
+
          ]);
          $e = Autorizacion::where('id',$request->id)->first();
          $autoriza = Empleado::where('id',$e->solicitado_por)->first();
@@ -2009,18 +2019,18 @@ class PagesController extends Controller
             'title' => 'Solicitud de horas extras - rechazada',
             'body' => "Se ha rechazado la solicitud de horas extras"
         ];
-      
+
         \Mail::to($autoriza->correo)->send(new \App\Mail\MailSolicitudExtra($details,$e));
          return "Solicitud de tiempo extra rechazada";
      }
     public function getDatosAnaliticas(Request $request){
         $area = $request->area;
         $oc =  Ocupacion::where('id','>',0);
-       
+
         if ($area!=""){
             $oc = $oc->where('area',$area);
         }
-        
+
         if (($request->fechaInicioOcup1 !="")&&($request->fechaFinalOcup1 !="")){
             $oc = $oc->where('dia','>=',$request->fechaInicioOcup1)->where('dia','<=',$request->fechaFinalOcup1);
         }
@@ -2030,7 +2040,7 @@ class PagesController extends Controller
         $datos  = collect([]);
         foreach($ocs as $oc){
             $linea = collect([]);
-                    
+
             $linea->put('Fecha en la que se hizo el reporte', $oc->created_at);
             $linea->put('correo electrónico', '');
             $linea->put('Día reportado', $oc->dia);
@@ -2040,7 +2050,7 @@ class PagesController extends Controller
             $linea->put('Tiempo de ocupación en el proyecto(horas)', $oc->horas + ($oc->minutos/60) );
             $linea->put('Clasificación',  $oc->nactividad->actividad );
             $linea->put('Actividad', '');
-            
+
             $datos->push($linea);
         }
         return $datos;
@@ -2051,29 +2061,29 @@ class PagesController extends Controller
         if (($f1!="")&&($f2!="")){
             $datos = Autorizacion::where('fecha','>=',$f1)->where('fecha','<=',$f2)->orderBy('fecha','asc')->get();
         }
-        
-       
+
+
         $cont=0;
         $extras=collect([]);
         foreach ($datos as $d){
             $extra = collect([]);
             //proyecto	trabajador	motivo	fecha	horario habitual	hora inicio extra	hora fin extra	total horas	observaciones	autorizado_rechazado_por	solicitado_por	fecha_autorizacion_rechazo	fecha_solicitud	creada	actualizada	estado
             $extra->put('CC',$d->trabajador);
-            
+
             $ccs = $d->trabajador;
             $ccs = explode(",", $ccs);
             $nombres = "";
             foreach($ccs as $cc){
                 $e=Empleado::where('cc',$cc)->first();
                 $nombre =$e->apellido1." ".$e->nombre;
-                if ($nombres == "") { 
-                    $nombres.=$nombre; 
+                if ($nombres == "") {
+                    $nombres.=$nombre;
                 }
                 else{
-                    $nombres.=",".$nombre; 
+                    $nombres.=",".$nombre;
                 }
             }
-           
+
             $cont++;
 
             $extra->put('NOMBRE',$nombres);
@@ -2108,8 +2118,8 @@ class PagesController extends Controller
                 $d->estado="RECHAZADA";
             }*/
             $extras->push($extra);
-        }   
-      
+        }
+
         //dd($extras);
         return $extras;
     }

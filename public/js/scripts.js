@@ -515,7 +515,7 @@ function guardarcliente(){
                 type:'GET',
                 data: data,
                 success: function(data) {
-                    alert(data);
+                    alert(data.message);
                     acttablacliente();
                 }
         });
@@ -525,33 +525,34 @@ function guardarcliente(){
     }
 }
 function guardarcorte(){
-    band=0;
-    $('#formCorte input').each(function() {
-        if (($(this).val() == '')) {
-            band=1;
+    const formData = new FormData($('#formEditarCorte')[0])
+    const object = {};
+    const data = {}
+    formData.forEach(function(value, key){
+        object[key] = value;
+    });
+
+    data.fecha_inicio = object.corte_fecha_inicio
+    data.fecha_fin = object.corte_fecha_fin
+    data.estado = object.corte_estado
+    console.log(data);
+
+    url = '/nuevocorte'
+    $.ajax({
+        url: url,
+        type:'GET',
+        data: data,
+        success: (data) => {
+            alert(data.message);
+            acttablacorte();
+        },
+        error: (error) => {
+            // alert all errors
+            for (const key in error.responseJSON.errors) {
+                alert(error.responseJSON.errors[key])
+            }
         }
     });
-    $('#formCorte select').each(function() {
-        if (($(this).val() == '')) {
-            band=1;
-        }
-    })
-    if (band==0){
-        data=$( "#formCorte" ).serialize();
-        url = '/nuevocorte'
-        $.ajax({
-                url: url,
-                type:'GET',
-                data: data,
-                success: function(data) {
-                    alert(data);
-                    acttablacorte();
-                }
-        });
-    }
-    else{
-        alert("Debes ingresar todos los campos");
-    }
 }
 function guardarproy(){
     band=0;
@@ -853,11 +854,10 @@ $('#actualizarTurno').on("click", (e) => {
         type:'GET',
         data: data,
         success: (data) => {
-            alert('Actualizado correctamente');
+            alert(data.message);
             printTablaTurnos();
         },
         error: (error) => {
-            console.log(error.responseJSON.errors.hora_fin[0]);
             // alert all errors
             for (const key in error.responseJSON.errors) {
                 alert(error.responseJSON.errors[key])
