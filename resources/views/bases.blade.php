@@ -29,7 +29,7 @@
       <div id="home" class="container tab-pane active"><br>
         <br>
         @if ($area == 6)
-        <button class="btn btn-3" onclick="nuevoemp()">Nuevo Empleado</button><br><br>
+        <button class="btn btn-success" onclick="nuevoemp()">Nuevo Empleado</button><br><br>
         <div id ="te">
             @include('tablaemp')
         </div>
@@ -37,7 +37,7 @@
       </div>
       <div id="menu1" class="container tab-pane fade"><br>
         <br>
-        <button class="btn btn-3" onclick="nuevocliente()">Nuevo Cliente</button><br><br>
+        <button class="btn btn-success" onclick="nuevocliente()">Nuevo Cliente</button><br><br>
         <br>
         <div id ="tcl">
             @include('tablacliente')
@@ -45,8 +45,8 @@
       </div>
       <div id="menu2" class="container tab-pane fade"><br>
         <br>
-        <!--<button type="button" class="btn btn-3" data-bs-toggle="modal" data-bs-target="#nuevoproyecto">Nuevo Proyecto</button>-->
-        <button class="btn btn-3" onclick="exportarproyectos()">Exportar Proyectos</button><br><br>
+        <!--<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#nuevoproyecto">Nuevo Proyecto</button>-->
+        <button class="btn btn-success" onclick="exportarproyectos()">Exportar Proyectos</button><br><br>
         <br>
         <div id ="tp">
           @include('tablaproyecto')
@@ -54,7 +54,7 @@
       </div>
       <div id="cortes" class="container tab-pane fade"><br>
         <br>
-        <button class="btn btn-3" onclick="nuevocorte()">Nuevo Corte</button><br><br>
+        <button class="btn btn-success" onclick="nuevocorte()">Nuevo Corte</button><br><br>
         <br>
         <div id ="tco">
             @include('tablacortes')
@@ -70,7 +70,7 @@
                     <label class="custom-file-label" for="customFile">Escoger Archivo</label>
                 </div>
             </div>
-            <button class="btn btn-3 mb-4">Importar turnos</button>
+            <button class="btn btn-success mb-4">Importar turnos</button>
             <div id="printTablaTurnos">
                 @include('tablaTurnos')
             </div>

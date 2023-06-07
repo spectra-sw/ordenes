@@ -11,7 +11,7 @@
                     <div class="col-12 col-md-2">
                         <label for="proyecto" class="form-label">Proyecto</label>
                         <input type="text" class="form-control" name="proyecto" id="proyecto">
-                    </div>   
+                    </div>
                     <div class="col-12 col-md-4">
                         <label for="trabajador" class="form-label">Trabajador</label>
                         <select class="form-control" id="trabajador" name="trabajador">
@@ -20,7 +20,7 @@
                                 <option value="{{ $e->id }}">{{ $e->apellido1 . " " . $e->nombre}}</option>
                             @endforeach
                         </select>
-                    </div>   
+                    </div>
                     <div class="col-12 col-md-4">
                         <label for="cliente" class="form-label">Cliente</label>
                         <select class="form-control" id="cliente" name="cliente">
@@ -29,9 +29,9 @@
                                 <option value="{{ $c->id }}">{{ $c->cliente}}</option>
                             @endforeach
                         </select>
-                    </div>   
+                    </div>
                 </div>
-                
+
             </div>
         <div>
     </div>
@@ -58,15 +58,18 @@
                             <option value="3">Rechazada</option>
                         </select>
                     </div>
-                   
+
                 </div><br>
                 <div class="row">
                     <div class="col-12 col-md-3">
-                        <button class="btn btn-3" id="btnConsultarAdmin" type="button">Consultar</button> 
+                        <button class="btn btn-success" id="btnConsultarAdmin" type="button">Consultar</button>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <button class="btn btn-success" id="btnExportarConsultas" type="button">Exportar</button>
                     </div>
                     @if (session('area')==6)
                     <div class="col-12 col-md-3">
-                        <button class="btn btn-3" id="btnDistribucion" type="button">Distribución</button> 
+                        <button class="btn btn-success" id="btnDistribucion" type="button">Distribución</button>
                     </div>
                     @endif
                 </div>
@@ -82,5 +85,5 @@
     </div>
 </div>
 </form>
-<script src="{{asset('js/scripts_jornada.js')}}"></script>                      
+<script src="{{asset('js/scripts_jornada.js')}}"></script>
 @endsection

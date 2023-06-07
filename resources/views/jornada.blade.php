@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-12 col-md-10">
-        <button class="btn  btn-2" id="btnNuevaJornada">Nueva jornada</button>&nbsp;<button class="btn  btn-2" id="btnMisjornadas" onclick="window.open('/misjornadas','_self');">Mis jornadas</button><br><br>
+        <button class="btn-success" id="btnNuevaJornada">Nueva jornada</button>&nbsp;<button class="btn-success" id="btnMisjornadas" onclick="window.open('/misjornadas','_self');">Mis jornadas</button><br><br>
         <div id="formJornada" style="display: none">
             <form id="formRegistro">
                 <input type="hidden" id="jornada_id" name="jornada_id">
@@ -18,7 +18,7 @@
                                     <option value="">Seleccione</option>
                                     <option value="1">Actividad</option>
                                     <option value="0">Almuerzo</option
-                                    
+
                                 <select>
                             </div>
                         </div><br>-->
@@ -50,7 +50,7 @@
                         placeholder="buscar..."
                         data-url="autoemp" autocomplete="off"></select>
                                 </div>-->
-                                
+
                             </div>
                             <div class="row">
                                 <div class="col-6 col-md-2 cajaAzul">Descripción</div>
@@ -125,21 +125,21 @@
                                     </select>
                                 </div>-->
                             </div><br>
-                            <button class="btn btn-3" id="btnRegistrar" type="button">Registrar</button> 
+                            <button class="btn btn-success" id="btnRegistrar" type="button">Registrar</button>
                         </div>
                     </div>
-                
+
                 </div>
             </form>
             <br>
             <div id="mensaje">
-               
+
             </div>
-         
+
             <div class="card">
                 <div class="card-header">Jornada</div>
                 <div class="card-body">
-                    <div id="tablaJornada">       
+                    <div id="tablaJornada">
                     </div>
                 </div>
             </div>
@@ -147,5 +147,5 @@
     </div>
 </div>
 
-<script src="{{asset('js/scripts_jornada.js')}}"></script>                      
+<script src="{{asset('js/scripts_jornada.js')}}"></script>
 @endsection

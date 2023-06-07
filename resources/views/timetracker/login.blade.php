@@ -1,115 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Spectra - Time Tracker</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap5.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   <link rel="stylesheet" href="{{ URL::asset('css/style_tt.css') }}">
     <style>
         .divider:after,
-.divider:before {
-content: "";
-flex: 1;
-height: 1px;
-background: #eee;
-}
-.h-custom {
-height: calc(100% - 73px);
-}
-@media (max-width: 450px) {
-.h-custom {
-height: 100%;
-}
-}
-      
+        .divider:before {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #eee;
+        }
+
+        .h-custom {
+            height: calc(100% - 73px);
+        }
+
+        @media (max-width: 450px) {
+            .h-custom {
+                height: 100%;
+            }
+        }
     </style>
 </head>
-<body >
-  <section class="vh-100">
-    <div class="container-fluid h-custom">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-md-9 col-lg-6 col-xl-5">
-          <img src="{{ URL::asset('img/fondos/foto1.png') }}"
-            class="img-fluid rounded-circle" alt="Sample image">
+
+<body>
+    <section class="vh-100">
+        <div class="container-fluid h-custom">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-md-9 col-lg-6 col-xl-5">
+                    <img src="{{ URL::asset('img/fondos/foto1.png') }}" class="img-fluid rounded-circle"
+                        alt="Sample image">
+                </div>
+                <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                    <form id="submitLogin">
+                        <div
+                            class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start mb-4">
+                            <img src="{{ URL::asset('img/logo.png') }}">
+                        </div>
+
+                        <!-- Email input -->
+                        <div class="form-group mb-3">
+                            <label for="email" class="form-label fs-6">Correo electrónico</label>
+                            <input class="form-control form-control-lg" type="email" id="email" placeholder="Ingresa correo electrónico" />
+                        </div>
+
+
+                        <!-- Password input -->
+                        <div class="form-group">
+                            <label for="pwd" class="form-label fs-6">Contraseña</label>
+                            <input class="form-control form-control-lg" type="password" id="pwd" placeholder="Ingresa contraseña" />
+                        </div>
+
+
+                        <div class="text-center text-lg-start mt-4 pt-2">
+                            <button type="submit" class="btn btn-primary btn-lg"
+                                style="padding-left: 2.5rem; padding-right: 2.5rem;">Ingresar
+                            </button>
+                        </div>
+                        <div id="mensaje" class="mt-2"></div>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-          <form>
-            <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start mb-4">
-              <img src="{{ URL::asset('img/logo.png') }}">
-              <!--<p class="lead fw-normal mb-0 me-3">Sign in with</p>
-              <button type="button" class="btn btn-primary btn-floating mx-1">
-                <i class="fab fa-facebook-f"></i>
-              </button>
-  
-              <button type="button" class="btn btn-primary btn-floating mx-1">
-                <i class="fab fa-twitter"></i>
-              </button>
-  
-              <button type="button" class="btn btn-primary btn-floating mx-1">
-                <i class="fab fa-linkedin-in"></i>
-              </button>-->
+        <a href="https://wa.me/573165265937"><img src="{{ URL::asset('img/whatsapp.png') }}" class="helpIcon"></a>
+        <div class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-1"
+            style="margin-top: 7px;">
+            <!-- Copyright -->
+            <div class="text-white mb-3 mb-md-0">
+                Copyright © 2023. All rights reserved.
             </div>
-  
-            <!-- Email input -->
-            <div class="form-outline mb-4">
-              <input type="email" id="email" class="form-control form-control-lg"
-                placeholder="Ingresa correo electrónico" />
-              <label class="form-label" for="email">Correo electrónico</label>
-            </div>
-  
-            <!-- Password input -->
-            <div class="form-outline mb-3">
-              <input type="password" id="pwd" class="form-control form-control-lg"
-                placeholder="Ingresa contraseña" />
-              <label class="form-label" for="pwd">Contraseña</label>
-            </div>
-  
-            <!--  <div class="d-flex justify-content-between align-items-center">
-           
-              <div class="form-check mb-0">
-                <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
-                <label class="form-check-label" for="form2Example3">
-                  Remember me
-                </label>
-              </div>
-              <a href="#!" class="text-body">Forgot password?</a>
-            </div>-->
-  
-            <div class="text-center text-lg-start mt-4 pt-2">
-              <button type="button" class="btn btn-2 btn-lg"
-                style="padding-left: 2.5rem; padding-right: 2.5rem;" onclick="login()">Ingresar</button>
-             <!-- <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#!"
-                  class="link-danger">Register</a></p>-->
-            </div>
-            <div id="mensaje" class="mt-2"></div>
-          </form>
-        </div>
-      </div>
-    </div>
-    <a href="https://wa.me/573165265937"><img src="{{ URL::asset('img/whatsapp.png') }}" class="helpIcon"></a>
-    <div
-      class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-1"
-      style="margin-top: 7px;"
-    >
-      <!-- Copyright -->
-      <div class="text-white mb-3 mb-md-0">
-        Copyright © 2023. All rights reserved.
-      </div>
-      <!-- Copyright -->
-  
-      <!-- Right -->
-      <!-- <div>
+            <!-- Copyright -->
+
+            <!-- Right -->
+            <!-- <div>
         <a href="#!" class="text-white me-4">
           <i class="fab fa-facebook-f">sfsfs</i>
         </a>
       </div> -->
-      <!-- Right -->
-    </div>
-   
-  </section>
+            <!-- Right -->
+        </div>
+
+    </section>
 </body>
-<script src="{{asset('js/scripts.js')}}"></script>
+<script src="{{ asset('js/scripts.js') }}"></script>

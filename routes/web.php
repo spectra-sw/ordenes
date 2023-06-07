@@ -137,14 +137,16 @@ Route::get('updatepwd',[PagesController::class,'updatepwd'])->name('updatepwd');
 Route::get('updatep',[PagesController::class,'updatep'])->name('updatep');
 Route::get('consfestivo',[PagesController::class,'consfestivo'])->name('consfestivo');
 
-//Excel
+//Excel export
 //Route::get('exportReporte', [ExcelController::class, 'export'])->name('export');
 Route::get('exportReporte', [ExcelController::class, 'exportt'])->name('exporttt');
 Route::get('exportReporteO', [ExcelController::class, 'exporto'])->name('exporto');
 Route::get('exportAnaliticas', [ExcelController::class, 'exporta'])->name('exporta');
 Route::get('exportExtra', [ExcelController::class, 'exportextra'])->name('exportextra');
 Route::get('exportProyectos', [ExcelController::class, 'exportProyectos'])->name('exportProyectos');
+Route::get('export-consultas', [ExcelController::class, 'exportConsultas'])->name('exportConsultas');
 
+// Excel import
 Route::post('importHoras',[ExcelController::class,'importHoras'])->name('importHoras');
 Route::post('importTurnos',[ExcelController::class,'importTurnos'])->name('importTurnos');
 

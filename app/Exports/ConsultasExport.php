@@ -9,12 +9,12 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\FromView;
 use Illuminate\Contracts\View\View;
 
-class ProyectosExport implements FromView
+class ConsultasExport implements FromView
 {
 
     protected $datos;
 
-    public function __construct($datos = null)
+    public function __construct($datos= null)
     {
         $this->datos = $datos;
     }
@@ -22,11 +22,10 @@ class ProyectosExport implements FromView
     public function view(): View
     {
 
-        return view(
-            'tablaproyectoExport',
-            [
-                'proyectos' => $this->datos
-            ]
-        );
+        return view('tablaconsultaExport',
+        [
+            'jornadas' => $this->datos
+        ]);
+
     }
 }

@@ -3,9 +3,9 @@ const images = [
     '/img/fondos/image1.png',
     '/img/fondos/image2.png',
     '/img/fondos/image3.png',
-   
+
   ];
-  
+
 const randomImage = images[Math.floor(Math.random() * images.length)];
 const element = document.querySelector('.random-background-image');
 element.style.backgroundImage = `url(${randomImage})`;
@@ -30,8 +30,8 @@ function buscarP(codigo){
 
               /*for (let k in data.trabajadores) {
                     //console.log(k + ' is ' + data.trabajadores[k])
-                    
-                    $('#cct').append($('<option>', { 
+
+                    $('#cct').append($('<option>', {
                         value: k,
                         text : data.trabajadores[k]
                     }));
@@ -39,7 +39,7 @@ function buscarP(codigo){
               //validartipo(data.sistema)
               //$("#contacto").val(data.responsable);
         }
-    }); 
+    });
 }
 function detectSelectChange() {
     var select = document.getElementById("tipo");
@@ -120,8 +120,8 @@ btnRegistrar.addEventListener("click", function() {
     else{
         sValid=validarSolape();
     }
-    
-   
+
+
 });
 }
 function validarHoras(){
@@ -137,11 +137,11 @@ function validarHoras(){
         errorHandler('La hora final no puede ser mayor o igual a la hora de inicio');
         return false;
     }
-    
+
     return true;
 }
 function validarSolape(){
-    var formData = $("#formRegistro").serialize(); 
+    var formData = $("#formRegistro").serialize();
     $.ajax({
         type: "GET",
         url: "/solapeJornada",
@@ -166,7 +166,7 @@ function enviar(){
     console.log(sValid);
     if ((isValid) && (hValid) && (sValid)) {
         // Submit the form
-        var formData = $("#formRegistro").serialize(); 
+        var formData = $("#formRegistro").serialize();
        // console.log(formData);
         $.ajax({
             type: "GET",
@@ -180,7 +180,7 @@ function enviar(){
                 console.log(textStatus, errorThrown);
             }
         });
-    } 
+    }
     else {
         if (!isValid){
             errorHandler('Debes ingresar todos los campos obligatorios (*)');
@@ -243,7 +243,7 @@ var btnConsultar = document.getElementById("btnConsultar");
 if (btnConsultar != null) {
 btnConsultar.addEventListener("click", function() {
     //alert("");
-    var formData = $("#formConsultaJornada").serialize(); 
+    var formData = $("#formConsultaJornada").serialize();
     $.ajax({
         type: "GET",
         url: "/consultaJornada",
@@ -257,26 +257,32 @@ btnConsultar.addEventListener("click", function() {
     });
 });
 }
-var btnConsultarAdmin = document.getElementById("btnConsultarAdmin");
+const btnConsultarAdmin = document.getElementById("btnConsultarAdmin");
 if (btnConsultarAdmin != null) {
-btnConsultarAdmin.addEventListener("click", function() {
-    //alert("");
-    var formData = $("#formConsultaAdmin").serialize(); 
-    $.ajax({
-        type: "GET",
-        url: "/consultaJornadaAdmin",
-        data: formData,
-        success: function(response) {
-            $("#consultaAdmin").html(response);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log(textStatus, errorThrown);
-        }
+    btnConsultarAdmin.addEventListener("click", function() {
+        var formData = $("#formConsultaAdmin").serialize();
+        $.ajax({
+            type: "GET",
+            url: "/consultaJornadaAdmin",
+            data: formData,
+            success: function(response) {
+                $("#consultaAdmin").html(response);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(textStatus, errorThrown);
+            }
+        });
     });
-});
 }
+
+$('#btnExportarConsultas').click(() => {
+    const formData = $("#formConsultaAdmin").serialize();
+    const url = `/export-consultas?${formData}`;
+    window.location = url;
+});
+
 function refreshConsulta(){
-    var formData = $("#formConsultaAdmin").serialize(); 
+    var formData = $("#formConsultaAdmin").serialize();
     $.ajax({
         type: "GET",
         url: "/consultaJornadaAdmin",
@@ -297,24 +303,24 @@ function accionj(op, id) {
     const almuerzo = document.getElementById(`almuerzo${id}`).value;
     const data = { id, hi, hf, duracion, almuerzo, op, obs };
     const url = '/accionesJornada';
-    
+
     $.ajax({
       url,
       type: 'GET',
       data,
-      success: (data) => { 
+      success: (data) => {
         refreshConsulta();
         alert(data);
       }
     });
   }
-  
+
 
 var btnDistribucion = document.getElementById("btnDistribucion");
 if (btnDistribucion != null) {
 btnDistribucion.addEventListener("click", function() {
     //alert("");
-    var formData = $("#formConsultaAdmin").serialize(); 
+    var formData = $("#formConsultaAdmin").serialize();
     $.ajax({
         type: "GET",
         url: "/distribucion",
@@ -345,7 +351,7 @@ function validarCorte(fecha){
     });
 }
 function consultar2(){
-    var formData = $("#formConsultaJornada").serialize(); 
+    var formData = $("#formConsultaJornada").serialize();
     $.ajax({
         type: "GET",
         url: "/consultaJornada",

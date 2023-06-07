@@ -1109,6 +1109,21 @@ class PagesController extends Controller
 
 //empleado
     public function nuevoemp(Request $request){
+        // validate $request
+        $validated = $request->validate([
+            'cc' => 'required|unique:empleados,cc',
+            'apellido1' => 'required',
+            'nombre' => 'required',
+            'auxilio' => 'required|numeric',
+            'auxiliot' => 'required|numeric',
+            'correo' => 'required|email|unique:empleados',
+            'tipo' => 'required|numeric',
+            'ciudad' => 'required',
+            'horario' => 'required|exists:horarios,id',
+            'area' => 'required|exists:areas,id',
+            'cargo' => 'required|exists:cargos,id',
+        ]);
+
         $e = Empleado::create([
             'cc' => $request->cc,
             'apellido1' => $request->apellido1,
@@ -1125,17 +1140,31 @@ class PagesController extends Controller
             'password' => bcrypt($request->cc)
         ]);
 
-        return "Empleado creado";
+        return response()->json([
+            'message' => 'Empleado creado correctamente',
+            'data' => $e
+        ]);
     }
 
     public function nuevocliente(Request $request){
+
+        // validate $request
+        $validated = $request->validate([
+            'cliente' => 'required',
+            'contactos' => 'required',
+        ]);
+
         $e = Cliente::create([
             'cliente' => $request->cliente,
             'contactos' => $request->contactos,
         ]);
 
-        return "Cliente creado";
+        return response()->json([
+            'message' => 'Cliente creado correctamente',
+            'data' => $e
+        ]);
     }
+
     public function nuevocorte(Request $request){
         // validate $request
         $validated = $request->validate([
@@ -1197,7 +1226,23 @@ class PagesController extends Controller
         ]);
     }
     public function editaremp(Request $request){
-        Empleado::where('id', $request->id )
+        // validate $request
+        $validated = $request->validate([
+            'id' => 'required|numeric|exists:empleados,id',
+            'cc' => 'required|unique:empleados,cc,'.$request->id,
+            'apellido1' => 'required',
+            'nombre' => 'required',
+            'auxilio' => 'required|numeric',
+            'auxiliot' => 'required|numeric',
+            'correo' => 'required|email|unique:empleados,correo,'.$request->id,
+            'tipo' => 'required|numeric',
+            'ciudad' => 'required',
+            'horario' => 'required|exists:horarios,id',
+            'area' => 'required|exists:areas,id',
+            'cargo' => 'required|exists:cargos,id',
+        ]);
+
+        $e = Empleado::where('id', $request->id )
         ->update([
             'cc' => $request->cc,
             'apellido1' => $request->apellido1,
@@ -1211,8 +1256,12 @@ class PagesController extends Controller
             'tipo' => $request->tipo,
             'area' => $request->area,
             'cargo' => $request->cargo
-          ]);
-          return "Empleado actualizado";
+        ]);
+
+        return response()->json([
+            'message' => 'Empleado actualizado correctamente',
+            'data' => $e
+        ]);
     }
 
 

@@ -1,10 +1,10 @@
-<div class="card" >
+<div class="card">
     <div class="card-header">Rango de fechas</div>
     <div class="card-body">
         <div class="row">
             <div class="col-12 col-md-12">
                 <p>Total jornadas: {{ $total_jornadas }}</p>
-                <table class="table table-bordered table-striped table-sm" >
+                <table class="table table-bordered table-striped table-sm">
                     <thead>
                         <tr>
                             <th>Fecha Inicio</th>
@@ -19,7 +19,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($jornadas as $j)
+                        @foreach ($jornadas as $j)
                             <tr>
                                 <td>{{ $j->fecha }}</td>
                                 <td>{{ $j->proyecto }}</td>
@@ -30,26 +30,34 @@
                                 @switch($j->estado)
                                     @case(1)
                                         <td class="table-warning">Pendiente</td>
-                                        @break
+                                    @break
+
                                     @case(2)
                                         <td class="table-success">Aprobada</td>
-                                        @break
+                                    @break
+
                                     @case(3)
                                         <td class="table-danger">Rechazada</td>
-                                        @break
+                                    @break
+
                                     @default
                                         Valor no reconocido
                                 @endswitch
-                            
+
                                 <td>{{ $j->observacion }}</td>
-                                <td><button type="button" id="{{ $j->id}}" class="btn btn-danger btn-sm" onclick="delj2(this.id)" {{ $j->estado != 1 ? 'disabled' : ''}}><i class="bi bi-file-x-fill"></i></button></td>
-                                
+                                <td>
+                                    <button type="button" id="{{ $j->id }}" class="btn btn-danger btn-sm"
+                                        onclick="delj2(this.id)" {{ $j->estado != 1 ? 'disabled' : '' }}>
+                                        <i class="bi bi-file-x-fill"></i>
+                                    </button>
+                                </td>
+
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
-        
+
     </div>
-<div>
+    <div>

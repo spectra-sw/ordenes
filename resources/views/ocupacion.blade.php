@@ -2,7 +2,7 @@
 
 @section('content')
 <br>
-<div class="container mt-0"> 
+<div class="container mt-0">
 
 <ul class="nav nav-tabs" role="tablist" id="tabOcupacion">
     <li class="nav-item">
@@ -11,7 +11,7 @@
     <li class="nav-item">
         <a class="nav-link" data-bs-toggle="tab" href="#misregistros">Mis registros</a>
     </li>
-    
+
     @if (session('tipo')==0)
     <li class="nav-item">
         <a class="nav-link" data-bs-toggle="tab" href="#reporteso">Reportes</a>
@@ -22,7 +22,7 @@
         <a class="nav-link" data-bs-toggle="tab" href="#horasNovedad">Horas</a>
     </li>
     @endif
-    
+
 
 </ul>
 <div class="tab-content">
@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div id="mensaje">
-               
+
             </div>
             <div class="row">
                 <div class="col-md-6">
@@ -115,39 +115,39 @@
             <br>
             <div class="row">
                 <div class="col-md-4">
-                    <button type="button" class="btn btn-3" onclick="rocupacion()">REGISTRAR</button>
+                    <button type="button" class="btn btn-success" onclick="rocupacion()">REGISTRAR</button>
                 </div>
             </div>
         </div>
-        
+
         </div>
         </form>
-                       
+
     </div>
     <div class="container tab-pane fade" id="misregistros">
         <br>
-        <form id="formConsultaOcupacion" action="" method="get" target="_blank">    
+        <form id="formConsultaOcupacion" action="" method="get" target="_blank">
             <div class="row">
                             <div class="col-6 col-md-2 cajaAzul">Fecha Inicio</div>
                             <div class="col-6 col-md-2 "><input type="date" name="fechaInicioOcup" id="fechaInicioOcup" class="form-control"></div>
                             <div class="col-6 col-md-2 cajaAzul">Fecha Final</div>
                             <div class="col-6 col-md-2 "><input type="date" name="fechaFinalOcup" id="fechaFinalOcup" class="form-control"></div>
-            </div>     
+            </div>
                         <div class="row">
                             <div class="col-6 col-md-2">
-                                <button type="button" class="btn btn-3" onclick="consultaroc()">Consultar</button>&nbsp;       
+                                <button type="button" class="btn btn-success" onclick="consultaroc()">Consultar</button>&nbsp;
                             </div>
                         </div>
 
                         <div id="tablaocupacion" style="background-color:white">
                         </div>
-                    
-            
-        </form>       
+
+
+        </form>
     </div>
     <div class="tab-pane container fade" id="reporteso">
         <br>
-        <form id="formReportesOcupacion" action="exportReporteO" method="get" target="_blank">  
+        <form id="formReportesOcupacion" action="exportReporteO" method="get" target="_blank">
             <div class="row">
                 <div class="col-6 col-md-2 cajaAzul">Área</div>
                 <div class="col-6 col-md-2 ">
@@ -158,18 +158,18 @@
                         @endforeach
                     </select>
                 </div>
-            </div>  
-            
+            </div>
+
             <div class="row">
                             <div class="col-6 col-md-2 cajaAzul">Fecha Inicio</div>
                             <div class="col-6 col-md-2 "><input type="date" name="fechaInicioOcup1" id="fechaInicioOcup1" class="form-control"></div>
                             <div class="col-6 col-md-2 cajaAzul">Fecha Final</div>
                             <div class="col-6 col-md-2 "><input type="date" name="fechaFinalOcup1" id="fechaFinalOcup1" class="form-control"></div>
-            </div>    
+            </div>
             @if (session('tipo')==0)
                 <div class="row">
                     <div class="col-6 col-md-2 cajaAzul">Responsable</div>
-                    <div class="col-6 col-md-10">                 
+                    <div class="col-6 col-md-10">
                 <!--<select class="form-control basicAutoSelect" name="responsable" id="responsable"
                         placeholder="buscar..."
                         data-url="autoemp" autocomplete="off"></select>-->
@@ -181,21 +181,21 @@
                         </select>
                     </div>
                 </div>
-            @endif 
+            @endif
             <div class="row">
                 <div class="col-6 col-md-2">
-                    <button type="button" class="btn btn-3" onclick="seguimiento()">Seguimiento</button>&nbsp;    
+                    <button type="button" class="btn btn-success" onclick="seguimiento()">Seguimiento</button>&nbsp;
                 </div>
                 <div class="col-6 col-md-2">
-                    <button type="button" class="btn btn-3" onclick="generalo()">General</button>&nbsp;    
+                    <button type="button" class="btn btn-success" onclick="generalo()">General</button>&nbsp;
                 </div>
                 @if ($area==6)
                 <div class="col-6 col-md-2">
-                 <button type="button" class="btn btn-3" onclick="distribuciono()">Archivo Distribución</button>&nbsp;  
+                 <button type="button" class="btn btn-success" onclick="distribuciono()">Archivo Distribución</button>&nbsp;
                 </div>
                 @endif
                 <div class="col-6 col-md-2">
-                    <button type="button" class="btn btn-3" onclick="analiticas()">Archivo Analíticas</button>&nbsp;
+                    <button type="button" class="btn btn-success" onclick="analiticas()">Archivo Analíticas</button>&nbsp;
                 </div>
             </div>
 
@@ -203,8 +203,8 @@
             </div>
             <iframe title="Reporte Ocupacion" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=eada343c-1efb-4f6c-a2e2-7ac1309811c0&autoAuth=true&ctid=e752c1c1-100f-43ab-99fd-b6dd93dceb62"
  frameborder="0" allowFullScreen="true"></iframe>
-            
-        </form>    
+
+        </form>
     </div>
     <div class="tab-pane container fade" id="horasNovedad">
         <br>
@@ -216,7 +216,7 @@
                     <label class="custom-file-label" for="customFile">Choose file</label>
                 </div>
             </div>
-            <button class="btn btn-3">Importar horas</button><br>
+            <button class="btn btn-success">Importar horas</button><br>
                 <table id="tableNovedades" class="table table-striped" style="width:100%;overflow:scroll;color:black">
                     <thead>
                         <tr>
@@ -235,18 +235,18 @@
                             <td>{{ $n->periodo }}</td>
                         </tr>
                         @endforeach
-                        
+
                     </tbody>
-                   
+
                 </table>
         </form>
-    </div>                
-                    
+    </div>
+
 </div>
 </div>
 <script type="text/javascript">
     $('#responsable').autoComplete();
-    
+
 </script>
 <script>
     $(document).ready(function() {
@@ -254,6 +254,6 @@
     } );
 </script>
 
-<script src="{{asset('js/scripts.js')}}"></script>   
-<script src="{{asset('js/scripts_jornada.js')}}"></script>               
+<script src="{{asset('js/scripts.js')}}"></script>
+<script src="{{asset('js/scripts_jornada.js')}}"></script>
 @endsection

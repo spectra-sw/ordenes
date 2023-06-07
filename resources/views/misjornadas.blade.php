@@ -16,11 +16,11 @@
                         <input type="date" class="form-control" id="inicio" name="fin">
                     </div>
                     <div class="col-12 col-md-3">
-                        <button class="btn btn-3" id="btnConsultar" type="button">Consultar</button> 
+                        <button class="btn btn-success" id="btnConsultar" type="button">Consultar</button>
                     </div>
-                   
+
                 </div>
-                
+
             </div>
         <div>
     </div>
@@ -33,5 +33,5 @@
     </div>
 </div>
 </form>
-<script src="{{asset('js/scripts_jornada.js')}}"></script>                      
+<script src="{{asset('js/scripts_jornada.js')}}"></script>
 @endsection

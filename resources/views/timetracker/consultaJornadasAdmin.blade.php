@@ -26,10 +26,10 @@
                     <tbody>
                         @foreach($jornadas as $j)
                             <?php $duracion =intval(explode(":", $j->duracion)[0]) + round(floatval(explode(":", $j->duracion)[1]/60),1) ?>
-    
+
                             <tr>
                                 <td>{{ $j->trabajador->apellido1 . " " . $j->trabajador->apellido2 . " " . $j->trabajador->nombre}}</td>
-                                
+
                                 <td>{{ $j->proyecto }}</td>
                                 <td>{{ $j->proyectoinfo->cliente->cliente ?? 'N/A' }}</td>
                                 <td>{{ $j->fecha }}</td>
@@ -37,13 +37,13 @@
                                 <td>{{ $j->fechaf }}</td>
                                 <td><input type="text"  id="hf{{ $j->id }}" name="hf{{ $j->id }}" value="{{ $j->hf }}"></td>
                                 <td><input type="text"  id="duracion{{ $j->id }}" name="duracion{{ $j->id }}" value="{{ $duracion }}" disabled></td>
-                              
+
                                 <td ><input type="number"   min="0" id="almuerzo{{ $j->id }}" name="almuerzo{{ $j->id }}" value="{{ $j->almuerzo }}"></td>
 
                                 <td>{{ $duracion - $j->almuerzo }}</td>
                                 <td>{{ $j->created_at }}</td>
                                 @switch($j->estado)
-                               
+
                                     @case(1)
                                         <td class="table-warning">Pendiente</td>
                                         @break
@@ -56,26 +56,26 @@
                                     @default
                                         Valor no reconocido
                                 @endswitch
-                               
+
                                 <td>
                                     <input type="text" id="obs{{ $j->id }}" name="obs{{ $j->id }}" value="{{ str_replace(' ', ' ', $j->observacion) }}">
-                                </td>   
+                                </td>
 
                                 <td>
                                     <select class="form-control" onchange="accionj(this.value,this.id)" id="{{ $j->id }}" >
                                         <option value="">--Elige una opción--</option>
-                                        <option value="1">Aprobar</option> 
-                                        <option value="2">Rechazar</option> 
-                                        <option value="3">Eliminar</option> 
+                                        <option value="1">Aprobar</option>
+                                        <option value="2">Rechazar</option>
+                                        <option value="3">Eliminar</option>
                                     </select>
                                 </td>
-                                
+
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
-        
+
     </div>
 <div>

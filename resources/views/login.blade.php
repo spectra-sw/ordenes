@@ -10,8 +10,8 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="{{ URL::asset('css/style.css') }}">
     <style>
-        
-      
+
+
     </style>
 </head>
 <body style="background-image:url('img/fondo.jpg');background-size: cover;")>
@@ -29,10 +29,10 @@
                         <label for="pwd">Contraseña:</label>
                         <input type="password" class="form-control" placeholder="Ingrese contraseña" id="pwd" required>
                     </div>
-        
-                    <button type="button" class="btn btn-2" onclick="login()">Ingresar</button>
+
+                    <input type="submit" class="btn btn-primary" id="submitLogin" value="Ingresar">
                 </form>
-                
+
                 </div>
             </div>
         <div class="alert alert-danger" id="alerta">
@@ -50,13 +50,13 @@ getLocation();
 function getLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showPosition);
-  } else { 
+  } else {
     x.innerHTML = "Geolocation is not supported by this browser.";
   }
 }
 
 function showPosition(position) {
-  x.innerHTML = "Latitude: " + position.coords.latitude + 
+  x.innerHTML = "Latitude: " + position.coords.latitude +
   "<br>Longitude: " + position.coords.longitude;
 }
 </script>

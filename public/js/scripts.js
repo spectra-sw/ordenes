@@ -397,7 +397,10 @@ function del2(tipo,id){
         }
     });
 }
-function login(){
+
+$('#submitLogin').on('submit', function(e) {
+    e.preventDefault();
+
     email = $("#email").val();
     pwd = $("#pwd").val();
 
@@ -431,7 +434,7 @@ function login(){
             }
         });
     }
-}
+});
 
 
 //admin
@@ -452,28 +455,28 @@ function nuevocorte(){
     $("#nuevocorte").modal("show");
 }
 function guardare(){
-    band=0;
-    $('#formEmp input').each(function() {
-        if (($(this).val() == '') && ($(this).attr('id') != 'apellido2')) {
-            band=1;
+    const url = '/nuevoemp'
+    const formData = new FormData($('#formEmp')[0])
+    const data = {};
+    formData.forEach(function(value, key){
+        data[key] = value;
+    });
+
+    $.ajax({
+        url: url,
+        type:'GET',
+        data: data,
+        success: (data) => {
+            alert(data.message);
+            acttablaemp();
+        },
+        error: (error) => {
+            // alert all errors
+            for (const key in error.responseJSON.errors) {
+                alert(error.responseJSON.errors[key])
+            }
         }
-    })
-    if (band==0){
-        data=$( "#formEmp" ).serialize();
-        url = '/nuevoemp'
-        $.ajax({
-                url: url,
-                type:'GET',
-                data: data,
-                success: function(data) {
-                    alert(data);
-                    acttablaemp();
-                }
-        });
-    }
-    else{
-        alert("Debes ingresar todos los campos");
-    }
+    });
 }
 function guardarcdc(){
     band=0;
@@ -501,28 +504,28 @@ function guardarcdc(){
     }
 }
 function guardarcliente(){
-    band=0;
-    $('#formCliente input').each(function() {
-        if (($(this).val() == '')) {
-            band=1;
+    const formData = new FormData($('#formCliente')[0])
+    const data = {};
+    formData.forEach(function(value, key){
+        data[key] = value;
+    });
+    const url = '/nuevocliente'
+
+    $.ajax({
+        url: url,
+        type:'GET',
+        data: data,
+        success: (data) => {
+            alert(data.message);
+            acttablacliente();
+        },
+        error: (error) => {
+            // alert all errors
+            for (const key in error.responseJSON.errors) {
+                alert(error.responseJSON.errors[key])
+            }
         }
-    })
-    if (band==0){
-        data=$( "#formCliente" ).serialize();
-        url = '/nuevocliente'
-        $.ajax({
-                url: url,
-                type:'GET',
-                data: data,
-                success: function(data) {
-                    alert(data.message);
-                    acttablacliente();
-                }
-        });
-    }
-    else{
-        alert("Debes ingresar todos los campos");
-    }
+    });
 }
 function guardarcorte(){
     const formData = new FormData($('#formEditarCorte')[0])
@@ -535,9 +538,8 @@ function guardarcorte(){
     data.fecha_inicio = object.corte_fecha_inicio
     data.fecha_fin = object.corte_fecha_fin
     data.estado = object.corte_estado
-    console.log(data);
 
-    url = '/nuevocorte'
+    const url = '/nuevocorte'
     $.ajax({
         url: url,
         type:'GET',
@@ -653,20 +655,19 @@ function mostrarModalAutorizados(id) {
             $('#autorizadosproy').modal("show");
         },
     });
-
 }
 function agregarAutorizado(){
    data=$( "#formAutProy" ).serialize();
    url = '/agautorizadoproy'
     $.ajax({
-              url: url,
-              type:'GET',
-              data: data,
-              success: function(data) {
-                //alert(data);
-                $data = $(data);
-                $("#tablaautorizados").html($data);
-              }
+        url: url,
+        type:'GET',
+        data: data,
+        success: function(data) {
+            //alert(data);
+            $data = $(data);
+            $("#tablaautorizados").html($data);
+        }
     });
 }
 function borrarautorizado(id){
@@ -730,44 +731,42 @@ function accionescliente(op,id){
 function accionescortes(op,id){
     //alert(op);
     //alert(id);
-        data = { id : id, op :op }
-        url="/accioncorte"
-        $.ajax({
-            url: url,
-            type:'GET',
-            data: data,
-            success: function(data) {
-                alert(data);
-                location.reload();
-                $('#tabAdmin a[href="#cortes"]').tab('show');
-            }
-        });
-
-
+    data = { id : id, op :op }
+    url="/accioncorte"
+    $.ajax({
+        url: url,
+        type:'GET',
+        data: data,
+        success: function(data) {
+            alert(data);
+            location.reload();
+            $('#tabAdmin a[href="#cortes"]').tab('show');
+        }
+    });
 }
 function editare(){
-    band=0;
-    $('#formEdit input').each(function() {
-        if (($(this).val() == '') && ($(this).attr('id') != 'apellido2')) {
-            band=1;
+    const url = '/editaremp'
+    const formData = new FormData($('#formEdit')[0])
+    const data = {};
+    formData.forEach(function(value, key){
+        data[key] = value;
+    });
+
+    $.ajax({
+        url: url,
+        type:'GET',
+        data: data,
+        success: (data) => {
+            alert(data.message);
+            acttablaemp();
+        },
+        error: (error) => {
+            // alert all errors
+            for (const key in error.responseJSON.errors) {
+                alert(error.responseJSON.errors[key])
+            }
         }
-    })
-    if (band==0){
-        data=$( "#formEdit" ).serialize();
-        url = '/editaremp'
-        $.ajax({
-                url: url,
-                type:'GET',
-                data: data,
-                success: function(data) {
-                    alert(data);
-                    acttablaemp();
-                }
-        });
-    }
-    else{
-        alert("Debes ingresar todos los campos");
-    }
+    });
 }
 function editarcliente(){
     band=0;
@@ -1607,13 +1606,14 @@ function nuevaextra(){
 function exportarextra(){
     //alert();
     data={ fechaInicio :$("#fechaInicio").val() , fechaFinal:  $("#fechaFinal").val() }
-    var url = "/exportExtra?" + $.param(data)
+    const url = "/exportExtra?" + $.param(data)
     window.location = url;
 }
 function exportarproyectos(){
-    var url = "/exportProyectos"
+    const url = "/exportProyectos"
     window.location = url;
 }
+
 function delOcupacion(ocupacion_id){
     let text = "Desea eliminar este registro?";
     if (confirm(text) == true) {
