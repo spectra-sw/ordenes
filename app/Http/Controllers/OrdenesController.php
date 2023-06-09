@@ -72,13 +72,13 @@ class OrdenesController extends Controller
         }
         //dd($proyectosf);
         return view('ordenes',[
-            'proyectos' => $proyectos 
+            'proyectos' => $proyectos
 
         ]);
     }
     public function jornada(Request $request){
         $proyectos = collect([]);
-        
+
         $user = session('user');
         if ($user==""){
             return redirect()->route('inicio');
@@ -90,10 +90,10 @@ class OrdenesController extends Controller
         ]);
     }
     public function registrarJornada(Request $request){
-      
-        $fecha = $request->fecha; 
-        $hours = $request->horaInicio; 
-        $minutes = $request->minInicio; 
+
+        $fecha = $request->fecha;
+        $hours = $request->horaInicio;
+        $minutes = $request->minInicio;
 
         $fecha = Carbon::create($fecha, $hours, $minutes);
         $fecha->addHours($hours);
@@ -110,14 +110,14 @@ class OrdenesController extends Controller
         //dd($formatted_fechaf);
 
         $user_id = session()->get('user');
-        
-        $hi = strval($request->horaInicio) . ":" . strval($request->minInicio); 
+
+        $hi = strval($request->horaInicio) . ":" . strval($request->minInicio);
         //$hf = strval($request->horaFin) . ":" . strval($request->minFin);
         $duracion = strval($request->duracionh) . ":" . strval($request->duracionm);
         $request->merge(['user_id' => $user_id, 'hi' => $hi, 'hf' => $fechaf->format('H:i'),'fechaf' => $fechaf->format('Y-m-d'), 'estado' => 1,
          'duracion' => $duracion, 'almuerzo' => 0]);
         $data = $request->all();
-        
+
         $j = Jornada::create($data);
 
         $datosJornada = Jornada::where('jornada_id',$data['jornada_id'])->where('user_id',$user_id)->get();
@@ -144,7 +144,7 @@ class OrdenesController extends Controller
         return view('tablaJornada',[
             'jornada' => $datosJornada
         ]);
-        
+
     }
     public function solapeJornada(Request $request){
         $user = session()->get('user');
@@ -162,9 +162,9 @@ class OrdenesController extends Controller
         //dd($jornadas);
         //$hi = intval($request->horaInicio) + floatval($request->minInicio);
         //$hf = intval($request->horaFin) + floatval($request->minFin);
-        $fecha = $request->fecha; 
-        $hours = $request->horaInicio; 
-        $minutes = $request->minInicio; 
+        $fecha = $request->fecha;
+        $hours = $request->horaInicio;
+        $minutes = $request->minInicio;
 
         $fecha = Carbon::create($fecha);
         $fecha->addHours($hours);
@@ -183,29 +183,29 @@ class OrdenesController extends Controller
         //dd($fechaf);
 
         //dd( $timestamp2_start ." ".$timestamp2_end);
-        
+
         $solape = "false";
         foreach ($jornadas as $j){
             $inicio = explode(":",$j->hi);
             $fin = explode(":",$j->duracion);
-           
-            $fecha3 = $j->fecha; 
-            $hours = intval($inicio[0]); 
-            $minutes = floatval($inicio[1]/60); 
+
+            $fecha3 = $j->fecha;
+            $hours = intval($inicio[0]);
+            $minutes = floatval($inicio[1]/60);
 
             $fecha3 = Carbon::create($fecha3);
             $fecha3->addHours($hours);
             $fecha3->addMinutes($minutes);
             //dd($fecha3);
 
-            $hoursf = intval($fin[0]); 
-            $minutesf = floatval($fin[1]/60); 
+            $hoursf = intval($fin[0]);
+            $minutesf = floatval($fin[1]/60);
 
             $fecha4 = $j->fecha;
             $fecha4 = Carbon::create($fecha4);
             $fecha4->addHours($hours+$hoursf);
             $fecha4->addMinutes($minutes+$minutesf);
-          
+
             //dd($fecha4);
            /* if (($fecha >= $fecha4 || $fechaf <= $fecha3) ) {
                 $solape= "false";
@@ -220,10 +220,10 @@ class OrdenesController extends Controller
                 $solape="true";
                 return $solape;
             }
-            
 
-            
-           
+
+
+
         }
         return $solape;
     }
@@ -235,12 +235,12 @@ class OrdenesController extends Controller
         $jornadas = Jornada::where('user_id',$user)->where('fecha','>=',$request->inicio)->where('fecha','<=',$request->fin)->orderBy('fecha','asc')->get();
         $users = DB::table('users')->distinct()->select('email')->where('name', 'John')->get();
         $total_jornadas = DB::table('jornada')->distinct()->select('jornada_id')->where('user_id',$user)->where('fecha','>=',$request->inicio)->where('fecha','<=',$request->fin)->count();
-        
+
         $request = new Request();
         $request->merge(['fecha' => Carbon::now()->format('Y-m-d')]);
         $estado = $this->validarCorte($request);
-        
-    
+
+
 
         return view('timetracker.consultaJornadas',[
             'jornadas' => $jornadas,
@@ -249,14 +249,14 @@ class OrdenesController extends Controller
         ]);
     }
     public function consultaJornadaAdmin(Request $request){
-        
-        
+
+
         $jornadas = Jornada::query();
-    
+
         if ($request->proyecto) {
             $jornadas->where('proyecto', $request->proyecto);
         }
-    
+
         if ($request->trabajador) {
             $jornadas->where('user_id', $request->trabajador);
         }
@@ -268,23 +268,29 @@ class OrdenesController extends Controller
         if ($request->inicio && $request->fin) {
             $jornadas->whereBetween('fecha', [$request->inicio, $request->fin]);
         }
-    
+
         if ($request->estado) {
             $jornadas->where('estado', $request->estado);
         }
-        
+
         $jornadas = $jornadas->orderBy('fecha','asc')->get();
-    
+
         return view('timetracker.consultaJornadasAdmin', [
             'jornadas' => $jornadas,
             'total_jornadas' => 0
         ]);
     }
     public function accionesJornada(Request $request){
+        // validate $request
+        $validate = $request->validate([
+            'obs' => 'required',
+        ]);
+
+
         $user = session()->get('user');
         //dd($request->obs);
         $jornada = Jornada::find($request->id);
-    
+
         if ($request->op == "1"){
             $jornada->estado = 2;
             $result= "Aprobación realizada";
@@ -295,7 +301,7 @@ class OrdenesController extends Controller
             $jornada->delete();
             return  "Registro eliminado";
         }
-    
+
         $jornada->observacion = $request->obs;
         $jornada->hi=$request->hi;
         $jornada->hf=$request->hf;
@@ -305,7 +311,7 @@ class OrdenesController extends Controller
         $jornada->fecha_revision = Carbon::now()->format('Y-m-d');
        //dd($jornada);
         $jornada->save();
-    
+
         return $result;
     }
 

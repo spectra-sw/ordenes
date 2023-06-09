@@ -311,6 +311,12 @@ function accionj(op, id) {
       success: (data) => {
         refreshConsulta();
         alert(data);
+      },
+      error: (error) => {
+        // alert all errors
+        for (const key in error.responseJSON.errors) {
+            alert(error.responseJSON.errors[key])
+        }
       }
     });
   }

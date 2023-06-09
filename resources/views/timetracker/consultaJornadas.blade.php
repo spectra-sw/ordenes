@@ -2,7 +2,7 @@
     <div class="card-header">Rango de fechas</div>
     <div class="card-body">
         <div class="row">
-            <div class="col-12 col-md-12">
+            <div class="col-12 col-md-12 overflow-auto" style="height: 80vh">
                 <p>Total jornadas: {{ $total_jornadas }}</p>
                 <table class="table table-bordered table-striped table-sm">
                     <thead>

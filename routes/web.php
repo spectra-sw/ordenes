@@ -80,6 +80,7 @@ Route::get('/filtrarcliente',[PagesController::class,'filtrarcliente']);
 //proyectos
 Route::get('/nuevoproy',[ProyectosController::class,'nuevoproy']);
 Route::get('/buscarproy',[ProyectosController::class,'buscarproy']);
+Route::get('/togle-habilitar-proyecto',[ProyectosController::class,'togleHabilitarProyecto']);
 Route::get('/editarproy',[ProyectosController::class,'editarproy']);
 Route::get('/tablaproy',[ProyectosController::class,'tablaproy']);
 Route::get('/eliminarproy',[ProyectosController::class,'eliminarproy']);

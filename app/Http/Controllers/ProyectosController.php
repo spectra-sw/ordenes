@@ -55,7 +55,7 @@ class ProyectosController extends Controller
                 'creacion' => date("Y-m-d"),
                 'registro' => $request->registro
             ]);
-    
+
             $cdc =  Cdc::create([
                 'codigo' => $request->codigo,
                 'descripcion' => $request->descripcion,
@@ -73,7 +73,7 @@ class ProyectosController extends Controller
         $proyect = Proyecto::findOrFail($request->id);
         $employees = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();
         $clientes = Cliente::orderBy('cliente','asc')->get();
-    
+
         return view('formproy', [
             'p' => $proyect,
             'clientes' => $clientes,
@@ -111,6 +111,17 @@ class ProyectosController extends Controller
         ]);
     }
     public function editarproy(Request $request){
+        $request->validate([
+            'codigo' => 'required',
+            'descripcion' => 'required',
+            'cliente' => 'required',
+            'sistema' => 'required',
+            'subportafolio' => 'required',
+            'director' => 'required',
+            'lider' => 'required',
+            'ciudad' => 'required',
+        ]);
+
         Proyecto::where('id', $request->id )
         ->update([
             'codigo' => $request->codigo,
@@ -121,19 +132,29 @@ class ProyectosController extends Controller
             'director' => $request->director,
             'lider' => $request->lider,
             'ciudad' => $request->ciudad,
-            'registro' => $request->registro,
           ]);
-        
+
         Cdc::where('codigo', $request->codigo)
          ->update([
             'descripcion' => $request->descripcion,
             'centro_operacion' => $request->co,
             'unidad_negocio' => $request->un,
-            
          ]);
 
-         
-          return "Proyecto actualizado";
+
+        return response()->json([
+            'message' => 'Proyecto actualizado'
+        ]);
+    }
+    public function togleHabilitarProyecto(Request $request){
+        $proyecto = Proyecto::where('id', $request->id )->get()->first();
+        $proyecto->update([
+            'registro' => !$proyecto->registro,
+        ]);
+
+        return response()->json([
+            'message' => $proyecto->registro? 'Proyecto habilitado' : 'Proyecto deshabilitado'
+        ]);
     }
     public function tablaproy(Request $request){
         $campo = $request->campo;
@@ -141,16 +162,16 @@ class ProyectosController extends Controller
             $proyectos = Proyecto::orderBy('codigo','asc')->get();
         }
         else{
-            $proyectos= Proyecto::orderBy($campo,'asc')->get();  
+            $proyectos= Proyecto::orderBy($campo,'asc')->get();
         }
         return view('tablaproyecto',[
             'proyectos' => $proyectos,
         ]);
     }
     public function filtrarproy(Request $request){
-        
+
         $proy =  Proyecto::orderBy('codigo','asc');
-        
+
         if ($request->fcodigo !=""){
             $proy = $proy->where('codigo',$request->fcodigo );
         }
@@ -170,6 +191,6 @@ class ProyectosController extends Controller
         return view('tablaproyecto',[
             'proyectos' => $proy,
         ]);
-       
+
     }
 }

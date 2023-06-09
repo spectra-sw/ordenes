@@ -88,10 +88,3 @@
     </select>
     <!--<input type="text" class="form-control"  id="un" name="un">-->
 </div>
-<div class="form-group mb-2">
-    <label for="un">REGISTRO DE HORAS</label>
-    <select class="form-control" id="registro" name="registro">
-        <option value="1" {{ $p->registro == 1 ? 'selected' : '' }}>Si</option>
-        <option value="0" {{ $p->registro == 0 ? 'selected' : '' }}>No</option>
-    </select>
-</div>

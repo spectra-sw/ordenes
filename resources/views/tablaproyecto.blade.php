@@ -19,7 +19,7 @@
       </tr>
     </thead>
     <tbody>
-    @foreach ($proyectos  as $p)     
+    @foreach ($proyectos  as $p)
       <tr>
         <td>{{ $p->codigo }}</td>
         <td>{{ $p->cliente ? $p->cliente->cliente : ''}}</td>
@@ -36,21 +36,23 @@
         @else
           <td>{{ $p->nlider ? $p->nlider->nombre . " ". $p->nlider->apellido1 : '' }}</td>
         @endif
-        
+
         <td>{{ $p->ciudad }}</td>
         <td>{{ isset($p->cdc->centro_operacion) ? $p->cdc->centro_operacion : ''}}</td>
         <td>{{ isset($p->cdc->unidad_negocio) ? $p->cdc->unidad_negocio : ''}}</td>
         <td>{{ ($p->registro == 1) ? "Si" : 'No'}}</td>
-        <td><select class="form-control" id="{{ $p->id }}" onchange="accionesproyectos(this.value,this.id)">
-            <option></option>
-            <option value="1">Editar</option>
-            <option value="3">Autorizados</option>
-            <!--<option value="2">Eliminar</option>-->
-            
-        </select></td>
-        
+        <td>
+            <select class="form-control" id="{{ $p->id }}" onchange="accionesproyectos(this.value,this.id)">
+                <option></option>
+                <option value="1">Editar</option>
+                <option value="3">Autorizados</option>
+                <option value="4">{{ ($p->registro == 1) ? "Deshabilitar" : 'Habilitar'}}</option>
+                <!--<option value="2">Eliminar</option>-->
+            </select>
+        </td>
+
       </tr>
-    @endforeach 
+    @endforeach
     </tbody>
 </table>
 <script>

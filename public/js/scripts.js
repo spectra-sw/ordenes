@@ -610,6 +610,21 @@ function acciones(op,id){
     }
 
 }
+
+const togleHabilitarProyecto = (id) => {
+    const url = '/togle-habilitar-proyecto';
+    const data = { id };
+    $.ajax({
+        url,
+        type: 'GET',
+        data,
+        success(data) {
+            alert(data.message);
+            acttablaproy();
+        },
+    });
+}
+
 function accionesproyectos(op, id) {
     switch (op) {
         case "1":
@@ -620,6 +635,9 @@ function accionesproyectos(op, id) {
             break;
         case "3":
             mostrarModalAutorizados(id);
+            break;
+        case "4":
+            togleHabilitarProyecto(id);
             break;
     }
     document.getElementById(id).value =""
@@ -793,33 +811,28 @@ function editarcliente(){
     }
 }
 function editarproy(){
-    band=0;
-    $('#formEditProy input').each(function() {
-        if (($(this).val() == '') && ($(this).attr('id') != 'apellido2')) {
-            band=1;
+    const url = '/editarproy'
+    const formData = new FormData($('#formEditProy')[0])
+    const data = {};
+    formData.forEach(function(value, key){
+        data[key] = value;
+    });
+
+    $.ajax({
+        url: url,
+        type:'GET',
+        data: data,
+        success: (data) => {
+            alert(data.message);
+            acttablaproy();
+        },
+        error: (error) => {
+            // alert all errors
+            for (const key in error.responseJSON.errors) {
+                alert(error.responseJSON.errors[key])
+            }
         }
-    })
-    $('#formEditProy select').each(function() {
-        if (($(this).val() == '')) {
-            band=1;
-        }
-    })
-    if (band==0){
-        data=$( "#formEditProy" ).serialize();
-        url = '/editarproy'
-        $.ajax({
-                url: url,
-                type:'GET',
-                data: data,
-                success: function(data) {
-                    alert(data);
-                    acttablaproy();
-                }
-        });
-    }
-    else{
-        alert("Debes ingresar todos los campos");
-    }
+    });
 }
 const printTablaTurnos = () => {
     url="/print-tabla-turnos"
