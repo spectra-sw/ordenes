@@ -111,7 +111,7 @@ class DistribucionController extends Controller
                         $sb = $tsb[$j->fecha] + ($duracion - $j->almuerzo);
                     }
                     else{
-                        $sb = ($duracion - $j->almuerzo);
+                        $sb = $tsb[$j->fecha] +($duracion - $j->almuerzo);
                     }
                   
                     //dd($sb);
