@@ -66,7 +66,7 @@ class DistribucionController extends Controller
             $hf = explode(":", $j->hf);
             $hf =intval($hf[0]) + round(floatval($hf[1]/60),1);
             $duracion  = explode(":", $j->duracion);
-            $duracion =intval($duracion[0]) + round(floatval($duracion[1]/60),1);
+            $duracion =intval($duracion[0]) + round(floatval($duracion[1]/60),2);
                 
             $festivo = app('App\Http\Controllers\FilesController')->consfestivo($j->fecha);
             $c = new Carbon($j->fecha);
