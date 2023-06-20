@@ -75,6 +75,7 @@ class DistribucionController extends Controller
             }
             $cf = new Carbon($j->fechaf);
             $numdia = $c->dayOfWeek;
+            $numdiaf = $cf->dayOfWeek;
             $sb = $hedo = $heno= $hedf = $henf = $rno = $dtc = $rnd = 0;
 
                 
@@ -176,24 +177,54 @@ class DistribucionController extends Controller
                                 $datos->push($linea); 
                                 $bandlinea=true;
                             }
-
-                            $rno = $this->calcularHeno(0,$hf-1);
-                            if ($rno>0){
-                                $valores = [
-                                    'emp' => $j->trabajador->cc,
-                                    'concepto' => '',
-                                    'centro' => $j->cdcinfo->centro_operacion,
-                                    'proyecto' => $j->proyecto,
-                                    'horas' => 0,
-                                    'unidad' => $j->cdcinfo->unidad_negocio
-                                ];
-                                $valores['concepto']="012";
-                                $valores['horas'] = $rno;
-                                $valores['fecha'] = str_replace("-","",$j->fechaf);
-                                $linea = $this->addlinea($datos,$valores); 
-                                $datos->push($linea); 
-                                $bandlinea=true;
+                            if ($numdiaf >0){
+                                $rno = $this->calcularHeno(0,$hf-1);
+                                //dd($rno);
+                                if ($rno>0){
+                                    $valores = [
+                                        'emp' => $j->trabajador->cc,
+                                        'concepto' => '',
+                                        'centro' => $j->cdcinfo->centro_operacion,
+                                        'proyecto' => $j->proyecto,
+                                        'horas' => 0,
+                                        'unidad' => $j->cdcinfo->unidad_negocio
+                                    ];
+                                    $valores['concepto']="012";
+                                    $valores['horas'] = $rno;
+                                    $valores['fecha'] = str_replace("-","",$j->fechaf);
+                                    $linea = $this->addlinea($datos,$valores); 
+                                    $datos->push($linea); 
+                                    $bandlinea=true;
+                                }
                             }
+                            if ($numdiaf ==0){
+                               
+                                    $valores = [
+                                        'emp' => $j->trabajador->cc,
+                                        'concepto' => '',
+                                        'centro' => $j->cdcinfo->centro_operacion,
+                                        'proyecto' => $j->proyecto,
+                                        'horas' => 0,
+                                        'unidad' => $j->cdcinfo->unidad_negocio
+                                    ];
+
+                                    $valores['concepto']="001";
+                                    $valores['horas'] = $hf;
+                                    $valores['fecha'] = str_replace("-","",$j->fechaf);
+                                    $tsb[$j->fecha] = $tsb[$j->fecha] + $sb;
+                                    $ttsb = $ttsb + $sb;
+                                    $linea = $this->addlinea($datos,$valores); 
+                                    $datos->push($linea);  
+
+                                    $valores['concepto']="014";
+                                    $valores['horas'] = $hf;
+                                    $valores['fecha'] = str_replace("-","",$j->fechaf);
+                                    $linea = $this->addlinea($datos,$valores); 
+                                    $datos->push($linea); 
+                                    $bandlinea=true;
+                                
+                            }
+
                         }
                         //dd($rno);
                         //$sb = $sb-$rno;
