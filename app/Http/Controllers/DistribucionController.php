@@ -60,6 +60,7 @@ class DistribucionController extends Controller
             $valores['proyecto'] = "";
             $cont = $cont + 1;
             $bandlinea= false;
+            $laborales_cero = false;
             Log::info($tsb);
             $hi = explode(":", $j->hi);
             $hi =intval($hi[0]) + round(floatval($hi[1]/60),1);
@@ -91,23 +92,31 @@ class DistribucionController extends Controller
                 //dd($horario_id);
                 $turno = Horario::where('id',$horario_id)->first();
                 $especial = false;
+                if (($numdia < $turno->dia_inicio) || ($numdia > $turno->dia_fin)){
+                    $laborales_cero =true;
+                    
+                }
             }
             else{
                 $especial = true;
             }
             //dd($turno);
             //Log::info($especial);
-            if ($turno->fecha_inicio == $turno->fecha_fin){
-                $laborales = $turno->hora_fin - $turno->hora_inicio - $turno->almuerzo;
-               // dd($laborales);
+            if ($laborales_cero==false){
+                if ($turno->fecha_inicio == $turno->fecha_fin){
+                    $laborales = $turno->hora_fin - $turno->hora_inicio - $turno->almuerzo;
+                // dd($laborales);
+                }
+                else{
+                    $laborales = (24-$turno->hora_inicio) + $turno->hora_fin - $turno->almuerzo;
+                }
             }
-            else{
-                $laborales = (24-$turno->hora_inicio) + $turno->hora_fin - $turno->almuerzo;
-            }
-            if (($numdia < $turno->dia_inicio) || ($numdia > $turno->dia_fin)){
-                $laborales =0;
+            if ($laborales_cero==true){
+                $laborales=0;
                 $especial = true;
             }
+
+            
             //dd($duracion);
             //dd($laborales);
             //dd($especial);
