@@ -74,6 +74,9 @@ class DistribucionController extends Controller
             if (!array_key_exists($j->fecha, $tsb) ) {
                 $tsb[$j->fecha] = 0;
             }
+            if (!array_key_exists($j->fechaf, $tsb) ) {
+                $tsb[$j->fechaf] = 0;
+            }
             $cf = new Carbon($j->fechaf);
             $numdia = $c->dayOfWeek;
             $numdiaf = $cf->dayOfWeek;
@@ -193,6 +196,22 @@ class DistribucionController extends Controller
                                 $bandlinea=true;
                             }
                             if ($numdiaf >0){
+                                $valores = [
+                                    'emp' => $j->trabajador->cc,
+                                    'concepto' => '',
+                                    'centro' => $j->cdcinfo->centro_operacion,
+                                    'proyecto' => $j->proyecto,
+                                    'horas' => 0,
+                                    'unidad' => $j->cdcinfo->unidad_negocio
+                                ];
+                                $valores['concepto']="001";
+                                $valores['horas'] = $hf-1;
+                                $valores['fecha'] = str_replace("-","",$j->fechaf);
+                                $tsb[$j->fechaf] = $tsb[$j->fechaf] + $hf-1;
+                                $ttsb = $ttsb + $hf-1;
+                                $linea = $this->addlinea($datos,$valores); 
+                                $datos->push($linea); 
+                                $bandlinea=true;
                                 $rno = $this->calcularHeno(0,$hf-1);
                                 //dd($rno);
                                 if ($rno>0){
