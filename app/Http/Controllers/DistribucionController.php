@@ -446,7 +446,7 @@ class DistribucionController extends Controller
             }
             //dd($especial == false);
             if (($especial == false)&&($numdia >= $turno->dia_inicio)&&($numdia <= $turno->dia_fin)){
-                dd("test");
+                //dd("test");
                 if (($numdia > 0)&&($festivo=="no")){
                     if ($valores['proyecto'] == $j->proyecto){
                         $sb = $tsb[$j->fecha] + ($duracion - $j->almuerzo);
