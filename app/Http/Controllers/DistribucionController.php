@@ -147,7 +147,7 @@ class DistribucionController extends Controller
                   
                     //dd($sb);
                     //Log::info($turno->id.":".$sb);
-                    if (($sb>$laborales)&&($laborales>0)){
+                    if (($sb>$laborales)){
                         if ($j->fecha == $j->fechaf){
                             $excede = $sb -$laborales;    
                             //dd($excede);
