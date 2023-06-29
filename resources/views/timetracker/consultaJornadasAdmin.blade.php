@@ -25,7 +25,7 @@
                     </thead>
                     <tbody>
                         @foreach($jornadas as $j)
-                            <?php $duracion =intval(explode(":", $j->duracion)[0]) + round(floatval(explode(":", $j->duracion)[1]/60),1) ?>
+                            <?php $duracion =intval(explode(":", $j->duracion)[0]) + round(floatval(explode(":", $j->duracion)[1]/60),2) ?>
 
                             <tr>
                                 <td>{{ $j->trabajador->apellido1 . " " . $j->trabajador->apellido2 . " " . $j->trabajador->nombre}}</td>

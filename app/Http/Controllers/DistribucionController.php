@@ -60,21 +60,26 @@ class DistribucionController extends Controller
             $valores['proyecto'] = "";
             $cont = $cont + 1;
             $bandlinea= false;
+            $laborales_cero = false;
             Log::info($tsb);
             $hi = explode(":", $j->hi);
             $hi =intval($hi[0]) + round(floatval($hi[1]/60),1);
             $hf = explode(":", $j->hf);
             $hf =intval($hf[0]) + round(floatval($hf[1]/60),1);
             $duracion  = explode(":", $j->duracion);
-            $duracion =intval($duracion[0]) + round(floatval($duracion[1]/60),1);
+            $duracion =intval($duracion[0]) + round(floatval($duracion[1]/60),2);
                 
             $festivo = app('App\Http\Controllers\FilesController')->consfestivo($j->fecha);
             $c = new Carbon($j->fecha);
             if (!array_key_exists($j->fecha, $tsb) ) {
                 $tsb[$j->fecha] = 0;
             }
+            if (!array_key_exists($j->fechaf, $tsb) ) {
+                $tsb[$j->fechaf] = 0;
+            }
             $cf = new Carbon($j->fechaf);
             $numdia = $c->dayOfWeek;
+            $numdiaf = $cf->dayOfWeek;
             $sb = $hedo = $heno= $hedf = $henf = $rno = $dtc = $rnd = 0;
 
                 
@@ -89,21 +94,44 @@ class DistribucionController extends Controller
                 $horario_id = Empleado::where('id',$request->trabajador)->first()->horario_id;
                 //dd($horario_id);
                 $turno = Horario::where('id',$horario_id)->first();
+                //dd($numdia);
                 $especial = false;
+                if (($numdia < $turno->dia_inicio) || ($numdia > $turno->dia_fin)){
+                    $laborales_cero =true;
+                    
+                }
+                else{
+                    if($hi >= $turno->hora_fin){
+                        $laborales_cero =true;
+                    }
+                }
+                //dd($especial);
             }
             else{
                 $especial = true;
             }
             //dd($turno);
             //Log::info($especial);
-            if ($turno->fecha_inicio == $turno->fecha_fin){
-                $laborales = $turno->hora_fin - $turno->hora_inicio - $turno->almuerzo;
-               // dd($laborales);
+            if ($laborales_cero==false){
+                if ($turno->fecha_inicio == $turno->fecha_fin){
+                    $laborales = $turno->hora_fin - $turno->hora_inicio - $turno->almuerzo;
+                // dd($laborales);
+                }
+                else{
+                    $laborales = (24-$turno->hora_inicio) + $turno->hora_fin - $turno->almuerzo;
+                }
             }
-            else{
-                $laborales = (24-$turno->hora_inicio) + $turno->hora_fin - $turno->almuerzo;
+            if ($laborales_cero==true){
+                $laborales=0;
+                $especial = true;
             }
+            //Log::info($especial);
+
+            
+            //dd($duracion);
             //dd($laborales);
+            //Log::info($duracion);
+            //dd($especial);
             if($especial==true){               
                
                 if (($numdia > 0)&&($festivo=="no")){
@@ -111,25 +139,166 @@ class DistribucionController extends Controller
                         $sb = $tsb[$j->fecha] + ($duracion - $j->almuerzo);
                     }
                     else{
+                        $sb = $tsb[$j->fecha] +($duracion - $j->almuerzo);
+                    }
+                    if ($laborales==0){
                         $sb = ($duracion - $j->almuerzo);
                     }
                   
                     //dd($sb);
                     //Log::info($turno->id.":".$sb);
-                    if ($sb>$laborales){
-                        $excede = $sb -$laborales;
-                        //dd($excede);
-                        $sb =$laborales - $tsb[$j->fecha];
-                        $heno = $this->calcularHeno($turno->hora_fin,$hf);
-                       // dd($sb);
-                        if ($heno ==0){
-                            $hedo = $excede;  
+                    if (($sb>$laborales)&&($laborales>0)){
+                        if ($j->fecha == $j->fechaf){
+                            $excede = $sb -$laborales;    
+                            //dd($excede);
+                            $sb =$laborales - $tsb[$j->fecha];
+                            $heno = $this->calcularHeno($turno->hora_fin,$hf);
+                                //dd($heno);
+                        // dd($sb);
+                            if ($heno ==0){
+                                $hedo = $excede;  
+                            }
+                            else{
+                                $hedo = $excede - $heno;
+                            }
+                            if ($heno ==0){
+                                $rno = $this->calcularHeno($hi,$hf);
+                            }
+                            //dd($hedo);
                         }
                         else{
-                            $hedo = $excede - $heno;
-                        }
-                        if ($heno ==0){
-                            $rno = $this->calcularHeno($hi,$hf);
+                            $sb = 24-$hi;
+                            
+                            $valores = [
+                                'emp' => $j->trabajador->cc,
+                                'concepto' => '',
+                                'centro' => $j->cdcinfo->centro_operacion,
+                                'proyecto' => $j->proyecto,
+                                'horas' => 0,
+                                'unidad' => $j->cdcinfo->unidad_negocio
+                            ];
+                            $valores['concepto']="001";
+                            $valores['horas'] = $sb;
+                            $valores['fecha'] = str_replace("-","",$j->fecha);
+                            $tsb[$j->fecha] = $tsb[$j->fecha] + $sb;
+                            $ttsb = $ttsb + $sb;
+                            $linea = $this->addlinea($datos,$valores); 
+                            $datos->push($linea); 
+                            $bandlinea=true;
+
+                            $rno = $this->calcularHeno($hi,24);
+                            if ($rno>0){
+                                $valores = [
+                                    'emp' => $j->trabajador->cc,
+                                    'concepto' => '',
+                                    'centro' => $j->cdcinfo->centro_operacion,
+                                    'proyecto' => $j->proyecto,
+                                    'horas' => 0,
+                                    'unidad' => $j->cdcinfo->unidad_negocio
+                                ];
+                                $valores['concepto']="012";
+                                $valores['horas'] = $rno;
+                                $valores['fecha'] = str_replace("-","",$j->fecha);
+                                $linea = $this->addlinea($datos,$valores); 
+                                $datos->push($linea); 
+                                $bandlinea=true;
+                            }
+                            if ($numdiaf >0){
+                                $valores = [
+                                    'emp' => $j->trabajador->cc,
+                                    'concepto' => '',
+                                    'centro' => $j->cdcinfo->centro_operacion,
+                                    'proyecto' => $j->proyecto,
+                                    'horas' => 0,
+                                    'unidad' => $j->cdcinfo->unidad_negocio
+                                ];
+                                $valores['concepto']="001";
+                                if ($turno->hora_fin < $hf){
+                                    $valores['horas'] = $turno->hora_fin;
+                                }
+                                else{
+                                    $valores['horas'] = $hf;
+                                }
+                                $valores['fecha'] = str_replace("-","",$j->fechaf);
+                                $tsb[$j->fechaf] = $tsb[$j->fechaf] + $hf-1;
+                                $ttsb = $ttsb + $hf-1;
+                                $linea = $this->addlinea($datos,$valores); 
+                                $datos->push($linea); 
+                                $bandlinea=true;
+
+
+                              
+                                if ($turno->hora_fin < $hf){
+                                    $rno = $this->calcularHeno(0, $turno->hora_fin);
+                                }
+                                else{
+                                  
+                                    $rno = $this->calcularHeno(0,$hf);
+                                }
+                               
+                                if ($rno>0){
+                                    $valores = [
+                                        'emp' => $j->trabajador->cc,
+                                        'concepto' => '',
+                                        'centro' => $j->cdcinfo->centro_operacion,
+                                        'proyecto' => $j->proyecto,
+                                        'horas' => 0,
+                                        'unidad' => $j->cdcinfo->unidad_negocio
+                                    ];
+                                    $valores['concepto']="012";
+                                    $valores['horas'] = $rno;
+                                    $valores['fecha'] = str_replace("-","",$j->fechaf);
+                                    $linea = $this->addlinea($datos,$valores); 
+                                    $datos->push($linea); 
+                                    $bandlinea=true;
+                                }
+
+                                $heno = $this->calcularHeno($turno->hora_fin,$hf);
+                                if ($heno>0){
+                                    $valores = [
+                                        'emp' => $j->trabajador->cc,
+                                        'concepto' => '',
+                                        'centro' => $j->cdcinfo->centro_operacion,
+                                        'proyecto' => $j->proyecto,
+                                        'horas' => 0,
+                                        'unidad' => $j->cdcinfo->unidad_negocio
+                                    ];
+                                    $valores['concepto']="007";
+                                    $valores['horas'] = $heno;
+                                    $valores['fecha'] = str_replace("-","",$j->fechaf);
+                                    $linea = $this->addlinea($datos,$valores); 
+                                    $datos->push($linea); 
+                                    $bandlinea=true;
+                                }
+                            }
+                            if ($numdiaf ==0){
+                               
+                                    $valores = [
+                                        'emp' => $j->trabajador->cc,
+                                        'concepto' => '',
+                                        'centro' => $j->cdcinfo->centro_operacion,
+                                        'proyecto' => $j->proyecto,
+                                        'horas' => 0,
+                                        'unidad' => $j->cdcinfo->unidad_negocio
+                                    ];
+
+                                    $valores['concepto']="001";
+                                    $valores['horas'] = $hf;
+                                    $valores['fecha'] = str_replace("-","",$j->fechaf);
+                                    $tsb[$j->fecha] = $tsb[$j->fecha] + $sb;
+                                    $ttsb = $ttsb + $sb;
+                                    $linea = $this->addlinea($datos,$valores); 
+                                    $datos->push($linea);  
+
+                                    $valores['concepto']="014";
+                                    $valores['horas'] = $hf;
+                                    $valores['fecha'] = str_replace("-","",$j->fechaf);
+                                    $linea = $this->addlinea($datos,$valores); 
+                                    $datos->push($linea); 
+                                    $bandlinea=true;
+                                
+                            }
+
                         }
                     }
                     else{
@@ -176,9 +345,7 @@ class DistribucionController extends Controller
                                 $datos->push($linea); 
                                 $bandlinea=true;
                             }
-
-                            $rno = $this->calcularHeno(0,$hf-1);
-                            if ($rno>0){
+                            if ($numdiaf >0){
                                 $valores = [
                                     'emp' => $j->trabajador->cc,
                                     'concepto' => '',
@@ -187,13 +354,61 @@ class DistribucionController extends Controller
                                     'horas' => 0,
                                     'unidad' => $j->cdcinfo->unidad_negocio
                                 ];
-                                $valores['concepto']="012";
-                                $valores['horas'] = $rno;
+                                $valores['concepto']="001";
+                                $valores['horas'] = $hf-1;
                                 $valores['fecha'] = str_replace("-","",$j->fechaf);
+                                $tsb[$j->fechaf] = $tsb[$j->fechaf] + $hf-1;
+                                $ttsb = $ttsb + $hf-1;
                                 $linea = $this->addlinea($datos,$valores); 
                                 $datos->push($linea); 
                                 $bandlinea=true;
+                                $rno = $this->calcularHeno(0,$hf-1);
+                                //dd($rno);
+                                if ($rno>0){
+                                    $valores = [
+                                        'emp' => $j->trabajador->cc,
+                                        'concepto' => '',
+                                        'centro' => $j->cdcinfo->centro_operacion,
+                                        'proyecto' => $j->proyecto,
+                                        'horas' => 0,
+                                        'unidad' => $j->cdcinfo->unidad_negocio
+                                    ];
+                                    $valores['concepto']="012";
+                                    $valores['horas'] = $rno;
+                                    $valores['fecha'] = str_replace("-","",$j->fechaf);
+                                    $linea = $this->addlinea($datos,$valores); 
+                                    $datos->push($linea); 
+                                    $bandlinea=true;
+                                }
                             }
+                            if ($numdiaf ==0){
+                               
+                                    $valores = [
+                                        'emp' => $j->trabajador->cc,
+                                        'concepto' => '',
+                                        'centro' => $j->cdcinfo->centro_operacion,
+                                        'proyecto' => $j->proyecto,
+                                        'horas' => 0,
+                                        'unidad' => $j->cdcinfo->unidad_negocio
+                                    ];
+
+                                    $valores['concepto']="001";
+                                    $valores['horas'] = $hf;
+                                    $valores['fecha'] = str_replace("-","",$j->fechaf);
+                                    $tsb[$j->fecha] = $tsb[$j->fecha] + $sb;
+                                    $ttsb = $ttsb + $sb;
+                                    $linea = $this->addlinea($datos,$valores); 
+                                    $datos->push($linea);  
+
+                                    $valores['concepto']="014";
+                                    $valores['horas'] = $hf;
+                                    $valores['fecha'] = str_replace("-","",$j->fechaf);
+                                    $linea = $this->addlinea($datos,$valores); 
+                                    $datos->push($linea); 
+                                    $bandlinea=true;
+                                
+                            }
+
                         }
                         //dd($rno);
                         //$sb = $sb-$rno;
@@ -229,16 +444,19 @@ class DistribucionController extends Controller
                     }
                 }
             }
+            //dd($especial == false);
             if (($especial == false)&&($numdia >= $turno->dia_inicio)&&($numdia <= $turno->dia_fin)){
+                //dd("test");
                 if (($numdia > 0)&&($festivo=="no")){
                     if ($valores['proyecto'] == $j->proyecto){
                         $sb = $tsb[$j->fecha] + ($duracion - $j->almuerzo);
                     }
                     else{
-                        $sb = ($duracion - $j->almuerzo);
+                        $sb =$tsb[$j->fecha] + ($duracion - $j->almuerzo);
                     }
                     //$sb = $duracion - $j->almuerzo;
                     //dd($sb);
+                    Log::info($tsb[$j->fecha].":".$sb);
                     if ($sb>$laborales){
                         $excede = $sb -$laborales;
                         $sb =$laborales - $tsb[$j->fecha];
