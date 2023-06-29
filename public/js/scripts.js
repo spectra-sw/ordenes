@@ -438,45 +438,12 @@ $('#submitLogin').on('submit', function(e) {
 
 
 //admin
-function nuevoemp(){
-    $("#nuevoemp").modal("show");
-}
 function nuevocdc(){
     $("#nuevocdc").modal();
 }
 function nuevoproyecto(){
     alert("");
     $("#nuevoproyecto").modal();
-}
-function nuevocliente(){
-    $("#nuevocliente").modal("show");
-}
-function nuevocorte(){
-    $("#nuevocorte").modal("show");
-}
-function guardare(){
-    const url = '/nuevoemp'
-    const formData = new FormData($('#formEmp')[0])
-    const data = {};
-    formData.forEach(function(value, key){
-        data[key] = value;
-    });
-
-    $.ajax({
-        url: url,
-        type:'GET',
-        data: data,
-        success: (data) => {
-            alert(data.message);
-            acttablaemp();
-        },
-        error: (error) => {
-            // alert all errors
-            for (const key in error.responseJSON.errors) {
-                alert(error.responseJSON.errors[key])
-            }
-        }
-    });
 }
 function guardarcdc(){
     band=0;
@@ -502,59 +469,6 @@ function guardarcdc(){
 
         alert("Debes ingresar todos los campos");
     }
-}
-function guardarcliente(){
-    const formData = new FormData($('#formCliente')[0])
-    const data = {};
-    formData.forEach(function(value, key){
-        data[key] = value;
-    });
-    const url = '/nuevocliente'
-
-    $.ajax({
-        url: url,
-        type:'GET',
-        data: data,
-        success: (data) => {
-            alert(data.message);
-            acttablacliente();
-        },
-        error: (error) => {
-            // alert all errors
-            for (const key in error.responseJSON.errors) {
-                alert(error.responseJSON.errors[key])
-            }
-        }
-    });
-}
-function guardarcorte(){
-    const formData = new FormData($('#formEditarCorte')[0])
-    const object = {};
-    const data = {}
-    formData.forEach(function(value, key){
-        object[key] = value;
-    });
-
-    data.fecha_inicio = object.corte_fecha_inicio
-    data.fecha_fin = object.corte_fecha_fin
-    data.estado = object.corte_estado
-
-    const url = '/nuevocorte'
-    $.ajax({
-        url: url,
-        type:'GET',
-        data: data,
-        success: (data) => {
-            alert(data.message);
-            acttablacorte();
-        },
-        error: (error) => {
-            // alert all errors
-            for (const key in error.responseJSON.errors) {
-                alert(error.responseJSON.errors[key])
-            }
-        }
-    });
 }
 function guardarproy(){
     band=0;
@@ -584,123 +498,9 @@ function guardarproy(){
         alert("Debes ingresar todos los campos");
     }
 }
-function acciones(op,id){
-    //alert(op);
-    //alert(id);
-    if (op==1){
-        data = { id : id }
-        url="/buscaremp"
-        $.ajax({
-            url: url,
-            type:'GET',
-            data: data,
-            success: function(data) {
-                $("#editarBody").html(data);
-                $("#editaremp").modal("show");
-            }
-        });
-    }
-    if(op==2){
-        $("#id").val(id);
-        $("#eliminaremp").modal("show");
-    }
-    if(op==3){
-        $("#idup").val(id);
-        $("#password").modal("show");
-    }
-
-}
-
-const togleHabilitarProyecto = (id) => {
-    const url = '/togle-habilitar-proyecto';
-    const data = { id };
-    $.ajax({
-        url,
-        type: 'GET',
-        data,
-        success(data) {
-            alert(data.message);
-            acttablaproy();
-        },
-    });
-}
-
-function accionesproyectos(op, id) {
-    switch (op) {
-        case "1":
-            buscarProyecto(id);
-            break;
-        case "2":
-            mostrarModalEliminar(id);
-            break;
-        case "3":
-            mostrarModalAutorizados(id);
-            break;
-        case "4":
-            togleHabilitarProyecto(id);
-            break;
-    }
-    document.getElementById(id).value =""
-}
-
-function buscarProyecto(id) {
-    const data = { id };
-    const url = '/buscarproy';
-    $.ajax({
-        url,
-        type: 'GET',
-        data,
-        success(data) {
-            $('#editarBodyProy').html(data);
-            $("#editarproy").modal("show");
-        },
-    });
-}
-
 function mostrarModalEliminar(id) {
     $('#id').val(id);
     $('#eliminarproy').modal();
-}
-function mostrarModalAutorizados(id) {
-    const data = { id };
-    const url = '/autorizadosproy';
-    $.ajax({
-        url,
-        type: 'GET',
-        data,
-        success(data) {
-            $('#autorizadosBodyProy').html(data);
-            $('#autorizadosproy').modal("show");
-        },
-    });
-}
-function agregarAutorizado(){
-   data=$( "#formAutProy" ).serialize();
-   url = '/agautorizadoproy'
-    $.ajax({
-        url: url,
-        type:'GET',
-        data: data,
-        success: function(data) {
-            //alert(data);
-            $data = $(data);
-            $("#tablaautorizados").html($data);
-        }
-    });
-}
-function borrarautorizado(id){
-    const data = { id };
-    url = '/borrarautorizado'
-    $.ajax({
-              url: url,
-              type:'GET',
-              data: data,
-              success: function(data) {
-                //alert(data);
-                $data = $(data);
-                $("#tablaautorizados").html($data);
-              }
-    });
 }
 function accionescdc(op,id){
     //alert(op);
@@ -724,160 +524,6 @@ function accionescdc(op,id){
         $("#eliminarcdc").modal();
     }
 }
-function accionescliente(op,id){
-    //alert(op);
-    //alert(id);
-    if (op==1){
-        data = { id : id }
-        url="/buscarcliente"
-        $.ajax({
-            url: url,
-            type:'GET',
-            data: data,
-            success: function(data) {
-                //alert(data);
-                $("#editarClienteBody").html(data);
-                $("#editarcliente").modal("show");
-            }
-        });
-    }
-    if(op==2){
-        $("#id").val(id);
-        $("#eliminarcliente").modal();
-    }
-}
-function accionescortes(op,id){
-    //alert(op);
-    //alert(id);
-    data = { id : id, op :op }
-    url="/accioncorte"
-    $.ajax({
-        url: url,
-        type:'GET',
-        data: data,
-        success: function(data) {
-            alert(data);
-            location.reload();
-            $('#tabAdmin a[href="#cortes"]').tab('show');
-        }
-    });
-}
-function editare(){
-    const url = '/editaremp'
-    const formData = new FormData($('#formEdit')[0])
-    const data = {};
-    formData.forEach(function(value, key){
-        data[key] = value;
-    });
-
-    $.ajax({
-        url: url,
-        type:'GET',
-        data: data,
-        success: (data) => {
-            alert(data.message);
-            acttablaemp();
-        },
-        error: (error) => {
-            // alert all errors
-            for (const key in error.responseJSON.errors) {
-                alert(error.responseJSON.errors[key])
-            }
-        }
-    });
-}
-function editarcliente(){
-    band=0;
-    $('#formEditCliente input').each(function() {
-        if (($(this).val() == '')) {
-            band=1;
-        }
-    })
-    if (band==0){
-        data=$( "#formEditCliente" ).serialize();
-        url = '/editarcliente'
-        $.ajax({
-                url: url,
-                type:'GET',
-                data: data,
-                success: function(data) {
-                    alert(data);
-                    acttablacliente();
-                }
-        });
-    }
-    else{
-        alert("Debes ingresar todos los campos");
-    }
-}
-function editarproy(){
-    const url = '/editarproy'
-    const formData = new FormData($('#formEditProy')[0])
-    const data = {};
-    formData.forEach(function(value, key){
-        data[key] = value;
-    });
-
-    $.ajax({
-        url: url,
-        type:'GET',
-        data: data,
-        success: (data) => {
-            alert(data.message);
-            acttablaproy();
-        },
-        error: (error) => {
-            // alert all errors
-            for (const key in error.responseJSON.errors) {
-                alert(error.responseJSON.errors[key])
-            }
-        }
-    });
-}
-const printTablaTurnos = () => {
-    url="/print-tabla-turnos"
-    $.ajax({
-        url: url,
-        type:'GET',
-        success: (data) => {
-            $("#printTablaTurnos").html(data);
-        }
-    });
-}
-$('#actualizarTurno').on("click", (e) => {
-    // get data json from formEditarTurno
-    const formData = new FormData($('#formEditarTurno')[0])
-    const object = {};
-    const data = {}
-    formData.forEach(function(value, key){
-        object[key] = value;
-    });
-    data.user_id = object.t_user_id
-    data.fecha_inicio = object.t_fecha_inicio
-    data.hora_inicio = object.t_hora_inicio
-    data.fecha_fin = object.t_fecha_fin
-    data.hora_fin = object.t_hora_fin
-    data.almuerzo = object.t_almuerzo
-
-    console.log(object.t_id);
-    url = `/update-turnos-form/${object.t_id}`
-    $.ajax({
-        url: url,
-        type:'GET',
-        data: data,
-        success: (data) => {
-            alert(data.message);
-            printTablaTurnos();
-        },
-        error: (error) => {
-            // alert all errors
-            for (const key in error.responseJSON.errors) {
-                alert(error.responseJSON.errors[key])
-            }
-        }
-    });
-});
-
 
 function editarcdc(){
     band=0;
@@ -903,33 +549,6 @@ function editarcdc(){
         alert("Debes ingresar todos los campos");
     }
 }
-function acttablaemp(){
-    campo='';
-    url="/tablaemp"
-    data = { campo : campo}
-    $.ajax({
-        url: url,
-        type:'GET',
-        data: data,
-        success: function(data) {
-            $("#te").html(data);
-            $('#tablaemp').DataTable();
-        }
-    });
-}
-function acttablaproy(){
-    campo='';
-    url="/tablaproy"
-    data = { campo : campo}
-    $.ajax({
-        url: url,
-        type:'GET',
-        data: data,
-        success: function(data) {
-            $("#tp").html(data);
-        }
-    });
-}
 function acttablacdc(){
     campo = ''
     data = {campo : campo}
@@ -943,47 +562,7 @@ function acttablacdc(){
         }
     });
 }
-function acttablacliente(){
-    campo = ''
-    data = {campo : campo}
-    url="/tablacliente"
-    $.ajax({
-        url: url,
-        data:data,
-        type:'GET',
-        success: function(data) {
-            $("#tcl").html(data);
-        }
-    });
-}
-function acttablacorte(){
-    campo = ''
-    data = {campo : campo}
-    url="/tablacorte"
-    $.ajax({
-        url: url,
-        data:data,
-        type:'GET',
-        success: function(data) {
-            $("#tco").html(data);
-        }
-    });
-}
-function eliminare(){
-    id = $("#id").val();
-    // alert(id);
-    data={ id : id}
-    url = '/eliminaremp'
-    $.ajax({
-            url: url,
-            type:'GET',
-            data: data,
-            success: function(data) {
-                alert(data);
-                acttablaemp();
-            }
-    });
-}
+
 function eliminarproy(){
     id = $("#id").val();
     // alert(id);
@@ -1011,21 +590,6 @@ function eliminarcdc(){
             success: function(data) {
                 alert(data);
                 acttablacdc();
-            }
-    });
-}
-function updatepwd(){
-    id = $("#idup").val();
-    password= $("#pwd").val();
-    // alert(id);
-    data={ id : id, password : password}
-    url = '/updatep'
-    $.ajax({
-            url: url,
-            type:'GET',
-            data: data,
-            success: function(data) {
-                alert(data);
             }
     });
 }
@@ -1320,7 +884,7 @@ function filtrarproy(){
             type:'GET',
             data: data,
             success: function(data) {
-                $("#tp").html(data);
+                $("#containerTablaProyectos").html(data);
             }
     });
 }
@@ -1344,7 +908,7 @@ function filtrarcliente(){
             type:'GET',
             data: data,
             success: function(data) {
-                $("#tcl").html(data);
+                $("#containerTablaClientes").html(data);
             }
     });
 }

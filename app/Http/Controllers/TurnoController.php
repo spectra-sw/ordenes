@@ -35,10 +35,16 @@ class TurnoController extends Controller
      * @param  \App\Models\Turno  $turno
      * @return \Illuminate\Http\Response
      */
-    public function printTablaTurnos()
+    public function tablaTurnos()
     {
         // get all turno
-        $turnos = Turno::all();
+        $turnos = Turno::select('id', 'user_id', 'fecha_inicio', 'hora_inicio', 'fecha_fin', 'hora_fin', 'almuerzo')
+            ->with([
+                'empleado' => function ($query) {
+                    return $query->select('cc', 'id', 'apellido1', 'apellido2', 'nombre');
+                },
+            ])
+            ->get();
 
         return view('tablaTurnos', [
             'turnos' => $turnos

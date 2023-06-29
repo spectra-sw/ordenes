@@ -64,22 +64,21 @@ Route::get('/rocupacion',[PagesController::class,'rocupacion']);
 
 //emp
 Route::get('/nuevoemp',[PagesController::class,'nuevoemp']);
-Route::get('/buscaremp',[PagesController::class,'buscaremp']);
 Route::get('/editaremp',[PagesController::class,'editaremp']);
 Route::get('/tablaemp',[PagesController::class,'tablaemp']);
 Route::get('/eliminaremp',[PagesController::class,'eliminaremp']);
+Route::get('/modal-empleado-acciones',[PagesController::class,'modalEmpleadoAcciones']);
 
 //cliente
 Route::get('/nuevocliente',[PagesController::class,'nuevocliente']);
-Route::get('/buscarcliente',[PagesController::class,'buscarcliente']);
 Route::get('/editarcliente',[PagesController::class,'editarcliente']);
 Route::get('/tablacliente',[PagesController::class,'tablacliente']);
 Route::get('/eliminarcliente',[PagesController::class,'eliminarcliente']);
 Route::get('/filtrarcliente',[PagesController::class,'filtrarcliente']);
+Route::get('/modal-cliente-acciones',[PagesController::class,'modalClienteAcciones']);
 
 //proyectos
 Route::get('/nuevoproy',[ProyectosController::class,'nuevoproy']);
-Route::get('/buscarproy',[ProyectosController::class,'buscarproy']);
 Route::get('/togle-habilitar-proyecto',[ProyectosController::class,'togleHabilitarProyecto']);
 Route::get('/editarproy',[ProyectosController::class,'editarproy']);
 Route::get('/tablaproy',[ProyectosController::class,'tablaproy']);
@@ -88,6 +87,7 @@ Route::get('/filtrarproy',[ProyectosController::class,'filtrarproy']);
 Route::get('/autorizadosproy',[ProyectosController::class,'autorizadosproy']);
 Route::get('/agautorizadoproy',[ProyectosController::class,'agautorizadoproy']);
 Route::get('/borrarautorizado',[ProyectosController::class,'borrarautorizado']);
+Route::get('/modal-proyecto-acciones',[PagesController::class,'modalProyectoAcciones']);
 
 //cdc
 Route::get('/nuevocdc',[PagesController::class,'nuevocdc']);
@@ -96,11 +96,14 @@ Route::get('/editarcdc',[PagesController::class,'editarcdc']);
 Route::get('/tablacdc',[PagesController::class,'tablacdc']);
 Route::get('/eliminarcdc',[PagesController::class,'eliminarcdc']);
 Route::get('/filtrarcentro',[PagesController::class,'filtrarcentro']);
+Route::get('/modal-corte-acciones',[PagesController::class,'modalCortesAcciones']);
+Route::get('/togle-habilitar-corte',[PagesController::class,'togleHabilitarCorte']);
 
 // turnos
 Route::get('/editar-turnos-form/{turno}',[TurnoController::class,'modalFormularioEdit']);
 Route::get('/update-turnos-form/{turno}',[TurnoController::class,'modalFormularioUpdate']);
-Route::get('/print-tabla-turnos',[TurnoController::class,'printTablaTurnos']);
+Route::get('/tabla-turnos',[TurnoController::class,'tablaTurnos']);
+Route::get('/modal-turno-acciones',[PagesController::class,'modalTurnoAcciones']);
 
 //programacion
 Route::get('/nuevaprog',[PagesController::class,'nuevaprog']);
@@ -201,8 +204,6 @@ Route::get('/misjornadas',[OrdenesController::class,'misjornadas']);
 
 Route::get('/distribucion',[DistribucionController::class,'distribucion']);
 Route::get('/validarCorte',[OrdenesController::class,'validarCorte']);
-
-Route::get('/accioncorte',[OrdenesController::class,'accionCorte']);
 
 //mensajes
 Route::get('/mensaje/error',[MensajesController::class,'error']);
