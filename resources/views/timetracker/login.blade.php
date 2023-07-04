@@ -43,7 +43,7 @@
                         alt="Sample image">
                 </div>
                 <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                    <form id="submitLogin">
+                    <form id="submitLogin" novalidate>
                         <div
                             class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start mb-4">
                             <img src="{{ URL::asset('img/logo.png') }}">
