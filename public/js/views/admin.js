@@ -6,6 +6,7 @@ const containerTablaEmpleados = document.querySelector(
 const containerTablaClientes = document.querySelector(
     "#containerTablaClientes"
 );
+const containerTablaCargos = document.querySelector("#containerTablaCargos");
 const containerTablaProyectos = document.querySelector(
     "#containerTablaProyectos"
 );
@@ -34,6 +35,15 @@ const observerTablaClientes = new IntersectionObserver((entries) => {
     });
 });
 observerTablaClientes.observe(containerTablaClientes);
+
+const observerTablaCargos = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        if (entry.isIntersecting && $("#tablaCargos")[0] === undefined) {
+            resetTablaCargos();
+        }
+    });
+});
+observerTablaCargos.observe(containerTablaCargos);
 
 const observerTablaProyectos = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -173,7 +183,7 @@ const resetTablaEmpleados = () => {
  */
 const accionesClientes = (accion = undefined, cliente_id = undefined) => {
     if (accion != undefined && accion != 0) {
-        const url = "/modal-cliente-acciones";
+        const url = "/cliente/modal-cliente-acciones";
         const data = {
             accion,
             cliente_id,
@@ -194,7 +204,7 @@ const accionesClientes = (accion = undefined, cliente_id = undefined) => {
 const crearCliente = () => {
     const keys_name = ["cliente", "contactos"];
 
-    restFetchForm("/nuevocliente", "formCliente", keys_name, (response) => {
+    restFetchForm("/cliente/create", "formCliente", keys_name, (response) => {
         alert(response.message);
         resetTablaClientes();
         $("#modalFeedback").modal("hide");
@@ -204,7 +214,7 @@ const crearCliente = () => {
 const editarCliente = () => {
     const keys_name = ["id", "cliente", "contactos"];
 
-    restFetchForm("/editarcliente", "formCliente", keys_name, (response) => {
+    restFetchForm("cliente/update", "formCliente", keys_name, (response) => {
         alert(response.message);
         resetTablaClientes();
         $("#modalFeedback").modal("hide");
@@ -213,7 +223,7 @@ const editarCliente = () => {
 
 const eliminarCliente = () => {
     restFetchForm(
-        "/eliminarcliente",
+        "cliente/destroy",
         "formCliente",
         ["cliente_id"],
         (response) => {
@@ -225,7 +235,7 @@ const eliminarCliente = () => {
 };
 
 const resetTablaClientes = () => {
-    const url = "/tablacliente";
+    const url = "/cliente/show-table";
     $.ajax({
         url: url,
         data: {},
@@ -239,7 +249,73 @@ const resetTablaClientes = () => {
 };
 
 /**
- * PROJETOS
+ * CARGOS
+ */
+const accionesCargos = (accion = undefined, cargo_id = undefined) => {
+    if (accion != undefined && accion != 0) {
+        const url = "/cargo/modal-cargo-acciones";
+        const data = {
+            accion,
+            cargo_id,
+        };
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            data: data,
+            success: (data) => {
+                $("#modalFeedbackContent").html(data);
+                $("#modalFeedback").modal("show");
+            },
+        });
+    }
+};
+
+const crearCargo = () => {
+    restFetchForm("/cargo/create", "formCargo", ["cargo"], (response) => {
+        alert(response.message);
+        resetTablaCargos();
+        $("#modalFeedback").modal("hide");
+    });
+};
+
+const editarCargo = () => {
+    restFetchForm(
+        "/cargo/update",
+        "formCargo",
+        ["cargo_id", "cargo"],
+        (response) => {
+            alert(response.message);
+            resetTablaCargos();
+            $("#modalFeedback").modal("hide");
+        }
+    );
+};
+
+const eliminarCargo = () => {
+    restFetchForm("/cargo/destroy", "formCargo", ["cargo_id"], (response) => {
+        alert(response.message);
+        resetTablaCargos();
+        $("#modalFeedback").modal("hide");
+    });
+};
+
+const resetTablaCargos = () => {
+    const url = "cargo/show-table";
+    $.ajax({
+        url: url,
+        data: {},
+        type: "GET",
+        success: (response) => {
+            $("#containerTablaCargos").html(response);
+            $("#tablaCargos").DataTable();
+            $("#tablaCargos").parent()[0].classList.add("table-responsive");
+        },
+    });
+};
+
+/**
+ * PROYECTOS
  */
 const accionesProyectos = (accion = undefined, proyecto_id = undefined) => {
     if (accion != undefined && accion != 0) {
@@ -312,11 +388,16 @@ const borrarAutorizado = (id) => {
 };
 
 const togleHabilitarProyecto = () => {
-    restFetchForm("/togle-habilitar-proyecto", "formPoyecto", ["id"], (response) => {
-        alert(response.message);
-        resetTablaProyectos();
-        $("#modalFeedback").modal("hide");
-    });
+    restFetchForm(
+        "/togle-habilitar-proyecto",
+        "formPoyecto",
+        ["id"],
+        (response) => {
+            alert(response.message);
+            resetTablaProyectos();
+            $("#modalFeedback").modal("hide");
+        }
+    );
 };
 
 const resetTablaProyectos = () => {
@@ -398,7 +479,7 @@ const resetTablaCortes = () => {
  */
 const accionesTurnos = (accion = undefined, turno_id = undefined) => {
     if (accion != undefined && accion != 0) {
-        const url = "/modal-turno-acciones";
+        const url = "/turno/modal-turno-acciones";
         const data = {
             accion,
             turno_id,
@@ -417,34 +498,25 @@ const accionesTurnos = (accion = undefined, turno_id = undefined) => {
 };
 
 const editarTurno = () => {
-    // get data json from formEditarTurno
-    const formData = new FormData($("#formEditarTurno")[0]);
-    const data = {};
-    formData.forEach((value, key) => {
-        data[key] = value;
-    });
-    const url = `/update-turnos-form/${data.id}`;
+    const keys_name = [
+        "turno_id",
+        "user_id",
+        "fecha_inicio",
+        "hora_inicio",
+        "fecha_fin",
+        "hora_fin",
+        "almuerzo",
+    ];
 
-    $.ajax({
-        url: url,
-        type: "GET",
-        data: data,
-        success: (data) => {
-            alert(data.message);
-            resetTablaTurno();
-            $("#modalFeedback").modal("hide");
-        },
-        error: (error) => {
-            // alert all errors
-            for (const key in error.responseJSON.errors) {
-                alert(error.responseJSON.errors[key]);
-            }
-        },
+    restFetchForm("/turno/update", "formTurno", keys_name, (response) => {
+        alert(response.message);
+        resetTablaTurno();
+        $("#modalFeedback").modal("hide");
     });
 };
 
 const resetTablaTurno = () => {
-    const url = "/tabla-turnos";
+    const url = "/turno/show-table";
     $.ajax({
         url: url,
         data: {},

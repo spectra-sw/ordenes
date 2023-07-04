@@ -45,13 +45,12 @@ class PagesController extends Controller
     public function inicio(){
         session(['user' => '']);
         session(['tipo' => 3]);
-       // return view('login');
-        return view('timetracker.login');
+        return view('auth.login');
     }
     public function login(){
         session(['user' => '']);
         session(['tipo' => 3]);
-        return view('timetracker.login');
+        return view('auth.login');
 
     }
     public function menu(){
@@ -1026,16 +1025,6 @@ class PagesController extends Controller
             'cdc' => $cdc,
         ]);
     }
-    public function filtrarcliente(Request $request){
-        $clientes =  Cliente::orderBy('cliente','asc');
-        if ($request->fcliente !=""){
-            $clientes = $clientes->where('cliente','like' ,'%'.$request->fcliente.'%');
-        }
-        $clientes  = $clientes->get();
-        return view('tablacliente',[
-            'clientes' => $clientes,
-        ]);
-    }
     public function buscarprog(Request $request){
         $p = Programacion::where('id',$request->id)->first();
         $emp = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();
@@ -1122,25 +1111,6 @@ class PagesController extends Controller
         ]);
     }
 
-    public function nuevocliente(Request $request){
-
-        // validate $request
-        $validated = $request->validate([
-            'cliente' => 'required',
-            'contactos' => 'required',
-        ]);
-
-        $e = Cliente::create([
-            'cliente' => $request->cliente,
-            'contactos' => $request->contactos,
-        ]);
-
-        return response()->json([
-            'message' => 'Cliente creado correctamente',
-            'data' => $e
-        ]);
-    }
-
     public function nuevocorte(Request $request){
         // validate $request
         $validated = $request->validate([
@@ -1160,21 +1130,9 @@ class PagesController extends Controller
             'data' => $c
         ]);
     }
-    public function tablacliente(Request $request){
-        $campo = $request->campo;
-        if ($campo == ''){
-            $clientes = Cliente::orderBy('cliente','asc')->get();
-        }
-        else{
-            $clientes = Cliente::orderBy($campo,'asc')->get();
-        }
-        return view('tablacliente',[
-            'clientes' => $clientes,
-        ]);
-    }
     public function tablacorte(Request $request){
         $cortes = Corte::all();
-        return view('tablacortes',[
+        return view('admin.tabla.corteTabla',[
             'cortes' => $cortes,
         ]);
     }
@@ -1272,7 +1230,7 @@ class PagesController extends Controller
                     $idh = $empleado->horario->id;
                 }
                 $area = $empleado->narea->area;
-                $cargo = $empleado->ncargo->cargo;
+                $cargo = $empleado->ncargo? $empleado->ncargo->cargo: null;
 
                 return view('admin.modal.empleadoModal',[
                     'empleado' => $empleado,
@@ -1296,33 +1254,6 @@ class PagesController extends Controller
                 return view('admin.modal.empleadoModal',[
                     'accion' => 4,
                     'empleado_id' => $request->empleado_id,
-                ]);
-                break;
-            default:
-                break;
-        }
-    }
-
-    public function modalClienteAcciones(Request $request){
-        $accion = $request->accion;
-
-        switch ($accion) {
-            case 1:
-                return view('admin.modal.clienteModal',[
-                    'accion' => 1,
-                ]);
-                break;
-            case 2:
-                $cliente = Cliente::where('id',$request->cliente_id)->first();
-                return view('admin.modal.clienteModal',[
-                    'accion' => 2,
-                    'cliente' => $cliente,
-                ]);
-                break;
-            case 3:
-                return view('admin.modal.clienteModal',[
-                    'accion' => 3,
-                    'cliente_id' => $request->cliente_id,
                 ]);
                 break;
             default:
@@ -1390,24 +1321,6 @@ class PagesController extends Controller
         }
     }
 
-    public function modalTurnoAcciones(Request $request){
-        $accion = $request->accion;
-
-        switch ($accion) {
-            case 2:
-                $empleados = Empleado::orderBy('apellido1','asc')->get();
-                $turno = Turno::where('id',$request->turno_id)->first();
-                return view('modalTurno',[
-                    'accion' => 2,
-                    'empleados' => $empleados,
-                    'turno' => $turno,
-                ]);
-                break;
-            default:
-                break;
-        }
-    }
-
     public function togleHabilitarCorte(Request $request){
         $corte = Corte::where('id', $request->corte_id )->get()->first();
         $corte->update([
@@ -1427,7 +1340,7 @@ class PagesController extends Controller
         else{
             $emp = Empleado::where('estado',1)->orderBy($campo,'asc')->get();
         }
-        return view('tablaemp',[
+        return view('admin.tabla.empleadoTabla',[
             'emp' => $emp,
         ]);
     }
@@ -1469,32 +1382,6 @@ class PagesController extends Controller
             'observaciones' => $request->observaciones,
         ]);
         return "Centro actualizado";
-    }
-    public function editarcliente(Request $request){
-        // validate $request
-        $validated = $request->validate([
-            'cliente' => 'required',
-            'contactos' => 'required',
-        ]);
-
-        Cliente::where('id', $request->id )
-        ->update([
-            'cliente' => $request->cliente,
-            'contactos' => $request->contactos,
-
-        ]);
-        return response()->json([
-            'message' => 'Cliente actualizado correctamente',
-        ]);
-    }
-    public function eliminarcliente(Request $request){
-        Cliente::where('id', $request->cliente_id )
-        ->delete();
-
-        return response()->json([
-            'message' => 'Cliente eliminado correctamente',
-        ]);
-
     }
     public function eliminarcdc(Request $request){
         Cdc::where('id', $request->id )->delete();
@@ -2329,5 +2216,14 @@ class PagesController extends Controller
         } catch (QueryException $e) {
             return "Error al eliminar el registro";
         }
+    }
+
+    // v2
+    public function passwordRecovery(){
+        return view('auth.passwordRecovery');
+    }
+
+    public function updatePassword(){
+        return view('auth.passwordUpdate');
     }
 }

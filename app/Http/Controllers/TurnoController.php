@@ -8,34 +8,25 @@ use Illuminate\Http\Request;
 
 class TurnoController extends Controller
 {
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function modalTurnoAcciones(Request $request){
+        $accion = $request->accion;
+
+        switch ($accion) {
+            case 2:
+                $empleados = Empleado::orderBy('apellido1','asc')->get();
+                $turno = Turno::where('id',$request->turno_id)->first();
+                return view('admin.modal.turnoModal',[
+                    'accion' => 2,
+                    'empleados' => $empleados,
+                    'turno' => $turno,
+                ]);
+                break;
+            default:
+                break;
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Turno  $turno
-     * @return \Illuminate\Http\Response
-     */
-    public function tablaTurnos()
+    public function showTable()
     {
         // get all turno
         $turnos = Turno::select('id', 'user_id', 'fecha_inicio', 'hora_inicio', 'fecha_fin', 'hora_fin', 'almuerzo')
@@ -46,36 +37,12 @@ class TurnoController extends Controller
             ])
             ->get();
 
-        return view('tablaTurnos', [
+        return view('admin.tabla.turnoTabla', [
             'turnos' => $turnos
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Turno  $turno
-     * @return \Illuminate\Http\Response
-     */
-    public function modalFormularioEdit(Turno $turno)
-    {
-        // get all empleado
-        $empleado = Empleado::all();
-
-        return view('formEditarTurno', [
-            'turno' => $turno,
-            'empleado' => $empleado
-        ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Turno  $turno
-     * @return \Illuminate\Http\Response
-     */
-    public function modalFormularioUpdate(Request $request, Turno $turno)
+    public function update(Request $request)
     {
         // validated
         $validated = $request->validate([
@@ -86,6 +53,8 @@ class TurnoController extends Controller
             'hora_fin' => 'required|numeric',
             'almuerzo' => 'required|numeric',
         ]);
+        // turno
+        $turno = Turno::where('id', $request->turno_id)->first();
 
         // upate turno
         $turno->user_id = $request->user_id;
@@ -98,16 +67,9 @@ class TurnoController extends Controller
 
         return response()->json([
             'message' => 'Turno actualizado correctamente',
-            'data' => $turno
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Turno  $turno
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Turno $turno)
     {
         //

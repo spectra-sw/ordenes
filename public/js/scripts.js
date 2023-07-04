@@ -398,45 +398,6 @@ function del2(tipo,id){
     });
 }
 
-$('#submitLogin').on('submit', function(e) {
-    e.preventDefault();
-
-    email = $("#email").val();
-    pwd = $("#pwd").val();
-
-    if ((email =="")||(pwd=="")){
-        errorHandler("* Debe ingresar todos los campos")
-        $("#alerta").css('display','block');
-    }
-    else{
-        url = 'validar'
-        data = { email : email , pwd : pwd}
-        $.ajax({
-            url: url,
-            type:'GET',
-            data: data,
-            success: function(data) {
-                if (data == 0){
-                    window.open('menu','_self');
-                }
-                if (data == 1){
-                    //window.open('ordenes','_self');
-                    window.open('menu','_self');
-                }
-                if (data == 10){
-                    //window.open('ordenes','_self');
-                    window.open('menu','_self');
-                }
-                if ((data != 0)&&(data != 1)&&(data != 10)){
-                    errorHandler("* Datos inválidos");
-                    $("#alerta").css('display','block');
-                }
-            }
-        });
-    }
-});
-
-
 //admin
 function nuevocdc(){
     $("#nuevocdc").modal();
@@ -900,18 +861,6 @@ function filtrarcentro(){
             }
     });
 }
-function filtrarcliente(){
-    data=$( "#filtrarCliente" ).serialize();
-    url = '/filtrarcliente'
-    $.ajax({
-            url: url,
-            type:'GET',
-            data: data,
-            success: function(data) {
-                $("#containerTablaClientes").html(data);
-            }
-    });
-}
 function consultaroc(){
     data=$( "#formConsultaOcupacion" ).serialize();
     url = '/calendariooc'
@@ -1205,34 +1154,4 @@ function delOcupacion(ocupacion_id){
             }
         });
     }
-}
-function errorHandler(mensaje) {
-    $.ajax({
-        type: "GET",
-        url: '/mensaje/error',
-        data : { mensaje: mensaje },
-        success: function(response) {
-            $('#mensaje').html(response);
-        }
-    });
-}
-function successHandler(mensaje) {
-    $.ajax({
-        type: "GET",
-        url: "/mensaje/info",
-        data: { mensaje: mensaje },
-        success: function (response) {
-            $("#mensaje").html(response);
-        }
-    });
-}
-function infoHandler(mensaje) {
-    $.ajax({
-        type: "GET",
-        url: "/mensaje/info",
-        data: { mensaje: mensaje },
-        success: function (response) {
-            $("#mensaje").html(response);
-        }
-    });
 }

@@ -38,4 +38,8 @@ class Empleado extends Model
     {
         return $this->hasMany(Turno::class);
     }
+    public function magicLinks()
+    {
+        return $this->hasMany(MagicLink::class);
+    }
 }

@@ -1,17 +1,17 @@
-const restFetchForm = (url, formID, keys_name, successFunction) => {
+const restFetchForm = (url, formID, inputsID, successFunction) => {
     const formData = new FormData($(`#${formID}`)[0]);
-    const refKeys = {}
+    const namesInputID = {}
     const data = {};
-    let idx = 0;
+    let index = 0;
 
     formData.forEach((value, key) => {
-        data[keys_name[idx]] = value;
-        refKeys[keys_name[idx]] = key;
+        data[inputsID[index]] = value;
+        namesInputID[inputsID[index]] = key;
 
         $(`#${key}`).removeClass('is-invalid');
         $(`#${key}_e`).text("")
 
-        idx++;
+        index++;
     });
 
     $.ajax({
@@ -24,8 +24,8 @@ const restFetchForm = (url, formID, keys_name, successFunction) => {
         error: (error) => {
             // alert all errors
             for (const key in error.responseJSON.errors) {
-                $(`#${refKeys[key]}`).addClass('is-invalid');
-                $(`#${refKeys[key]}_e`).text(error.responseJSON.errors[key][0])
+                $(`#${namesInputID[key]}`).addClass('is-invalid');
+                $(`#${namesInputID[key]}_e`).text(error.responseJSON.errors[key][0])
             }
         },
     });

@@ -115,7 +115,7 @@
     <div class="form-group mb-2">
         <label for="cargo">CARGO</label>
         <select class="form-control" id="cargo" name="cargo">
-            @if (isset($empleado['area']))
+            @if (isset($empleado['cargo']))
                 <option value="{{ $empleado['cargo'] }}" selected>{{ $cargo }}</option>
                 @foreach ($cargos as $c)
                     @if ($empleado['cargo'] != $c->id)

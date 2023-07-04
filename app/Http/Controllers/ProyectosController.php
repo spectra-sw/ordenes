@@ -196,7 +196,7 @@ class ProyectosController extends Controller
             ])->orderBy($campo, 'asc')->get();
         }
 
-        return view('tablaproyecto', [
+        return view('admin.tabla.proyectoTabla', [
             'proyectos' => $proyectos,
         ]);
     }
@@ -221,7 +221,7 @@ class ProyectosController extends Controller
             $proy = $proy->where('ciudad', $request->fciudad);
         }
         $proy = $proy->get();
-        return view('tablaproyecto', [
+        return view('admin.tabla.proyectoTabla', [
             'proyectos' => $proy,
         ]);
     }
