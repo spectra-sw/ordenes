@@ -12,5 +12,5 @@
 </form>
 <br>
 <div id="tablaautorizados">
-    @include('adminform')
+    @include('admin.tabla.proyectoAutorizadoTabla')
 </div>
