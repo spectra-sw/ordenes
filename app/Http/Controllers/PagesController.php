@@ -45,13 +45,12 @@ class PagesController extends Controller
     public function inicio(){
         session(['user' => '']);
         session(['tipo' => 3]);
-       // return view('login');
-        return view('timetracker.login');
+        return view('auth.login');
     }
     public function login(){
         session(['user' => '']);
         session(['tipo' => 3]);
-        return view('timetracker.login');
+        return view('auth.login');
 
     }
     public function menu(){
@@ -80,42 +79,17 @@ class PagesController extends Controller
     }
     public function bases(){
         $tipo = session('tipo');
-        $user = session('user');
-        if ($user==""){
+        $user_id = session('user');
+
+        if ($user_id==""){
             return redirect()->route('inicio');
         }
-        $area = Empleado::where('id',$user)->first()->area;
-        $authpr=0;
-        if (($user ==32)||($user ==31)||($user ==82)||($user ==141)||($user ==187)){
-            $authpr=1;
-        }
-        //dd($tipo);
-        if ($tipo ==0){
-            $emp = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();
-           // dd($emp);
-            $cdc = Cdc::all();
-            $clientes = Cliente::orderBy('cliente','asc')->get();
-            $proyectos = Proyecto::orderBy('codigo','asc')->get();
-            $horarios = Horario::all();
-            $areas = Area::all();
-            $cargos = Cargo::all();
-            $cortes = Corte::all();
-            $turnos = Turno::all();
-            return view('bases',[
-                'emp' => $emp,
-                'cdc' => $cdc,
-                'clientes' => $clientes,
-                'proyectos' => $proyectos,
-                'horarios' => $horarios,
-                'authpr' => $authpr,
-                'areas' => $areas,
+        $area = Empleado::where('id',$user_id)->first()->area;
+        if ($tipo == 0){
+            return view('admin.index',[
                 'area' => $area,
-                'cargos' => $cargos,
-                'cortes' => $cortes,
-                'turnos' => $turnos
             ]);
-        }
-        else{
+        } else{
             return view('login');
         }
 
@@ -1051,16 +1025,6 @@ class PagesController extends Controller
             'cdc' => $cdc,
         ]);
     }
-    public function filtrarcliente(Request $request){
-        $clientes =  Cliente::orderBy('cliente','asc');
-        if ($request->fcliente !=""){
-            $clientes = $clientes->where('cliente','like' ,'%'.$request->fcliente.'%');
-        }
-        $clientes  = $clientes->get();
-        return view('tablacliente',[
-            'clientes' => $clientes,
-        ]);
-    }
     public function buscarprog(Request $request){
         $p = Programacion::where('id',$request->id)->first();
         $emp = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();
@@ -1113,6 +1077,7 @@ class PagesController extends Controller
         $validated = $request->validate([
             'cc' => 'required|unique:empleados,cc',
             'apellido1' => 'required',
+            'apellido2' => 'required',
             'nombre' => 'required',
             'auxilio' => 'required|numeric',
             'auxiliot' => 'required|numeric',
@@ -1146,25 +1111,6 @@ class PagesController extends Controller
         ]);
     }
 
-    public function nuevocliente(Request $request){
-
-        // validate $request
-        $validated = $request->validate([
-            'cliente' => 'required',
-            'contactos' => 'required',
-        ]);
-
-        $e = Cliente::create([
-            'cliente' => $request->cliente,
-            'contactos' => $request->contactos,
-        ]);
-
-        return response()->json([
-            'message' => 'Cliente creado correctamente',
-            'data' => $e
-        ]);
-    }
-
     public function nuevocorte(Request $request){
         // validate $request
         $validated = $request->validate([
@@ -1180,49 +1126,14 @@ class PagesController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Turno actualizado correctamente',
+            'message' => 'Corte creado correctamente',
             'data' => $c
-        ]);
-    }
-    public function tablacliente(Request $request){
-        $campo = $request->campo;
-        if ($campo == ''){
-            $clientes = Cliente::orderBy('cliente','asc')->get();
-        }
-        else{
-            $clientes = Cliente::orderBy($campo,'asc')->get();
-        }
-        return view('tablacliente',[
-            'clientes' => $clientes,
         ]);
     }
     public function tablacorte(Request $request){
         $cortes = Corte::all();
-        return view('tablacortes',[
+        return view('admin.tabla.corteTabla',[
             'cortes' => $cortes,
-        ]);
-    }
-    public function buscaremp(Request $request){
-        $horario=$idh="";
-        $e = Empleado::where('id',$request->id)->first();
-        $horarios = Horario::all();
-        $areas = Area::all();
-        $cargos = Cargo::all();
-        if ($e->horario_id !=0){
-            $horario =  $e->horario->nombre;
-            $idh = $e->horario->id;
-        }
-        $area = $e->narea->area;
-        $cargo = $e->ncargo->cargo;
-        return view('formemp',[
-            'datos' => $e,
-            'horarios' => $horarios,
-            'horario' => $horario,
-            'idh' => $idh,
-            'areas' => $areas,
-            'area' => $area,
-            'cargo' => $cargo,
-            'cargos' => $cargos
         ]);
     }
     public function editaremp(Request $request){
@@ -1264,22 +1175,163 @@ class PagesController extends Controller
         ]);
     }
 
-
     public function updatep(Request $request){
-        Empleado::where('id', $request->id )
+        // validate $request
+        $validated = $request->validate([
+            'empleado_id' => 'required|numeric|exists:empleados,id',
+            'password' => 'required|min:6',
+        ]);
+
+        Empleado::where('id', $request->empleado_id )
         ->update([
             'password' => bcrypt($request->password)
           ]);
-          return "Contraseña actualizada";
+
+        return response()->json([
+            'message' => 'Contraseña actualizada correctamente',
+        ]);
     }
+
     public function eliminaremp(Request $request){
         Empleado::where('id', $request->id )
         ->update([
             'estado' =>0
           ]);
 
-        return "Empleado inactivado";
+        return response()->json([
+            'message' => 'Empleado eliminado correctamente',
+        ]);
     }
+
+    public function modalEmpleadoAcciones(Request $request){
+        $accion = $request->accion;
+
+        switch ($accion) {
+            case 1:
+                $horarios = Horario::all();
+                $areas = Area::all();
+                $cargos = Cargo::all();
+
+                return view('admin.modal.empleadoModal',[
+                    'accion' => 1,
+                    'horarios' => $horarios,
+                    'areas' => $areas,
+                    'cargos' => $cargos
+                ]);
+                break;
+            case 2:
+                $empleado = Empleado::where('id', $request->empleado_id)->first();
+                $horario=$idh="";
+                $horarios = Horario::all();
+                $areas = Area::all();
+                $cargos = Cargo::all();
+                if ($empleado->horario_id !=0){
+                    $horario =  $empleado->horario->nombre;
+                    $idh = $empleado->horario->id;
+                }
+                $area = $empleado->narea->area;
+                $cargo = $empleado->ncargo? $empleado->ncargo->cargo: null;
+
+                return view('admin.modal.empleadoModal',[
+                    'empleado' => $empleado,
+                    'accion' => $accion,
+                    'horarios' => $horarios,
+                    'horario' => $horario,
+                    'idh' => $idh,
+                    'areas' => $areas,
+                    'area' => $area,
+                    'cargo' => $cargo,
+                    'cargos' => $cargos
+                ]);
+                break;
+            case 3:
+                return view('admin.modal.empleadoModal',[
+                    'accion' => 3,
+                    'empleado_id' => $request->empleado_id,
+                ]);
+                break;
+            case 4:
+                return view('admin.modal.empleadoModal',[
+                    'accion' => 4,
+                    'empleado_id' => $request->empleado_id,
+                ]);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public function modalProyectoAcciones(Request $request){
+        $accion = $request->accion;
+
+        switch ($accion) {
+            case 2:
+                $proyecto = Proyecto::where('id',$request->proyecto_id)->first();
+                $empleados = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();
+                $clientes = Cliente::orderBy('cliente','asc')->get();
+                return view('admin.modal.proyectoModal',[
+                    'accion' => 2,
+                    'proyecto' => $proyecto,
+                    'empleados' => $empleados,
+                    'clientes' => $clientes,
+                ]);
+                break;
+            case 3:
+                $proyecto = Proyecto::where('id',$request->proyecto_id)->first();
+                return view('admin.modal.proyectoModal',[
+                    'accion' => 3,
+                    'proyecto' => $proyecto,
+                ]);
+                break;
+            case 4:
+                $idproy = Proyecto::where('id',$request->proyecto_id)->first()->codigo;
+                $autorizados = Autorizados::where('proyecto',$idproy)->get();
+                $empleados = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();
+
+                return view('admin.modal.proyectoModal',[
+                    'accion' => 4,
+                    'autorizados' => $autorizados,
+                    'empleados' => $empleados,
+                    'proyecto_id' => $request->proyecto_id,
+                ]);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public function modalCortesAcciones(Request $request){
+        $accion = $request->accion;
+
+        switch ($accion) {
+            case 1:
+                return view('admin.modal.corteModal',[
+                    'accion' => 1,
+                ]);
+                break;
+            case 4:
+                $corte = Corte::where('id',$request->corte_id)->first();
+                return view('admin.modal.corteModal',[
+                    'accion' => 4,
+                    'corte' => $corte,
+                ]);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public function togleHabilitarCorte(Request $request){
+        $corte = Corte::where('id', $request->corte_id )->get()->first();
+        $corte->update([
+            'estado' => !$corte->estado,
+        ]);
+
+        return response()->json([
+            'message' => $corte->estado? 'Corte habilitado' : 'Corte cerrado'
+        ]);
+    }
+
     public function tablaemp(Request $request){
         $campo = $request->campo;
         if ($campo == ''){
@@ -1288,7 +1340,7 @@ class PagesController extends Controller
         else{
             $emp = Empleado::where('estado',1)->orderBy($campo,'asc')->get();
         }
-        return view('tablaemp',[
+        return view('admin.tabla.empleadoTabla',[
             'emp' => $emp,
         ]);
     }
@@ -1317,12 +1369,6 @@ class PagesController extends Controller
             'datos' => $c
         ]);
     }
-    public function buscarcliente(Request $request){
-        $c = Cliente::where('id',$request->id)->first();
-        return view('formcliente',[
-            'datos' => $c
-        ]);
-    }
     public function editarcdc(Request $request){
         Cdc::where('id', $request->id )
         ->update([
@@ -1336,15 +1382,6 @@ class PagesController extends Controller
             'observaciones' => $request->observaciones,
         ]);
         return "Centro actualizado";
-    }
-    public function editarcliente(Request $request){
-        Cliente::where('id', $request->id )
-        ->update([
-            'cliente' => $request->cliente,
-            'contactos' => $request->contactos,
-
-        ]);
-        return "Cliente actualizado";
     }
     public function eliminarcdc(Request $request){
         Cdc::where('id', $request->id )->delete();
@@ -2179,5 +2216,14 @@ class PagesController extends Controller
         } catch (QueryException $e) {
             return "Error al eliminar el registro";
         }
+    }
+
+    // v2
+    public function passwordRecovery(){
+        return view('auth.passwordRecovery');
+    }
+
+    public function updatePassword(){
+        return view('auth.passwordUpdate');
     }
 }

@@ -6,11 +6,11 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($aut as $a)
+        @foreach($autorizados as $a)
             @if ($a->empleado)
             <tr>
                 <td>{{ $a->empleado->apellido1 . ' ' . $a->empleado->apellido2 . ' ' . $a->empleado->nombre}}</td>
-                <td><button class="btn btn-danger" id="{{ $a->id }}" onclick="borrarautorizado(this.id)">x</button></td>
+                <td><button class="btn btn-danger" id="{{ $a->id }}" onclick="borrarAutorizado(this.id)">x</button></td>
             </tr>
             @endif
         @endforeach

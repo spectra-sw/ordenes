@@ -146,19 +146,23 @@ class OrdenesController extends Controller
         ]);
 
     }
-    public function solapeJornada(Request $request){
-        $user = session()->get('user');
-        $fecha =$request->fecha;
-       // $fecha = "2023-02-06";
-        //$jornadas = Jornada::where('user_id',$user)
-                            //->where('fecha','>=',$fecha)->orWhere('fechaf','>=',$fecha)->get();
 
-                            $jornadas = Jornada::where('user_id', $user)->where('estado','<>',3)
-                            ->where(function ($query) use ($fecha) {
-                                $query->where('fecha', '>=', $fecha)
-                                      ->orWhere('fechaf', '>=', $fecha);
-                            })
-                            ->get();
+    public function solapeJornada(Request $request)
+    {
+        $user = session()->get('user');
+        $fecha = $request->fecha;
+        // $fecha = "2023-02-06";
+        //$jornadas = Jornada::where('user_id',$user)
+        //->where('fecha','>=',$fecha)->orWhere('fechaf','>=',$fecha)->get();
+
+        $jornadas = Jornada::where('user_id', $user)
+            ->where('estado', '<>', 3)
+            ->where(function ($query) use ($fecha) {
+                $query->where('fecha', '>=', $fecha)
+                    ->orWhere('fechaf', '>=', $fecha);
+            })
+            ->get();
+
         //dd($jornadas);
         //$hi = intval($request->horaInicio) + floatval($request->minInicio);
         //$hf = intval($request->horaFin) + floatval($request->minFin);
@@ -171,43 +175,43 @@ class OrdenesController extends Controller
         $fecha->addMinutes($minutes);
         $formatted_date_time = $fecha->format('Y-m-d H:i:s');
         $timestamp2_start = $fecha->getTimestamp();
-        //dd($fecha);
+        // dd($fecha);
         //dd( $formatted_date_time );
 
         $fechaf = Carbon::create($request->fecha);
         $fechaf->addHours($hours + $request->duracionh);
-        $fechaf->addMinutes($minutes +$request->duracionm);
+        $fechaf->addMinutes($minutes + $request->duracionm);
         $formatted_date_time = $fechaf->format('Y-m-d H:i:s');
-       // dd( $formatted_date_time );
+    //    dd( $formatted_date_time );
         $timestamp2_end = $fechaf->getTimestamp();
-        //dd($fechaf);
+        // dd($fechaf);
 
-        //dd( $timestamp2_start ." ".$timestamp2_end);
+        // dd( $timestamp2_start ." ".$timestamp2_end);
 
         $solape = "false";
-        foreach ($jornadas as $j){
-            $inicio = explode(":",$j->hi);
-            $fin = explode(":",$j->duracion);
+        foreach ($jornadas as $j) {
+            $inicio = explode(":", $j->hi);
+            $fin = explode(":", $j->duracion);
 
             $fecha3 = $j->fecha;
             $hours = intval($inicio[0]);
-            $minutes = floatval($inicio[1]/60);
+            $minutes = floatval($inicio[1]);
 
             $fecha3 = Carbon::create($fecha3);
             $fecha3->addHours($hours);
             $fecha3->addMinutes($minutes);
-            //dd($fecha3);
+            // dd($fecha3, );
 
             $hoursf = intval($fin[0]);
-            $minutesf = floatval($fin[1]/60);
+            $minutesf = floatval($fin[1]);
 
             $fecha4 = $j->fecha;
             $fecha4 = Carbon::create($fecha4);
-            $fecha4->addHours($hours+$hoursf);
-            $fecha4->addMinutes($minutes+$minutesf);
+            $fecha4->addHours($hours + $hoursf);
+            $fecha4->addMinutes($minutes + $minutesf);
 
             //dd($fecha4);
-           /* if (($fecha >= $fecha4 || $fechaf <= $fecha3) ) {
+            /* if (($fecha >= $fecha4 || $fechaf <= $fecha3) ) {
                 $solape= "false";
             } else {
                 $solape= "true";
@@ -215,7 +219,6 @@ class OrdenesController extends Controller
                     $solape= "false";
                 }
             }*/
-            //dd($fecha > $fecha3 && $fechaf >= $fecha4 &&  $fecha < $fecha4);
             if (($fecha < $fecha3 && $fechaf > $fecha3) || ($fecha>= $fecha3 && $fechaf <= $fecha4) || ($fecha >= $fecha3 && $fechaf >= $fecha4 && $fecha < $fecha4)){
                 $solape="true";
                 return $solape;
@@ -223,13 +226,14 @@ class OrdenesController extends Controller
 
 
 
-
         }
         return $solape;
     }
+
     public function misjornadas(){
         return view('misjornadas');
     }
+
     public function consultaJornada(Request $request){
         $user = session()->get('user');
         $jornadas = Jornada::where('user_id',$user)->where('fecha','>=',$request->inicio)->where('fecha','<=',$request->fin)->orderBy('fecha','asc')->get();
@@ -324,15 +328,5 @@ class OrdenesController extends Controller
             }
         }
         return 1;
-    }
-    public function accionCorte(Request $request){
-        $op = $request->op;
-        $id = $request->id;
-
-        $c = Corte::where('id',$id)->update([
-            'estado' => $op
-        ]);
-
-        return "Acción realizada";
     }
 }

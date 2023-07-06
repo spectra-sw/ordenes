@@ -1,4 +1,4 @@
-<table id="tableTurnos" class="table table-striped" style="width:100%;overflow:scroll;color:black">
+<table id="tablaTurnos" class="table table-striped" style="width:100%;overflow:scroll;color:black">
     <thead>
         <tr>
             <th>CC</th>
@@ -23,31 +23,11 @@
                 <td>{{ $t->hora_fin }}</td>
                 <td>{{ $t->almuerzo }}</td>
                 <td class="text-center">
-                    <button type="button" class="btn btn-outline-primary px-1 py-0 openModalEditarTurno"
-                        data-id={{ $t->id }}>
+                    <button type="button" class="btn btn-outline-primary px-1 py-0" onclick="accionesTurnos(2,{{$t->id}})">
                         <i class="bi bi-pencil-fill"></i>
                     </button>
                 </td>
             </tr>
         @endforeach
     </tbody>
-
 </table>
-<script>
-    $(document).ready(function() {
-        $('#tableTurnos').DataTable();
-
-        $(".openModalEditarTurno").on("click", (e) => {
-            const url = `/editar-turnos-form/${e.currentTarget.dataset.id}`;
-
-            $.ajax({
-                url,
-                type: 'GET',
-                success(data) {
-                    $('#modalEditarTurnoBody').html(data);
-                    $("#modalEditarTurno").modal("show");
-                },
-            });
-        });
-    });
-</script>
