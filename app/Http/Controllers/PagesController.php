@@ -1210,7 +1210,7 @@ class PagesController extends Controller
             case 1:
                 $horarios = Horario::all();
                 $areas = Area::all();
-                $cargos = Cargo::all();
+                $cargos = Cargo::where('estado', 1)->get();
 
                 return view('admin.modal.empleadoModal',[
                     'accion' => 1,
@@ -1224,7 +1224,7 @@ class PagesController extends Controller
                 $horario=$idh="";
                 $horarios = Horario::all();
                 $areas = Area::all();
-                $cargos = Cargo::all();
+                $cargos = Cargo::where('estado', 1)->get();
                 if ($empleado->horario_id !=0){
                     $horario =  $empleado->horario->nombre;
                     $idh = $empleado->horario->id;
@@ -1832,11 +1832,9 @@ class PagesController extends Controller
     }
     public function nuevaextra(Request $request){
         $proyectos = Proyecto::orderBy('codigo','asc')->get();
-        $cargos=Cargo::where('extra',2)->get();
-        //$autoriza=Empleado::whereIn('cargo',$cargos)->get();
         $autoriza = DB::table('empleados')->join('cargos','empleados.cargo','=','cargos.id')->where('cargos.extra',2)->get();
         $emp = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();
-        //dd($autoriza);
+
         return view('formnuevaextra',[
            'proyectos' => $proyectos,
            'autoriza' => $autoriza,
@@ -1849,8 +1847,6 @@ class PagesController extends Controller
     }
     public function editarextra(Request $request){
         $proyectos = Proyecto::orderBy('codigo','asc')->get();
-        $cargos=Cargo::where('extra',2)->get();
-        //$autoriza=Empleado::whereIn('cargo',$cargos)->get();
         $autoriza = DB::table('empleados')->join('cargos','empleados.cargo','=','cargos.id')->where('cargos.extra',2)->get();
         $emp = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();
         $extra = Autorizacion::where('id',$request->id)->first();

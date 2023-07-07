@@ -38,15 +38,15 @@
 @if ($accion == 3)
     <!-- body -->
     <div class="modal-body">
-        <h5 class="text-center">Desea eliminar a este cargo?</h5>
+        <h5 class="text-center">Desea {{$cargo->estado? 'inactivar': 'activar'}} este cargo?</h5>
         <form id="formCargo">
-            <input type="hidden" id="cargo_id" name="cargo_id" value="{{ $cargo_id }}">
+            <input type="hidden" id="cargo_id" name="cargo_id" value="{{ $cargo->id }}">
         </form>
     </div>
 
     <!-- footer -->
     <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary" onclick="eliminarCargo()">Eliminar</button>
+        <button type="button" class="btn btn-primary" onclick="toggleEstadoCargo()">{{$cargo->estado? 'Inactivar': 'Activar'}}</button>
     </div>
 @endif

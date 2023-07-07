@@ -292,8 +292,8 @@ const editarCargo = () => {
     );
 };
 
-const eliminarCargo = () => {
-    restFetchForm("/cargo/destroy", "formCargo", ["cargo_id"], (response) => {
+const toggleEstadoCargo = () => {
+    restFetchForm("/cargo/toggle-estado", "formCargo", ["cargo_id"], (response) => {
         alert(response.message);
         resetTablaCargos();
         $("#modalFeedback").modal("hide");
