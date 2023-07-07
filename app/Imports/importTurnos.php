@@ -20,7 +20,7 @@ class importTurnos implements ToModel
             try {
                 $user_id = Empleado::where('cc',$row[0])->first()->id;
             } catch (\Exception $e) {
-                dd($row);
+                dd($e);
             }
 
             $fecha_inicio = date('Y-m-d', (int) ($row[1] +1 - 25569) * 86400);
