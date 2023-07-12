@@ -42,4 +42,9 @@ class Empleado extends Model
     {
         return $this->hasMany(MagicLink::class);
     }
+
+    public function auxilio_extras()
+    {
+        return $this->hasMany(AuxilioExtras::class, 'empleado_id', 'id');
+    }
 }

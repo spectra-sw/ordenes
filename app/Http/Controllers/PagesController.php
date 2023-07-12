@@ -30,6 +30,8 @@ use App\Models\Autorizacion;
 use App\Models\Cargo;
 use App\Models\Corte;
 use App\Models\Autorizados;
+use App\Models\AuxilioExtras;
+use App\Models\ListAuxilioExtras;
 use App\Models\Turno;
 use Log;
 
@@ -1073,6 +1075,7 @@ class PagesController extends Controller
 
 //empleado
     public function nuevoemp(Request $request){
+        // dd('sdfsd');
         // validate $request
         $validated = $request->validate([
             'cc' => 'required|unique:empleados,cc',
@@ -1087,7 +1090,11 @@ class PagesController extends Controller
             'horario' => 'required|exists:horarios,id',
             'area' => 'required|exists:areas,id',
             'cargo' => 'required|exists:cargos,id',
+            'extra_names.*' => 'required',
+            'extra_values.*' => 'required|numeric',
         ]);
+
+        dd($request->all());
 
         $e = Empleado::create([
             'cc' => $request->cc,
@@ -1104,6 +1111,16 @@ class PagesController extends Controller
             'cargo'=> $request->cargo,
             'password' => bcrypt($request->cc)
         ]);
+
+        if ($request->extra_names && $request->extra_values) {
+            foreach ($request->extra_names as $key => $value) {
+                AuxilioExtras::create([
+                    'empleado_id' => $e->id,
+                    'list_auxilio_extra_id' => intval($value),
+                    'valor' => intval($request->extra_values[$key])
+                ]);
+            }
+        }
 
         return response()->json([
             'message' => 'Empleado creado correctamente',
@@ -1151,10 +1168,13 @@ class PagesController extends Controller
             'horario' => 'required|exists:horarios,id',
             'area' => 'required|exists:areas,id',
             'cargo' => 'required|exists:cargos,id',
+            'extra_names.*' => 'required',
+            'extra_values.*' => 'required|numeric',
         ]);
 
-        $e = Empleado::where('id', $request->id )
-        ->update([
+        $e = Empleado::where('id', $request->id )->first();
+
+        $e->update([
             'cc' => $request->cc,
             'apellido1' => $request->apellido1,
             'apellido2' => $request->apellido2,
@@ -1168,6 +1188,18 @@ class PagesController extends Controller
             'area' => $request->area,
             'cargo' => $request->cargo
         ]);
+
+        $e->auxilio_extras()->delete();
+
+        if ($request->extra_names && $request->extra_values) {
+            foreach ($request->extra_names as $key => $value) {
+                AuxilioExtras::create([
+                    'empleado_id' => $e->id,
+                    'list_auxilio_extra_id' => intval($value),
+                    'valor' => intval($request->extra_values[$key])
+                ]);
+            }
+        }
 
         return response()->json([
             'message' => 'Empleado actualizado correctamente',
@@ -1211,12 +1243,14 @@ class PagesController extends Controller
                 $horarios = Horario::all();
                 $areas = Area::all();
                 $cargos = Cargo::where('estado', 1)->get();
+                $list_of_extras = ListAuxilioExtras::all();
 
                 return view('admin.modal.empleadoModal',[
                     'accion' => 1,
                     'horarios' => $horarios,
                     'areas' => $areas,
-                    'cargos' => $cargos
+                    'cargos' => $cargos,
+                    'list_of_extras' => $list_of_extras
                 ]);
                 break;
             case 2:
@@ -1225,6 +1259,8 @@ class PagesController extends Controller
                 $horarios = Horario::all();
                 $areas = Area::all();
                 $cargos = Cargo::where('estado', 1)->get();
+                $list_of_extras = ListAuxilioExtras::all();
+
                 if ($empleado->horario_id !=0){
                     $horario =  $empleado->horario->nombre;
                     $idh = $empleado->horario->id;
@@ -1241,7 +1277,8 @@ class PagesController extends Controller
                     'areas' => $areas,
                     'area' => $area,
                     'cargo' => $cargo,
-                    'cargos' => $cargos
+                    'cargos' => $cargos,
+                    'list_of_extras' => $list_of_extras,
                 ]);
                 break;
             case 3:

@@ -148,4 +148,75 @@
         </select>
         <div id="tipo_e" class="invalid-feedback"></div>
     </div>
+
+    <div class="form-group" id="containerExtraAuxilios">
+        <label>Auxilios Extras</label>
+
+        @if (isset($empleado['tipo']))
+            @foreach ($empleado['auxilio_extras'] as $auxilio)
+                <div class="row mb-2">
+                    <div class="col-7">
+                        <select id="extra_names" name="extra_names" class="form-control">
+
+                            <option value="{{ $auxilio->list_auxilio_extra->id }}" selected>{{ $auxilio->list_auxilio_extra->name }}
+                            </option>
+                            @foreach ($list_of_extras as $extra)
+                                @if ($auxilio->list_auxilio_extra->id != $extra->id)
+                                    <option value="{{ $extra->id }}">{{ $extra->name }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-3">
+                        <input class="form-control" type="number" name="extra_values" id="extra_values"
+                            placeholder="costo" value="{{ $auxilio->valor }}">
+                    </div>
+
+                    <div class="col align-item-center">
+                        <div class="d-flex h-100 align-items-center">
+                            <i class="bi bi-trash text-danger" style="font-size: 20px"
+                                onclick="DeleteExtraAuxilio(this)"></i>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        @endif
+    </div>
+
+    <div id="extra_names_e" class="text-danger" style="font-size: 0.875rem; display: block"></div>
+    <div id="extra_values_e" class="text-danger" style="font-size: 0.875rem; display: block"></div>
+
+    <div class="d-flex justify-content-center mt-4">
+        <button type="button" class="btn btn-primary rounded-circle p-0 px-2" style="font-size: 32px"
+            onclick="addExtraAuxilio()" title="Agregar auxilio">
+            <i class="bi bi-plus"></i>
+        </button>
+    </div>
 </form>
+
+
+{{-- only used this for copy with JS --}}
+<div id="copyExtraAuxilioHtml" class="d-none">
+    <div class="row mb-2">
+        <div class="col-7">
+            <select id="extra_names" name="extra_names" class="form-control">
+                <option value="" selected></option>
+                @foreach ($list_of_extras as $extra)
+                    <option value="{{ $extra->id }}">{{ $extra->name }}</option>
+                @endforeach
+            </select>
+
+        </div>
+
+        <div class="col-3">
+            <input class="form-control" type="number" name="extra_values" id="extra_values" placeholder="costo">
+        </div>
+
+        <div class="col align-item-center">
+            <div class="d-flex h-100 align-items-center">
+                <i class="bi bi-trash text-danger" style="font-size: 20px" onclick="DeleteExtraAuxilio(this)"></i>
+            </div>
+        </div>
+    </div>
+</div>

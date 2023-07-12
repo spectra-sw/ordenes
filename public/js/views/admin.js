@@ -1,4 +1,4 @@
-// --------- START SELECTORES ---------- //
+// * --------- START SELECTORES ---------- //
 
 const containerTablaEmpleados = document.querySelector(
     "#containerTablaEmpleados"
@@ -13,9 +13,9 @@ const containerTablaProyectos = document.querySelector(
 const containerTablaCortes = document.querySelector("#containerTablaCortes");
 const containerTablaTurnos = document.querySelector("#containerTablaTurnos");
 
-// --------- END SELECTORES ---------- //
+// * --------- END SELECTORES ---------- //
 
-// ---------- START EVENTOS ---------- //
+// * ---------- START EVENTOS ---------- //
 if (containerTablaEmpleados !== null) {
     const observerTablaEmpleados = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
@@ -72,12 +72,12 @@ const observerTablaTurnos = new IntersectionObserver((entries) => {
 });
 observerTablaTurnos.observe(containerTablaTurnos);
 
-// ---------- END EVENTOS ---------- //
+// * ---------- END EVENTOS ---------- //
 
-// ---------- START FUNCIONES ---------- //
+// * ---------- START FUNCIONES ---------- //
 
 /**
- * EMPLEADOS
+ * * EMPLEADOS
  */
 const accionesEmpleados = (accion = undefined, empleado_id = undefined) => {
     if (accion != undefined && accion != 0) {
@@ -113,6 +113,8 @@ const crearEmpleado = () => {
         "area",
         "cargo",
         "tipo",
+        "extra_names",
+        "extra_values"
     ];
 
     restFetchForm("/nuevoemp", "formEmpleado", keys_name, (response) => {
@@ -137,6 +139,8 @@ const editarEmpleado = () => {
         "area",
         "cargo",
         "tipo",
+        "extra_names",
+        "extra_values"
     ];
 
     restFetchForm("/editaremp", "formEmpleado", keys_name, (response) => {
@@ -144,6 +148,15 @@ const editarEmpleado = () => {
         resetTablaEmpleados();
         $("#modalFeedback").modal("hide");
     });
+};
+
+const addExtraAuxilio = () => {
+    const formHtml = $("#copyExtraAuxilioHtml").html();
+    $("#containerExtraAuxilios").append(formHtml);
+};
+
+const DeleteExtraAuxilio = (e) => {
+    e.parentNode.parentNode.parentNode.remove()
 };
 
 const eliminarEmpleado = () => {
@@ -179,7 +192,7 @@ const resetTablaEmpleados = () => {
 };
 
 /**
- * CLIENTES
+ * * CLIENTES
  */
 const accionesClientes = (accion = undefined, cliente_id = undefined) => {
     if (accion != undefined && accion != 0) {
@@ -249,7 +262,7 @@ const resetTablaClientes = () => {
 };
 
 /**
- * CARGOS
+ * * CARGOS
  */
 const accionesCargos = (accion = undefined, cargo_id = undefined) => {
     if (accion != undefined && accion != 0) {
@@ -315,7 +328,7 @@ const resetTablaCargos = () => {
 };
 
 /**
- * PROYECTOS
+ * * PROYECTOS
  */
 const accionesProyectos = (accion = undefined, proyecto_id = undefined) => {
     if (accion != undefined && accion != 0) {
@@ -415,7 +428,7 @@ const resetTablaProyectos = () => {
 };
 
 /**
- * Cortes
+ * * Cortes
  */
 const accionesCortes = (accion = undefined, corte_id = undefined) => {
     if (accion != undefined && accion != 0) {
@@ -475,7 +488,7 @@ const resetTablaCortes = () => {
 };
 
 /**
- * Turnos
+ * * Turnos
  */
 const accionesTurnos = (accion = undefined, turno_id = undefined) => {
     if (accion != undefined && accion != 0) {
@@ -529,4 +542,4 @@ const resetTablaTurno = () => {
     });
 };
 
-// ---------- END FUNCIONES ---------- //
+// * ---------- END FUNCIONES ---------- //
