@@ -1117,7 +1117,7 @@ class PagesController extends Controller
                 AuxilioExtras::create([
                     'empleado_id' => $e->id,
                     'list_auxilio_extra_id' => intval($value),
-                    'valor' => intval($request->extra_values[$key])
+                    'valor' => $request->extra_values[$key]
                 ]);
             }
         }

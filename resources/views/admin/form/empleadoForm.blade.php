@@ -150,7 +150,7 @@
     </div>
 
     <div class="form-group" id="containerExtraAuxilios">
-        <label>Auxilios Extras</label>
+        <label>AUXILIOS EXTRAS</label>
 
         @if (isset($empleado['tipo']))
             @foreach ($empleado['auxilio_extras'] as $auxilio)
@@ -170,7 +170,7 @@
 
                     <div class="col-3">
                         <input class="form-control" type="number" name="extra_values" id="extra_values"
-                            placeholder="costo" value="{{ $auxilio->valor }}">
+                            placeholder="" value="{{ $auxilio->valor }}">
                     </div>
 
                     <div class="col align-item-center">
@@ -210,7 +210,7 @@
         </div>
 
         <div class="col-3">
-            <input class="form-control" type="number" name="extra_values" id="extra_values" placeholder="costo">
+            <input class="form-control" type="number" name="extra_values" id="extra_values" placeholder="">
         </div>
 
         <div class="col align-item-center">

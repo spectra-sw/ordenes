@@ -15,7 +15,6 @@ class ListAuxilioExtrasSeeder extends Seeder
     public function run()
     {
         $data = [
-            ['name' => 'Auxilio de movilización', 'code' => '075',],
             ['name' => 'Auxilio de alimentación', 'code' => '118'],
             ['name' => 'Auxilio educativo', 'code' => '615'],
             ['name' => 'Auxilio de celular', 'code' => '070'],
