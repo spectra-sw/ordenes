@@ -1523,8 +1523,7 @@ class PagesController extends Controller
 
         if ($dia >= $hoy){
             return "No es posible registrar una fecha posterior";
-        }
-        else{
+        } else{
             $totalh = $totalh + $request->horas + ($request->min/60);
             $actividad_id=Actividad::where('actividad', $request->actividad)->first()->id;
             if (($totalh)<=9.5){
@@ -1537,8 +1536,7 @@ class PagesController extends Controller
                     'horas' => $request->horas,
                     'minutos' => $request->min,
                 ]);
-            }
-            else{
+            } else{
                 return "La horas que desea registrar superan las 9,5 horas";
             }
             return "Registro creado";
@@ -1647,9 +1645,11 @@ class PagesController extends Controller
             'ocs' => $ocs,
         ]);
     }
+
     public function buscarinfooc(Request $request){
         $fecha = $request->fecha;
         $user = session('user');
+
         if ($user==""){
             return redirect()->route('inicio');
         }
@@ -1659,6 +1659,7 @@ class PagesController extends Controller
         $restantes=9.5-($hoc + $moc/60);
         return "Faltan ".$restantes." horas por reportar este día";
     }
+
     public function distribuciono(Request $request){
 
         $datos = $this->getDatosDistribucionO($request);

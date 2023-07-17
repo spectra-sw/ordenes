@@ -909,6 +909,29 @@ function distribuciono(){
             }
     });
 }
+
+function successHandler(mensaje) {
+    $.ajax({
+        type: "GET",
+        url: "/mensaje/info",
+        data: { mensaje: mensaje },
+        success: function (response) {
+            $("#mensaje").html(response);
+        },
+    });
+}
+
+function infoHandler(mensaje) {
+    $.ajax({
+        type: "GET",
+        url: "/mensaje/info",
+        data: { mensaje: mensaje },
+        success: function (response) {
+            $("#mensaje").html(response);
+        },
+    });
+}
+
 function buscarInfoOc(){
     data={fecha : $("#dia").val()}
     url = '/buscarinfooc'
