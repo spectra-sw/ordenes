@@ -13,6 +13,7 @@ use App\Http\Controllers\OrdenesController;
 use App\Http\Controllers\MensajesController;
 use App\Http\Controllers\ConsultasController;
 use App\Http\Controllers\DistribucionController;
+use App\Http\Controllers\OcupacionController;
 use  App\Http\Controllers\TurnoController;
 /*
 |--------------------------------------------------------------------------
@@ -59,8 +60,6 @@ Route::get('/login', [PagesController::class, 'login']);
 Route::get('/logout', [PagesController::class, 'login']);
 Route::get('/ocupacion', [PagesController::class, 'ocupacion']);
 Route::get('/extra', [PagesController::class, 'consextra']);
-Route::get('/rocupacion', [PagesController::class, 'rocupacion']);
-
 
 //emp
 Route::get('/nuevoemp', [PagesController::class, 'nuevoemp']);
@@ -139,7 +138,8 @@ Route::post('importHoras', [ExcelController::class, 'importHoras'])->name('impor
 Route::post('importTurnos', [ExcelController::class, 'importTurnos'])->name('importTurnos');
 
 //ocupación
-Route::get('/seguimiento', [PagesController::class, 'seguimiento']);
+Route::get('/register-ocupacion', [OcupacionController::class, 'registerOcupacion']);
+Route::get('/seguimiento', [OcupacionController::class, 'seguimiento']);
 Route::get('/generalo', [PagesController::class, 'generalo']);
 Route::get('/distribuciono', [PagesController::class, 'distribuciono']);
 Route::get('/buscarinfooc', [PagesController::class, 'buscarinfooc']);

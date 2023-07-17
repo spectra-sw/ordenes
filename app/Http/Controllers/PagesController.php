@@ -1492,56 +1492,7 @@ class PagesController extends Controller
 
         ]);
     }
-    public function rocupacion(Request $request){
-        //dd($request);
-        $u = session('user');
-        if ($u==""){
-            return redirect()->route('inicio');
-        }
-        $cc = Empleado::where('id',$u)->first()->cc;
-        $existe = ocupacion::where('cc',$cc)->where('dia',$request->dia)->exists();
-        $hoy = Carbon::now();
-        $dia = new Carbon($request->dia);
-        $diff = $hoy->diffInDays($dia);
-        $totalh=0;
-        $registros= ocupacion::where('cc',$cc)->where('dia',$request->dia)->get();
-        foreach($registros as $r){
-            $totalh = $totalh + $r->horas + ($r->minutos/60);
-        }
-        /*if ($diff> 21){
-            return 'No puede registrar actividades anteriores a tres semanas';
-        }*/
-        if (Festivo::where('fecha',$request->dia)->exists()){
-            return 'La fecha seleccionada es un día festivo';
-        }
-        if(($dia->dayOfWeek == 0 || $dia->dayOfWeek == 6)){
-            return 'Solo se pueden seleccionar días de Lunes a Viernes';
-        }
-        if ($request->horas == 0 && $request->min == 0){
-            return "El tiempo registrado no puede ser 0";
-        }
 
-        if ($dia >= $hoy){
-            return "No es posible registrar una fecha posterior";
-        } else{
-            $totalh = $totalh + $request->horas + ($request->min/60);
-            $actividad_id=Actividad::where('actividad', $request->actividad)->first()->id;
-            if (($totalh)<=9.5){
-                $e = ocupacion::create([
-                    'cc' => $cc,
-                    'dia' => $request->dia,
-                    'area' => $request->area,
-                    'actividad' => $actividad_id,
-                    'proyecto' => $request->proyecto,
-                    'horas' => $request->horas,
-                    'minutos' => $request->min,
-                ]);
-            } else{
-                return "La horas que desea registrar superan las 9,5 horas";
-            }
-            return "Registro creado";
-        }
-    }
     public function consfestivo(Request $request){
         $fecha = $request->fecha;
         if (Festivo::where('fecha',$fecha)->exists()){
@@ -1550,81 +1501,6 @@ class PagesController extends Controller
         return 'no';
     }
 
-    //ocupacion
-    public function seguimiento(Request $request){
-        $area = $request->area;
-        $oc =  DB::table('ocupacion');
-
-        if ($area != ""){
-            $emp = Empleado::where('estado',1)->where('area',$area)->orderBy('area','asc')->get();
-        }
-        else{
-            $emp = Empleado::where('estado',1)->where('area','>',1)->orderBy('area','asc')->get();
-        }
-
-        $seguimiento  = collect([]);
-
-        $inicio = new Carbon($request->fechaInicioOcup1);
-        $fin = new Carbon($request->fechaFinalOcup1);
-
-
-        foreach($emp as $e){
-            $inicio = new Carbon($request->fechaInicioOcup1);
-            $fin = new Carbon($request->fechaFinalOcup1);
-
-            while ($inicio <= $fin){
-
-                $fila = collect([]);
-                $fila->put('cc',$e->cc);
-                $fila->put('nombre',$e->nombre." ".$e->apellido1);
-                $fila->put('area',$e->narea->area);
-                $fila->put('fecha',$inicio->toDateString());
-
-                $dia = new Carbon($inicio);
-                $totalh =0;
-                $registro="";
-                if (Festivo::where('fecha',$inicio)->exists()){
-                    $registro="NH";
-                }
-                if(($dia->dayOfWeek == 0 || $dia->dayOfWeek == 6)){
-                    $registro="NH";
-                }
-                if($registro==""){
-                    $hoc = Ocupacion::where('cc',$e->cc)->where('dia','=',$inicio)->sum('horas');
-                    $moc = Ocupacion::where('cc',$e->cc)->where('dia','=',$inicio)->sum('minutos');
-                    $totalh=$hoc + $moc/60;
-                    $registro = $totalh;
-                }
-
-                $fila->put('registro',$registro);
-                $fila->put('clase','table-default');
-
-
-                if($registro===0){
-                    $fila->put('clase','table-danger');
-                }
-
-                if(($totalh > 0)&&($totalh < 9.5)){
-                        $fila->put('clase','table-warning');
-                }
-                if($totalh == 9.5){
-                    $fila->put('clase','table-success');
-                }
-
-
-                $seguimiento->push($fila);
-                $inicio = $inicio->addDay();
-
-            }
-        }
-        //dd($seguimiento);
-        if($request->responsable!=""){
-            $seguimiento = $seguimiento->where('cc',$request->responsable);
-        }
-        return view('seguimiento',[
-            'seguimiento' => $seguimiento,
-        ]);
-    }
     public function generalo(Request $request){
         $area = $request->area;
         $oc =  Ocupacion::where('id','>',0);
