@@ -1,6 +1,7 @@
 @extends('layouts.tt')
 
 @section('content')
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist" id="tabAdmin">
         <li class="nav-item">

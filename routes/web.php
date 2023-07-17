@@ -14,6 +14,8 @@ use App\Http\Controllers\MensajesController;
 use App\Http\Controllers\ConsultasController;
 use App\Http\Controllers\DistribucionController;
 use  App\Http\Controllers\TurnoController;
+use App\Http\Middleware\Authenticate;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -189,7 +191,7 @@ Route::get('/mensaje/exito', [MensajesController::class, 'exito']);
 Route::get('/mensaje/info', [MensajesController::class, 'info']);
 
 //corte
-Route::get('/nuevocorte', [PagesController::class, 'nuevocorte']);
+Route::get('/nuevocorte', [PagesController::class, 'nuevocorte'])->middleware('auth');
 Route::get('/tablacorte', [PagesController::class, 'tablacorte']);
 
 

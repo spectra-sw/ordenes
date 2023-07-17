@@ -176,6 +176,10 @@ return [
         App\Providers\RouteServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
 
+        /*
+         * Laravel Auditing
+         */
+        OwenIt\Auditing\AuditingServiceProvider::class,
     ],
 
     /*

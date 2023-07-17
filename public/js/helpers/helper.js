@@ -26,6 +26,9 @@ const restFetchForm = (url, formID, inputsID, successFunction) => {
         url: url,
         type: "GET",
         data: data,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
         success: (response) => {
             successFunction(response);
         },

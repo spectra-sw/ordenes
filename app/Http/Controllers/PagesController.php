@@ -36,6 +36,7 @@ use App\Models\Turno;
 use Log;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PagesController extends Controller
@@ -1136,10 +1137,15 @@ class PagesController extends Controller
             'estado' => 'required',
         ]);
 
+        // user loged
+        $user = Auth::user();
+        dd($user);
+        // create corte and saver user_id auditable
         $c = Corte::create([
             'fecha_inicio' => $request->fecha_inicio,
             'fecha_fin' => $request->fecha_fin,
-            'estado' => $request->estado
+            'estado' => $request->estado,
+            'audits.user_type' => 'App\User',
         ]);
 
         return response()->json([
