@@ -1094,8 +1094,6 @@ class PagesController extends Controller
             'extra_values.*' => 'required|numeric',
         ]);
 
-        dd($request->all());
-
         $e = Empleado::create([
             'cc' => $request->cc,
             'apellido1' => $request->apellido1,
@@ -1113,11 +1111,14 @@ class PagesController extends Controller
         ]);
 
         if ($request->extra_names && $request->extra_values) {
-            foreach ($request->extra_names as $key => $value) {
+            $extra_names = collect($request->extra_names);
+            $extra_values = collect($request->extra_values);
+
+            foreach ($extra_names as $key => $value) {
                 AuxilioExtras::create([
                     'empleado_id' => $e->id,
                     'list_auxilio_extra_id' => intval($value),
-                    'valor' => $request->extra_values[$key]
+                    'valor' => $extra_values[$key]
                 ]);
             }
         }
@@ -1192,11 +1193,14 @@ class PagesController extends Controller
         $e->auxilio_extras()->delete();
 
         if ($request->extra_names && $request->extra_values) {
-            foreach ($request->extra_names as $key => $value) {
+            $extra_names = collect($request->extra_names);
+            $extra_values = collect($request->extra_values);
+
+            foreach ($extra_names as $key => $value) {
                 AuxilioExtras::create([
                     'empleado_id' => $e->id,
                     'list_auxilio_extra_id' => intval($value),
-                    'valor' => intval($request->extra_values[$key])
+                    'valor' => $extra_values[$key]
                 ]);
             }
         }
