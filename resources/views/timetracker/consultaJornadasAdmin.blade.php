@@ -35,24 +35,24 @@
                                 <td>{{ $j->proyectoinfo->cliente->cliente ?? 'N/A' }}</td>
                                 <td>{{ $j->fecha }}</td>
                                 <td>
-                                    <input style="font-size: 14px; width: 60px;" class="form-control" type="text"
+                                    <input style="font-size: 14px; width: 64px;" class="form-control" type="text"
                                         id="hi{{ $j->id }}" name="hi{{ $j->id }}"
                                         value="{{ $j->hi }}">
                                 </td>
                                 <td>{{ $j->fechaf }}</td>
                                 <td>
-                                    <input style="font-size: 14px; width: 60px;" class="form-control" type="text"
+                                    <input style="font-size: 14px; width: 64px;" class="form-control" type="text"
                                         id="hf{{ $j->id }}" name="hf{{ $j->id }}"
                                         value="{{ $j->hf }}">
                                 </td>
                                 <td>
-                                    <input style="font-size: 14px; width: 54px;" class="form-control" type="text"
+                                    <input style="font-size: 14px; width: 60px;" class="form-control" type="text"
                                         id="duracion{{ $j->id }}" name="duracion{{ $j->id }}"
                                         value="{{ $duracion }}" disabled>
                                 </td>
 
                                 <td>
-                                    <input style="font-size: 14px; width: 60px;" class="form-control" type="number"
+                                    <input style="font-size: 14px; width: 64px;" class="form-control" type="number"
                                         min="0" id="almuerzo{{ $j->id }}"
                                         name="almuerzo{{ $j->id }}" value="{{ $j->almuerzo }}">
                                 </td>

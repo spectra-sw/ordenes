@@ -23,10 +23,10 @@
         </li>
     </ul>
 
-    <div class="container-fluid bg-white border border-top-0 rounded-bottom">
+    <div class="container-fluid bg-white border border-top-0 rounded-end rounded-bottom">
         <!-- Tab panes -->
         <div class="tab-content py-4">
-            <div id="home" class="container tab-pane active">
+            <div id="home" class="container-fluid tab-pane active">
                 @if ($area == 6)
                     <button class="btn btn-success mt-2 mb-4" onclick="accionesEmpleados(1)">Nuevo Empleado</button>
                     <div id="containerTablaEmpleados" style="font-size: 14px">
@@ -39,7 +39,7 @@
                 @endif
             </div>
 
-            <div id="cargoCrud" class="container tab-pane fade">
+            <div id="cargoCrud" class="container-fluid tab-pane fade">
                 <button class="btn btn-success mt-2 mb-4" onclick="accionesCargos(1)">Nuevo Cargo</button>
                 <div id="containerTablaCargos" style="font-size: 14px">
                     <div class="d-flex justify-content-center mt-4 font-weight-bold">
@@ -50,7 +50,7 @@
                 </div>
             </div>
 
-            <div id="menu1" class="container tab-pane fade">
+            <div id="menu1" class="container-fluid tab-pane fade">
                 <button class="btn btn-success mt-2 mb-4" onclick="accionesClientes(1)">Nuevo Cliente</button>
                 <div id="containerTablaClientes" style="font-size: 14px">
                     <div class="d-flex justify-content-center mt-4 font-weight-bold">
@@ -61,7 +61,7 @@
                 </div>
             </div>
 
-            <div id="menu2" class="container tab-pane fade">
+            <div id="menu2" class="container-fluid tab-pane fade">
                 <!--<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#nuevoproyecto">Nuevo Proyecto</button>-->
                 <button class="btn btn-success mt-2 mb-4" onclick="exportarproyectos()">Exportar Proyectos</button>
                 <div id="containerTablaProyectos" style="font-size: 14px">
@@ -73,7 +73,7 @@
                 </div>
             </div>
 
-            <div id="cortes" class="container tab-pane fade">
+            <div id="cortes" class="container-fluid tab-pane fade">
 
                 <button class="btn btn-success mt-2 mb-4" onclick="accionesCortes(1)">Nuevo Corte</button>
 
@@ -86,7 +86,7 @@
                 </div>
             </div>
 
-            <div id="turnos" class="container tab-pane fade">
+            <div id="turnos" class="container-fluid tab-pane fade">
                 <form action="{{ route('importTurnos') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group mb-4">
