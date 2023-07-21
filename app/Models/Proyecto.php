@@ -12,8 +12,8 @@ class Proyecto extends Model
     protected $table = 'proyectos';
     public $timestamps = false;
     protected $fillable = [
-         'codigo','descripcion','cliente_id','sistema','ciudad', 'subportafolio', 'director', 'lider',
-         'creado_por','creacion','registro'
+        'codigo', 'descripcion', 'cliente_id', 'sistema', 'ciudad', 'subportafolio', 'director', 'lider',
+        'creado_por', 'creacion', 'registro'
     ];
 
     public function cliente()
@@ -28,8 +28,9 @@ class Proyecto extends Model
     {
         return $this->belongsTo(Empleado::class, 'lider', 'id');
     }
-    public function cdc(){
-        return $this->belongsTo(Cdc::class,'codigo','codigo');
+    public function cdc()
+    {
+        return $this->belongsTo(Cdc::class, 'codigo', 'codigo');
     }
     public function jornadas()
     {

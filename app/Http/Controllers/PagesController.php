@@ -1469,19 +1469,22 @@ class PagesController extends Controller
     }
 
     public function ocupacion(){
-        $areas = Area::all();
-        $actividades = Actividad::all();
-        $proyectos = Proyecto::orderBy('codigo','asc')->get();
-        $u = session('user');
-        if ($u==""){
+        $user_id = session('user');
+        if ($user_id==""){
             return redirect()->route('inicio');
         }
-        $area = Empleado::where('id',$u)->first()->area;
-        $novedades=Novedad::all();
 
-        $user = session('user');
-        $aut = Autorizados::where('empleado_id',$user)->get();
+        $areas = Area::all(['id','area']);
+        $actividades = Actividad::all(['id','actividad']);
+        $proyectos = Proyecto::select('id', 'codigo', 'cliente_id')->with(['cliente' => function ($query) {
+            $query->select('cliente', 'id');
+        }])->orderBy('codigo','asc')->get();
+        // $proyectos = Proyecto::all();
+        $area = Empleado::where('id',$user_id)->first()->area;
+        $novedades=Novedad::all();
         $employees = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();
+
+        // dd($proyectos);
         return view('ocupacion',[
             'areas' => $areas,
             'actividades' => $actividades,
@@ -1523,16 +1526,22 @@ class PagesController extends Controller
     }
 
     public function buscarinfooc(Request $request){
-        $fecha = $request->fecha;
         $user = session('user');
 
         if ($user==""){
             return redirect()->route('inicio');
         }
+
+        $fecha = $request->fecha;
+        $date_carbon = new Carbon($fecha);
+        $hours_per_day = $date_carbon->dayOfWeek == 5 ? 8.5 : 9.5;
+
         $cc = Empleado::where('id',$user)->first()->cc;
         $hoc = Ocupacion::where('cc',$cc)->where('dia','=',$fecha)->sum('horas');
         $moc = Ocupacion::where('cc',$cc)->where('dia','=',$fecha)->sum('minutos');
-        $restantes=9.5-($hoc + $moc/60);
+
+        $restantes=$hours_per_day-($hoc + $moc/60);
+
         return "Faltan ".$restantes." horas por reportar este día";
     }
 

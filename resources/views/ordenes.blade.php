@@ -10,13 +10,13 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="{{ URL::asset('css/style.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
-    
+
     <script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.7/dist/latest/bootstrap-autocomplete.min.js"></script>
-    
-   
+
+
     <style>
-        
-      
+
+
     </style>
 </head>
 <body>
@@ -162,7 +162,7 @@
                 <div class="col-6 col-md-1 "><input type="text" name="cantp" id="cantp" class="form-control"></div>
                 <div class="col-6 col-md-1 cajaAzul">Und</div>
                 <div class="col-6 col-md-1 ">
-                
+
                     <select class="form-control" name="undp" id="undp">
                         <option value=""></option>
                         <option value="CAJA">CAJA</option>
@@ -235,7 +235,7 @@
                     <input type="hidden" name="cct" id="cct">-->
                     <select class="form-control" name="cct" id="cct">
                         <option value=""></option>
-                        
+
                     </select>
                 </div>
                 <div class="col-4 col-md-1 cajaAzul">Hi</div>
@@ -280,24 +280,24 @@
 <!-- The Modal -->
 <div class="modal fade bd-example-modal-xl" id="info">
     <div class="modal-dialog modal-xl">
-      <div class="modal-content">  
+      <div class="modal-content">
         <!-- Modal body -->
         <div class="modal-body" id="infoBody">
         </div>
         <!-- Modal footer -->
         <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-      </div>      
+      </div>
       </div>
     </div>
 </div>
 <div class="modal fade bd-example-modal-xl" id="confirm">
     <div class="modal-dialog modal-xl">
-      <div class="modal-content">  
+      <div class="modal-content">
         <!-- Modal body -->
         <div class="modal-header">
         <h5 class="modal-title">Confirme los datos de la orden de trabajo antes de ser enviada</h5>
-        
+
         </div>
         <div class="modal-body" id="infoBody">
             <div class="row">
@@ -331,7 +331,7 @@
             <div class="row">
                 <div class="col-6 col-md-12 "><input type="text" class="form-control" name="tipo" id="tipo" ></div>
             </div>
-            
+
             <br>
             <div class="row">
                 <div class="col-12 col-md-12 cajaAzul">Objeto de la orden de trabajo</div>
@@ -341,12 +341,12 @@
             </div>-->
 
         </div>
-        
+
         <!-- Modal footer -->
         <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="enviarorden(1)">Enviar</button>
         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-      </div>      
+      </div>
       </div>
     </div>
 </div>
@@ -373,14 +373,14 @@
                   validartipo(data.sistema)
                   //$("#contacto").val(data.responsable);
         }
-    });   
+    });
     });
     $('#responsable').autoComplete();
-    $('#responsable').on('autocomplete.select', function (evt, item) {   
+    $('#responsable').on('autocomplete.select', function (evt, item) {
         $("#cc").val(item.value);
     });
     $('#trabajador').autoComplete();
-    $('#trabajador').on('autocomplete.select', function (evt, item) {   
+    $('#trabajador').on('autocomplete.select', function (evt, item) {
         $("#cct").val(item.value);
     });
     function buscarP(codigo){
@@ -403,8 +403,8 @@
 
                   /*for (let k in data.trabajadores) {
                         //console.log(k + ' is ' + data.trabajadores[k])
-                        
-                        $('#cct').append($('<option>', { 
+
+                        $('#cct').append($('<option>', {
                             value: k,
                             text : data.trabajadores[k]
                         }));
@@ -412,7 +412,7 @@
                   //validartipo(data.sistema)
                   //$("#contacto").val(data.responsable);
             }
-        }); 
+        });
     }
     function validartipo(sistema){
         var sistema = sistema.toLowerCase();

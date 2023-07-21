@@ -778,7 +778,7 @@ function rocupacion(){
         }
     });
     if(band==0){
-        url = '/rocupacion'
+        url = '/register-ocupacion'
         $.ajax({
                 url: url,
                 type:'GET',

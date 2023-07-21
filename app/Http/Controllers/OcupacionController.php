@@ -49,11 +49,11 @@ class OcupacionController extends Controller
             return "No es posible registrar una fecha posterior a la actual";
         }
 
-        if ($hours_completed >= 8.5 && $input_date->dayOfWeek == 5) {
+        if ($hours_completed > 8.5 && $input_date->dayOfWeek == 5) {
             return "La horas que desea registrar superan las 8,5 horas";
         }
 
-        if ($hours_completed >= 9.5) {
+        if ($hours_completed > 9.5) {
             return "La horas que desea registrar superan las 9,5 horas";
         }
 
