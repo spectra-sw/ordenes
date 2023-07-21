@@ -1095,8 +1095,6 @@ class PagesController extends Controller
             'extra_values.*' => 'required|numeric',
         ]);
 
-        dd($request->all());
-
         $e = Empleado::create([
             'cc' => $request->cc,
             'apellido1' => $request->apellido1,
@@ -1114,11 +1112,14 @@ class PagesController extends Controller
         ]);
 
         if ($request->extra_names && $request->extra_values) {
-            foreach ($request->extra_names as $key => $value) {
+            $extra_names = collect($request->extra_names);
+            $extra_values = collect($request->extra_values);
+
+            foreach ($extra_names as $key => $value) {
                 AuxilioExtras::create([
                     'empleado_id' => $e->id,
                     'list_auxilio_extra_id' => intval($value),
-                    'valor' => $request->extra_values[$key]
+                    'valor' => $extra_values[$key]
                 ]);
             }
         }
@@ -1198,11 +1199,14 @@ class PagesController extends Controller
         $e->auxilio_extras()->delete();
 
         if ($request->extra_names && $request->extra_values) {
-            foreach ($request->extra_names as $key => $value) {
+            $extra_names = collect($request->extra_names);
+            $extra_values = collect($request->extra_values);
+
+            foreach ($extra_names as $key => $value) {
                 AuxilioExtras::create([
                     'empleado_id' => $e->id,
                     'list_auxilio_extra_id' => intval($value),
-                    'valor' => intval($request->extra_values[$key])
+                    'valor' => $extra_values[$key]
                 ]);
             }
         }
@@ -1471,19 +1475,22 @@ class PagesController extends Controller
     }
 
     public function ocupacion(){
-        $areas = Area::all();
-        $actividades = Actividad::all();
-        $proyectos = Proyecto::orderBy('codigo','asc')->get();
-        $u = session('user');
-        if ($u==""){
+        $user_id = session('user');
+        if ($user_id==""){
             return redirect()->route('inicio');
         }
-        $area = Empleado::where('id',$u)->first()->area;
-        $novedades=Novedad::all();
 
-        $user = session('user');
-        $aut = Autorizados::where('empleado_id',$user)->get();
+        $areas = Area::all(['id','area']);
+        $actividades = Actividad::all(['id','actividad']);
+        $proyectos = Proyecto::select('id', 'codigo', 'cliente_id')->with(['cliente' => function ($query) {
+            $query->select('cliente', 'id');
+        }])->orderBy('codigo','asc')->get();
+        // $proyectos = Proyecto::all();
+        $area = Empleado::where('id',$user_id)->first()->area;
+        $novedades=Novedad::all();
         $employees = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();
+
+        // dd($proyectos);
         return view('ocupacion',[
             'areas' => $areas,
             'actividades' => $actividades,
@@ -1494,58 +1501,7 @@ class PagesController extends Controller
 
         ]);
     }
-    public function rocupacion(Request $request){
-        //dd($request);
-        $u = session('user');
-        if ($u==""){
-            return redirect()->route('inicio');
-        }
-        $cc = Empleado::where('id',$u)->first()->cc;
-        $existe = ocupacion::where('cc',$cc)->where('dia',$request->dia)->exists();
-        $hoy = Carbon::now();
-        $dia = new Carbon($request->dia);
-        $diff = $hoy->diffInDays($dia);
-        $totalh=0;
-        $registros= ocupacion::where('cc',$cc)->where('dia',$request->dia)->get();
-        foreach($registros as $r){
-            $totalh = $totalh + $r->horas + ($r->minutos/60);
-        }
-        /*if ($diff> 21){
-            return 'No puede registrar actividades anteriores a tres semanas';
-        }*/
-        if (Festivo::where('fecha',$request->dia)->exists()){
-            return 'La fecha seleccionada es un día festivo';
-        }
-        if(($dia->dayOfWeek == 0 || $dia->dayOfWeek == 6)){
-            return 'Solo se pueden seleccionar días de Lunes a Viernes';
-        }
-        if ($request->horas == 0 && $request->min == 0){
-            return "El tiempo registrado no puede ser 0";
-        }
 
-        if ($dia >= $hoy){
-            return "No es posible registrar una fecha posterior";
-        }
-        else{
-            $totalh = $totalh + $request->horas + ($request->min/60);
-            $actividad_id=Actividad::where('actividad', $request->actividad)->first()->id;
-            if (($totalh)<=9.5){
-                $e = ocupacion::create([
-                    'cc' => $cc,
-                    'dia' => $request->dia,
-                    'area' => $request->area,
-                    'actividad' => $actividad_id,
-                    'proyecto' => $request->proyecto,
-                    'horas' => $request->horas,
-                    'minutos' => $request->min,
-                ]);
-            }
-            else{
-                return "La horas que desea registrar superan las 9,5 horas";
-            }
-            return "Registro creado";
-        }
-    }
     public function consfestivo(Request $request){
         $fecha = $request->fecha;
         if (Festivo::where('fecha',$fecha)->exists()){
@@ -1554,81 +1510,6 @@ class PagesController extends Controller
         return 'no';
     }
 
-    //ocupacion
-    public function seguimiento(Request $request){
-        $area = $request->area;
-        $oc =  DB::table('ocupacion');
-
-        if ($area != ""){
-            $emp = Empleado::where('estado',1)->where('area',$area)->orderBy('area','asc')->get();
-        }
-        else{
-            $emp = Empleado::where('estado',1)->where('area','>',1)->orderBy('area','asc')->get();
-        }
-
-        $seguimiento  = collect([]);
-
-        $inicio = new Carbon($request->fechaInicioOcup1);
-        $fin = new Carbon($request->fechaFinalOcup1);
-
-
-        foreach($emp as $e){
-            $inicio = new Carbon($request->fechaInicioOcup1);
-            $fin = new Carbon($request->fechaFinalOcup1);
-
-            while ($inicio <= $fin){
-
-                $fila = collect([]);
-                $fila->put('cc',$e->cc);
-                $fila->put('nombre',$e->nombre." ".$e->apellido1);
-                $fila->put('area',$e->narea->area);
-                $fila->put('fecha',$inicio->toDateString());
-
-                $dia = new Carbon($inicio);
-                $totalh =0;
-                $registro="";
-                if (Festivo::where('fecha',$inicio)->exists()){
-                    $registro="NH";
-                }
-                if(($dia->dayOfWeek == 0 || $dia->dayOfWeek == 6)){
-                    $registro="NH";
-                }
-                if($registro==""){
-                    $hoc = Ocupacion::where('cc',$e->cc)->where('dia','=',$inicio)->sum('horas');
-                    $moc = Ocupacion::where('cc',$e->cc)->where('dia','=',$inicio)->sum('minutos');
-                    $totalh=$hoc + $moc/60;
-                    $registro = $totalh;
-                }
-
-                $fila->put('registro',$registro);
-                $fila->put('clase','table-default');
-
-
-                if($registro===0){
-                    $fila->put('clase','table-danger');
-                }
-
-                if(($totalh > 0)&&($totalh < 9.5)){
-                        $fila->put('clase','table-warning');
-                }
-                if($totalh == 9.5){
-                    $fila->put('clase','table-success');
-                }
-
-
-                $seguimiento->push($fila);
-                $inicio = $inicio->addDay();
-
-            }
-        }
-        //dd($seguimiento);
-        if($request->responsable!=""){
-            $seguimiento = $seguimiento->where('cc',$request->responsable);
-        }
-        return view('seguimiento',[
-            'seguimiento' => $seguimiento,
-        ]);
-    }
     public function generalo(Request $request){
         $area = $request->area;
         $oc =  Ocupacion::where('id','>',0);
@@ -1649,18 +1530,27 @@ class PagesController extends Controller
             'ocs' => $ocs,
         ]);
     }
+
     public function buscarinfooc(Request $request){
-        $fecha = $request->fecha;
         $user = session('user');
+
         if ($user==""){
             return redirect()->route('inicio');
         }
+
+        $fecha = $request->fecha;
+        $date_carbon = new Carbon($fecha);
+        $hours_per_day = $date_carbon->dayOfWeek == 5 ? 8.5 : 9.5;
+
         $cc = Empleado::where('id',$user)->first()->cc;
         $hoc = Ocupacion::where('cc',$cc)->where('dia','=',$fecha)->sum('horas');
         $moc = Ocupacion::where('cc',$cc)->where('dia','=',$fecha)->sum('minutos');
-        $restantes=9.5-($hoc + $moc/60);
+
+        $restantes=$hours_per_day-($hoc + $moc/60);
+
         return "Faltan ".$restantes." horas por reportar este día";
     }
+
     public function distribuciono(Request $request){
 
         $datos = $this->getDatosDistribucionO($request);
