@@ -24,17 +24,14 @@ return [
     |
     */
 
-    'user'      => [
+    'user' => [
         'morph_prefix' => 'user',
         'guards'       => [
             'admin',
-            'staff',
-            'student',
             'api',
-            'empleado',
             'web',
+            'empleados'
         ],
-        'resolver'     => OwenIt\Auditing\Resolvers\UserResolver::class
     ],
 
     /*
@@ -45,7 +42,8 @@ return [
     | Define the IP Address, User Agent and URL resolver implementations.
     |
     */
-    'resolvers' => [
+    'resolver' => [
+        'user'       => OwenIt\Auditing\Resolvers\UserResolver::class,
         'ip_address' => OwenIt\Auditing\Resolvers\IpAddressResolver::class,
         'user_agent' => OwenIt\Auditing\Resolvers\UserAgentResolver::class,
         'url'        => OwenIt\Auditing\Resolvers\UrlResolver::class,

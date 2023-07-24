@@ -4,19 +4,31 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Orden extends Model
+class Orden extends Model implements Auditable
 {
+    use \OwenIt\Auditing\Auditable;
     use HasFactory;
     protected $table = 'ordenes';
     protected $fillable = [
-        'proyecto', 'fecha_inicio','fecha_final','responsable','cliente',
-        'area_trabajo','contacto','tipo','objeto','observaciones','autorizada_por','creada_por'
+        'proyecto', 'fecha_inicio', 'fecha_final', 'responsable', 'cliente',
+        'area_trabajo', 'contacto', 'tipo', 'objeto', 'observaciones', 'autorizada_por', 'creada_por'
     ];
 
     public function empleado()
     {
-    return $this->belongsTo(Empleado::class, 'responsable', 'cc');
+        return $this->belongsTo(Empleado::class, 'responsable', 'cc');
     }
 
+    public function transformAudit(array $data): array
+    {
+        $user_id = session('user');
+        if ($user_id) {
+            $data['user_id'] = session('user');
+            $data['user_type'] = Empleado::class;
+        }
+
+        return $data;
+    }
 }

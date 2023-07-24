@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Autorizacion extends Model
+class Autorizacion extends Model implements Auditable
 {
+    use \OwenIt\Auditing\Auditable;
     use HasFactory;
     protected $table = 'autorizaciones';
     public $timestamps = true;
@@ -40,6 +42,17 @@ class Autorizacion extends Model
         else{
             return "PENDIENTE";
         }
+    }
+
+    public function transformAudit(array $data): array
+    {
+        $user_id = session('user');
+        if ($user_id) {
+            $data['user_id'] = session('user');
+            $data['user_type'] = Empleado::class;
+        }
+
+        return $data;
     }
 }
 

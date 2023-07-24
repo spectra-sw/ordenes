@@ -4,14 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Empleado extends Model
+class Empleado extends Model implements Auditable
 {
+    use \OwenIt\Auditing\Auditable;
     use HasFactory;
     protected $table = 'empleados';
     public $timestamps = false;
     protected $fillable = [
-        'cc','apellido1','apellido2','nombre','auxilio','correo','tipo','password','ciudad','horario_id','auxiliot','ndc','area','cargo','estado'
+        'cc', 'apellido1', 'apellido2', 'nombre', 'auxilio', 'correo', 'tipo', 'password', 'ciudad', 'horario_id', 'auxiliot', 'ndc', 'area', 'cargo', 'estado'
     ];
 
     public function ordenes()
@@ -46,5 +48,16 @@ class Empleado extends Model
     public function auxilio_extras()
     {
         return $this->hasMany(AuxilioExtras::class, 'empleado_id', 'id');
+    }
+
+    public function transformAudit(array $data): array
+    {
+        $user_id = session('user');
+        if ($user_id) {
+            $data['user_id'] = session('user');
+            $data['user_type'] = Empleado::class;
+        }
+
+        return $data;
     }
 }
