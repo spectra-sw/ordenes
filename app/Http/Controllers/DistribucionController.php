@@ -63,9 +63,9 @@ class DistribucionController extends Controller
             $laborales_cero = false;
             Log::info($tsb);
             $hi = explode(":", $j->hi);
-            $hi =intval($hi[0]) + round(floatval($hi[1]/60),1);
+            $hi =intval($hi[0]) + round(floatval($hi[1]/60),2);
             $hf = explode(":", $j->hf);
-            $hf =intval($hf[0]) + round(floatval($hf[1]/60),1);
+            $hf =intval($hf[0]) + round(floatval($hf[1]/60),2);
             $duracion  = explode(":", $j->duracion);
             $duracion =intval($duracion[0]) + round(floatval($duracion[1]/60),2);
                 
