@@ -301,9 +301,6 @@ class OrdenesController extends Controller
         } elseif ($request->op == "2") {
             $jornada->estado = 3;
             $result= "Registro rechazado";
-        } elseif ($request->op == "3") {
-            $jornada->delete();
-            return  "Registro eliminado";
         }
 
         $jornada->observacion = $request->obs;

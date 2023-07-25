@@ -1472,31 +1472,35 @@ class PagesController extends Controller
         return "Programación actualizada";
     }
 
-    public function ocupacion(){
+    public function ocupacion()
+    {
         $user_id = session('user');
-        if ($user_id==""){
+        if ($user_id == "") {
             return redirect()->route('inicio');
         }
 
-        $areas = Area::all(['id','area']);
-        $actividades = Actividad::all(['id','actividad']);
-        $proyectos = Proyecto::select('id', 'codigo', 'cliente_id')->with(['cliente' => function ($query) {
-            $query->select('cliente', 'id');
-        }])->orderBy('codigo','asc')->get();
-        // $proyectos = Proyecto::all();
-        $area = Empleado::where('id',$user_id)->first()->area;
-        $novedades=Novedad::all();
-        $employees = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();
+        $areas = Area::all(['id', 'area']);
+        $actividades = Actividad::all(['id', 'actividad']);
+        $area = Empleado::select('area')->where('id', $user_id)->first()->area;
+        $employees = Empleado::where('estado', 1)->orderBy('apellido1', 'asc')->get();
+        $proyectos = Proyecto::select('id', 'codigo', 'cliente_id')->with([
+            'cliente' => function ($query) {
+                $query->select('cliente', 'id');
+            }
+        ])->orderBy('codigo', 'asc')->get();
+        $novedades = Novedad::select('id', 'cc', 'horas', 'periodo')->with([
+            'empleado' => function ($query) {
+                $query->select('nombre', 'apellido1', 'apellido2', 'cc');
+            }
+        ])->get();
 
-        // dd($proyectos);
-        return view('ocupacion',[
+        return view('ocupacion', [
             'areas' => $areas,
             'actividades' => $actividades,
             'proyectos' => $proyectos,
             'area' => $area,
             'novedades' => $novedades,
             'emp' => $employees
-
         ]);
     }
 

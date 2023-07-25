@@ -90,7 +90,6 @@
                                         <option value="">--Elige una opción--</option>
                                         <option value="1">Aprobar</option>
                                         <option value="2">Rechazar</option>
-                                        <option value="3">Eliminar</option>
                                     </select>
                                 </td>
 

@@ -19,9 +19,9 @@
             </li>
         @endif
     </ul>
-
     <div class="container-fluid bg-white border border-top-0 rounded-end rounded-bottom">
         <div class="tab-content py-4">
+            {{-- Start Registrar --}}
             <div id="registrar" class="container-fluid tab-pane active">
                 <form id="formRegistro">
                     <h5 class="mb-2">Registro de ocupación diaria</h5>
@@ -101,82 +101,100 @@
                                 <option value="30">30</option> Minutos
                             </select>
                         </div>
+                    </div>
 
-                        <div>
-                            <div class="col-md-4 mt-2">
-                                <button type="button" class="btn btn-success" onclick="rocupacion()">REGISTRAR</button>
-                            </div>
+                    <div class="row">
+                        <div class="col-md-4 mt-2">
+                            <button type="button" class="btn btn-success" onclick="rocupacion()">REGISTRAR</button>
                         </div>
                     </div>
                 </form>
-
             </div>
+            {{-- End Registrar --}}
+
+            {{-- Start Mis Registros --}}
             <div class="container-fluid tab-pane fade" id="misregistros">
                 <br>
                 <form id="formConsultaOcupacion" action="" method="get" target="_blank">
                     <div class="row">
-                        <div class="col-6 col-md-2 cajaAzul">Fecha Inicio</div>
-                        <div class="col-6 col-md-2 "><input type="date" name="fechaInicioOcup" id="fechaInicioOcup"
-                                class="form-control"></div>
-                        <div class="col-6 col-md-2 cajaAzul">Fecha Final</div>
-                        <div class="col-6 col-md-2 "><input type="date" name="fechaFinalOcup" id="fechaFinalOcup"
-                                class="form-control"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6 col-md-2">
-                            <button type="button" class="btn btn-success"
-                                onclick="consultaroc()">Consultar</button>&nbsp;
+                        <div class="col-12 col-sm-4 mb-2">
+                            <div class="form-group">
+                                <label for="dia">Fecha Inicio</label>
+                                <input type="date" name="fechaInicioOcup" id="fechaInicioOcup" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-4 mb-2">
+                            <div class="form-group">
+                                <label for="dia">Fecha Final</label>
+                                <input type="date" name="fechaFinalOcup" id="fechaFinalOcup" class="form-control">
+                            </div>
                         </div>
                     </div>
 
-                    <div id="tablaocupacion" style="background-color:white">
+                    <div class="row mt-2">
+                        <div class="col">
+                            <button type="button" class="btn btn-success" onclick="consultaroc()">Consultar
+                            </button>
+                        </div>
                     </div>
 
-
+                    <div id="tablaocupacion" style="background-color:white"></div>
                 </form>
             </div>
+            {{-- End Mis Registros --}}
 
+            {{-- Start Reportes --}}
             <div class="container-fluid tab-pane fade" id="reporteso">
                 <br>
                 <form id="formReportesOcupacion" action="exportReporteO" method="get" target="_blank">
                     <div class="row">
-                        <div class="col-6 col-md-2 cajaAzul">Área</div>
-                        <div class="col-6 col-md-2 ">
-                            <select class="form-control" id="area" name="area">
-                                <option value="">Todas</option>
-                                @foreach ($areas as $a)
-                                    <option value="{{ $a->id }}">{{ $a->area }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-6 col-md-2 cajaAzul">Fecha Inicio</div>
-                        <div class="col-6 col-md-2 "><input type="date" name="fechaInicioOcup1" id="fechaInicioOcup1"
-                                class="form-control"></div>
-                        <div class="col-6 col-md-2 cajaAzul">Fecha Final</div>
-                        <div class="col-6 col-md-2 "><input type="date" name="fechaFinalOcup1" id="fechaFinalOcup1"
-                                class="form-control"></div>
-                    </div>
-                    @if (session('tipo') == 0)
-                        <div class="row">
-                            <div class="col-6 col-md-2 cajaAzul">Responsable</div>
-                            <div class="col-6 col-md-10">
-                                <!--<select class="form-control basicAutoSelect" name="responsable" id="responsable"
-                                                                                            placeholder="buscar..."
-                                                                                            data-url="autoemp" autocomplete="off"></select>-->
-                                <select class="form-control" id="responsable" name="responsable">
-                                    <option value=""></option>
-                                    @foreach ($emp as $e)
-                                        <option value="{{ $e->cc }}">{{ $e->apellido1 . ' ' . $e->nombre }}
-                                        </option>
+                        <div class="col-12 col-sm mb-2">
+                            <div class="form-group">
+                                <label for="dia">Área</label>
+                                <select class="form-control" id="area" name="area">
+                                    <option value="">Todas</option>
+                                    @foreach ($areas as $a)
+                                        <option value="{{ $a->id }}">{{ $a->area }}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
+
+                        <div class="col-12 col-sm mb-2">
+                            <div class="form-group">
+                                <label for="dia">Fecha Inicio</label>
+                                <input type="date" name="fechaInicioOcup1" id="fechaInicioOcup1"
+                                    class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm mb-2">
+                            <div class="form-group">
+                                <label for="dia">Fecha Final</label>
+                                <input type="date" name="fechaFinalOcup1" id="fechaFinalOcup1" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (session('tipo') == 0)
+                        <div class="row">
+                            <div class="col-12 col-sm-4 mb-2">
+                                <div class="form-group">
+                                    <label for="dia">Responsable</label>
+                                    <select class="form-control" id="responsable" name="responsable">
+                                        <option value=""></option>
+                                        @foreach ($emp as $e)
+                                            <option value="{{ $e->cc }}">{{ $e->apellido1 . ' ' . $e->nombre }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     @endif
-                    <div class="row">
+
+                    <div class="row mt-2">
                         <div class="col-6 col-md-2">
                             <button type="button" class="btn btn-success"
                                 onclick="seguimiento()">Seguimiento</button>&nbsp;
@@ -204,44 +222,49 @@
 
                 </form>
             </div>
+            {{-- End Reportes --}}
 
-            <div class="container-fluid tab-pane fade" id="horasNovedad">
-                <br>
-                <form action="{{ route('importHoras') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="form-group mb-4">
-                        <div class="custom-file text-left">
-                            <input type="file" name="file" class="custom-file-input" id="customFile">
-                            <label class="custom-file-label" for="customFile">Choose file</label>
+            {{-- Start Horas --}}
+            @if (session('area') == 6)
+                <div class="container-fluid tab-pane fade" id="horasNovedad">
+                    <br>
+                    <form action="{{ route('importHoras') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group mb-4">
+                            <div class="custom-file text-left">
+                                <input type="file" name="file" class="custom-file-input" id="customFile">
+                                <label class="custom-file-label" for="customFile">Choose file</label>
+                            </div>
                         </div>
-                    </div>
-                    <button class="btn btn-success">Importar horas</button><br>
-                    <table id="tableNovedades" class="table table-striped"
-                        style="width:100%;overflow:scroll;color:black">
-                        <thead>
-                            <tr>
-                                <th>CC</th>
-                                <th>NOMBRE</th>
-                                <th>HORAS</th>
-                                <th>PERIODO</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($novedades as $n)
+                        <button class="btn btn-success">Importar horas</button><br>
+                        <table id="tableNovedades" class="table table-striped"
+                            style="width:100%;overflow:scroll;color:black">
+                            <thead>
                                 <tr>
-                                    <td>{{ $n->cc }}</td>
-                                    <td>{{ isset($n->empleado) ? $n->empleado->apellido1 . ' ' . $n->empleado->apellido2 . ' ' . $n->empleado->nombre : '' }}
-                                    </td>
-                                    <td>{{ $n->horas }}</td>
-                                    <td>{{ $n->periodo }}</td>
+                                    <th>CC</th>
+                                    <th>NOMBRE</th>
+                                    <th>HORAS</th>
+                                    <th>PERIODO</th>
                                 </tr>
-                            @endforeach
+                            </thead>
+                            <tbody>
+                                @foreach ($novedades as $n)
+                                    <tr>
+                                        <td>{{ $n->cc }}</td>
+                                        <td>{{ isset($n->empleado) ? $n->empleado->apellido1 . ' ' . $n->empleado->apellido2 . ' ' . $n->empleado->nombre : '' }}
+                                        </td>
+                                        <td>{{ $n->horas }}</td>
+                                        <td>{{ $n->periodo }}</td>
+                                    </tr>
+                                @endforeach
 
-                        </tbody>
+                            </tbody>
 
-                    </table>
-                </form>
-            </div>
+                        </table>
+                    </form>
+                </div>
+            @endif
+            {{-- End Horas --}}
         </div>
     </div>
 
