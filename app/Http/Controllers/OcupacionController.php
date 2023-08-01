@@ -23,6 +23,8 @@ class OcupacionController extends Controller
         $user_cc = Empleado::where('id', $user_id)->first()->cc;
         $today_date = Carbon::now();
         $input_date = new Carbon($request->dia);
+        $date_july_15 = Carbon::createFromDate(2023, 7, 15);
+        $friday_hours = $input_date->gte($date_july_15) ? 8.5 : 9.5;
         $records_created = ocupacion::where('cc', $user_cc)->where('dia', $request->dia)->get();
         $actividad_id = Actividad::where('actividad', $request->actividad)->first()->id;
         $hours_completed = 0;
@@ -49,7 +51,7 @@ class OcupacionController extends Controller
             return "No es posible registrar una fecha posterior a la actual";
         }
 
-        if ($hours_completed > 8.5 && $input_date->dayOfWeek == 5) {
+        if ($hours_completed > $friday_hours && $input_date->dayOfWeek == 5) {
             return "La horas que desea registrar superan las 8,5 horas";
         }
 
@@ -93,6 +95,8 @@ class OcupacionController extends Controller
                 $fila->put('nombre', $empleado->nombre . " " . $empleado->apellido1);
                 $fila->put('area', $empleado->narea->area);
                 $fila->put('fecha', $date_current->toDateString());
+                $date_july_15 = Carbon::createFromDate(2023, 7, 15);
+                $friday_hours = $date_current->gte($date_july_15) ? 8.5 : 9.5;
 
                 $total_hours_worked = 0;
                 $employee_tracking = null;
@@ -123,7 +127,7 @@ class OcupacionController extends Controller
                     $fila->put('clase', 'table-warning');
                 }
 
-                if ($total_hours_worked == 8.5 && $date_current->dayOfWeek == 5) {
+                if ($total_hours_worked == $friday_hours && $date_current->dayOfWeek == 5) {
                     $fila->put('clase', 'table-success');
                 }
 

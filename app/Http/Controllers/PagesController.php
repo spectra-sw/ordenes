@@ -1542,7 +1542,9 @@ class PagesController extends Controller
 
         $fecha = $request->fecha;
         $date_carbon = new Carbon($fecha);
-        $hours_per_day = $date_carbon->dayOfWeek == 5 ? 8.5 : 9.5;
+        $date_july_15 = Carbon::createFromDate(2023, 7, 15);
+        $friday_hours = $date_carbon->gte($date_july_15) ? 8.5 : 9.5;
+        $hours_per_day = $date_carbon->dayOfWeek == 5 ? $friday_hours : 9.5;
 
         $cc = Empleado::where('id',$user)->first()->cc;
         $hoc = Ocupacion::where('cc',$cc)->where('dia','=',$fecha)->sum('horas');
