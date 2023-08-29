@@ -56,12 +56,14 @@ class DistribucionController extends Controller
         $tsb=array();
         $ttsb=0;
         $cont = 0;
+        $valores['proyecto'] = "";
         foreach ($jornadas as $j){
-            $valores['proyecto'] = "";
+            //$valores['proyecto'] = "";
             $cont = $cont + 1;
             $bandlinea= false;
             $laborales_cero = false;
             Log::info($tsb);
+            Log::info($valores);
             $hi = explode(":", $j->hi);
             $hi =intval($hi[0]) + round(floatval($hi[1]/60),2);
             $hf = explode(":", $j->hf);
@@ -111,6 +113,7 @@ class DistribucionController extends Controller
                 $especial = true;
             }
             //dd($turno);
+            //dd($laborales_cero);
             //Log::info($especial);
             if ($laborales_cero==false){
                 if ($turno->fecha_inicio == $turno->fecha_fin){
@@ -452,7 +455,8 @@ class DistribucionController extends Controller
                         $sb = $tsb[$j->fecha] + ($duracion - $j->almuerzo);
                     }
                     else{
-                        $sb =$tsb[$j->fecha] + ($duracion - $j->almuerzo);
+                       // $sb =$tsb[$j->fecha] + ($duracion - $j->almuerzo);
+                       $sb = ($duracion - $j->almuerzo);
                     }
                     //$sb = $duracion - $j->almuerzo;
                     //dd($sb);
