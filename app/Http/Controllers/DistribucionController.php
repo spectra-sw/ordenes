@@ -613,6 +613,14 @@ class DistribucionController extends Controller
         }
         //dd($tsb);
         $datos2 = collect([]);
+        $horast=0;
+        foreach ($datos as $d){
+            if ($d['codigo del concepto']=='001'){
+                $cc = $d['codigo del empleado'];
+                $horast += $d['horas'];
+            }
+        }
+
         foreach ($datos as $d){
             if ($d['codigo del concepto']=='001'){
                 $cc = $d['codigo del empleado'];
@@ -620,8 +628,8 @@ class DistribucionController extends Controller
                 
 
                 if ($j->trabajador->auxilio>0){
-            
-                    $auxilio= round(($j->trabajador->auxilio/$ttsb)*$horas,1);
+                    $auxilio= round(($j->trabajador->auxilio/$horast)*$horas,1);
+                    //$auxilio= round(($j->trabajador->auxilio/$ttsb)*$horas,1);
                     $linea=collect([]);
                     /*$linea->put('total',$total[$cc]);
                     $linea->put('auxilio',$emp->auxilio);
