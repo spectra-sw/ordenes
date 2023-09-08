@@ -616,7 +616,7 @@ class DistribucionController extends Controller
         $horast=0;
         foreach ($datos as $d){
             if ($d['codigo del concepto']=='001'){
-                $cc = $d['codigo del empleado'];
+                
                 $horast += $d['horas'];
             }
         }

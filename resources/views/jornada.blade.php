@@ -97,10 +97,13 @@
                                     <div class="col-3 col-md-1 ">
                                         <select class="form-control" id="minInicio" name="minInicio" required>
                                             <option value=""></option>
-                                            <option value="0">00</option>
+                                            <!--<option value="0">00</option>
                                             <option value="15">15</option>
                                             <option value="30">30</option>
-                                            <option value="45">45</option>
+                                            <option value="45">45</option>-->
+                                            @for ($i = 0; $i < 60; $i+=5)
+                                                <option value="{{ $i }}">{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}</option>
+                                            @endfor
                                         </select>
                                     </div>
                                     <div class="col-6 col-md-1 cajaAzul">Duración * (incluyendo tiempo de almuerzo y/o
@@ -113,10 +116,13 @@
                                     <div class="col-3 col-md-1 ">
                                         <label for="duracionm">Minutos</label>
                                         <select class="form-control" id="duracionm" name="duracionm" required>
-                                            <option value="0">00</option>
+                                            <!--<option value="0">00</option>
                                             <option value="15">15</option>
                                             <option value="30">30</option>
-                                            <option value="45">45</option>
+                                            <option value="45">45</option>-->
+                                            @for ($i = 0; $i < 60; $i+=5)
+                                                <option value="{{ $i }}">{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}</option>
+                                            @endfor
                                         </select>
                                     </div>
                                     <!--<div class="col-6 col-md-2 cajaAzul">Hora Fin *</div>
