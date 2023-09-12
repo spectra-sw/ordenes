@@ -139,10 +139,13 @@
             @if (isset($empleado['tipo']))
                 <option value="0" {{ $empleado['tipo'] == 0 ? 'selected' : '' }}>Admin</option>
                 <option value="1" {{ $empleado['tipo'] == 1 ? 'selected' : '' }}>Registro</option>
+                <option value="2" {{ $empleado['tipo'] == 2 ? 'selected' : '' }}>Revisión</option>
+                <option value="10" {{ $empleado['tipo'] == 10 ? 'selected' : '' }}>Ocupación</option>
             @else
                 <option value=""></option>
                 <option value="0">Admin</option>
                 <option value="1">Registro OT</option>
+                <option value="2">Revisión de tiempos</option>
                 <option value="10">Registro Ocupación</option>
             @endif
         </select>

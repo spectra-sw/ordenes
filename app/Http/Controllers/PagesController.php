@@ -56,6 +56,7 @@ class PagesController extends Controller
         return view('auth.login');
 
     }
+
     public function menu(){
         $tipo = session('tipo');
         $user = session('user');
@@ -63,7 +64,7 @@ class PagesController extends Controller
             return redirect()->route('inicio');
         }
         //dd($tipo);
-        if (($tipo ==0)||($tipo ==1)||($tipo ==10)){
+        if (($tipo ==0)||($tipo ==1)||($tipo ==2)||($tipo ==10)){
             $e = Empleado::where('id',$user)->first();
             $cc = $e->cc;
             $nombre = $e->nombre. " " . $e->apellido1;
@@ -76,10 +77,11 @@ class PagesController extends Controller
             return view('timetracker.menu');
         }
         else{
-            return view('login');
+            return view('auth.login');
         }
 
     }
+
     public function bases(){
         $tipo = session('tipo');
         $user_id = session('user');
@@ -93,7 +95,7 @@ class PagesController extends Controller
                 'area' => $area,
             ]);
         } else{
-            return view('login');
+            return redirect()->route('inicio');
         }
 
     }

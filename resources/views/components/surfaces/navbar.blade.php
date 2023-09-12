@@ -8,6 +8,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                @if (session('tipo') != 2)
                 <li class="nav-item">
                     <a @if (Request::is('jornada')) class="nav-link active" @else class="nav-link" @endif
                         href="/jornada" style="font-size: 14px">
@@ -15,7 +16,8 @@
                         Registros
                     </a>
                 </li>
-                @if (session('tipo') == 0)
+                @endif
+                @if (session('tipo') == 0 || session('tipo') == 2)
                     <li class="nav-item">
                         <a @if (Request::is('consultas')) class="nav-link active" @else class="nav-link" @endif
                             href="/consultas" style="font-size: 14px">
@@ -24,7 +26,7 @@
                         </a>
                     </li>
                 @endif
-                @if (session('tipo') != 1)
+                @if (session('tipo') != 1 && session('tipo') != 2)
                     <li class="nav-item">
                         <a @if (Request::is('ocupacion')) class="nav-link active" @else class="nav-link" @endif
                             href="/ocupacion" style="font-size: 14px">

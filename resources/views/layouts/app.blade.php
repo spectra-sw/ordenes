@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Ordenes de trabajo - Spectra</title>
@@ -10,27 +11,32 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="{{ URL::asset('css/style.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.7/dist/latest/bootstrap-autocomplete.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.7/dist/latest/bootstrap-autocomplete.min.js">
+    </script>
     <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
-    <!--<script src="https://code.jquery.com/jquery-3.5.1.js"></script>  -->  
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>   
+    <!--<script src="https://code.jquery.com/jquery-3.5.1.js"></script>  -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <style>
-      
-      
+
+
     </style>
 </head>
+
 <body>
     <div id="menu">
         <div class="card">
             <div class="card-header">
                 <div class="row justify-content-between">
                     <div class="col-2">
-                        <img src="{{ URL::asset('img/logo.png') }}" class="img-responsive center-block" style="cursor:pointer" onclick="window.open('/menu','_self')">
+                        <img src="{{ URL::asset('img/logo.png') }}" class="img-responsive center-block"
+                            style="cursor:pointer" onclick="window.open('/menu','_self')">
                     </div>
                     <div class="col-2">
-                        <p class="font-weight-light">{{ session('nombre') }}&nbsp; <button class="btn btn-primary btn-sm" onclick="window.open('/logout','_self')">Salir</button></p>
-                        
-                        
+                        <p class="font-weight-light">{{ session('nombre') }}&nbsp; <button
+                                class="btn btn-primary btn-sm" onclick="window.open('/logout','_self')">Salir</button>
+                        </p>
+
+
                         <!--<nav class="navbar navbar-expand-lg navbar-light bg-light">
                                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                                     <span class="navbar-toggler-icon"></span>
@@ -48,7 +54,7 @@
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="/logout">Salir</a>
                                         </div>
-                                    </li>  
+                                    </li>
                                     </ul>
                                 </div>
                         </nav>-->
@@ -57,45 +63,46 @@
                 </div>
             </div>
             <div class="card-body">
-            
+
 
                 <ul class="nav nav-pills">
-                   <!-- <li class="nav-item ml-1">
+                    <!-- <li class="nav-item ml-1">
                         <a class="nav-link active" href="/ordenes">CREAR ORDENES</a>
                     </li>-->
                     <li class="nav-item ml-1">
                         <a class="nav-link active" href="/jornada">REGISTRO JORNADA</a>
                     </li>
-                    @if (session('tipo')==0)
-                    <li class="nav-item dropdown ml-2">
-                        <a class="nav-link active dropdown-toggle" data-toggle="dropdown" href="#">ADMINISTRACIÓN</a>
-                        <div class="dropdown-menu">
-                        <a class="dropdown-item" href="consultas">CONSULTAS</a>
-                        <a class="dropdown-item" href="bases">BASES DE DATOS</a>
-                        <a class="dropdown-item" href="programacion">PROGRAMACION</a>
-                        <a class="dropdown-item" href="rocupacion">OCUPACIÓN</a>
-                        </div>
-                    </li>
+                    @if (session('tipo') == 0)
+                        <li class="nav-item dropdown ml-2">
+                            <a class="nav-link active dropdown-toggle" data-toggle="dropdown"
+                                href="#">ADMINISTRACIÓN</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="consultas">CONSULTAS</a>
+                                <a class="dropdown-item" href="bases">BASES DE DATOS</a>
+                                <a class="dropdown-item" href="programacion">PROGRAMACION</a>
+                                <a class="dropdown-item" href="rocupacion">OCUPACIÓN</a>
+                            </div>
+                        </li>
                     @endif
-                    @if (session('tipo')==1)
-                    <li class="nav-item ml-2">
-                        <a class="nav-link active" href="consultas">CONSULTAR</a>
-                    </li>
+                    @if (session('tipo') == 1)
+                        <li class="nav-item ml-2">
+                            <a class="nav-link active" href="consultas">CONSULTAR</a>
+                        </li>
                     @endif
-                    @if (session('tipo')!=1)
-                    <li class="nav-item ml-2">
-                        <a class="nav-link active" href="ocupacion">REGISTRO DE OCUPACIÓN</a>
-                    </li>
+                    @if (session('tipo') != 1)
+                        <li class="nav-item ml-2">
+                            <a class="nav-link active" href="ocupacion">REGISTRO DE OCUPACIÓN</a>
+                        </li>
                     @endif
-                    @if (session('tipo')==0)
-                   <!-- <li class="nav-item ml-2">
+                    @if (session('tipo') == 0)
+                        <!-- <li class="nav-item ml-2">
                         <a class="nav-link active" href="extra">TIEMPO EXTRA</a>
                     </li>-->
                     @endif
-                   
+
                 </ul>
                 <br>
-               
+
 
             </div>
         </div>
@@ -104,6 +111,6 @@
                 @yield('content')
             </div>
         </div>
-       
+
     </div>
 </body>

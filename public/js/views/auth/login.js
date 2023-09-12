@@ -23,11 +23,15 @@ $("#submitLogin").on("submit", (e) => {
                     //window.open('ordenes','_self');
                     window.open("menu", "_self");
                 }
+                if (data == 2) {
+                    //window.open('ordenes','_self');
+                    window.open("menu", "_self");
+                }
                 if (data == 10) {
                     //window.open('ordenes','_self');
                     window.open("menu", "_self");
                 }
-                if (data != 0 && data != 1 && data != 10) {
+                if (data != 0 && data != 1 && data != 2 && data != 10) {
                     errorHandler("* Datos inválidos");
                     $("#alerta").css("display", "block");
                 }
