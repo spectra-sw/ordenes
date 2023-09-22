@@ -57,6 +57,7 @@ class DistribucionController extends Controller
         $ttsb=0;
         $cont = 0;
         $valores['proyecto'] = "";
+        $valores['fecha'] = "";
         foreach ($jornadas as $j){
             //$valores['proyecto'] = "";
             $cont = $cont + 1;
@@ -451,12 +452,14 @@ class DistribucionController extends Controller
             if (($especial == false)&&($numdia >= $turno->dia_inicio)&&($numdia <= $turno->dia_fin)){
                 //dd("test");
                 if (($numdia > 0)&&($festivo=="no")){
+                    //if ($valores['fecha'] == $j->fecha){
                     if ($valores['proyecto'] == $j->proyecto){
                         $sb = $tsb[$j->fecha] + ($duracion - $j->almuerzo);
+                        dd($sb);
                     }
                     else{
-                       // $sb =$tsb[$j->fecha] + ($duracion - $j->almuerzo);
-                       $sb = ($duracion - $j->almuerzo);
+                       $sb =$tsb[$j->fecha] + ($duracion - $j->almuerzo);
+                       //$sb = ($duracion - $j->almuerzo);
                     }
                     //$sb = $duracion - $j->almuerzo;
                     //dd($sb);
