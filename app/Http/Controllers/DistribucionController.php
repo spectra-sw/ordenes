@@ -455,7 +455,7 @@ class DistribucionController extends Controller
                     //if ($valores['fecha'] == $j->fecha){
                     if ($valores['proyecto'] == $j->proyecto){
                         $sb = $tsb[$j->fecha] + ($duracion - $j->almuerzo);
-                        dd($sb);
+                        //$sb);
                     }
                     else{
                        $sb =$tsb[$j->fecha] + ($duracion - $j->almuerzo);
