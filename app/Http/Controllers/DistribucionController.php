@@ -687,6 +687,7 @@ class DistribucionController extends Controller
 
     }
     function calcularHeno($hi,$hf){
+        //dd($hi,$hf);
         $l1 = 21;
         $l2 = 0;
         $l3 = 6;
@@ -694,20 +695,18 @@ class DistribucionController extends Controller
       
         // intervalo 1
         if ($hi < $l1 && $hf > $l1) {
-          $heno += $hf - $l1;
+          $heno = $hf - $l1;
         } else if ($hi >= $l1 && $hf > $l1) {
-          $heno += $hf - $hi;
+          $heno = abs($hf - $hi);
         } else if ($hi >= $l1 && $hf < $hi) {
           $heno += 24 - $hi;
         }
-      
+        //dd($heno);
         // intervalo 2
-        if ($hi >= $l1 && $hf > $l2 && $hi>$hf) {
-          $heno += $hf;
-        } else if ($hi >= $l2 && $hf <= $l3) {
-          $heno += $hf - $hi;
+        if ($hi >= $l2 && $hf <= $l3) {
+          $heno = $hf - $hi;
         } else if ($hi >= $l2 && $hi <= $l3 && $hf > $l3) {
-          $heno += $l3 - $hi;
+          $heno = $l3 - $hi;
         }
       
         return $heno;
