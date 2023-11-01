@@ -38,58 +38,61 @@ use Illuminate\Support\Facades\DB;
 
 class OrdenesController extends Controller
 {
-    public function ordenes(){
+    public function ordenes()
+    {
         //$proyectos = Proyecto::orderBy('codigo','asc')->get();
         $proyectos = collect([]);
         $user = session('user');
-        if ($user==""){
+        if ($user == "") {
             return redirect()->route('inicio');
         }
         //$user = 108;
-        $cc = Empleado::where('id',$user)->first()->cc;
-        $ciudad = Empleado::where('id',$user)->first()->ciudad;
-        $ps = Programacion::where('cc',$cc)->get()->unique('proyecto');
-        foreach ($ps as $p){
+        $cc = Empleado::where('id', $user)->first()->cc;
+        $ciudad = Empleado::where('id', $user)->first()->ciudad;
+        $ps = Programacion::where('cc', $cc)->get()->unique('proyecto');
+        foreach ($ps as $p) {
             $proyectos->push($p->proyecto);
         }
         //dd($proyectos->count());
-        if ($proyectos->count() == 0){
-            $ps = Proyecto::where('ciudad',$ciudad)->orderBy('codigo','asc')->get();
-            foreach ($ps as $p){
+        if ($proyectos->count() == 0) {
+            $ps = Proyecto::where('ciudad', $ciudad)->orderBy('codigo', 'asc')->get();
+            foreach ($ps as $p) {
                 $proyectos->push($p->codigo);
             }
         }
-        $ps = Proyecto::where('director',$user)->orWhere('lider',$user)->get();
-        foreach ($ps as $p){
+        $ps = Proyecto::where('director', $user)->orWhere('lider', $user)->get();
+        foreach ($ps as $p) {
             $proyectos->push($p->codigo);
         }
         //dd($proyectos);
-        $proyectosf= collect([]);
-        foreach ($proyectos as $p){
-            if(Proyecto::where('codigo',$p)->first()->registro == 1){
+        $proyectosf = collect([]);
+        foreach ($proyectos as $p) {
+            if (Proyecto::where('codigo', $p)->first()->registro == 1) {
                 $proyectosf->push($p);
             }
         }
         //dd($proyectosf);
-        return view('ordenes',[
+        return view('ordenes', [
             'proyectos' => $proyectos
 
         ]);
     }
-    public function jornada(Request $request){
+    public function jornada(Request $request)
+    {
         $proyectos = collect([]);
 
         $user = session('user');
-        if ($user==""){
+        if ($user == "") {
             return redirect()->route('inicio');
         }
-        $aut = Autorizados::where('empleado_id',$user)->get();
-        return view('jornada',[
+        $aut = Autorizados::where('empleado_id', $user)->get();
+        return view('jornada', [
             'proyectos' => $aut
 
         ]);
     }
-    public function registrarJornada(Request $request){
+    public function registrarJornada(Request $request)
+    {
 
         $fecha = $request->fecha;
         $hours = $request->horaInicio;
@@ -114,37 +117,38 @@ class OrdenesController extends Controller
         $hi = strval($request->horaInicio) . ":" . strval($request->minInicio);
         //$hf = strval($request->horaFin) . ":" . strval($request->minFin);
         $duracion = strval($request->duracionh) . ":" . strval($request->duracionm);
-        $request->merge(['user_id' => $user_id, 'hi' => $hi, 'hf' => $fechaf->format('H:i'),'fechaf' => $fechaf->format('Y-m-d'), 'estado' => 1,
-         'duracion' => $duracion, 'almuerzo' => 0]);
+        $request->merge([
+            'user_id' => $user_id, 'hi' => $hi, 'hf' => $fechaf->format('H:i'), 'fechaf' => $fechaf->format('Y-m-d'), 'estado' => 1,
+            'duracion' => $duracion, 'almuerzo' => 0
+        ]);
         $data = $request->all();
 
         $j = Jornada::create($data);
 
-        $datosJornada = Jornada::where('jornada_id',$data['jornada_id'])->where('user_id',$user_id)->get();
-        return view('tablaJornada',[
+        $datosJornada = Jornada::where('jornada_id', $data['jornada_id'])->where('user_id', $user_id)->get();
+        return view('tablaJornada', [
             'jornada' => $datosJornada
         ]);
     }
-    public function consecJornada(Request $request){
+    public function consecJornada(Request $request)
+    {
         $user = session()->get('user');
         //$next = Jornada::max('id')+ 1;
-        if(Jornada::where('user_id',$user)->latest()->first()){
-            $jornada_id = Jornada::where('user_id',$user)->latest()->first()->jornada_id +1;
-        }
-        else{
-            $jornada_id =1;
+        if (Jornada::where('user_id', $user)->latest()->first()) {
+            $jornada_id = Jornada::where('user_id', $user)->latest()->first()->jornada_id + 1;
+        } else {
+            $jornada_id = 1;
         }
         return $jornada_id;
-
     }
-    public function deleteJornada(Request $request){
-        $datos = Jornada::where('id',$request->id)->first();
-        Jornada::where('id',$request->id)->delete();
-        $datosJornada = Jornada::where('jornada_id',$datos->jornada_id)->where('user_id',$datos->user_id)->get();
-        return view('tablaJornada',[
+    public function deleteJornada(Request $request)
+    {
+        $datos = Jornada::where('id', $request->id)->first();
+        Jornada::where('id', $request->id)->delete();
+        $datosJornada = Jornada::where('jornada_id', $datos->jornada_id)->where('user_id', $datos->user_id)->get();
+        return view('tablaJornada', [
             'jornada' => $datosJornada
         ]);
-
     }
 
     public function solapeJornada(Request $request)
@@ -182,7 +186,7 @@ class OrdenesController extends Controller
         $fechaf->addHours($hours + $request->duracionh);
         $fechaf->addMinutes($minutes + $request->duracionm);
         $formatted_date_time = $fechaf->format('Y-m-d H:i:s');
-    //    dd( $formatted_date_time );
+        //    dd( $formatted_date_time );
         $timestamp2_end = $fechaf->getTimestamp();
         // dd($fechaf);
 
@@ -219,26 +223,25 @@ class OrdenesController extends Controller
                     $solape= "false";
                 }
             }*/
-            if (($fecha < $fecha3 && $fechaf > $fecha3) || ($fecha>= $fecha3 && $fechaf <= $fecha4) || ($fecha >= $fecha3 && $fechaf >= $fecha4 && $fecha < $fecha4)){
-                $solape="true";
+            if (($fecha < $fecha3 && $fechaf > $fecha3) || ($fecha >= $fecha3 && $fechaf <= $fecha4) || ($fecha >= $fecha3 && $fechaf >= $fecha4 && $fecha < $fecha4)) {
+                $solape = "true";
                 return $solape;
             }
-
-
-
         }
         return $solape;
     }
 
-    public function misjornadas(){
+    public function misjornadas()
+    {
         return view('misjornadas');
     }
 
-    public function consultaJornada(Request $request){
+    public function consultaJornada(Request $request)
+    {
         $user = session()->get('user');
-        $jornadas = Jornada::where('user_id',$user)->where('fecha','>=',$request->inicio)->where('fecha','<=',$request->fin)->orderBy('fecha','asc')->get();
+        $jornadas = Jornada::where('user_id', $user)->where('fecha', '>=', $request->inicio)->where('fecha', '<=', $request->fin)->orderBy('fecha', 'asc')->get();
         $users = DB::table('users')->distinct()->select('email')->where('name', 'John')->get();
-        $total_jornadas = DB::table('jornada')->distinct()->select('jornada_id')->where('user_id',$user)->where('fecha','>=',$request->inicio)->where('fecha','<=',$request->fin)->count();
+        $total_jornadas = DB::table('jornada')->distinct()->select('jornada_id')->where('user_id', $user)->where('fecha', '>=', $request->inicio)->where('fecha', '<=', $request->fin)->count();
 
         $request = new Request();
         $request->merge(['fecha' => Carbon::now()->format('Y-m-d')]);
@@ -246,16 +249,18 @@ class OrdenesController extends Controller
 
 
 
-        return view('timetracker.consultaJornadas',[
+        return view('timetracker.consultaJornadas', [
             'jornadas' => $jornadas,
             'total_jornadas' => $total_jornadas,
             'estado' => $estado
         ]);
     }
-    public function consultaJornadaAdmin(Request $request){
-
-
+    public function consultaJornadaAdmin(Request $request)
+    {
         $jornadas = Jornada::query();
+        // busqueda de cortes que se encuentren en el rango de fechas
+        $cortes = Corte::query();
+
 
         if ($request->proyecto) {
             $jornadas->where('proyecto', $request->proyecto);
@@ -264,27 +269,48 @@ class OrdenesController extends Controller
         if ($request->trabajador) {
             $jornadas->where('user_id', $request->trabajador);
         }
-        if( $request->cliente){
-            $clientId = $request->cliente;
-            $jornadas = $jornadas->whereHas('proyectoinfo', function ($query) use ($clientId) {$query->where('cliente_id', $clientId);});
 
+        if ($request->cliente) {
+            $clientId = $request->cliente;
+            $jornadas = $jornadas->whereHas('proyectoinfo', function ($query) use ($clientId) {
+                $query->where('cliente_id', $clientId);
+            });
         }
+
         if ($request->inicio && $request->fin) {
             $jornadas->whereBetween('fecha', [$request->inicio, $request->fin]);
+            $cortes->whereDate('fecha_inicio', '<=', $request->inicio)
+                ->whereDate('fecha_fin', '>=', $request->inicio)
+                ->orWhereDate('fecha_inicio', '<=', $request->fin)
+                ->whereDate('fecha_fin', '>=', $request->fin)
+                ->orWhereDate('fecha_inicio', '>=', $request->inicio)
+                ->whereDate('fecha_fin', '<=', $request->fin);
         }
 
         if ($request->estado) {
             $jornadas->where('estado', $request->estado);
         }
+        $cortes = $cortes->get();
+        $jornadas = $jornadas->orderBy('fecha', 'asc')->get();
 
-        $jornadas = $jornadas->orderBy('fecha','asc')->get();
+        // agregar columna de cortes segun la fecha
+        foreach ($jornadas as $jornada) {
+            $jornada->corte_status = 1;
+            foreach ($cortes as $corte) {
+                if (($jornada->fecha >= $corte->fecha_inicio) && ($jornada->fecha <= $corte->fecha_fin) && $corte->estado == 0) {
+                    $jornada->corte_status = 0;
+                    break;
+                }
+            }
+        }
 
         return view('timetracker.consultaJornadasAdmin', [
             'jornadas' => $jornadas,
             'total_jornadas' => 0
         ]);
     }
-    public function accionesJornada(Request $request){
+    public function accionesJornada(Request $request)
+    {
         // validate $request
         $validate = $request->validate([
             'obs' => 'required',
@@ -295,32 +321,33 @@ class OrdenesController extends Controller
         //dd($request->obs);
         $jornada = Jornada::find($request->id);
 
-        if ($request->op == "1"){
+        if ($request->op == "1") {
             $jornada->estado = 2;
-            $result= "Aprobación realizada";
+            $result = "Aprobación realizada";
         } elseif ($request->op == "2") {
             $jornada->estado = 3;
-            $result= "Registro rechazado";
+            $result = "Registro rechazado";
         }
 
         $jornada->observacion = $request->obs;
-        $jornada->hi=$request->hi;
-        $jornada->hf=$request->hf;
+        $jornada->hi = $request->hi;
+        $jornada->hf = $request->hf;
         //$jornada->duracion=$request->duracion;
-        $jornada->almuerzo=$request->almuerzo;
+        $jornada->almuerzo = $request->almuerzo;
         $jornada->revisado_por = $user;
         $jornada->fecha_revision = Carbon::now()->format('Y-m-d');
-       //dd($jornada);
+        //dd($jornada);
         $jornada->save();
 
         return $result;
     }
 
-    public function validarCorte(Request $request){
+    public function validarCorte(Request $request)
+    {
         $cortes = Corte::all();
         $fecha = $request->fecha;
-        foreach ($cortes as $c){
-            if (($fecha >= $c->fecha_inicio)&& ($fecha<= $c->fecha_fin)){
+        foreach ($cortes as $c) {
+            if (($fecha >= $c->fecha_inicio) && ($fecha <= $c->fecha_fin)) {
                 return $c->estado;
             }
         }

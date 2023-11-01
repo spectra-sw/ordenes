@@ -30,14 +30,15 @@
                         @foreach ($jornadas as $j)
                             <?php $duracion = intval(explode(':', $j->duracion)[0]) + round(floatval(explode(':', $j->duracion)[1] / 60), 2); ?>
                             <tr>
-                                <td>{{ $j->trabajador->apellido1 . ' ' . $j->trabajador->apellido2 . ' ' . $j->trabajador->nombre }}
+                                <td>
+                                    {{ $j->trabajador->apellido1 . ' ' . $j->trabajador->apellido2 . ' ' . $j->trabajador->nombre }}
                                 </td>
 
                                 <td>{{ $j->proyecto }}</td>
                                 <td>{{ $j->proyectoinfo->cliente->cliente ?? 'N/A' }}</td>
                                 <td>{{ $j->fecha }}</td>
                                 <td>
-                                    @if (session('tipo') == 0)
+                                    @if (session('tipo') == 0 && $j->corte_status == 1)
                                         <input style="font-size: 14px; width: 64px;" class="form-control" type="text"
                                             id="hi{{ $j->id }}" name="hi{{ $j->id }}"
                                             value="{{ $j->hi }}">
@@ -47,7 +48,7 @@
                                 </td>
                                 <td>{{ $j->fechaf }}</td>
                                 <td>
-                                    @if (session('tipo') == 0)
+                                    @if (session('tipo') == 0 && $j->corte_status == 1)
                                         <input style="font-size: 14px; width: 64px;" class="form-control" type="text"
                                             id="hf{{ $j->id }}" name="hf{{ $j->id }}"
                                             value="{{ $j->hf }}">
@@ -62,7 +63,7 @@
                                 </td>
 
                                 <td>
-                                    @if (session('tipo') == 0)
+                                    @if (session('tipo') == 0 && $j->corte_status == 1)
                                         <input style="font-size: 14px; width: 64px;" class="form-control" type="number"
                                             min="0" id="almuerzo{{ $j->id }}"
                                             name="almuerzo{{ $j->id }}" value="{{ $j->almuerzo }}">
@@ -91,7 +92,7 @@
                                 @endswitch
 
                                 <td style="width: 100px">
-                                    @if (session('tipo') == 0)
+                                    @if (session('tipo') == 0 && $j->corte_status == 1)
                                         <input style="font-size: 14px; width: 100px;" class="form-control"
                                             type="text" id="obs{{ $j->id }}" name="obs{{ $j->id }}"
                                             value="{{ str_replace(' ', ' ', $j->observacion) }}">
@@ -102,16 +103,16 @@
 
                                 <td>{{ $j->updated_at }}</td>
 
-                                @if (session('tipo') == 0)
-                                    <td>
+                                <td>
+                                    @if (session('tipo') == 0 && $j->corte_status == 1)
                                         <select class="form-control" onchange="accionj(this.value,this.id)"
                                             id="{{ $j->id }}">
                                             <option value="">--Elige una opción--</option>
                                             <option value="1">Aprobar</option>
                                             <option value="2">Rechazar</option>
                                         </select>
-                                    </td>
-                                @endif
+                                    @endif
+                                </td>
 
                             </tr>
                         @endforeach
