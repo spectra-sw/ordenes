@@ -50,6 +50,11 @@ class Empleado extends Model implements Auditable
         return $this->hasMany(AuxilioExtras::class, 'empleado_id', 'id');
     }
 
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'empleado_id', 'id');
+    }
+
     public function transformAudit(array $data): array
     {
         $user_id = session('user');
