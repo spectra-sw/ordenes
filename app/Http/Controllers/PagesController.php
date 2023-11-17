@@ -1312,6 +1312,15 @@ class PagesController extends Controller
         $accion = $request->accion;
 
         switch ($accion) {
+            case 1:
+                $empleados = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();
+                $clientes = Cliente::orderBy('cliente','asc')->get();
+                return view('admin.modal.proyectoModal',[
+                    'accion' => 1,
+                    'emp' => $empleados,
+                    'clientes' => $clientes,
+                ]);
+                break;
             case 2:
                 $proyecto = Proyecto::where('id',$request->proyecto_id)->first();
                 $empleados = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();
