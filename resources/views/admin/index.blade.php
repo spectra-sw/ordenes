@@ -63,7 +63,7 @@
             </div>
 
             <div id="menu2" class="container-fluid tab-pane fade">
-                <!--<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#nuevoproyecto">Nuevo Proyecto</button>-->
+                <button type="button" class="btn btn-success mt-2 mb-4" onclick="accionesProyectos(1)">Nuevo Proyecto</button>
                 <button class="btn btn-success mt-2 mb-4" onclick="exportarproyectos()">Exportar Proyectos</button>
                 <div id="containerTablaProyectos" style="font-size: 14px">
                     <div class="d-flex justify-content-center mt-4 font-weight-bold">
