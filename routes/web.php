@@ -13,6 +13,7 @@ use App\Http\Controllers\OrdenesController;
 use App\Http\Controllers\MensajesController;
 use App\Http\Controllers\ConsultasController;
 use App\Http\Controllers\DistribucionController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OcupacionController;
 use  App\Http\Controllers\TurnoController;
 use App\Http\Middleware\Authenticate;
@@ -194,6 +195,10 @@ Route::get('/mensaje/info', [MensajesController::class, 'info']);
 Route::get('/nuevocorte', [PagesController::class, 'nuevocorte'])->middleware('auth');
 Route::get('/tablacorte', [PagesController::class, 'tablacorte']);
 
+// notificaciones
+Route::get('/notificaciones', [NotificationController::class, 'findAll']);
+Route::get('/notificaciones/read', [NotificationController::class, 'read']);
+Route::get('/notificaciones/test', [NotificationController::class, 'test']);
 
 // new routes v2
 Route::name('v2.')->group(function () {

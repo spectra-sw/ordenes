@@ -31,9 +31,13 @@ use App\Models\Cargo;
 use App\Models\Autorizados;
 use App\Models\Jornada;
 use App\Models\Corte;
+use App\Models\Notification;
 use Log;
 
 use Carbon\Carbon;
+use DateInterval;
+use DateTime;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
 class OrdenesController extends Controller
@@ -80,15 +84,40 @@ class OrdenesController extends Controller
     public function jornada(Request $request)
     {
         $proyectos = collect([]);
-
         $user = session('user');
+
         if ($user == "") {
             return redirect()->route('inicio');
         }
-        $aut = Autorizados::where('empleado_id', $user)->get();
-        return view('jornada', [
-            'proyectos' => $aut
 
+        $aut = Autorizados::where('empleado_id', $user)->get();
+        $ultimo_corte = Corte::where('estado', 1)->limit(1)->orderBy('id', 'desc')->first();
+
+        if (!$ultimo_corte) {
+            return view('jornada', [
+                'proyectos' => $aut,
+                'jornadas_rechazadas' => [],
+                'jornadas_pendientes' => [],
+            ]);
+        }
+
+        $fecha_incio_corte = new DateTime($ultimo_corte->fecha_inicio);
+        $fecha_fin_corte = new DateTime($ultimo_corte->fecha_fin) > Carbon::now()->format('Y-m-d') ? new DateTime(Carbon::now()->format('Y-m-d')) : new DateTime($ultimo_corte->fecha_fin);
+
+        $jornadas_rechazadas = Jornada::where('user_id', $user)->where('estado', 3)->get();
+        $jornadas_group_by_fecha = Jornada::where('user_id', $user)->get()->groupBy('fecha');
+        $jornadas_pendientes = [];
+
+        for ($i = $fecha_incio_corte; $i < $fecha_fin_corte; $i->add(new DateInterval('P1D'))) {
+            if (!isset($jornadas_group_by_fecha[$i->format('Y-m-d')])) {
+                array_push($jornadas_pendientes, $i->format('Y-m-d'));
+            }
+        }
+
+        return view('jornada', [
+            'proyectos' => $aut,
+            'jornadas_rechazadas' => $jornadas_rechazadas,
+            'jornadas_pendientes' => $jornadas_pendientes,
         ]);
     }
     public function registrarJornada(Request $request)
@@ -327,6 +356,9 @@ class OrdenesController extends Controller
         } elseif ($request->op == "2") {
             $jornada->estado = 3;
             $result = "Registro rechazado";
+            $content = "Su registro de jornada del día " . $jornada->fecha . " ha sido rechazado";
+            $this->create_notification($content, $jornada->user_id);
+            $this->send_whatsapp_by_rejected_jornada($jornada->fecha);
         }
 
         $jornada->observacion = $request->obs;
@@ -352,5 +384,58 @@ class OrdenesController extends Controller
             }
         }
         return 1;
+    }
+
+    // methos for ordenes
+    private function create_notification($content, $empleado_id)
+    {
+        Notification::create([
+            'content' => $content,
+            'empleado_id' => $empleado_id
+        ]);
+    }
+
+    private function send_whatsapp_by_rejected_jornada($date)
+    {
+        try {
+            $token = "EAAEPDh9XIZA8BOZByQUbePA8G2GsQkqKkvvQEgIJtA0sdGqLsh7pqZAhknU9ishZAAHRisH9QMQ1dZC2tOoQkDI43NEBEMRHFZBXIqqceF3wOcqOSo6axWEtouIQWlgW4HXTD4KMXW45WbZCta43LJPZCQflEQphq7ZBQkCHhjavDhCMn6nVdccisn5ehUHEtdpWQDp8Ere7j9MxGtYYataAZD";
+            $telefono = "+584120529358";
+            $url = "https://graph.facebook.com/v17.0/151331474733577/messages";
+
+            $mensaje = "
+            {
+                'messaging_product': 'whatsapp',
+                'to': '$telefono',
+                'type': 'template',
+                'template': {
+                    'name': 'working_day_reject',
+                    'language':{'code': 'en_US'},
+                    'components': [
+                        {
+                            'type': 'body',
+                            'parameters': [
+                                {
+                                    'type': 'text',
+                                    'text': '$date'
+                                }
+                            ]
+                        },
+                    ]
+                }
+            }
+            ";
+
+            $header = array(
+                'Content-Type: application/json',
+                'Authorization: Bearer ' . $token
+            );
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $mensaje);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_exec($curl);
+        } catch (\Throwable $th) {
+        }
     }
 }
