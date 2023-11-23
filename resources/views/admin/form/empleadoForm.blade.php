@@ -65,6 +65,14 @@
     </div>
 
     <div class="form-group mb-2">
+        <label for="telefono">Telefono</label>
+        <input type="text" class="form-control" id="telefono" name="telefono"
+            placeholder="+573170000000"
+            value="{{ isset($empleado['telefono']) ? $empleado['telefono'] : '' }}">
+        <div id="telefono_e" class="invalid-feedback"></div>
+    </div>
+
+    <div class="form-group mb-2">
         <label for="ciudad">CIUDAD</label>
         <input type="text" class="form-control" id="ciudad" name="ciudad"
             value="{{ isset($empleado['ciudad']) ? $empleado['ciudad'] : '' }}">

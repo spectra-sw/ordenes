@@ -108,6 +108,7 @@ const crearEmpleado = () => {
         "auxilio",
         "auxiliot",
         "correo",
+        "telefono",
         "ciudad",
         "horario",
         "area",

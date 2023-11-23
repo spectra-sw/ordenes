@@ -35,6 +35,9 @@ use App\Models\Notification;
 use Log;
 
 use Carbon\Carbon;
+use DateInterval;
+use DateTime;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
 class OrdenesController extends Controller
@@ -81,15 +84,40 @@ class OrdenesController extends Controller
     public function jornada(Request $request)
     {
         $proyectos = collect([]);
-
         $user = session('user');
+
         if ($user == "") {
             return redirect()->route('inicio');
         }
-        $aut = Autorizados::where('empleado_id', $user)->get();
-        return view('jornada', [
-            'proyectos' => $aut
 
+        $aut = Autorizados::where('empleado_id', $user)->get();
+        $ultimo_corte = Corte::where('estado', 1)->limit(1)->orderBy('id', 'desc')->first();
+
+        if (!$ultimo_corte) {
+            return view('jornada', [
+                'proyectos' => $aut,
+                'jornadas_rechazadas' => [],
+                'jornadas_pendientes' => [],
+            ]);
+        }
+
+        $fecha_incio_corte = new DateTime($ultimo_corte->fecha_inicio);
+        $fecha_fin_corte = new DateTime($ultimo_corte->fecha_fin) > Carbon::now()->format('Y-m-d') ? new DateTime(Carbon::now()->format('Y-m-d')) : new DateTime($ultimo_corte->fecha_fin);
+
+        $jornadas_rechazadas = Jornada::where('user_id', $user)->where('estado', 3)->get();
+        $jornadas_group_by_fecha = Jornada::where('user_id', $user)->get()->groupBy('fecha');
+        $jornadas_pendientes = [];
+
+        for ($i = $fecha_incio_corte; $i < $fecha_fin_corte; $i->add(new DateInterval('P1D'))) {
+            if (!isset($jornadas_group_by_fecha[$i->format('Y-m-d')])) {
+                array_push($jornadas_pendientes, $i->format('Y-m-d'));
+            }
+        }
+
+        return view('jornada', [
+            'proyectos' => $aut,
+            'jornadas_rechazadas' => $jornadas_rechazadas,
+            'jornadas_pendientes' => $jornadas_pendientes,
         ]);
     }
     public function registrarJornada(Request $request)

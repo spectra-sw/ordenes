@@ -1076,11 +1076,11 @@ class PagesController extends Controller
         return "Programación eliminada";
     }
 
-//empleado
+    //empleado
     public function nuevoemp(Request $request){
         // dd('sdfsd');
         // validate $request
-        $validated = $request->validate([
+        $request->validate([
             'cc' => 'required|unique:empleados,cc',
             'apellido1' => 'required',
             'apellido2' => 'required',
@@ -1088,6 +1088,7 @@ class PagesController extends Controller
             'auxilio' => 'required|numeric',
             'auxiliot' => 'required|numeric',
             'correo' => 'required|email|unique:empleados',
+            'telefono' => 'required',
             'tipo' => 'required|numeric',
             'ciudad' => 'required',
             'horario' => 'required|exists:horarios,id',
@@ -1105,6 +1106,7 @@ class PagesController extends Controller
             'auxilio' => $request->auxilio,
             'auxiliot' => $request->auxiliot,
             'correo' => $request->correo,
+            'telefono' => $request->telefono,
             'tipo' => $request->tipo,
             'ciudad' => strtoupper($request->ciudad),
             'horario_id' => $request->horario,
