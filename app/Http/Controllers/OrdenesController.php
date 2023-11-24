@@ -104,7 +104,7 @@ class OrdenesController extends Controller
         $fecha_incio_corte = new DateTime($ultimo_corte->fecha_inicio);
         $fecha_fin_corte = new DateTime($ultimo_corte->fecha_fin) > Carbon::now()->format('Y-m-d') ? new DateTime(Carbon::now()->format('Y-m-d')) : new DateTime($ultimo_corte->fecha_fin);
 
-        $jornadas_rechazadas = Jornada::where('user_id', $user)->where('estado', 3)->get();
+        $jornadas_rechazadas = Jornada::where('user_id', $user)->where('estado', 3)->where('fecha', '>=', $fecha_incio_corte)->where('fecha', '<=', $fecha_fin_corte)->get();
         $jornadas_group_by_fecha = Jornada::where('user_id', $user)->get()->groupBy('fecha');
         $jornadas_pendientes = [];
 
