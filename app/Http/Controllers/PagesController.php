@@ -31,11 +31,14 @@ use App\Models\Cargo;
 use App\Models\Corte;
 use App\Models\Autorizados;
 use App\Models\AuxilioExtras;
+use App\Models\Jornada;
 use App\Models\ListAuxilioExtras;
 use App\Models\Turno;
 use Log;
 
 use Carbon\Carbon;
+use DateInterval;
+use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -950,7 +953,9 @@ class PagesController extends Controller
             'calendario' => $calendario,
         ]);
     }
-    public function calendariooc(Request $request){
+
+    public function calendariooc(Request $request)
+    {
         $user = session('user');
         if ($user==""){
             return redirect()->route('inicio');
@@ -1014,8 +1019,46 @@ class PagesController extends Controller
         ]);
     }
 
-    public function filtrarcentro(Request $request){
+    public function tabla_jornadas_faltantes(Request $request)
+    {
+        $fecha_inicio = $request->fecha_inicio;
+        $fecha_fin = $request->fecha_fin;
+        $empleados = Empleado::where('estado', 1)->get(['id', 'nombre', 'apellido1', 'cc']);
 
+        $fecha_incio_corte = new DateTime($fecha_inicio);
+        $fecha_fin_corte = new DateTime($fecha_fin);
+
+
+        $jornadas_group_by_user = Jornada::where('fecha', '>=', $fecha_incio_corte)->where('fecha', '<=', $fecha_fin_corte)->get()->groupBy('user_id');
+        $jornadas_pendientes_by_user = [];
+
+        foreach ($empleados as $empleado) {
+            $fecha_incio_corte = new DateTime($fecha_inicio);
+            $fecha_fin_corte = new DateTime($fecha_fin) > Carbon::now()->format('Y-m-d') ? new DateTime(Carbon::now()->format('Y-m-d')) : new DateTime($fecha_fin);
+
+            for ($i = $fecha_incio_corte; $i < $fecha_fin_corte; $i->add(new DateInterval('P1D'))) {
+                if (!isset($jornadas_group_by_user[$empleado->id][$i->format('Y-m-d')])) {
+                    if (!isset($jornadas_pendientes_by_user[$empleado->id])) {
+                        $jornadas_pendientes_by_user[$empleado->id] = [
+                            'nombre' => $empleado->nombre,
+                            'apellido1' => $empleado->apellido1,
+                            'cc' => $empleado->cc,
+                            'jornadas_faltantes' => [$i->format('Y-m-d')],
+                        ];
+                    } else {
+                        array_push($jornadas_pendientes_by_user[$empleado->id]['jornadas_faltantes'], $i->format('Y-m-d'));
+                    }
+                }
+            }
+        }
+
+        return view('tabla_jornadas_faltantes', [
+            'jornadas_pendientes' => $jornadas_pendientes_by_user,
+        ]);
+    }
+
+    public function filtrarcentro(Request $request)
+    {
         $cdc =  Cdc::orderBy('codigo','asc');
 
         if ($request->fcodigo !=""){
@@ -1030,6 +1073,7 @@ class PagesController extends Controller
             'cdc' => $cdc,
         ]);
     }
+
     public function buscarprog(Request $request){
         $p = Programacion::where('id',$request->id)->first();
         $emp = Empleado::where('estado',1)->orderBy('apellido1','asc')->get();

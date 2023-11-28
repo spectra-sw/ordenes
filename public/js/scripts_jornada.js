@@ -296,6 +296,8 @@ function refreshConsulta(){
     });
 }
 function accionj(op, id) {
+    if (op == 0) return;
+
     const obs = document.getElementById(`obs${id}`).value;
     const hi = document.getElementById(`hi${id}`).value;
     const hf = document.getElementById(`hf${id}`).value;
@@ -356,6 +358,22 @@ function validarCorte(fecha){
         }
     });
 }
+
+function consultarJornadasFaltantes() {
+    data=$( "#formConsultJornadaFaltante" ).serialize();
+
+    console.log(data, ' miraaaa');
+    url = '/tabla-jornadas-faltantes'
+    $.ajax({
+        url: url,
+        type:'GET',
+        data: data,
+        success: function(data) {
+            $("#tablaJornadaFaltante").html(data);
+        }
+    });
+}
+
 function consultar2(){
     var formData = $("#formConsultaJornada").serialize();
     $.ajax({

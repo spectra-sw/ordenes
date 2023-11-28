@@ -107,7 +107,7 @@
                                     @if (session('tipo') == 0 && $j->corte_status == 1)
                                         <select class="form-control" onchange="accionj(this.value,this.id)"
                                             id="{{ $j->id }}">
-                                            <option value="">--Elige una opción--</option>
+                                            <option value="0">--Elige una opción--</option>
                                             <option value="1">Aprobar</option>
                                             <option value="2">Rechazar</option>
                                         </select>
