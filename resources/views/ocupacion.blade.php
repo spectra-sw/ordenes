@@ -202,15 +202,21 @@
                         <div class="col-6 col-md-2">
                             <button type="button" class="btn btn-success" onclick="generalo()">General</button>&nbsp;
                         </div>
+
                         @if ($area == 6)
                             <div class="col-6 col-md-2">
-                                <button type="button" class="btn btn-success" onclick="distribuciono()">Archivo
-                                    Distribución</button>&nbsp;
+                                <button type="button" class="btn btn-success" onclick="distribuciono()">
+                                    Archivo Distribución
+                                </button>
+                                &nbsp;
                             </div>
                         @endif
+
                         <div class="col-6 col-md-2">
-                            <button type="button" class="btn btn-success" onclick="analiticas()">Archivo
-                                Analíticas</button>&nbsp;
+                            <button type="button" class="btn btn-success" onclick="analiticas()">
+                                Archivo Analíticas
+                            </button>
+                            &nbsp;
                         </div>
                     </div>
 
@@ -218,8 +224,8 @@
                     </div>
                     <iframe title="Reporte Ocupacion" width="1140" height="541.25"
                         src="https://app.powerbi.com/reportEmbed?reportId=eada343c-1efb-4f6c-a2e2-7ac1309811c0&autoAuth=true&ctid=e752c1c1-100f-43ab-99fd-b6dd93dceb62"
-                        frameborder="0" allowFullScreen="true"></iframe>
-
+                        frameborder="0" allowFullScreen="true">
+                    </iframe>
                 </form>
             </div>
             {{-- End Reportes --}}
@@ -257,9 +263,7 @@
                                         <td>{{ $n->periodo }}</td>
                                     </tr>
                                 @endforeach
-
                             </tbody>
-
                         </table>
                     </form>
                 </div>

@@ -81,9 +81,9 @@ class OrdenesController extends Controller
 
         ]);
     }
-    public function jornada(Request $request)
+
+    public function jornada()
     {
-        $proyectos = collect([]);
         $user = session('user');
 
         if ($user == "") {
@@ -104,7 +104,7 @@ class OrdenesController extends Controller
         $fecha_incio_corte = new DateTime($ultimo_corte->fecha_inicio);
         $fecha_fin_corte = new DateTime($ultimo_corte->fecha_fin) > Carbon::now()->format('Y-m-d') ? new DateTime(Carbon::now()->format('Y-m-d')) : new DateTime($ultimo_corte->fecha_fin);
 
-        $jornadas_rechazadas = Jornada::where('user_id', $user)->where('estado', 3)->get();
+        $jornadas_rechazadas = Jornada::where('user_id', $user)->where('estado', 3)->where('fecha', '>=', $fecha_incio_corte)->where('fecha', '<=', $fecha_fin_corte)->get();
         $jornadas_group_by_fecha = Jornada::where('user_id', $user)->get()->groupBy('fecha');
         $jornadas_pendientes = [];
 
@@ -120,6 +120,7 @@ class OrdenesController extends Controller
             'jornadas_pendientes' => $jornadas_pendientes,
         ]);
     }
+
     public function registrarJornada(Request $request)
     {
 
@@ -159,6 +160,7 @@ class OrdenesController extends Controller
             'jornada' => $datosJornada
         ]);
     }
+
     public function consecJornada(Request $request)
     {
         $user = session()->get('user');
@@ -170,6 +172,7 @@ class OrdenesController extends Controller
         }
         return $jornada_id;
     }
+
     public function deleteJornada(Request $request)
     {
         $datos = Jornada::where('id', $request->id)->first();
@@ -284,6 +287,7 @@ class OrdenesController extends Controller
             'estado' => $estado
         ]);
     }
+
     public function consultaJornadaAdmin(Request $request)
     {
         $jornadas = Jornada::query();
@@ -338,6 +342,7 @@ class OrdenesController extends Controller
             'total_jornadas' => 0
         ]);
     }
+
     public function accionesJornada(Request $request)
     {
         // validate $request
@@ -361,14 +366,33 @@ class OrdenesController extends Controller
             $this->send_whatsapp_by_rejected_jornada($jornada->fecha);
         }
 
+        // dd($request->hi, $request->hf, $request->duracion, $request->all(), $jornada);
+
+        // calcular duracion
+        $fecha_inicio = Carbon::create($jornada->fecha);
+        $fecha_fin = Carbon::create($jornada->fechaf);
+
+        $hi = explode(":", $request->hi);
+        $hf = explode(":", $request->hf);
+
+        $hi = intval($hi[0]) + floatval($hi[1]) / 60;
+        $hf = intval($hf[0]) + floatval($hf[1]) / 60;
+
+        if ($fecha_fin > $fecha_inicio) {
+            $duracion = ($hi - $hf) + $request->almuerzo;
+        } else {
+            $duracion = ($hf - $hi) + $request->almuerzo;
+        }
+
+        $duracion = strval(intval($duracion)) . ":" . strval(intval(($duracion - intval($duracion)) * 60));
+
         $jornada->observacion = $request->obs;
         $jornada->hi = $request->hi;
         $jornada->hf = $request->hf;
-        //$jornada->duracion=$request->duracion;
+        $jornada->duracion= $duracion;
         $jornada->almuerzo = $request->almuerzo;
         $jornada->revisado_por = $user;
         $jornada->fecha_revision = Carbon::now()->format('Y-m-d');
-        //dd($jornada);
         $jornada->save();
 
         return $result;

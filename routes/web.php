@@ -104,6 +104,7 @@ Route::get('/eliminarprog', [PagesController::class, 'eliminarprog']);
 Route::get('/filtrarprog', [PagesController::class, 'filtrarprog']);
 Route::get('/calendarioprog', [PagesController::class, 'calendarioprog']);
 Route::get('/calendariooc', [PagesController::class, 'calendariooc']);
+Route::get('/tabla-jornadas-faltantes', [PagesController::class, 'tabla_jornadas_faltantes']);
 Route::get('/cargarprog', [PagesController::class, 'cargarprog']);
 Route::get('/actgprog', [PagesController::class, 'actgprog']);
 

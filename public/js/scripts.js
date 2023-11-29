@@ -849,6 +849,7 @@ function filtrarproy(){
             }
     });
 }
+
 function filtrarcentro(){
     data=$( "#filtrarCentro" ).serialize();
     url = '/filtrarcentro'
@@ -861,6 +862,7 @@ function filtrarcentro(){
             }
     });
 }
+
 function consultaroc(){
     data=$( "#formConsultaOcupacion" ).serialize();
     url = '/calendariooc'
@@ -873,6 +875,7 @@ function consultaroc(){
             }
     });
 }
+
 function seguimiento(){
     data=$( "#formReportesOcupacion" ).serialize();
     url = '/seguimiento'
@@ -885,6 +888,7 @@ function seguimiento(){
             }
     });
 }
+
 function generalo(){
     data=$( "#formReportesOcupacion" ).serialize();
     url = '/generalo'
