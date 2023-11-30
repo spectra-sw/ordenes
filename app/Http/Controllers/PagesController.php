@@ -1023,11 +1023,16 @@ class PagesController extends Controller
     {
         $fecha_inicio = $request->fecha_inicio;
         $fecha_fin = $request->fecha_fin;
-        $empleados = Empleado::where('estado', 1)->get(['id', 'nombre', 'apellido1', 'cc']);
+        $empleado = $request->empleado;
+
+        if ($empleado != '' && $empleado != '0' && $empleado != null) {
+            $empleados = Empleado::where('id', $empleado)->where('estado', 1)->get(['id', 'nombre', 'apellido1', 'cc']);
+        } else {
+            $empleados = Empleado::where('estado', 1)->get(['id', 'nombre', 'apellido1', 'cc']);
+        }
 
         $fecha_incio_corte = new DateTime($fecha_inicio);
         $fecha_fin_corte = new DateTime($fecha_fin);
-
 
         $jornadas_group_by_user = Jornada::where('fecha', '>=', $fecha_incio_corte)->where('fecha', '<=', $fecha_fin_corte)->get()->groupBy('user_id');
         $jornadas_pendientes_by_user = [];

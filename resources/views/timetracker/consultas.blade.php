@@ -105,6 +105,19 @@
                                 <input type="date" name="fecha_fin" class="form-control">
                             </div>
                         </div>
+
+                        <div class="col-12 col-sm-4 mb-2">
+                            <div class="form-group">
+                                <label for="empleado">Trabajador</label>
+                                <select class="form-control" name="empleado">
+                                    <option value=""></option>
+                                    @foreach ($emp as $e)
+                                        <option value="{{ $e->id }}">
+                                            {{ $e->apellido1 . ' ' . $e->nombre }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row mt-2">
@@ -112,9 +125,11 @@
                             <button type="button" class="btn btn-success" onclick="consultarJornadasFaltantes()">
                                 Consultar
                             </button>
+                            <button type="button" class="btn btn-success" onclick="exportarJornadasFaltantes()">
+                                Exportar
+                            </button>
                         </div>
                     </div>
-
                     <div id="tablaJornadaFaltante" style="background-color:white"></div>
                 </form>
             </div>

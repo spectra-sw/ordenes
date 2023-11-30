@@ -374,6 +374,13 @@ function consultarJornadasFaltantes() {
     });
 }
 
+function exportarJornadasFaltantes() {
+    data=$( "#formConsultJornadaFaltante" ).serialize();
+
+    url = '/exportar-jornadas-faltantes'
+    window.location = url + '?' + data;
+}
+
 function consultar2(){
     var formData = $("#formConsultaJornada").serialize();
     $.ajax({
