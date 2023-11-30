@@ -1,4 +1,4 @@
-<table class="table table-bordered table-striped mt-4">
+<table>
     <thead>
         <tr>
             <th>NOMBRE</th>

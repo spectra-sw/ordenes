@@ -15,6 +15,7 @@ use App\Exports\OcupacionExport;
 use App\Exports\AnaliticasExport;
 use App\Exports\ConsultasExport;
 use App\Exports\ExtraExport;
+use App\Exports\JornadasPendientesExport;
 use App\Exports\ProyectosExport;
 use App\Models\Detalleh;
 use App\Models\Festivo;
@@ -26,6 +27,8 @@ use App\Models\Programacion;
 use App\Imports\ImportNovedad;
 use App\Imports\importTurnos;
 use App\Models\Jornada;
+use DateInterval;
+use DateTime;
 
 class ExcelController extends Controller
 {
@@ -646,6 +649,50 @@ class ExcelController extends Controller
             return 'si';
         }
         return 'no';
+    }
+
+    public function export_jornadas_faltantes(Request $request)
+    {
+        $fecha_inicio = $request->fecha_inicio;
+        $fecha_fin = $request->fecha_fin;
+        $empleado = $request->empleado;
+
+        if ($empleado != '' && $empleado != '0' && $empleado != null) {
+            $empleados = Empleado::where('id', $empleado)->where('estado', 1)->get(['id', 'nombre', 'apellido1', 'cc']);
+        } else {
+            $empleados = Empleado::where('estado', 1)->get(['id', 'nombre', 'apellido1', 'cc']);
+        }
+
+        $fecha_incio_corte = new DateTime($fecha_inicio);
+        $fecha_fin_corte = new DateTime($fecha_fin);
+
+        $jornadas_group_by_user = Jornada::where('fecha', '>=', $fecha_incio_corte)->where('fecha', '<=', $fecha_fin_corte)->get()->groupBy('user_id');
+        $jornadas_pendientes_by_user = [];
+
+        foreach ($empleados as $empleado) {
+            $fecha_incio_corte = new DateTime($fecha_inicio);
+            $fecha_fin_corte = new DateTime($fecha_fin) > Carbon::now()->format('Y-m-d') ? new DateTime(Carbon::now()->format('Y-m-d')) : new DateTime($fecha_fin);
+
+            for ($i = $fecha_incio_corte; $i < $fecha_fin_corte; $i->add(new DateInterval('P1D'))) {
+                if (!isset($jornadas_group_by_user[$empleado->id][$i->format('Y-m-d')])) {
+                    if (!isset($jornadas_pendientes_by_user[$empleado->id])) {
+                        $jornadas_pendientes_by_user[$empleado->id] = [
+                            'nombre' => $empleado->nombre,
+                            'apellido1' => $empleado->apellido1,
+                            'cc' => $empleado->cc,
+                            'jornadas_faltantes' => [$i->format('Y-m-d')],
+                        ];
+                    } else {
+                        array_push($jornadas_pendientes_by_user[$empleado->id]['jornadas_faltantes'], $i->format('Y-m-d'));
+                    }
+                }
+            }
+        }
+
+        return Excel::download(new JornadasPendientesExport($jornadas_pendientes_by_user), 'jornadas_pendientes_por_empleado.xlsx');
+        return view('tabla_jornadas_faltantes', [
+            'jornadas_pendientes' => $jornadas_pendientes_by_user,
+        ]);
     }
 
     public function exporto(Request $request)
