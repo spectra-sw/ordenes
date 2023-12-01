@@ -1,4 +1,4 @@
-<table class="table table-bordered table-striped mt-4">
+<table id="tablaJornadaFaltante" class="table table-bordered table-striped mt-4">
     <thead>
         <tr>
             <th>NOMBRE</th>
@@ -18,3 +18,6 @@
         @endforeach
     </tbody>
 </table>
+<script>
+
+</script>

@@ -369,7 +369,8 @@ function consultarJornadasFaltantes() {
         type:'GET',
         data: data,
         success: function(data) {
-            $("#tablaJornadaFaltante").html(data);
+            $("#containerTablaJornadaFaltante").html(data);
+            $("#tablaJornadaFaltante").DataTable();
         }
     });
 }
