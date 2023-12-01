@@ -130,7 +130,7 @@
                             </button>
                         </div>
                     </div>
-                    <div id="tablaJornadaFaltante" style="background-color:white"></div>
+                    <div id="containerTablaJornadaFaltante" style="background-color:white"></div>
                 </form>
             </div>
             {{-- End Jornadas Faltantes --}}
