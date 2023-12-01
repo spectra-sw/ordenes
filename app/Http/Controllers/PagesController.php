@@ -1037,12 +1037,14 @@ class PagesController extends Controller
         $jornadas_group_by_user = Jornada::where('fecha', '>=', $fecha_incio_corte)->where('fecha', '<=', $fecha_fin_corte)->get()->groupBy('user_id');
         $jornadas_pendientes_by_user = [];
 
+        $ocupacion_group_by_user = ocupacion::where('dia', '>=', $fecha_incio_corte)->where('dia', '<=', $fecha_fin_corte)->get()->groupBy('cc');
+
         foreach ($empleados as $empleado) {
             $fecha_incio_corte = new DateTime($fecha_inicio);
             $fecha_fin_corte = new DateTime($fecha_fin) > Carbon::now()->format('Y-m-d') ? new DateTime(Carbon::now()->format('Y-m-d')) : new DateTime($fecha_fin);
 
             for ($i = $fecha_incio_corte; $i < $fecha_fin_corte; $i->add(new DateInterval('P1D'))) {
-                if (!isset($jornadas_group_by_user[$empleado->id][$i->format('Y-m-d')])) {
+                if (!isset($jornadas_group_by_user[$empleado->id][$i->format('Y-m-d')]) && !isset($ocupacion_group_by_user[$empleado->cc][$i->format('Y-m-d')])) {
                     if (!isset($jornadas_pendientes_by_user[$empleado->id])) {
                         $jornadas_pendientes_by_user[$empleado->id] = [
                             'nombre' => $empleado->nombre,
