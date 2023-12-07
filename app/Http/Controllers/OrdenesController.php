@@ -379,9 +379,9 @@ class OrdenesController extends Controller
         $hf = intval($hf[0]) + floatval($hf[1]) / 60;
 
         if ($fecha_fin > $fecha_inicio) {
-            $duracion = ($hi - $hf);
+            $duracion = ((24 + $hf) - $hi);
         } else {
-            $duracion = ($hi - (24 + $hf));
+            $duracion = ($hf - $hi);
         }
 
         $duracion = strval(intval($duracion)) . ":" . strval(intval(($duracion - intval($duracion)) * 60));
