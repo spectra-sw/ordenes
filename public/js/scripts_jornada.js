@@ -362,7 +362,6 @@ function validarCorte(fecha){
 function consultarJornadasFaltantes() {
     data=$( "#formConsultJornadaFaltante" ).serialize();
 
-    console.log(data, ' miraaaa');
     url = '/tabla-jornadas-faltantes'
     $.ajax({
         url: url,

@@ -379,9 +379,9 @@ class OrdenesController extends Controller
         $hf = intval($hf[0]) + floatval($hf[1]) / 60;
 
         if ($fecha_fin > $fecha_inicio) {
-            $duracion = ($hi - $hf) + $request->almuerzo;
+            $duracion = ((24 + $hf) - $hi);
         } else {
-            $duracion = ($hf - $hi) + $request->almuerzo;
+            $duracion = ($hf - $hi);
         }
 
         $duracion = strval(intval($duracion)) . ":" . strval(intval(($duracion - intval($duracion)) * 60));
@@ -389,7 +389,7 @@ class OrdenesController extends Controller
         $jornada->observacion = $request->obs;
         $jornada->hi = $request->hi;
         $jornada->hf = $request->hf;
-        $jornada->duracion= $duracion;
+        $jornada->duracion = $duracion;
         $jornada->almuerzo = $request->almuerzo;
         $jornada->revisado_por = $user;
         $jornada->fecha_revision = Carbon::now()->format('Y-m-d');
