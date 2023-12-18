@@ -324,7 +324,9 @@ class OrdenesController extends Controller
             $jornadas->where('estado', $request->estado);
         }
         $cortes = $cortes->get();
-        $jornadas = $jornadas->orderBy('fecha', 'asc')->get();
+        $jornadas = $jornadas->orderBy('fecha', 'asc')
+        ->orderBy('id', 'asc')
+        ->get();
 
         // agregar columna de cortes segun la fecha
         foreach ($jornadas as $jornada) {

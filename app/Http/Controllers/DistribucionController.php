@@ -45,7 +45,9 @@ class DistribucionController extends Controller
             $jornadas->where('estado', $request->estado);
         }*/
         $jornadas->where('estado', 2);
-        $jornadas = $jornadas->orderBy('fecha','asc')->get();
+        $jornadas = $jornadas->orderBy('fecha','asc')
+        ->orderBy('id', 'asc')
+        ->get();
         //dd($jornadas);
         $datos = collect([]);
 
