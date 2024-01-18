@@ -35,10 +35,8 @@ class DistribucionController extends Controller
         if( $request->cliente){
             $clientId = $request->cliente;
             $jornadas = $jornadas->whereHas('proyectoinfo', function ($query) use ($clientId) {$query->where('cliente_id', $clientId);});
-
         }
-        if ($request->inicio && $request->fin) {
-            
+        if ($request->inicio && $request->fin) {  
             $jornadas->whereBetween('fecha', [$request->inicio, $request->fin]);
         }
        /* if ($request->estado) {
@@ -65,7 +63,7 @@ class DistribucionController extends Controller
             $cont = $cont + 1;
             $bandlinea= false;
             $laborales_cero = false;
-            Log::info($tsb);
+            //Log::info($tsb);
             Log::info($valores);
             $hi = explode(":", $j->hi);
             $hi =intval($hi[0]) + round(floatval($hi[1]/60),2);
@@ -115,6 +113,7 @@ class DistribucionController extends Controller
             else{
                 $especial = true;
             }
+            //Log::info($turno);
             //dd($turno);
             //dd($laborales_cero);
             //Log::info($especial);
@@ -460,12 +459,12 @@ class DistribucionController extends Controller
                         //$sb);
                     }
                     else{
-                       $sb =$tsb[$j->fecha] + ($duracion - $j->almuerzo);
-                       //$sb = ($duracion - $j->almuerzo);
+                        //$sb =$tsb[$j->fecha] + ($duracion - $j->almuerzo);
+                       $sb = ($duracion - $j->almuerzo);
                     }
                     //$sb = $duracion - $j->almuerzo;
                     //dd($sb);
-                    Log::info($tsb[$j->fecha].":".$sb);
+                    //Log::info($tsb[$j->fecha].":".$sb);
                     if ($sb>$laborales){
                         $excede = $sb -$laborales;
                         $sb =$laborales - $tsb[$j->fecha];
