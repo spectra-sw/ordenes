@@ -658,40 +658,89 @@ class ExcelController extends Controller
         $empleado = $request->empleado;
 
         if ($empleado != '' && $empleado != '0' && $empleado != null) {
-            $empleados = Empleado::where('id', $empleado)->where('estado', 1)->get(['id', 'nombre', 'apellido1', 'cc']);
+            $empleados = Empleado::where('id', $empleado)->where('estado', 1)->with([
+                'ncargo' => function ($query) {
+                    $query->select('id', 'cargo');
+                }
+            ])->get(['id', 'nombre', 'apellido1', 'cc', 'cargo']);
         } else {
-            $empleados = Empleado::where('estado', 1)->get(['id', 'nombre', 'apellido1', 'cc']);
+            $empleados = Empleado::where('estado', 1)->with([
+                'ncargo' => function ($query) {
+                    $query->select('id', 'cargo');
+                }
+            ])->get(['id', 'nombre', 'apellido1', 'cc', 'cargo']);
         }
 
         $fecha_incio_corte = new DateTime($fecha_inicio);
         $fecha_fin_corte = new DateTime($fecha_fin);
 
-        $jornadas_group_by_user = Jornada::where('fecha', '>=', $fecha_incio_corte)->where('fecha', '<=', $fecha_fin_corte)->get()->groupBy('user_id');
+        $jornadas_group_by_user = Jornada::where('fecha', '>=', $fecha_incio_corte)->where('fecha', '<=', $fecha_fin_corte)->get()->groupBy(['user_id', 'fecha']);
         $jornadas_pendientes_by_user = [];
+
 
         foreach ($empleados as $empleado) {
             $fecha_incio_corte = new DateTime($fecha_inicio);
             $fecha_fin_corte = new DateTime($fecha_fin) > Carbon::now()->format('Y-m-d') ? new DateTime(Carbon::now()->format('Y-m-d')) : new DateTime($fecha_fin);
-
             for ($i = $fecha_incio_corte; $i < $fecha_fin_corte; $i->add(new DateInterval('P1D'))) {
                 if (!isset($jornadas_group_by_user[$empleado->id][$i->format('Y-m-d')])) {
+                    if (!isset($jornadas_pendientes_by_user[$empleado->id])) {
+
+                        $jornadas_pendientes_by_user[$empleado->id] = [
+                            'nombre' => $empleado->nombre,
+                            'apellido1' => $empleado->apellido1,
+                            'cc' => $empleado->cc,
+                            'jornadas_faltantes' => [$i->format('Y-m-d') => ['duracion' => '00:00', 'color' => '#fecaca']],
+                            'cargo' => $empleado->ncargo->cargo ?? '',
+                        ];
+                    } else {
+                        $jornadas_pendientes_by_user[$empleado->id]['jornadas_faltantes'][$i->format('Y-m-d')] = ['duracion' => '00:00', 'color' => '#fecaca'];
+                    }
+                } else {
+                    $almuerzo = $jornadas_group_by_user[$empleado->id][$i->format('Y-m-d')][0]->almuerzo;
+                    $duracion = $jornadas_group_by_user[$empleado->id][$i->format('Y-m-d')][0]->duracion;
+                    $duracion  = explode(":", $duracion);
+                    $duracion = intval($duracion[0]) + round(floatval($duracion[1] / 60), 2);
+                    $total = $duracion - $almuerzo;
+
+                    $color = $duracion >= 9.5 ? '#6ee7b7' : '#fef08a';
+
+                    if ($total < 0) {
+                        $total = '00:00';
+                    } else {
+                        $decimal = $total - intval($total);
+                        $decimal = $decimal * 60;
+                        $total = intval($total) > 10? intval($total) . ':' . intval($decimal) : '0' . intval($total) . ':' . intval($decimal);
+                    }
+
                     if (!isset($jornadas_pendientes_by_user[$empleado->id])) {
                         $jornadas_pendientes_by_user[$empleado->id] = [
                             'nombre' => $empleado->nombre,
                             'apellido1' => $empleado->apellido1,
                             'cc' => $empleado->cc,
-                            'jornadas_faltantes' => [$i->format('Y-m-d')],
+                            'jornadas_faltantes' => [$i->format('Y-m-d') => ['duracion' => $total, 'color' => $color]],
+                            'cargo' => $empleado->ncargo->cargo ?? '',
                         ];
                     } else {
-                        array_push($jornadas_pendientes_by_user[$empleado->id]['jornadas_faltantes'], $i->format('Y-m-d'));
+                        $jornadas_pendientes_by_user[$empleado->id]['jornadas_faltantes'][$i->format('Y-m-d')] = ['duracion' => $total, 'color' => $color];
                     }
                 }
             }
         }
 
-        return Excel::download(new JornadasPendientesExport($jornadas_pendientes_by_user), 'jornadas_pendientes_por_empleado.xlsx');
+        $fechas_columnas = [];
+        $fecha_incio_columna = new DateTime($fecha_inicio);
+        $fecha_fin_columna = new DateTime($fecha_fin) > Carbon::now()->format('Y-m-d') ? new DateTime(Carbon::now()->format('Y-m-d')) : new DateTime($fecha_fin);
+
+        while ($fecha_incio_columna <= $fecha_fin_columna) {
+            array_push($fechas_columnas, $fecha_incio_columna->format('Y-m-d'));
+            $fecha_incio_columna->add(new DateInterval('P1D'));
+        }
+
+
+        return Excel::download(new JornadasPendientesExport($jornadas_pendientes_by_user, $fechas_columnas), 'jornadas_pendientes_por_empleado.xlsx');
         return view('tabla_jornadas_faltantes', [
             'jornadas_pendientes' => $jornadas_pendientes_by_user,
+            'fechas_columnas' => $fechas_columnas,
         ]);
     }
 
@@ -736,10 +785,11 @@ class ExcelController extends Controller
         if ($request->trabajador) {
             $jornadas->where('user_id', $request->trabajador);
         }
-        if( $request->cliente){
+        if ($request->cliente) {
             $clientId = $request->cliente;
-            $jornadas = $jornadas->whereHas('proyectoinfo', function ($query) use ($clientId) {$query->where('cliente_id', $clientId);});
-
+            $jornadas = $jornadas->whereHas('proyectoinfo', function ($query) use ($clientId) {
+                $query->where('cliente_id', $clientId);
+            });
         }
         if ($request->inicio && $request->fin) {
             $jornadas->whereBetween('fecha', [$request->inicio, $request->fin]);
@@ -749,7 +799,7 @@ class ExcelController extends Controller
             $jornadas->where('estado', $request->estado);
         }
 
-        $jornadas = $jornadas->orderBy('fecha','asc')->get();
+        $jornadas = $jornadas->orderBy('fecha', 'asc')->get();
 
         return Excel::download(new ConsultasExport($jornadas), 'jornadas.xlsx');
     }

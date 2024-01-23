@@ -1026,9 +1026,17 @@ class PagesController extends Controller
         $empleado = $request->empleado;
 
         if ($empleado != '' && $empleado != '0' && $empleado != null) {
-            $empleados = Empleado::where('id', $empleado)->where('estado', 1)->get(['id', 'nombre', 'apellido1', 'cc']);
+            $empleados = Empleado::where('id', $empleado)->where('estado', 1)->with([
+                'ncargo' => function ($query) {
+                    $query->select('id', 'cargo');
+                }
+            ])->get(['id', 'nombre', 'apellido1', 'cc', 'cargo']);
         } else {
-            $empleados = Empleado::where('estado', 1)->get(['id', 'nombre', 'apellido1', 'cc']);
+            $empleados = Empleado::where('estado', 1)->with([
+                'ncargo' => function ($query) {
+                    $query->select('id', 'cargo');
+                }
+            ])->get(['id', 'nombre', 'apellido1', 'cc', 'cargo']);
         }
 
         $fecha_incio_corte = new DateTime($fecha_inicio);
@@ -1051,6 +1059,7 @@ class PagesController extends Controller
                             'apellido1' => $empleado->apellido1,
                             'cc' => $empleado->cc,
                             'jornadas_faltantes' => [$i->format('Y-m-d')],
+                            'cargo' => $empleado->ncargo->cargo,
                         ];
                     } else {
                         array_push($jornadas_pendientes_by_user[$empleado->id]['jornadas_faltantes'], $i->format('Y-m-d'));

@@ -12,11 +12,13 @@ use Illuminate\Contracts\View\View;
 class JornadasPendientesExport implements FromView
 {
 
-    protected $datos;
+    protected $jornadas_pendientes;
+    protected $fechas_columnas;
 
-    public function __construct($datos = null)
+    public function __construct($jornadas_pendientes = null, $fechas_columnas = null)
     {
-        $this->datos = $datos;
+        $this->jornadas_pendientes = $jornadas_pendientes;
+        $this->fechas_columnas = $fechas_columnas;
     }
 
     public function view(): View
@@ -24,7 +26,8 @@ class JornadasPendientesExport implements FromView
         return view(
             'jornadasPendientesExport',
             [
-                'jornadas_pendientes' => $this->datos
+                'jornadas_pendientes' => $this->jornadas_pendientes,
+                'fechas_columnas' => $this->fechas_columnas
             ]
         );
     }
