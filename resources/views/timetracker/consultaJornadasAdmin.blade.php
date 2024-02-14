@@ -91,7 +91,12 @@
                                     @default
                                         Valor no reconocido
                                 @endswitch
-                                <td>{{ $j->revisado->nombre . " " .$j->revisado->apellido1 }}</td>
+                                @if  ($j->revisado_por >0)
+                                    <td>{{ $j->revisado->nombre . " " .$j->revisado->apellido1 }}</td> 
+                                @else
+                                    <td></td>
+                                @endif 
+                               
                                 <td style="width: 100px">
                                     @if (session('tipo') == 0 && $j->corte_status == 1)
                                         <input style="font-size: 14px; width: 100px;" class="form-control"

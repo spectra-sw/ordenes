@@ -52,7 +52,11 @@
                     @default
                         <td class="table-danger">Valor no reconocido</td>
                 @endswitch
-                <td>{{ $j->revisado->nombre . " " .$j->revisado->apellido1 }}</td>
+                @if  ($j->revisado_por >0)
+                                    <td>{{ $j->revisado->nombre . " " .$j->revisado->apellido1 }}</td> 
+                @else
+                                    <td></td>
+                @endif 
                 <td> {{ $j->observacion }}</td>
             </tr>
         @endforeach
