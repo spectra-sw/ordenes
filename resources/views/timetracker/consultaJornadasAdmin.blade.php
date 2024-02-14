@@ -19,6 +19,7 @@
                             <th>Laborales</th>
                             <th>Creación</th>
                             <th>Aprobación</th>
+                            <th>Aprobada por</th>
                             <th>Observaciones</th>
                             <th>Actualización</th>
                             @if (session('tipo') == 0)
@@ -90,7 +91,7 @@
                                     @default
                                         Valor no reconocido
                                 @endswitch
-
+                                <td>{{ $j->revisado->nombre . " " .$j->revisado->apellido1 }}</td>
                                 <td style="width: 100px">
                                     @if (session('tipo') == 0 && $j->corte_status == 1)
                                         <input style="font-size: 14px; width: 100px;" class="form-control"
@@ -101,7 +102,7 @@
                                     @endif
                                 </td>
 
-                                <td>{{ $j->updated_at }}</td>
+                                <td>{{ $j->fecha_revision }}</td>
 
                                 <td>
                                     @if (session('tipo') == 0 && $j->corte_status == 1)

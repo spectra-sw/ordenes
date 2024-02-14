@@ -13,6 +13,8 @@
             <th>Laborales</th>
             <th>Creación</th>
             <th>Aprobación</th>
+            <th>Aprobada por</th>
+            <th>Observaciones</th>
         </tr>
     </thead>
     <tbody>
@@ -50,6 +52,8 @@
                     @default
                         <td class="table-danger">Valor no reconocido</td>
                 @endswitch
+                <td>{{ $j->revisado->nombre . " " .$j->revisado->apellido1 }}</td>
+                <td> {{ $j->observacion }}</td>
             </tr>
         @endforeach
     </tbody>

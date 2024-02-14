@@ -21,6 +21,10 @@ class Jornada extends Model implements Auditable
     {
         return $this->belongsTo(Empleado::class, 'user_id', 'id');
     }
+    public function revisado()
+    {
+        return $this->belongsTo(Empleado::class, 'revisado_por', 'id');
+    }
     public function proyectoinfo()
     {
         return $this->belongsTo(Proyecto::class, 'proyecto', 'codigo');
