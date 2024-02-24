@@ -15,12 +15,92 @@ class DistribucionController extends Controller
 {
     //
     public function distribucion(Request $request){
-        $datos = $this->getDatosDistribucion($request);
+        //$datos = $this->getDatosDistribucion($request);
+        $datos = $this->getDatosDistribucionEspecial($request);
         $datos[0] = $datos[0]->sortBy(['codigo del empleado','fecha movimiento']);
         return view('tablan',[
             'datos' => $datos[0],
             'talmuerzo' => $datos[1] ,
         ]);
+
+    }
+    function getDatosDistribucionEspecial($request){
+        // get jornadas
+        $jornadas = Jornada::query();
+        if ($request->proyecto) {
+            $jornadas->where('proyecto', $request->proyecto);
+        }
+        if ($request->trabajador) {
+            $jornadas->where('user_id', $request->trabajador);
+        }
+        if( $request->cliente){
+            $clientId = $request->cliente;
+            $jornadas = $jornadas->whereHas('proyectoinfo', function ($query) use ($clientId) {$query->where('cliente_id', $clientId);});
+        }
+        if ($request->inicio && $request->fin) {  
+            $jornadas->whereBetween('fecha', [$request->inicio, $request->fin]);
+        }
+        $jornadas->where('estado', 2);
+        $jornadas = $jornadas->orderBy('fecha','asc')
+        ->orderBy('id', 'asc')
+        ->get();
+
+        //params
+        $datos = collect([]);
+        $inicio_diurno = 6; 
+        $fin_diurno  = 21; 
+        $inicio_nocturno = 21; 
+        $fin_nocturno  = 6; 
+        $tsb=array();
+        $ttsb=0;
+        $cont = 0;
+        $valores['proyecto'] = "";
+        $valores['fecha'] = "";
+
+        foreach ($jornadas as $j){
+            if ($j->fechaf > $j->fecha){
+                $hi = explode(":", $j->hi);
+                $hi =intval($hi[0]) + round(floatval($hi[1]/60),2);
+                $hf =24;
+
+                $hi2 =0;
+                $hf2 =explode(":", $j->hf);
+                $hf2 =intval($hf2[0]) + round(floatval($hf2[1]/60),2);            
+
+                $festivo = app('App\Http\Controllers\FilesController')->consfestivo($j->fecha);   
+                $festivo2 = app('App\Http\Controllers\FilesController')->consfestivo($j->fechaf);
+
+                $c = new Carbon($j->fecha);
+                $cf = new Carbon($j->fechaf);
+                $numdia = $c->dayOfWeek;
+                $numdiaf = $cf->dayOfWeek;
+                $sb = $hedo = $heno= $hedf = $henf = $rno = $dtc = $rnd = 0;
+
+                 //horario laboral
+                $turno = Turno::where('user_id', $j->user_id)->where('fecha_inicio','<=', $j->fecha)->where('fecha_fin','>=', $j->fechaf);
+                if ($turno->fecha_inicio == $turno->fecha_fin){
+                    $laborales = $turno->hora_fin - $turno->hora_inicio - $turno->almuerzo;
+                // dd($laborales);
+                }
+                else{
+                    $laborales = (24-$turno->hora_inicio) + $turno->hora_fin - $turno->almuerzo;
+                }
+            
+                //jornada1
+                if (($numdia > 0)&&($festivo=="no")){
+
+                }
+                if (($numdia == 0)||($festivo=="si")){
+                }
+
+                //jornada2
+                if (($numdiaf > 0)&&($festivo=="no")){
+
+                }
+                if (($numdiaf == 0)||($festivo=="si")){
+                }
+            }
+        }
 
     }
     function getDatosDistribucion($request){

@@ -176,11 +176,25 @@ class OrdenesController extends Controller
     public function deleteJornada(Request $request)
     {
         $datos = Jornada::where('id', $request->id)->first();
-        Jornada::where('id', $request->id)->delete();
-        $datosJornada = Jornada::where('jornada_id', $datos->jornada_id)->where('user_id', $datos->user_id)->get();
-        return view('tablaJornada', [
-            'jornada' => $datosJornada
-        ]);
+        $cortes = Corte::all();
+        $fecha = $request->fecha;
+        foreach ($cortes as $c) {
+            if (($datos->fecha >= $c->fecha_inicio) && ($datos->fecha <= $c->fecha_fin)) {
+                $estado =$c->estado;
+            }
+        }
+       
+        //dd($estado);
+        if($estado ==0){
+            return 'no';
+        }
+        else{
+            Jornada::where('id', $request->id)->delete();
+            $datosJornada = Jornada::where('jornada_id', $datos->jornada_id)->where('user_id', $datos->user_id)->get();
+            return view('tablaJornada', [
+                'jornada' => $datosJornada
+            ]);
+        }
     }
 
     public function solapeJornada(Request $request)

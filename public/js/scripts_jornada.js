@@ -210,8 +210,15 @@ function delj2(id) {
         url: "/deleteJornada",
         data: { id: id },
         success: function (response) {
-            successHandler("El registro se ha eliminado con éxito");
-            consultar2();
+           
+            if (response == 'no'){
+                alert("No se puede eliminar el registro, el corte ya esta deshabilitado para esa fecha");
+            }
+            else{
+                successHandler("El registro se ha eliminado con éxito");
+                consultar2();
+            }
+           
             //$("#tablaJornada").html(response);
         },
         error: function (jqXHR, textStatus, errorThrown) {
