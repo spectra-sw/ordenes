@@ -15,8 +15,8 @@ class DistribucionController extends Controller
 {
     //
     public function distribucion(Request $request){
-        //$datos = $this->getDatosDistribucion($request);
-        $datos = $this->getDatosDistribucionEspecial($request);
+        $datos = $this->getDatosDistribucion($request);
+        //$datos = $this->getDatosDistribucionEspecial($request);
         $datos[0] = $datos[0]->sortBy(['codigo del empleado','fecha movimiento']);
         return view('tablan',[
             'datos' => $datos[0],
