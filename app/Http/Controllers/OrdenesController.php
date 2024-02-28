@@ -368,6 +368,10 @@ class OrdenesController extends Controller
 
 
         $user = session()->get('user');
+
+        if ($user == "") {
+            return  "Debe loguearse para realizar la acción";
+        }
         //dd($request->obs);
         $jornada = Jornada::find($request->id);
 
