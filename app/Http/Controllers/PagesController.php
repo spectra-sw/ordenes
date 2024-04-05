@@ -1560,7 +1560,7 @@ class PagesController extends Controller
             'cliente' => function ($query) {
                 $query->select('cliente', 'id');
             }
-        ])->orderBy('codigo', 'asc')->get();
+        ])->where('registro',1)->orderBy('codigo', 'asc')->get();
         $novedades = Novedad::select('id', 'cc', 'horas', 'periodo')->with([
             'empleado' => function ($query) {
                 $query->select('nombre', 'apellido1', 'apellido2', 'cc');
