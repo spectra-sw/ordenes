@@ -173,11 +173,13 @@ class DistribucionController extends Controller
             
             ->first();
            // dd( $j->fechaf);
+            //dd($turno);
             if ($turno === null) {
                 $horario_id = Empleado::where('id',$request->trabajador)->first()->horario_id;
                 //dd($horario_id);
                 $turno = Horario::where('id',$horario_id)->first();
                 //dd($numdia);
+                //dd($turno);
                 if (($horario_id ==5) && ($numdia ==5)){
                     $turno->hora_fin = 16.5;
                 }
@@ -203,7 +205,7 @@ class DistribucionController extends Controller
             if ($laborales_cero==false){
                 if ($turno->fecha_inicio == $turno->fecha_fin){
                     $laborales = $turno->hora_fin - $turno->hora_inicio - $turno->almuerzo;
-                // dd($laborales);
+                 //dd($laborales);
                 }
                 else{
                     $laborales = (24-$turno->hora_inicio) + $turno->hora_fin - $turno->almuerzo;
@@ -507,13 +509,22 @@ class DistribucionController extends Controller
 
                 }
                 if (($numdia == 0)||($festivo=="si")){
+                    //dd('test');
                     $dtc = $duracion - $j->almuerzo;
+                    //dd($laborales);
                     if ($dtc>$laborales){
                         $excede = $dtc -$laborales;
                         $dtc =$laborales;
-                        
-                        $henf = $this->calcularHeno($turno->hora_fin,$hf);
+                        if ($hi>=21){
+                            $henf = $this->calcularHeno($hi,$hf);
+                        }
+                        else{
+                            $henf = $this->calcularHeno($turno->hora_fin,$hf);
+                        }
+                       
+                       
                         //dd($excede);
+                        //dd($henf);
                         if ($henf ==0){
                             $hedf = $excede;  
                         }
@@ -521,7 +532,9 @@ class DistribucionController extends Controller
                             $hedf = $excede - $henf;
                         }
                         if ($hedf ==0){
-                        $rnd = $this->calcularHeno($hi,$hf);
+                            if($laborales>0){
+                                $rnd = $this->calcularHeno($hi,$hf);
+                            }
                         }
                     }
                     else{
