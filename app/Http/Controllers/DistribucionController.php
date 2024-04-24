@@ -230,6 +230,7 @@ class DistribucionController extends Controller
                     }
                     else{
                         $sb = $tsb[$j->fecha] +($duracion - $j->almuerzo);
+                        //$sb = ($duracion - $j->almuerzo);
                     }
                     if ($laborales==0){
                         $sb = ($duracion - $j->almuerzo);
@@ -551,8 +552,12 @@ class DistribucionController extends Controller
                 if (($numdia > 0)&&($festivo=="no")){
                     //if ($valores['fecha'] == $j->fecha){
                     if ($valores['fecha'] ==  str_replace("-","",$j->fecha)  ){     
-                    //if ($valores['proyecto'] == $j->proyecto) {
-                        $sb = $tsb[$j->fecha] + ($duracion - $j->almuerzo);
+                        if ($valores['proyecto'] == $j->proyecto) {
+                            $sb = $tsb[$j->fecha] + ($duracion - $j->almuerzo);
+                        }
+                        else{
+                            $sb =  ($duracion - $j->almuerzo);
+                        }
                        
                     }
                     else{
