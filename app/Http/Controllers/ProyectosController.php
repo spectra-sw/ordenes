@@ -80,7 +80,7 @@ class ProyectosController extends Controller
             'empleado_id' => $idemp
         ]);
         $autorizados = Autorizados::where('proyecto', $idproy)->get();
-        return view('tablaautorizadosproy', [
+        return view('admin.tabla.proyectoAutorizadoTabla', [
             'autorizados' => $autorizados
         ]);
     }
@@ -89,7 +89,7 @@ class ProyectosController extends Controller
         $idproy = Autorizados::where('id', $request->id)->first()->proyecto;
         Autorizados::where('id', $request->id)->delete();
         $autorizados = Autorizados::where('proyecto', $idproy)->get();
-        return view('tablaautorizadosproy', [
+        return view('admin.tabla.proyectoAutorizadoTabla', [
             'autorizados' => $autorizados
         ]);
     }

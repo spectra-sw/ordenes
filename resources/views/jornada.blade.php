@@ -74,6 +74,7 @@
                                         <select class="form-control" name="proyecto" id="proyecto"
                                             onchange="buscarP(this.value)" required>
                                             <option value=""></option>
+                                            <option value="7">7</option>
                                             @foreach ($proyectos as $p)
                                                 <option value="{{ $p->proyecto }}">{{ $p->proyecto }}</option>
                                             @endforeach
