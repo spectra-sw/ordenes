@@ -1729,7 +1729,7 @@ class PagesController extends Controller
             }
             //dd($lapso);
             if ($lapso!=""){
-                $hl =240;
+                $hl =230;
                 if(Novedad::where('cc',$e->cc)->where('periodo',$lapso)->exists()){
                     $hl=Novedad::where('cc',$e->cc)->where('periodo',$lapso)->first()->horas;
                 }
