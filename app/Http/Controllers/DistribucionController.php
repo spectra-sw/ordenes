@@ -138,6 +138,7 @@ class DistribucionController extends Controller
         $cont = 0;
         $valores['proyecto'] = "";
         $valores['fecha'] = "";
+        $valores['horas'] = 0;
         foreach ($jornadas as $j){
             //$valores['proyecto'] = "";
             $cont = $cont + 1;
@@ -211,6 +212,7 @@ class DistribucionController extends Controller
                     $laborales = (24-$turno->hora_inicio) + $turno->hora_fin - $turno->almuerzo;
                 }
             }
+           
             if ($laborales_cero==true){
                 $laborales=0;
                 $especial = true;
@@ -562,13 +564,14 @@ class DistribucionController extends Controller
                     }
                     else{
                         //$sb =$tsb[$j->fecha] + ($duracion - $j->almuerzo);
-                       $sb = ($duracion - $j->almuerzo);
+                        $sb = ($duracion - $j->almuerzo);
                     }
                     //$sb = $duracion - $j->almuerzo;
                     //dd($sb);
                     //Log::info($tsb[$j->fecha].":".$sb);
-                    if ($sb>$laborales){
-                        $excede = $sb -$laborales;
+                    if ($sb + $valores['horas']>$laborales){
+                        $excede = ($sb + $valores['horas']) -$laborales;
+                        
                         $sb =$laborales - $tsb[$j->fecha];
                         //$sb =$laborales;
                         //dd($sb);
@@ -580,6 +583,10 @@ class DistribucionController extends Controller
                         //dd($heno);
                         if ($heno ==0){
                             $hedo = $excede;  
+                            if ( $valores['horas']>0){
+                                $hedo=$hedo +$j->almuerzo;
+                                $sb=$sb-$j->almuerzo;
+                            }
                         }
                         else{
                             $hedo = $excede - $heno;
@@ -590,6 +597,8 @@ class DistribucionController extends Controller
                     }
                     else{
                         $rno = $this->calcularHeno($hi,$hf);
+                        //Log::info("RNO".$rno);
+                        //dd($rno);
                         /*//dd($heno);
                         $sb = $sb-$heno;
                         //dd($sb);
