@@ -18,6 +18,7 @@
                             <th>Almuerzo</th>
                             <th>Laborales</th>
                             <th>Creación</th>
+                            <th>Evidencias</th>
                             <th>Aprobación</th>
                             <th>Aprobada por</th>
                             <th>Observaciones</th>
@@ -75,6 +76,18 @@
 
                                 <td>{{ $duracion - $j->almuerzo }}</td>
                                 <td>{{ $j->created_at }}</td>
+                                <!-- Aquí agregamos las evidencias -->
+                                <td>
+                                    @if ($j->evidencias->count() > 0)
+                                        <ul>
+                                            @foreach ($j->evidencias as $evidencia)
+                                                <li><a href="{{ $evidencia->url_imagen }}" target="_blank">Ver Evidencia</a></li>
+                                            @endforeach
+                                        </ul>
+                                    @else
+                                        No hay evidencias
+                                    @endif
+                                </td>
                                 @switch($j->estado)
                                     @case(1)
                                         <td class="table-warning">Pendiente</td>

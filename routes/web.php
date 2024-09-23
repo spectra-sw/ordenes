@@ -176,7 +176,7 @@ Route::get('send-mail', function () {
 
 //jornada
 Route::get('/jornada', [OrdenesController::class, 'jornada']);
-Route::get('/registrarJornada', [OrdenesController::class, 'registrarJornada']);
+Route::post('/registrarJornada', [OrdenesController::class, 'registrarJornada']);
 Route::get('/consecJornada', [OrdenesController::class, 'consecJornada']);
 Route::get('/deleteJornada', [OrdenesController::class, 'deleteJornada']);
 Route::get('/solapeJornada', [OrdenesController::class, 'solapeJornada']);

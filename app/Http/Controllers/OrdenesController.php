@@ -32,6 +32,7 @@ use App\Models\Autorizados;
 use App\Models\Jornada;
 use App\Models\Corte;
 use App\Models\Notification;
+use App\Models\EvidenciaJornada;
 use Log;
 
 use Carbon\Carbon;
@@ -39,6 +40,7 @@ use DateInterval;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class OrdenesController extends Controller
 {
@@ -123,7 +125,16 @@ class OrdenesController extends Controller
 
     public function registrarJornada(Request $request)
     {
+        // Verifica si el request contiene las imágenes
+    /*if ($request->hasFile('imagenes')) {
+        dd($request->file('imagenes')); // Muestra información sobre las imágenes subidas
+    } else {
+        dd('No se recibieron imágenes');
+    }*/
 
+        $request->validate([
+            'imagenes.*' => 'image|mimes:jpeg,png,jpg,gif', // only allow this type extension file.
+        ]);
         $fecha = $request->fecha;
         $hours = $request->horaInicio;
         $minutes = $request->minInicio;
@@ -154,6 +165,21 @@ class OrdenesController extends Controller
         $data = $request->all();
 
         $j = Jornada::create($data);
+
+        if ($request->hasFile('imagenes')) {
+            foreach ($request->file('imagenes') as $imagen) {
+                // Almacenar la imagen en S3 y obtener la URL
+                $path = Storage::disk('s3')->put('evidencias_jornadas', $imagen);
+                $url = Storage::disk('s3')->url($path);
+    
+                // Aquí puedes guardar la URL en la base de datos si es necesario
+                // Por ejemplo, podrías tener una tabla 'evidencias_jornadas' asociada a cada jornada
+                EvidenciaJornada::create([
+                    'jornada_id' => $j->id,
+                    'url_imagen' => $url
+                ]);
+            }
+        }    
 
         $datosJornada = Jornada::where('jornada_id', $data['jornada_id'])->where('user_id', $user_id)->get();
         return view('tablaJornada', [

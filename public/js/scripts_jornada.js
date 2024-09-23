@@ -165,13 +165,16 @@ function validarSolape(){
 function enviar(){
     console.log(sValid);
     if ((isValid) && (hValid) && (sValid)) {
-        // Submit the form
-        var formData = $("#formRegistro").serialize();
+        // Crear una instancia de FormData
+        var formData = new FormData($("#formRegistro")[0]);
+
        // console.log(formData);
         $.ajax({
-            type: "GET",
+            type: "POST",
             url: "/registrarJornada",
             data: formData,
+            processData: false, // Evitar que jQuery procese los datos
+            contentType: false, // Evitar que jQuery establezca el contentType
             success: function(response) {
                 // Handle the response
                 $("#tablaJornada").html(response);
@@ -185,9 +188,6 @@ function enviar(){
         if (!isValid){
             errorHandler('Debes ingresar todos los campos obligatorios (*)');
         }
-        //var element = document.getElementById("alertaError");
-        //element.classList.add("show");
-        //element.style.display = "block";
     }
 }
 function delj(id) {

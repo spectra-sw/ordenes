@@ -44,4 +44,8 @@ class Jornada extends Model implements Auditable
 
         return $data;
     }
+    public function evidencias()
+    {
+        return $this->hasMany(EvidenciaJornada::class, 'jornada_id');
+    }
 }

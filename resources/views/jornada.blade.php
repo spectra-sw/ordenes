@@ -50,7 +50,8 @@
             </button>
 
             <div id="formJornada" style="display: none">
-                <form id="formRegistro">
+                <form id="formRegistro" enctype="multipart/form-data">
+                    @csrf
                     <input type="hidden" id="jornada_id" name="jornada_id">
                     <div class="card">
                         <div class="card-header">Registro jornada de trabajo</div>
@@ -189,6 +190,12 @@
                                                                                         <option value="45">45</option>
                                                                                     </select>
                                                                                 </div>-->
+                                </div><br>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label for="imagenes">Adjuntar Imágenes:</label>
+                                        <input type="file" name="imagenes[]" id="imagenes" class="form-control" multiple>
+                                    </div>
                                 </div><br>
                                 <button class="btn btn-success" id="btnRegistrar" type="button">Registrar</button>
                             </div>
