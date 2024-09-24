@@ -193,7 +193,7 @@
                                 </div><br>
                                 <div class="row">
                                     <div class="col-12">
-                                        <label for="imagenes">Adjuntar Imágenes:</label>
+                                        <label for="imagenes">Adjuntar Imágenes: (*no obligatorio)</label>
                                         <input type="file" name="imagenes[]" id="imagenes" class="form-control" multiple>
                                     </div>
                                 </div><br>

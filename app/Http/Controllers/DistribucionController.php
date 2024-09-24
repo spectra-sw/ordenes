@@ -569,7 +569,7 @@ class DistribucionController extends Controller
                     //$sb = $duracion - $j->almuerzo;
                     //dd($sb);
                     //Log::info($tsb[$j->fecha].":".$sb);
-                    if ($sb + $valores['horas']>$laborales){
+                    if (($sb + $valores['horas']>$laborales)&&($valores['fecha'] ==  str_replace("-","",$j->fecha))){
                         $excede = ($sb + $valores['horas']) -$laborales;
                         
                         $sb =$laborales - $tsb[$j->fecha];
