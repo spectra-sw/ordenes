@@ -181,8 +181,11 @@ class DistribucionController extends Controller
                 $turno = Horario::where('id',$horario_id)->first();
                 //dd($numdia);
                 //dd($turno);
-                if (($horario_id ==5) && (($numdia ==5)||($numdia ==4) )){
+                /*if (($horario_id ==5) && (($numdia ==5)||($numdia ==4) )){
                     $turno->hora_fin = 16.5;
+                }*/
+                if (($horario_id ==5) && ($numdia ==5)){
+                    $turno->hora_fin = 15.5;
                 }
                 $especial = false;
                 if (($numdia < $turno->dia_inicio) || ($numdia > $turno->dia_fin)){
