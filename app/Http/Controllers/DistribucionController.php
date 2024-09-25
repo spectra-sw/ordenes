@@ -567,23 +567,32 @@ class DistribucionController extends Controller
                         $sb = ($duracion - $j->almuerzo);
                     }
                     //$sb = $duracion - $j->almuerzo;
+
                     //dd($sb);
                     //Log::info($tsb[$j->fecha].":".$sb);
-                    if (($sb + $valores['horas']>$laborales)&&($valores['fecha'] ==  str_replace("-","",$j->fecha))){
-                        $excede = ($sb + $valores['horas']) -$laborales;
-                        
+                   
+                    if (($sb + $valores['horas']>$laborales && $valores['fecha'] ==  str_replace("-","",$j->fecha)) || ($sb >$laborales && $valores['fecha'] !=  str_replace("-","",$j->fecha))){
+                        if ($sb + $valores['horas']>$laborales && $valores['fecha'] ==  str_replace("-","",$j->fecha)){
+                            $excede = ($sb + $valores['horas']) -$laborales;
+                        }
+                        if ($sb >$laborales && $valores['fecha'] !=  str_replace("-","",$j->fecha)){
+                            $excede = $sb -$laborales;
+                        }
+                       
                         $sb =$laborales - $tsb[$j->fecha];
                         //$sb =$laborales;
                         //dd($sb);
+                       
                         if ($hf == 0){
                             $hf = 24;
                         }
 
                         $heno = $this->calcularHeno($turno->hora_fin,$hf);
+                        
                         //dd($heno);
                         if ($heno ==0){
                             $hedo = $excede;  
-                            if ( $valores['horas']>0){
+                            if (( $valores['horas']>0) && ($valores['fecha'] ==  str_replace("-","",$j->fecha))){
                                 $hedo=$hedo +$j->almuerzo;
                                 $sb=$sb-$j->almuerzo;
                             }
