@@ -508,4 +508,13 @@ class OrdenesController extends Controller
         } catch (\Throwable $th) {
         }
     }
+
+    public function iniciojornada(){
+        $user = session('user');
+        $aut = Autorizados::where('empleado_id', $user)->get();
+
+        return view('iniciojornada', [
+            'proyectos' => $aut,
+        ]);
+    }
 }

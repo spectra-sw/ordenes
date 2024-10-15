@@ -43,8 +43,9 @@
                     </div>
                 </div>
             @endif
-
-            <button class="btn btn-success mb-3" id="btnNuevaJornada">Nueva jornada</button>&nbsp;
+            <button class="btn btn-warning mb-3" id="btnInicioJornada" onclick="window.open('/iniciojornada','_self');">Inicio jornada</button>
+            <button class="btn btn-warning mb-3" id="btnFinJornada">Fin jornada</button>
+            <button class="btn btn-success mb-3" id="btnNuevaJornada">Nueva jornada completa</button>&nbsp;
             <button class="btn btn-success mb-3" id="btnMisjornadas" onclick="window.open('/misjornadas','_self');">
                 Mis jornadas
             </button>
