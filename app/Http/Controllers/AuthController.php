@@ -18,6 +18,7 @@ class AuthController extends Controller
             $e = Empleado::where('correo', $request->email)->first();
             $id = $e->id;
             $tipo = $e->tipo;
+            $tester = $e->isBetaTester();
             $nombre = $e->nombre . " " . $e->apellido1;
             $hashedPassword = Empleado::where('correo', $request->email)->first()->password;
             if (password_verify($request->pwd, $hashedPassword)) {
@@ -25,6 +26,7 @@ class AuthController extends Controller
                 session(['tipo' => $tipo]);
                 session(['area' => $e->area]);
                 session(['nombre' => $nombre]);
+                session(['tester' => $tester]);
                 //dd(session()->all());
                 return $tipo;
             } else {

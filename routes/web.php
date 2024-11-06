@@ -178,6 +178,7 @@ Route::get('send-mail', function () {
 Route::get('/jornada', [OrdenesController::class, 'jornada']);
 Route::post('/registrarJornada', [OrdenesController::class, 'registrarJornada']);
 Route::post('/registrarInicioJornada', [OrdenesController::class, 'registrarInicioJornada']);
+Route::post('/registrarFinJornada', [OrdenesController::class, 'registrarFinJornada']);
 Route::get('/consecJornada', [OrdenesController::class, 'consecJornada']);
 Route::get('/deleteJornada', [OrdenesController::class, 'deleteJornada']);
 Route::get('/solapeJornada', [OrdenesController::class, 'solapeJornada']);
@@ -186,6 +187,7 @@ Route::get('/consultaJornadaAdmin', [OrdenesController::class, 'consultaJornadaA
 Route::get('/accionesJornada', [OrdenesController::class, 'accionesJornada']);
 Route::get('/misjornadas', [OrdenesController::class, 'misjornadas']);
 Route::get('/iniciojornada', [OrdenesController::class, 'iniciojornada']);
+Route::get('/finjornada/{id}', [OrdenesController::class, 'finjornada']);
 
 Route::get('/distribucion', [DistribucionController::class, 'distribucion']);
 Route::get('/validarCorte', [OrdenesController::class, 'validarCorte']);

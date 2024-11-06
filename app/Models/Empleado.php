@@ -65,4 +65,15 @@ class Empleado extends Model implements Auditable
 
         return $data;
     }
+    // Relación con el modelo BetaTester
+    public function betaTester()
+    {
+        return $this->hasOne(BetaTester::class,'cc','cc');
+    }
+
+    // Método para verificar si el usuario es un beta tester
+    public function isBetaTester()
+    {
+        return $this->betaTester()->exists();
+    }
 }

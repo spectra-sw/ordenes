@@ -6,9 +6,9 @@
             <div id="formJornada" style="display: block">
                 <form id="formRegistro" enctype="multipart/form-data">
                     @csrf
-                    <input type="hidden" id="jornada_id" name="jornada_id">
+                    <input type="hidden" id="jornada_id" name="jornada_id" value="{{ $jornada->id }}">
                     <div class="card">
-                        <div class="card-header">Registro jornada de trabajo</div>
+                        <div class="card-header">Finalizar jornada de trabajo</div>
                         <div class="card-body">
                             <input type="hidden" id="tipo" name="tipo" value="1">
                             
@@ -16,39 +16,32 @@
                                 <div class="row">
                                     <div class="col-6 col-md-2 cajaAzul">Proyecto *</div>
                                     <div class="col-6 col-md-2 ">
-                                        <select class="form-control" name="proyecto" id="proyecto"
-                                            onchange="buscarP(this.value)" required>
-                                            <option value=""></option>
-                                            <option value="7">7</option>
-                                            @foreach ($proyectos as $p)
-                                                <option value="{{ $p->proyecto }}">{{ $p->proyecto }}</option>
-                                            @endforeach
-                                        </select>
+                                        <input type="text" class="form-control" name="proyecto" id="proyecto"
+                                            value="{{ $jornada->proyecto }}" disabled>
                                     </div>
                                     <div class="col-6 col-md-2 cajaAzul">Subportafolio</div>
-                                    <div class="col-6 col-md-2 "><input type="text" name="subportafolio"
-                                            id="subportafolio" class="form-control" disabled></div>
+                                    <div class="col-6 col-md-2 ">
+                                        <input type="text" name="subportafolio" id="subportafolio" 
+                                            class="form-control" value="{{ $jornada->subportafolio }}" disabled>
+                                    </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-6 col-md-2 cajaAzul">Descripción</div>
-                                    <div class="col-6 col-md-4 "><input type="text" name="descripcion"
-                                            id="descripcion" class="form-control" disabled></div>
+                                    <div class="col-6 col-md-4 ">
+                                        <input type="text" name="descripcion" id="descripcion" 
+                                            class="form-control" value="{{ $jornada->descripcion }}" disabled>
+                                    </div>
                                     <div class="col-6 col-md-1 cajaAzul">Director</div>
-                                    <div class="col-6 col-md-2 "><input type="text" name="director" id="director"
-                                            class="form-control" disabled></div>
+                                    <div class="col-6 col-md-2 ">
+                                        <input type="text" name="director" id="director" 
+                                            class="form-control" value="{{ $jornada->director }}" disabled>
+                                    </div>
                                     <div class="col-6 col-md-1 cajaAzul">Líder</div>
-                                    <div class="col-6 col-md-2 "><input type="text" name="lider" id="lider"
-                                            class="form-control" disabled></div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-6 col-md-2 cajaAzul">Cliente</div>
-                                    <div class="col-6 col-md-2 "><input type="text" name="cliente" id="cliente"
-                                            class="form-control" disabled></div>
-                                    <div class="col-6 col-md-2 cajaAzul">Contacto</div>
-                                    <div class="col-6 col-md-2 "><input type="text" name="contacto" id="contacto"
-                                            class="form-control" disabled></div>
+                                    <div class="col-6 col-md-2 ">
+                                        <input type="text" name="lider" id="lider" 
+                                            class="form-control" value="{{ $jornada->lider }}" disabled>
+                                    </div>
                                 </div>
 
                                 <br>
@@ -72,11 +65,11 @@
                                 <div class="row">
                                     <div class="col-6 col-md-2 cajaAzul">Fecha actual</div>
                                     <div class="col-6 col-md-2 ">
-                                        <input type="text" name="fecha" id="fecha" class="form-control" readonly>
+                                        <input type="text" name="fechaf" id="fechaf" class="form-control" readonly>
                                     </div>
                                     <div class="col-6 col-md-2 cajaAzul">Hora actual</div>
                                     <div class="col-6 col-md-2 ">
-                                        <input type="text" name="hi" id="hi" class="form-control" readonly>
+                                        <input type="text" name="hf" id="hf" class="form-control" readonly>
                                     </div>
                                 </div>
                                 <br>
@@ -91,7 +84,7 @@
                                     </div>
                                 </div>
                                 <br>
-                                <button class="btn btn-success" id="btnRegistrarInicio" type="button">Registrar</button>
+                                <button class="btn btn-success" id="btnRegistrarFin" type="button">Registrar finalización</button>
                             </div>
                         </div>
                     </div>
@@ -144,8 +137,8 @@
             String(now.getDate()).padStart(2, '0');
             var hora = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
 
-            document.getElementById('fecha').value = fecha;
-            document.getElementById('hi').value = hora;
+            document.getElementById('fechaf').value = fecha;
+            document.getElementById('hf').value = hora;
         }
 
         setInterval(actualizarFechaHora, 1000);

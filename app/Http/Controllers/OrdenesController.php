@@ -517,4 +517,109 @@ class OrdenesController extends Controller
             'proyectos' => $aut,
         ]);
     }
+    public function registrarInicioJornada(Request $request)
+    {
+        $request->validate([
+            'imagenes.*' => 'image|mimes:jpeg,png,jpg,gif', // only allow this type extension file.
+        ]);
+
+        $user_id = session()->get('user');
+        $duracion = "0:0";
+        $hf ="0";
+        // Fusionar datos adicionales en la solicitud
+        $request->merge([
+            'jornada_id' => 0,
+            'user_id' => $user_id,
+            'hf' => $hf,
+            'fechaf' => '1900-01-01',
+            'estado' => 1,
+            'duracion' => $duracion,
+            'almuerzo' => 0
+        ]);
+        
+        $j = Jornada::create($request->all());
+        //Log::info($request->all());
+        if ($request->hasFile('imagenes')) {
+            foreach ($request->file('imagenes') as $imagen) {
+                // Almacenar la imagen en S3 y obtener la URL
+                $path = Storage::disk('s3')->put('evidencias_jornadas', $imagen);
+                $url = Storage::disk('s3')->url($path);
+    
+                // Aquí puedes guardar la URL en la base de datos si es necesario
+                // Por ejemplo, podrías tener una tabla 'evidencias_jornadas' asociada a cada jornada
+                EvidenciaJornada::create([
+                    'jornada_id' => $j->id,
+                    'url_imagen' => $url,
+                    'latitud' => $request->latitude,   // Almacena la latitud
+                    'longitud' => $request->longitude  // Almacena la longitud
+                ]);
+            }
+        }    
+
+        return response()->json("Inicio de jornada registrado con éxito.");
+    }
+    public function finjornada($id)
+    {
+        // Buscar la jornada por su ID
+        $jornada = Jornada::findOrFail($id);
+
+        // Retornar la vista 'finjornada' con los datos de la jornada
+        return view('finjornada', compact('jornada'));
+    }
+    public function registrarFinJornada(Request $request)
+    {
+        // Buscar la jornada por ID
+        $jornada = Jornada::findOrFail($request->input('jornada_id'));
+
+        // Obtener las fechas y horas
+        $fechaInicio = $jornada->fecha; // Fecha de inicio de la jornada
+        $horaInicio = $jornada->hi;     // Hora de inicio de la jornada
+        $fechaFin = $request->input('fechaf'); // Fecha de fin de la jornada (puede ser diferente)
+        $horaFin = $request->input('hf');      // Hora de fin de la jornada
+
+        // Combinar fecha y hora para crear las instancias de Carbon
+        $inicio = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $fechaInicio . ' ' . $horaInicio);
+        $fin = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $fechaFin . ' ' . $horaFin);
+
+        // Calcular la diferencia en minutos entre el inicio y el fin
+        $diferenciaMinutos = $inicio->diffInMinutes($fin);
+        $horas = floor($diferenciaMinutos / 60);
+        $minutos = $diferenciaMinutos % 60;
+
+        // Formatear la duración como h:m (por ejemplo, 9:30)
+        $duracion = sprintf('%02d:%02d', $horas, $minutos);
+
+        // Actualizar los campos de fin de jornada
+        $jornada->fechaf = $fechaFin; // Actualiza la fecha de fin
+        $jornada->hf = $horaFin;      // Actualiza la hora de fin
+        $jornada->duracion = $duracion; // Actualiza la duración calculada
+    
+        $jornada->save();
+
+        if ($request->hasFile('imagenes')) {
+            foreach ($request->file('imagenes') as $imagen) {
+                // Almacenar la imagen en S3 y obtener la URL
+                $path = Storage::disk('s3')->put('evidencias_jornadas', $imagen);
+                $url = Storage::disk('s3')->url($path);
+    
+                // Aquí puedes guardar la URL en la base de datos si es necesario
+                // Por ejemplo, podrías tener una tabla 'evidencias_jornadas' asociada a cada jornada
+                EvidenciaJornada::create([
+                    'jornada_id' => $jornada->id,
+                    'url_imagen' => $url,
+                    'latitud' => $request->latitude,   // Almacena la latitud
+                    'longitud' => $request->longitude  // Almacena la longitud
+                ]);
+            }
+        }    
+
+
+        return response()->json('Jornada finalizada correctamente');
+    }
+    public function getEvidencias($jornadaId)
+    {
+        // Obtener las evidencias para la jornada específica
+        $evidencias = EvidenciaJornada::where('jornada_id', $jornadaId)->get();
+        return response()->json($evidencias);
+    }
 }

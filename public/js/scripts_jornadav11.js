@@ -84,16 +84,34 @@ btnNuevaJornada.addEventListener("click", function() {
 });
 }
 //guardar registro
-var btnRegistrar = document.getElementById("btnRegistrar");
-if (btnNuevaJornada  != null) {
+var btnRegistrarInicio = document.getElementById("btnRegistrarInicio");
+var btnRegistrarFin = document.getElementById("btnRegistrarFin");
 var isValid = true;
 var hValid = true;
 var sValid = true;
-btnRegistrar.addEventListener("click", function() {
+
+// Escucha para registrar inicio de jornada
+if (btnRegistrarInicio) {
+    btnRegistrarInicio.addEventListener("click", function() {
+        registrarJornada("inicio");
+    });
+}
+
+// Escucha para registrar fin de jornada
+if (btnRegistrarFin) {
+    btnRegistrarFin.addEventListener("click", function() {
+        registrarJornada("fin");
+    });
+}
+
+function registrarJornada(tipoJornada) {
     var tipo = document.getElementById("tipo").value;
     var requiredSelects;
-    if (tipo === "1"){
+
+    // Validación solo si es inicio de jornada
+    if ( tipo === "1") {
         requiredSelects = document.querySelectorAll("select[required], input[required]");
+       
         for (var i = 0; i < requiredSelects.length; i++) {
             if (requiredSelects[i].value === "") {
                 console.log(requiredSelects[i]);
@@ -101,20 +119,57 @@ btnRegistrar.addEventListener("click", function() {
                 break;
             }
         }
+        var inputImagenes = document.getElementById("imagenes");
+        if (inputImagenes.files.length ==0 ) {
+            console.log("No se ha seleccionado ningún archivo.");
+            isValid = false;
+        }
     }
-    
-    //hValid=validarHoras();
-    if (!isValid){
+
+    if (!isValid) {
         errorHandler('Debes ingresar todos los campos obligatorios (*)');
+    } else {
+        // Simulación de validación de horas y solapes (puedes incluir tu propia lógica aquí)
+        hValid = true; // Por ejemplo: validarHoras();
+        sValid = true; // Por ejemplo: validarSolape();
+        enviar(tipoJornada);
     }
-    else{
-        //sValid=validarSolape();
-        sValid=true;
-    }
-
-
-});
 }
+function enviar(tipoJornada) {
+    console.log(sValid);
+    if (isValid && hValid && sValid) {
+        // Crear una instancia de FormData
+        var formData = new FormData($("#formRegistro")[0]);
+
+        // Ajustar URL según el tipo de jornada
+        var url;
+        if (tipoJornada === "inicio") {
+            url = "/registrarInicioJornada";
+        } else if (tipoJornada === "fin") {
+            url = "/registrarFinJornada";
+        }
+
+        // Enviar la solicitud AJAX
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: formData,
+            processData: false, // Evitar que jQuery procese los datos
+            contentType: false, // Evitar que jQuery establezca el contentType
+            success: function(response) {
+                alert(response);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(textStatus, errorThrown);
+            }
+        });
+    } else {
+        if (!isValid) {
+            errorHandler('Debes ingresar todos los campos obligatorios (*)');
+        }
+    }
+}
+
 function validarHoras(){
     const startHour = parseInt(document.getElementById('horaInicio').value);
     const startMin = parseInt(document.getElementById('minInicio').value);
@@ -153,34 +208,7 @@ function validarSolape(){
         }
     });
 }
-function enviar(){
-    console.log(sValid);
-    if ((isValid) && (hValid) && (sValid)) {
-        // Crear una instancia de FormData
-        var formData = new FormData($("#formRegistro")[0]);
 
-       // console.log(formData);
-        $.ajax({
-            type: "POST",
-            url: "/registrarInicioJornada",
-            data: formData,
-            processData: false, // Evitar que jQuery procese los datos
-            contentType: false, // Evitar que jQuery establezca el contentType
-            success: function(response) {
-                // Handle the response
-                $("#tablaJornada").html(response);
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.log(textStatus, errorThrown);
-            }
-        });
-    }
-    else {
-        if (!isValid){
-            errorHandler('Debes ingresar todos los campos obligatorios (*)');
-        }
-    }
-}
 function delj(id) {
     $.ajax({
         type: "GET",

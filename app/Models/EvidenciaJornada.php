@@ -13,7 +13,9 @@ class EvidenciaJornada extends Model
     // Campos que se pueden llenar mediante asignación masiva
     protected $fillable = [
         'jornada_id', 
-        'url_imagen'
+        'url_imagen',
+        'latitud',
+        'longitud',
     ];
 
     // Si tienes alguna relación, puedes definirla aquí

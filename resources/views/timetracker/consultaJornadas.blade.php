@@ -45,6 +45,14 @@
                                 @endswitch
 
                                 <td>{{ $j->observacion }}</td>
+                                @if (session('tester'))
+                                    <td>
+                                        @if ($j->fechaf == '1900-01-01')
+                                            <button class="btn btn-warning mb-3" id="btnFinJornada" type="button"
+                                                onclick="window.open('/finjornada/{{$j->id}}','_self');">Finalizar jornada</button>
+                                        @endif
+                                    </td>
+                                @endif
                                 <td>
                                     <button type="button" id="{{ $j->id }}" class="btn btn-danger btn-sm"
                                         onclick="delj2(this.id)" {{ $j->estado != 1 ? 'disabled' : '' }}>
