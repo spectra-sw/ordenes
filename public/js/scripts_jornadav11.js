@@ -158,6 +158,7 @@ function enviar(tipoJornada) {
             contentType: false, // Evitar que jQuery establezca el contentType
             success: function(response) {
                 alert(response);
+                window.location.href = '/menu';
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log(textStatus, errorThrown);
