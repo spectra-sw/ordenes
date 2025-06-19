@@ -797,7 +797,7 @@ class DistribucionController extends Controller
         $linea->put('centro de operacion', $valores['centro']);
         $linea->put('centro de costo', $valores['proyecto']);
         $linea->put('fecha movimiento',$valores['fecha'] );
-        $linea->put('horas', $valores['horas']);
+        $linea->put('horas', round($valores['horas'], 2));
         $linea->put('valor', '');
         $linea->put('cantidad', '');
         $linea->put('proyecto', '');
