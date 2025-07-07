@@ -25,6 +25,18 @@ class OcupacionController extends Controller
         $input_date = new Carbon($request->dia);
         $date_july_15 = Carbon::createFromDate(2023, 7, 15);
         $friday_hours = $input_date->gte($date_july_15) ? 8.5 : 9.5;
+        
+        $date_july_2025 = Carbon::createFromDate(2025, 7, 1);
+    
+        // Update friday_hours calculation
+        if ($input_date->gte($date_july_2025)) {
+            // New rules after July 1, 2025
+            $max_hours = $input_date->dayOfWeek == 1 ? 7.5 : 9.0; // Monday = 7.5, Tue-Fri = 9.0
+        } else {
+            // Keep existing logic for dates before July 1, 2025
+            $max_hours = $input_date->gte($date_july_15) ? 8.5 : 9.5;
+        }
+        
         $records_created = ocupacion::where('cc', $user_cc)->where('dia', $request->dia)->get();
         $actividad_id = Actividad::where('actividad', $request->actividad)->first()->id;
         $hours_completed = 0;
@@ -51,12 +63,26 @@ class OcupacionController extends Controller
             return "No es posible registrar una fecha posterior a la actual";
         }
 
-        if ($hours_completed > $friday_hours && ($input_date->dayOfWeek == 5||$input_date->dayOfWeek == 4)) {
+        /*if ($hours_completed > $friday_hours && ($input_date->dayOfWeek == 5||$input_date->dayOfWeek == 4)) {
             return "La horas que desea registrar superan las 8,5 horas";
         }
 
         if ($hours_completed > 9.5) {
             return "La horas que desea registrar superan las 9,5 horas";
+        }*/
+        if ($hours_completed > $max_hours) {
+            if ($input_date->gte($date_july_2025)) {
+                if ($input_date->dayOfWeek == 1) {
+                    return "Las horas que desea registrar superan las 7,5 horas permitidas para lunes";
+                } else {
+                    return "Las horas que desea registrar superan las 9 horas permitidas";
+                }
+            } else {
+                if ($input_date->dayOfWeek == 5 || $input_date->dayOfWeek == 4) {
+                    return "Las horas que desea registrar superan las 8,5 horas";
+                }
+                return "Las horas que desea registrar superan las 9,5 horas";
+            }
         }
 
         $e = ocupacion::create([
