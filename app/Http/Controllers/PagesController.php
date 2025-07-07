@@ -1616,14 +1616,21 @@ class PagesController extends Controller
         $fecha = $request->fecha;
         $date_carbon = new Carbon($fecha);
         $date_july_15 = Carbon::createFromDate(2023, 7, 15);
-        $friday_hours = $date_carbon->gte($date_july_15) ? 8.5 : 9.5;
-        //$hours_per_day = $date_carbon->dayOfWeek == 5 ? $friday_hours : 9.5;
-        if (($date_carbon->dayOfWeek == 5)||($date_carbon->dayOfWeek == 4)){
-            $hours_per_day =8.5;
+        $date_july_2025 = Carbon::createFromDate(2025, 7, 1);
+
+    // Calculate hours per day based on date
+        if ($date_carbon->gte($date_july_2025)) {
+            // New rules after July 1, 2025
+            $hours_per_day = $date_carbon->dayOfWeek == 1 ? 7.5 : 9.0; // Monday = 7.5, Tue-Fri = 9.0
+        } else {
+            // Keep existing logic for dates before July 1, 2025
+            if (($date_carbon->dayOfWeek == 5) || ($date_carbon->dayOfWeek == 4)){
+                $hours_per_day = 8.5;
+            } else {
+                $hours_per_day = 9.5;
+            }
         }
-        else{
-            $hours_per_day = 9.5;
-        }
+        
         $cc = Empleado::where('id',$user)->first()->cc;
         $hoc = Ocupacion::where('cc',$cc)->where('dia','=',$fecha)->sum('horas');
         $moc = Ocupacion::where('cc',$cc)->where('dia','=',$fecha)->sum('minutos');
