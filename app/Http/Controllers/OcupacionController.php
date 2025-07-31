@@ -26,7 +26,7 @@ class OcupacionController extends Controller
         $date_july_15 = Carbon::createFromDate(2023, 7, 15);
         $friday_hours = $input_date->gte($date_july_15) ? 8.5 : 9.5;
         
-        $date_july_2025 = Carbon::createFromDate(2025, 7, 1);
+        $date_july_2025 = Carbon::createFromDate(2025, 6, 30);
     
         // Update friday_hours calculation
         if ($input_date->gte($date_july_2025)) {

@@ -1616,7 +1616,7 @@ class PagesController extends Controller
         $fecha = $request->fecha;
         $date_carbon = new Carbon($fecha);
         $date_july_15 = Carbon::createFromDate(2023, 7, 15);
-        $date_july_2025 = Carbon::createFromDate(2025, 7, 1);
+        $date_july_2025 = Carbon::createFromDate(2025, 6, 30);
 
     // Calculate hours per day based on date
         if ($date_carbon->gte($date_july_2025)) {
