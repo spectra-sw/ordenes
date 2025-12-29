@@ -166,6 +166,11 @@ class DistribucionController extends Controller
             $numdiaf = $cf->dayOfWeek;
             $sb = $hedo = $heno= $hedf = $henf = $rno = $dtc = $rnd = 0;
 
+            if ($c->greaterThanOrEqualTo('2025-12-25')) {
+                // apply new cutoff for this jornada
+                $fin_diurno = 19;
+                $inicio_nocturnos = 19;
+            }
                 
             //horario laboral
             $turno = Turno::where('user_id', $j->user_id)
