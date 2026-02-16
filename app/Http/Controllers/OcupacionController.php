@@ -21,6 +21,7 @@ class OcupacionController extends Controller
         }
 
         $user_cc = Empleado::where('id', $user_id)->first()->cc;
+        $user_ciudad = Empleado::where('id', $user_id)->first()->ciudad;
         $today_date = Carbon::now();
         $input_date = new Carbon($request->dia);
         $date_july_15 = Carbon::createFromDate(2023, 7, 15);
@@ -29,13 +30,17 @@ class OcupacionController extends Controller
         $date_july_2025 = Carbon::createFromDate(2025, 6, 30);
     
         // Update friday_hours calculation
-        if ($input_date->gte($date_july_2025)) {
-            // New rules after July 1, 2025
+        if ($input_date->gte($date_july_2025) && $user_ciudad == 'BOGOTA') {
+            // New rules after July 1, 2025 for BOGOTA
+            $max_hours = $input_date->dayOfWeek == 5 ? 7.5 : 9.0; // Friday = 7.5, Mon-Thu = 9.0
+        } else if ($input_date->gte($date_july_2025)) {
+            // New rules after July 1, 2025 for other cities
             $max_hours = $input_date->dayOfWeek == 1 ? 7.5 : 9.0; // Monday = 7.5, Tue-Fri = 9.0
         } else {
             // Keep existing logic for dates before July 1, 2025
             $max_hours = $input_date->gte($date_july_15) ? 8.5 : 9.5;
         }
+
         
         $records_created = ocupacion::where('cc', $user_cc)->where('dia', $request->dia)->get();
         $actividad_id = Actividad::where('actividad', $request->actividad)->first()->id;
