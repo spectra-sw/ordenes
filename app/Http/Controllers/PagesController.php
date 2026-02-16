@@ -1619,8 +1619,12 @@ class PagesController extends Controller
         $date_july_2025 = Carbon::createFromDate(2025, 6, 30);
 
     // Calculate hours per day based on date
-        if ($date_carbon->gte($date_july_2025)) {
-            // New rules after July 1, 2025
+        $user_ciudad = Empleado::where('id',$user)->first()->ciudad;
+        if ($date_carbon->gte($date_july_2025) && strtoupper($user_ciudad) == 'BOGOTA') {
+            // New rules after July 1, 2025 for BOGOTA
+            $hours_per_day = $date_carbon->dayOfWeek == 5 ? 7.5 : 9.0; // Friday = 7.5, Mon-Thu = 9.0
+        } elseif ($date_carbon->gte($date_july_2025)) {
+            // New rules after July 1, 2025 for other cities
             $hours_per_day = $date_carbon->dayOfWeek == 1 ? 7.5 : 9.0; // Monday = 7.5, Tue-Fri = 9.0
         } else {
             // Keep existing logic for dates before July 1, 2025
