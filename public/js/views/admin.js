@@ -11,6 +11,7 @@ const containerTablaProyectos = document.querySelector(
     "#containerTablaProyectos"
 );
 const containerTablaCortes = document.querySelector("#containerTablaCortes");
+const containerTablaHorarios = document.querySelector("#containerTablaHorarios");
 const containerTablaTurnos = document.querySelector("#containerTablaTurnos");
 
 // * --------- END SELECTORES ---------- //
@@ -62,6 +63,15 @@ const observerTablaCortes = new IntersectionObserver((entries) => {
     });
 });
 observerTablaCortes.observe(containerTablaCortes);
+
+const observerTablaHorarios = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        if (entry.isIntersecting && $("#tablaHorarios")[0] === undefined) {
+            resetTablaHorarios();
+        }
+    });
+});
+observerTablaHorarios.observe(containerTablaHorarios);
 
 const observerTablaTurnos = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -484,6 +494,65 @@ const resetTablaCortes = () => {
             $("#containerTablaCortes").html(data);
             $("#tablaCortes").DataTable();
             $("#tablaCortes").parent()[0].classList.add("table-responsive");
+        },
+    });
+};
+
+/**
+ * * Horarios
+ */
+const accionesHorarios = (accion = undefined, horario_id = undefined) => {
+    if (accion != undefined && accion != 0) {
+        const url = "/modal-horario-acciones";
+        const data = { accion, horario_id };
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            data: data,
+            success: (data) => {
+                $("#modalFeedbackContent").html(data);
+                $("#modalFeedback").modal("show");
+            },
+        });
+    }
+};
+
+const crearHorario = () => {
+    const keys_name = ["nombre", "dia_inicio", "dia_fin", "hora_inicio", "hora_fin", "almuerzo", "observacion"];
+    restFetchForm("/nuevohorario", "formHorario", keys_name, (response) => {
+        alert(response.message);
+        resetTablaHorarios();
+        $("#modalFeedback").modal("hide");
+    });
+};
+
+const editarHorario = () => {
+    const keys_name = ["horario_id", "nombre", "dia_inicio", "dia_fin", "hora_inicio", "hora_fin", "almuerzo", "observacion"];
+    restFetchForm("/editarhorario", "formHorario", keys_name, (response) => {
+        alert(response.message);
+        resetTablaHorarios();
+        $("#modalFeedback").modal("hide");
+    });
+};
+
+const eliminarHorario = () => {
+    restFetchForm("/eliminarhorario", "formHorario", ["horario_id"], (response) => {
+        alert(response.message);
+        resetTablaHorarios();
+        $("#modalFeedback").modal("hide");
+    });
+};
+
+const resetTablaHorarios = () => {
+    const url = "/tablahorario";
+    $.ajax({
+        url: url,
+        type: "GET",
+        success: (data) => {
+            $("#containerTablaHorarios").html(data);
+            $("#tablaHorarios").DataTable();
+            $("#tablaHorarios").parent()[0].classList.add("table-responsive");
         },
     });
 };

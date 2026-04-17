@@ -33,6 +33,7 @@ use App\Models\Jornada;
 use App\Models\Corte;
 use App\Models\Notification;
 use App\Models\EvidenciaJornada;
+use App\Models\Turno;
 use Log;
 
 use Carbon\Carbon;
@@ -330,26 +331,31 @@ class OrdenesController extends Controller
 
     public function consultaJornadaAdmin(Request $request)
     {
-        $jornadas = Jornada::query();
-        // busqueda de cortes que se encuentren en el rango de fechas
-        $cortes = Corte::query();
+        $jornadas = $this->getJornadasConAnalisis($request);
 
+        return view('timetracker.consultaJornadasAdmin', [
+            'jornadas' => $jornadas,
+            'total_jornadas' => $jornadas->count()
+        ]);
+    }
+
+    public function getJornadasConAnalisis(Request $request)
+    {
+        $jornadas = Jornada::query();
+        $cortes   = Corte::query();
 
         if ($request->proyecto) {
             $jornadas->where('proyecto', $request->proyecto);
         }
-
         if ($request->trabajador) {
             $jornadas->where('user_id', $request->trabajador);
         }
-
         if ($request->cliente) {
             $clientId = $request->cliente;
-            $jornadas = $jornadas->whereHas('proyectoinfo', function ($query) use ($clientId) {
+            $jornadas->whereHas('proyectoinfo', function ($query) use ($clientId) {
                 $query->where('cliente_id', $clientId);
             });
         }
-
         if ($request->inicio && $request->fin) {
             $jornadas->whereBetween('fecha', [$request->inicio, $request->fin]);
             $cortes->whereDate('fecha_inicio', '<=', $request->inicio)
@@ -359,30 +365,125 @@ class OrdenesController extends Controller
                 ->orWhereDate('fecha_inicio', '>=', $request->inicio)
                 ->whereDate('fecha_fin', '<=', $request->fin);
         }
-
         if ($request->estado) {
             $jornadas->where('estado', $request->estado);
         }
-        $cortes = $cortes->get();
-        $jornadas = $jornadas->orderBy('fecha', 'asc')
-        ->orderBy('id', 'asc')
-        ->get();
 
-        // agregar columna de cortes segun la fecha
+        $cortes   = $cortes->get();
+        $jornadas = $jornadas->orderBy('fecha', 'asc')->orderBy('id', 'asc')->get();
+
+        // --- Batch load para enriquecimiento ---
+        $userIds  = $jornadas->pluck('user_id')->unique();
+        $minFecha = $jornadas->min('fecha') ?? now()->format('Y-m-d');
+        $maxFecha = $jornadas->max('fecha') ?? now()->format('Y-m-d');
+
+        $turnosPorUser = Turno::whereIn('user_id', $userIds)
+            ->where('fecha_inicio', '<=', $maxFecha)
+            ->where('fecha_fin', '>=', $minFecha)
+            ->get()->groupBy('user_id');
+
+        $empleados = Empleado::with('horario')
+            ->whereIn('id', $userIds)
+            ->get()->keyBy('id');
+
+        $festivosSet = Festivo::whereBetween('fecha', [$minFecha, $maxFecha])
+            ->pluck('fecha')->flip()->toArray();
+
         foreach ($jornadas as $jornada) {
+            // Corte status
             $jornada->corte_status = 1;
             foreach ($cortes as $corte) {
-                if (($jornada->fecha >= $corte->fecha_inicio) && ($jornada->fecha <= $corte->fecha_fin) && $corte->estado == 0) {
+                if ($jornada->fecha >= $corte->fecha_inicio && $jornada->fecha <= $corte->fecha_fin && $corte->estado == 0) {
                     $jornada->corte_status = 0;
                     break;
                 }
             }
+
+            // Festivo / domingo
+            $carbon = new Carbon($jornada->fecha);
+            $numdia = $carbon->dayOfWeek;
+            $jornada->es_festivo = isset($festivosSet[$jornada->fecha]);
+            $jornada->es_domingo = ($numdia === 0);
+
+            // Resolver horario de referencia
+            $turnoActivo = null;
+            if (isset($turnosPorUser[$jornada->user_id])) {
+                $turnoActivo = $turnosPorUser[$jornada->user_id]->first(fn($t) =>
+                    $t->fecha_inicio <= $jornada->fecha && $t->fecha_fin >= $jornada->fechaf
+                );
+            }
+
+            $empleado    = $empleados[$jornada->user_id] ?? null;
+            $horarioBase = $empleado?->horario;
+
+            if ($turnoActivo) {
+                $ref = $turnoActivo;
+                $jornada->horario_label  = 'T';
+                $jornada->horario_nombre = $turnoActivo->fecha_inicio . ' / ' . $turnoActivo->fecha_fin;
+                $laborales = ($turnoActivo->fecha_inicio == $turnoActivo->fecha_fin)
+                    ? $turnoActivo->hora_fin - $turnoActivo->hora_inicio - $turnoActivo->almuerzo
+                    : (24 - $turnoActivo->hora_inicio) + $turnoActivo->hora_fin - $turnoActivo->almuerzo;
+            } elseif ($horarioBase) {
+                $ref = clone $horarioBase;
+                if ($empleado->horario_id == 5 && $numdia == 5) $ref->hora_fin = 15.5;
+                $jornada->horario_label  = 'H';
+                $jornada->horario_nombre = $horarioBase->nombre;
+                $fueraDias = ($numdia < $horarioBase->dia_inicio || $numdia > $horarioBase->dia_fin);
+                $laborales = $fueraDias ? 0 : max(0, $ref->hora_fin - $ref->hora_inicio - $ref->almuerzo);
+            } else {
+                $ref = null;
+                $jornada->horario_label  = '?';
+                $jornada->horario_nombre = 'Sin horario';
+                $laborales = 0;
+            }
+
+            $jornada->laborales_ref = $laborales;
+            $jornada->horario_rango = $ref
+                ? number_format($ref->hora_inicio, 1) . '-' . number_format($ref->hora_fin, 1) . ' (' . $ref->almuerzo . 'h)'
+                : '-';
+
+            // Parsear hi / hf / duracion
+            $hi      = intval(explode(':', $jornada->hi)[0])       + round(floatval(explode(':', $jornada->hi)[1] / 60), 2);
+            $hf      = intval(explode(':', $jornada->hf)[0])       + round(floatval(explode(':', $jornada->hf)[1] / 60), 2);
+            $durReal = intval(explode(':', $jornada->duracion)[0])  + round(floatval(explode(':', $jornada->duracion)[1] / 60), 2)
+                       - $jornada->almuerzo;
+
+            // Detectar extras y recargos
+            $tieneExtra   = false;
+            $tipoExtra    = [];
+            $tieneRecargo = false;
+            $heno         = $this->calcularHenoHoras($hi, $hf);
+
+            if ($jornada->es_festivo || $jornada->es_domingo) {
+                if ($durReal > 0) {
+                    $tieneExtra  = true;
+                    $tipoExtra[] = $jornada->es_festivo ? 'Festivo' : 'Dom';
+                    if ($heno > 0) $tipoExtra[] = 'Noc';
+                }
+                if ($heno > 0) $tieneRecargo = true;
+            } else {
+                if ($laborales > 0 && $durReal > $laborales) {
+                    $tieneExtra  = true;
+                    $tipoExtra[] = 'Extra';
+                    if ($ref && $this->calcularHenoHoras($ref->hora_fin, $hf) > 0) $tipoExtra[] = 'Noc';
+                }
+                if ($heno > 0) $tieneRecargo = true;
+            }
+
+            $jornada->tiene_extra   = $tieneExtra;
+            $jornada->tipo_extra    = $tipoExtra;
+            $jornada->tiene_recargo = $tieneRecargo;
         }
 
-        return view('timetracker.consultaJornadasAdmin', [
-            'jornadas' => $jornadas,
-            'total_jornadas' => 0
-        ]);
+        // Filtro por tipo de concepto
+        $tipoConcepto = $request->tipo_concepto;
+        if ($tipoConcepto === 'extras') {
+            $jornadas = $jornadas->filter(fn($j) => $j->tiene_extra || $j->tiene_recargo)->values();
+        } elseif ($tipoConcepto === 'normales') {
+            $jornadas = $jornadas->filter(fn($j) => !$j->tiene_extra && !$j->tiene_recargo)->values();
+        }
+
+        return $jornadas;
     }
 
     public function accionesJornada(Request $request)
@@ -621,5 +722,25 @@ class OrdenesController extends Controller
         // Obtener las evidencias para la jornada específica
         $evidencias = EvidenciaJornada::where('jornada_id', $jornadaId)->get();
         return response()->json($evidencias);
+    }
+
+    private function calcularHenoHoras($hi, $hf)
+    {
+        $heno = 0;
+        // Franja nocturna 1: después de las 21:00
+        if ($hi < 21 && $hf > 21) {
+            $heno = $hf - 21;
+        } elseif ($hi >= 21 && $hf > 21) {
+            $heno = abs($hf - $hi);
+        } elseif ($hi >= 21 && $hf < $hi) {
+            $heno += 24 - $hi;
+        }
+        // Franja nocturna 2: antes de las 6:00
+        if ($hi >= 0 && $hf <= 6) {
+            $heno = $hf - $hi;
+        } elseif ($hi >= 0 && $hi <= 6 && $hf > 6) {
+            $heno = 6 - $hi;
+        }
+        return $heno;
     }
 }

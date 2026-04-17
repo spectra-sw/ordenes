@@ -11,6 +11,9 @@
             <th>Duración</th>
             <th>Almuerzo</th>
             <th>Laborales</th>
+            <th>Ref. Horario</th>
+            <th>Horas Ref.</th>
+            <th>Novedades</th>
             <th>Creación</th>
             <th>Aprobación</th>
             <th>Aprobada por</th>
@@ -35,6 +38,9 @@
                 <td>{{ $duracion }}</td>
                 <td>{{ $j->almuerzo }}</td>
                 <td>{{ $duracion - $j->almuerzo }}</td>
+                <td>{{ ($j->horario_label ?? '?') . ': ' . ($j->horario_rango ?? '-') }}</td>
+                <td>{{ $j->laborales_ref ?? '' }}</td>
+                <td>{{ isset($j->tipo_extra) ? implode(', ', $j->tipo_extra) : '' }}{{ ($j->tiene_recargo ?? false) ? (count($j->tipo_extra ?? []) > 0 ? ', ' : '') . 'Rec.Noc' : '' }}</td>
                 <td>{{ $j->created_at }}</td>
                 @switch($j->estado)
                     @case(1)

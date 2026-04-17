@@ -8,6 +8,7 @@ use App\Models\Cdc;
 use App\Models\Empleado;
 use App\Models\Turno;
 use App\Models\Horario;
+use App\Models\Festivo;
 use Carbon\Carbon;
 use Log;
 
@@ -18,11 +19,26 @@ class DistribucionController extends Controller
         $datos = $this->getDatosDistribucion($request);
         //$datos = $this->getDatosDistribucionEspecial($request);
         $datos[0] = $datos[0]->sortBy(['codigo del empleado','fecha movimiento']);
+        $datos[0] = $this->filtrarPorConcepto($datos[0], $request->tipo_concepto);
+        $festivos = Festivo::pluck('fecha')->flip()->all();
         return view('tablan',[
-            'datos' => $datos[0],
-            'talmuerzo' => $datos[1] ,
+            'datos'    => $datos[0],
+            'talmuerzo'=> $datos[1],
+            'festivos' => $festivos,
         ]);
 
+    }
+
+    public function filtrarPorConcepto($datos, $tipoConcepto)
+    {
+        $normal = ['001', '075'];
+        if ($tipoConcepto === 'normales') {
+            return $datos->filter(fn($d) => in_array($d['codigo del concepto'], $normal))->values();
+        }
+        if ($tipoConcepto === 'extras') {
+            return $datos->filter(fn($d) => !in_array($d['codigo del concepto'], $normal))->values();
+        }
+        return $datos;
     }
     function getDatosDistribucionEspecial($request){
         // get jornadas
@@ -181,7 +197,11 @@ class DistribucionController extends Controller
            // dd( $j->fechaf);
             //dd($turno);
             if ($turno === null) {
-                $horario_id = Empleado::where('id',$request->trabajador)->first()->horario_id;
+                $empleado = Empleado::where('id', $j->user_id)->first();
+                $horario_id = $empleado ? $empleado->horario_id : null;
+                if ($horario_id === null) {
+                    continue;
+                }
                 //dd($horario_id);
                 $turno = Horario::where('id',$horario_id)->first();
                 //dd($numdia);
@@ -280,7 +300,7 @@ class DistribucionController extends Controller
                             ];
                             $valores['concepto']="001";
                             $valores['horas'] = $sb;
-                            $valores['fecha'] = str_replace("-","",$j->fecha);
+                            $valores['fecha'] = $j->fecha;
                             $tsb[$j->fecha] = $tsb[$j->fecha] + $sb;
                             $ttsb = $ttsb + $sb;
                             $linea = $this->addlinea($datos,$valores); 
@@ -299,7 +319,7 @@ class DistribucionController extends Controller
                                 ];
                                 $valores['concepto']="012";
                                 $valores['horas'] = $rno;
-                                $valores['fecha'] = str_replace("-","",$j->fecha);
+                                $valores['fecha'] = $j->fecha;
                                 $linea = $this->addlinea($datos,$valores); 
                                 $datos->push($linea); 
                                 $bandlinea=true;
@@ -320,7 +340,7 @@ class DistribucionController extends Controller
                                 else{
                                     $valores['horas'] = $hf;
                                 }
-                                $valores['fecha'] = str_replace("-","",$j->fechaf);
+                                $valores['fecha'] = $j->fechaf;
                                 $tsb[$j->fechaf] = $tsb[$j->fechaf] + $hf-1;
                                 $ttsb = $ttsb + $hf-1;
                                 $linea = $this->addlinea($datos,$valores); 
@@ -348,7 +368,7 @@ class DistribucionController extends Controller
                                     ];
                                     $valores['concepto']="012";
                                     $valores['horas'] = $rno;
-                                    $valores['fecha'] = str_replace("-","",$j->fechaf);
+                                    $valores['fecha'] = $j->fechaf;
                                     $linea = $this->addlinea($datos,$valores); 
                                     $datos->push($linea); 
                                     $bandlinea=true;
@@ -366,7 +386,7 @@ class DistribucionController extends Controller
                                     ];
                                     $valores['concepto']="007";
                                     $valores['horas'] = $heno;
-                                    $valores['fecha'] = str_replace("-","",$j->fechaf);
+                                    $valores['fecha'] = $j->fechaf;
                                     $linea = $this->addlinea($datos,$valores); 
                                     $datos->push($linea); 
                                     $bandlinea=true;
@@ -385,7 +405,7 @@ class DistribucionController extends Controller
 
                                     $valores['concepto']="001";
                                     $valores['horas'] = $hf;
-                                    $valores['fecha'] = str_replace("-","",$j->fechaf);
+                                    $valores['fecha'] = $j->fechaf;
                                     $tsb[$j->fecha] = $tsb[$j->fecha] + $sb;
                                     $ttsb = $ttsb + $sb;
                                     $linea = $this->addlinea($datos,$valores); 
@@ -393,7 +413,7 @@ class DistribucionController extends Controller
 
                                     $valores['concepto']="014";
                                     $valores['horas'] = $hf;
-                                    $valores['fecha'] = str_replace("-","",$j->fechaf);
+                                    $valores['fecha'] = $j->fechaf;
                                     $linea = $this->addlinea($datos,$valores); 
                                     $datos->push($linea); 
                                     $bandlinea=true;
@@ -418,7 +438,7 @@ class DistribucionController extends Controller
                             ];
                             $valores['concepto']="001";
                             $valores['horas'] = $sb;
-                            $valores['fecha'] = str_replace("-","",$j->fecha);
+                            $valores['fecha'] = $j->fecha;
                             $tsb[$j->fecha] = $tsb[$j->fecha] + $sb;
                             $ttsb = $ttsb + $sb;
                             $linea = $this->addlinea($datos,$valores); 
@@ -441,7 +461,7 @@ class DistribucionController extends Controller
                                 ];
                                 $valores['concepto']="012";
                                 $valores['horas'] = $rno;
-                                $valores['fecha'] = str_replace("-","",$j->fecha);
+                                $valores['fecha'] = $j->fecha;
                                 $linea = $this->addlinea($datos,$valores); 
                                 $datos->push($linea); 
                                 $bandlinea=true;
@@ -457,7 +477,7 @@ class DistribucionController extends Controller
                                 ];
                                 $valores['concepto']="001";
                                 $valores['horas'] = $hf-1;
-                                $valores['fecha'] = str_replace("-","",$j->fechaf);
+                                $valores['fecha'] = $j->fechaf;
                                 $tsb[$j->fechaf] = $tsb[$j->fechaf] + $hf-1;
                                 $ttsb = $ttsb + $hf-1;
                                 $linea = $this->addlinea($datos,$valores); 
@@ -476,7 +496,7 @@ class DistribucionController extends Controller
                                     ];
                                     $valores['concepto']="012";
                                     $valores['horas'] = $rno;
-                                    $valores['fecha'] = str_replace("-","",$j->fechaf);
+                                    $valores['fecha'] = $j->fechaf;
                                     $linea = $this->addlinea($datos,$valores); 
                                     $datos->push($linea); 
                                     $bandlinea=true;
@@ -495,7 +515,7 @@ class DistribucionController extends Controller
 
                                     $valores['concepto']="001";
                                     $valores['horas'] = $hf;
-                                    $valores['fecha'] = str_replace("-","",$j->fechaf);
+                                    $valores['fecha'] = $j->fechaf;
                                     $tsb[$j->fecha] = $tsb[$j->fecha] + $sb;
                                     $ttsb = $ttsb + $sb;
                                     $linea = $this->addlinea($datos,$valores); 
@@ -503,7 +523,7 @@ class DistribucionController extends Controller
 
                                     $valores['concepto']="014";
                                     $valores['horas'] = $hf;
-                                    $valores['fecha'] = str_replace("-","",$j->fechaf);
+                                    $valores['fecha'] = $j->fechaf;
                                     $linea = $this->addlinea($datos,$valores); 
                                     $datos->push($linea); 
                                     $bandlinea=true;
@@ -561,7 +581,7 @@ class DistribucionController extends Controller
                 //dd("test");
                 if (($numdia > 0)&&($festivo=="no")){
                     //if ($valores['fecha'] == $j->fecha){
-                    if ($valores['fecha'] ==  str_replace("-","",$j->fecha)  ){     
+                    if ($valores['fecha'] ==  $j->fecha  ){     
                         if ($valores['proyecto'] == $j->proyecto) {
                             $sb = $tsb[$j->fecha] + ($duracion - $j->almuerzo);
                         }
@@ -579,11 +599,11 @@ class DistribucionController extends Controller
                     //dd($sb);
                     //Log::info($tsb[$j->fecha].":".$sb);
                    
-                    if (($sb + $valores['horas']>$laborales && $valores['fecha'] ==  str_replace("-","",$j->fecha)) || ($sb >$laborales && $valores['fecha'] !=  str_replace("-","",$j->fecha))){
-                        if ($sb + $valores['horas']>$laborales && $valores['fecha'] ==  str_replace("-","",$j->fecha)){
+                    if (($sb + $valores['horas']>$laborales && $valores['fecha'] ==  $j->fecha) || ($sb >$laborales && $valores['fecha'] !=  $j->fecha)){
+                        if ($sb + $valores['horas']>$laborales && $valores['fecha'] ==  $j->fecha){
                             $excede = ($sb + $valores['horas']) -$laborales;
                         }
-                        if ($sb >$laborales && $valores['fecha'] !=  str_replace("-","",$j->fecha)){
+                        if ($sb >$laborales && $valores['fecha'] !=  $j->fecha){
                             $excede = $sb -$laborales;
                         }
                        
@@ -600,7 +620,7 @@ class DistribucionController extends Controller
                         //dd($heno);
                         if ($heno ==0){
                             $hedo = $excede;  
-                            if (( $valores['horas']>0) && ($valores['fecha'] ==  str_replace("-","",$j->fecha))){
+                            if (( $valores['horas']>0) && ($valores['fecha'] ==  $j->fecha)){
                                 $hedo=$hedo +$j->almuerzo;
                                 $sb=$sb-$j->almuerzo;
                             }
@@ -683,7 +703,7 @@ class DistribucionController extends Controller
                     'concepto' => '',
                     'centro' => $j->cdcinfo->centro_operacion,
                     'proyecto' => $j->proyecto,
-                    'fecha' => str_replace("-","",$j->fecha),
+                    'fecha' => $j->fecha,
                     'horas' => 0,
                     'unidad' => $j->cdcinfo->unidad_negocio
                 ];

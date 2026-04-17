@@ -18,6 +18,7 @@ use App\Exports\ExtraExport;
 use App\Exports\JornadasPendientesExport;
 use App\Exports\ProyectosExport;
 use App\Models\Detalleh;
+use App\Http\Controllers\OrdenesController;
 use App\Models\Festivo;
 use DB;
 use Log;
@@ -638,8 +639,10 @@ class ExcelController extends Controller
     public function exportt(Request $request)
     {
         //dd($request);
-        $datos = app(DistribucionController::class)->getDatosDistribucion($request);
+        $distribucion = app(DistribucionController::class);
+        $datos = $distribucion->getDatosDistribucion($request);
         $datos = $datos[0]->sortBy(['codigo del empleado', 'fecha movimiento']);
+        $datos = $distribucion->filtrarPorConcepto($datos, $request->tipo_concepto);
         return Excel::download(new NominaExport($datos), 'nomina.xlsx');
     }
 
@@ -776,31 +779,7 @@ class ExcelController extends Controller
 
     public function exportConsultas(Request $request)
     {
-        $jornadas = Jornada::query();
-
-        if ($request->proyecto) {
-            $jornadas->where('proyecto', $request->proyecto);
-        }
-
-        if ($request->trabajador) {
-            $jornadas->where('user_id', $request->trabajador);
-        }
-        if ($request->cliente) {
-            $clientId = $request->cliente;
-            $jornadas = $jornadas->whereHas('proyectoinfo', function ($query) use ($clientId) {
-                $query->where('cliente_id', $clientId);
-            });
-        }
-        if ($request->inicio && $request->fin) {
-            $jornadas->whereBetween('fecha', [$request->inicio, $request->fin]);
-        }
-
-        if ($request->estado) {
-            $jornadas->where('estado', $request->estado);
-        }
-
-        $jornadas = $jornadas->orderBy('fecha', 'asc')->get();
-
+        $jornadas = app(OrdenesController::class)->getJornadasConAnalisis($request);
         return Excel::download(new ConsultasExport($jornadas), 'jornadas.xlsx');
     }
 

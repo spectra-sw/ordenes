@@ -17,6 +17,8 @@
                             <th>Duración</th>
                             <th>Almuerzo</th>
                             <th>Laborales</th>
+                            <th>Ref. Horario</th>
+                            <th>Novedades</th>
                             <th>Creación</th>
                             <th>Evidencias</th>
                             <th>Aprobación</th>
@@ -31,7 +33,7 @@
                     <tbody>
                         @foreach ($jornadas as $j)
                             <?php $duracion = intval(explode(':', $j->duracion)[0]) + round(floatval(explode(':', $j->duracion)[1] / 60), 2); ?>
-                            <tr>
+                            <tr @if($j->es_festivo) class="table-danger" @elseif($j->es_domingo) class="table-secondary" @endif>
                                 <td>
                                     {{ $j->trabajador->apellido1 . ' ' . $j->trabajador->apellido2 . ' ' . $j->trabajador->nombre }}
                                 </td>
@@ -75,6 +77,32 @@
                                 </td>
 
                                 <td>{{ $duracion - $j->almuerzo }}</td>
+
+                                {{-- Ref. Horario --}}
+                                <td style="white-space:nowrap; font-size:12px;">
+                                    <span class="badge {{ $j->horario_label === 'T' ? 'bg-info' : 'bg-secondary' }}"
+                                          title="{{ $j->horario_nombre }}">
+                                        {{ $j->horario_label }}
+                                    </span>
+                                    {{ $j->horario_rango }}
+                                    <br><small class="text-muted">{{ $j->laborales_ref }}h lab.</small>
+                                </td>
+
+                                {{-- Novedades --}}
+                                <td style="white-space:nowrap;">
+                                    @if($j->tiene_extra)
+                                        @foreach($j->tipo_extra as $te)
+                                            <span class="badge bg-warning text-dark">{{ $te }}</span>
+                                        @endforeach
+                                    @endif
+                                    @if($j->tiene_recargo)
+                                        <span class="badge bg-primary">Rec.Noc</span>
+                                    @endif
+                                    @if(!$j->tiene_extra && !$j->tiene_recargo)
+                                        <span class="text-muted">—</span>
+                                    @endif
+                                </td>
+
                                 <td>{{ $j->created_at }}</td>
                                 <!-- Aquí agregamos las evidencias -->
                                 <td>

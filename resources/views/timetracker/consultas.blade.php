@@ -65,6 +65,18 @@
 
                     <div class="row">
                         <div class="col-12 col-md-3">
+                            <label class="form-label">Tipo de concepto</label>
+                            <select class="form-control" id="tipo_concepto" name="tipo_concepto">
+                                <option value="">Todo</option>
+                                <option value="extras">Solo extras / recargos</option>
+                                <option value="normales">Solo horas normales</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div class="row">
+                        <div class="col-12 col-md-3">
                             <button class="btn btn-success" id="btnConsultarAdmin" type="button">Consultar</button>
                         </div>
                         <div class="col-12 col-md-3">

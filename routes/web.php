@@ -201,6 +201,13 @@ Route::get('/mensaje/info', [MensajesController::class, 'info']);
 Route::get('/nuevocorte', [PagesController::class, 'nuevocorte'])->middleware('auth');
 Route::get('/tablacorte', [PagesController::class, 'tablacorte']);
 
+//horario
+Route::get('/modal-horario-acciones', [PagesController::class, 'modalHorariosAcciones']);
+Route::get('/tablahorario', [PagesController::class, 'tablahorario']);
+Route::get('/nuevohorario', [PagesController::class, 'nuevohorario']);
+Route::get('/editarhorario', [PagesController::class, 'editarhorario']);
+Route::get('/eliminarhorario', [PagesController::class, 'eliminarhorario']);
+
 // notificaciones
 Route::get('/notificaciones', [NotificationController::class, 'findAll']);
 Route::get('/notificaciones/read', [NotificationController::class, 'read']);

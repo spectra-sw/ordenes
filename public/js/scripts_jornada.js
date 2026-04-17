@@ -264,10 +264,23 @@ btnConsultar.addEventListener("click", function() {
     });
 });
 }
+function showLoading(mensaje) {
+    mensaje = mensaje || 'Consultando, por favor espere…';
+    $("#consultaAdmin").html(
+        '<div class="d-flex flex-column align-items-center justify-content-center py-5 gap-3">' +
+            '<div class="spinner-border text-success" style="width:3rem;height:3rem;" role="status">' +
+                '<span class="visually-hidden">Cargando...</span>' +
+            '</div>' +
+            '<span class="text-muted">' + mensaje + '</span>' +
+        '</div>'
+    );
+}
+
 const btnConsultarAdmin = document.getElementById("btnConsultarAdmin");
 if (btnConsultarAdmin != null) {
     btnConsultarAdmin.addEventListener("click", function() {
         var formData = $("#formConsultaAdmin").serialize();
+        showLoading();
         $.ajax({
             type: "GET",
             url: "/consultaJornadaAdmin",
@@ -277,6 +290,7 @@ if (btnConsultarAdmin != null) {
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log(textStatus, errorThrown);
+                $("#consultaAdmin").html('<div class="alert alert-danger mt-3">Error al cargar los datos.</div>');
             }
         });
     });
@@ -334,8 +348,8 @@ function accionj(op, id) {
 var btnDistribucion = document.getElementById("btnDistribucion");
 if (btnDistribucion != null) {
 btnDistribucion.addEventListener("click", function() {
-    //alert("");
     var formData = $("#formConsultaAdmin").serialize();
+    showLoading('Calculando distribución, por favor espere…');
     $.ajax({
         type: "GET",
         url: "/distribucion",
@@ -345,6 +359,7 @@ btnDistribucion.addEventListener("click", function() {
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.log(textStatus, errorThrown);
+            $("#consultaAdmin").html('<div class="alert alert-danger mt-3">Error al calcular la distribución.</div>');
         }
     });
 });

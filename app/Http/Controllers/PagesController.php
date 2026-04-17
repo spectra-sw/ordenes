@@ -1222,6 +1222,87 @@ class PagesController extends Controller
             'cortes' => $cortes,
         ]);
     }
+
+    public function tablahorario(Request $request){
+        $horarios = Horario::with('empleados')->get();
+        $dias = [0 => 'Domingo', 1 => 'Lunes', 2 => 'Martes', 3 => 'Miércoles', 4 => 'Jueves', 5 => 'Viernes', 6 => 'Sábado'];
+        return view('admin.tabla.horarioTabla', compact('horarios', 'dias'));
+    }
+
+    public function modalHorariosAcciones(Request $request){
+        $accion = $request->accion;
+        $dias = [0 => 'Domingo', 1 => 'Lunes', 2 => 'Martes', 3 => 'Miércoles', 4 => 'Jueves', 5 => 'Viernes', 6 => 'Sábado'];
+
+        switch ($accion) {
+            case 1:
+                return view('admin.modal.horarioModal', ['accion' => 1]);
+            case 2:
+                $horario = Horario::where('id', $request->horario_id)->first();
+                return view('admin.modal.horarioModal', compact('accion', 'horario', 'dias'));
+            case 3:
+                $horario = Horario::with('empleados')->where('id', $request->horario_id)->first();
+                return view('admin.modal.horarioModal', compact('accion', 'horario'));
+        }
+    }
+
+    public function nuevohorario(Request $request){
+        $request->validate([
+            'nombre'        => 'required',
+            'dia_inicio'    => 'required|integer|between:0,6',
+            'dia_fin'       => 'required|integer|between:0,6',
+            'hora_inicio'   => 'required|numeric',
+            'hora_fin'      => 'required|numeric',
+            'almuerzo'      => 'required|numeric',
+        ]);
+
+        $h = Horario::create([
+            'nombre'        => strtoupper($request->nombre),
+            'observacion'   => $request->observacion ?? '',
+            'dia_inicio'    => $request->dia_inicio,
+            'dia_fin'       => $request->dia_fin,
+            'hora_inicio'   => $request->hora_inicio,
+            'hora_fin'      => $request->hora_fin,
+            'almuerzo'      => $request->almuerzo,
+        ]);
+
+        return response()->json(['message' => 'Horario creado correctamente', 'data' => $h]);
+    }
+
+    public function editarhorario(Request $request){
+        $request->validate([
+            'horario_id'    => 'required|exists:horarios,id',
+            'nombre'        => 'required',
+            'dia_inicio'    => 'required|integer|between:0,6',
+            'dia_fin'       => 'required|integer|between:0,6',
+            'hora_inicio'   => 'required|numeric',
+            'hora_fin'      => 'required|numeric',
+            'almuerzo'      => 'required|numeric',
+        ]);
+
+        Horario::where('id', $request->horario_id)->update([
+            'nombre'        => strtoupper($request->nombre),
+            'observacion'   => $request->observacion ?? '',
+            'dia_inicio'    => $request->dia_inicio,
+            'dia_fin'       => $request->dia_fin,
+            'hora_inicio'   => $request->hora_inicio,
+            'hora_fin'      => $request->hora_fin,
+            'almuerzo'      => $request->almuerzo,
+        ]);
+
+        return response()->json(['message' => 'Horario actualizado correctamente']);
+    }
+
+    public function eliminarhorario(Request $request){
+        $horario = Horario::with('empleados')->where('id', $request->horario_id)->first();
+
+        if ($horario->empleados->count() > 0) {
+            return response()->json(['message' => 'No se puede eliminar: tiene empleados asignados.'], 422);
+        }
+
+        $horario->delete();
+        return response()->json(['message' => 'Horario eliminado correctamente']);
+    }
+
     public function editaremp(Request $request){
         // validate $request
         $validated = $request->validate([

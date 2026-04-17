@@ -20,6 +20,9 @@
             <a class="nav-link" data-bs-toggle="tab" href="#cortes">Cortes</a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#horarios">Horarios</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" data-bs-toggle="tab" href="#turnos">Turnos</a>
         </li>
     </ul>
@@ -79,6 +82,17 @@
                 <button class="btn btn-success mt-2 mb-4" onclick="accionesCortes(1)">Nuevo Corte</button>
 
                 <div id="containerTablaCortes" style="font-size: 14px">
+                    <div class="d-flex justify-content-center mt-4 font-weight-bold">
+                        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                            <span class="sr-only"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="horarios" class="container-fluid tab-pane fade">
+                <button class="btn btn-success mt-2 mb-4" onclick="accionesHorarios(1)">Nuevo Horario</button>
+                <div id="containerTablaHorarios" style="font-size: 14px">
                     <div class="d-flex justify-content-center mt-4 font-weight-bold">
                         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
                             <span class="sr-only"></span>

@@ -12,18 +12,28 @@
       </tr>
     </thead>
     <tbody>
-    @foreach ($datos as $dato)     
-      <tr class="table-success">
+    @foreach ($datos as $dato)
+      @php
+        $fecha = $dato['fecha movimiento'];
+        $esFestivo = isset($festivos[$fecha]);
+        $esDomingo = \Carbon\Carbon::parse($fecha)->dayOfWeek === 0;
+        $esNormal  = in_array($dato['codigo del concepto'], ['001', '075']);
+        if ($esFestivo)     $rowClass = 'table-danger';
+        elseif ($esDomingo) $rowClass = 'table-secondary';
+        elseif ($esNormal)  $rowClass = 'table-success';
+        else                $rowClass = 'table-warning';
+      @endphp
+      <tr class="{{ $rowClass }}">
         <td>{{ $dato['codigo del empleado'] }}</td>
         <td>{{ $dato['codigo del concepto'] }}</td>
         <td>{{ $dato['centro de operacion'] }}</td>
         <td>{{ $dato['centro de costo'] }}</td>
-        <td>{{ $dato['fecha movimiento'] }}</td>
+        <td>{{ $fecha }}</td>
         <td>{{ $dato['horas'] }}</td>
         <td>{{ $dato['valor'] }}</td>
         <td>{{ $dato['unidad de negocio'] }}</td>
       </tr>
-    @endforeach 
+    @endforeach
     </tbody>
 </table>
 <br>
