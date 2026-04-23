@@ -28,13 +28,16 @@ class TurnoController extends Controller
 
     public function showTable()
     {
-        // get all turno
+        $desde = now()->subDays(90)->format('Y-m-d');
+
         $turnos = Turno::select('id', 'user_id', 'fecha_inicio', 'hora_inicio', 'fecha_fin', 'hora_fin', 'almuerzo')
+            ->where('fecha_fin', '>=', $desde)
             ->with([
                 'empleado' => function ($query) {
                     return $query->select('cc', 'id', 'apellido1', 'apellido2', 'nombre');
                 },
             ])
+            ->orderBy('fecha_inicio', 'desc')
             ->get();
 
         return view('admin.tabla.turnoTabla', [
