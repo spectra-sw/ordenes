@@ -98,7 +98,10 @@
                                     @if($j->tiene_recargo)
                                         <span class="badge bg-primary">Rec.Noc</span>
                                     @endif
-                                    @if(!$j->tiene_extra && !$j->tiene_recargo)
+                                    @if($j->turno_incompleto > 0)
+                                        <span class="badge bg-danger" title="Faltan {{ $j->turno_incompleto }}h del horario de referencia">Inc. -{{ $j->turno_incompleto }}h</span>
+                                    @endif
+                                    @if(!$j->tiene_extra && !$j->tiene_recargo && !$j->turno_incompleto)
                                         <span class="text-muted">—</span>
                                     @endif
                                 </td>

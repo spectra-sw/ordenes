@@ -408,8 +408,9 @@ class OrdenesController extends Controller
             // Resolver horario de referencia
             $turnoActivo = null;
             if (isset($turnosPorUser[$jornada->user_id])) {
+                // El turno debe iniciar en la misma fecha de la jornada y cubrir hasta su fecha final
                 $turnoActivo = $turnosPorUser[$jornada->user_id]->first(fn($t) =>
-                    $t->fecha_inicio <= $jornada->fecha && $t->fecha_fin >= $jornada->fechaf
+                    $t->fecha_inicio == $jornada->fecha && $t->fecha_fin >= $jornada->fecha
                 );
             }
 
@@ -452,7 +453,8 @@ class OrdenesController extends Controller
             $tieneExtra   = false;
             $tipoExtra    = [];
             $tieneRecargo = false;
-            $heno         = $this->calcularHenoHoras($hi, $hf);
+            $finDiurno    = $this->getFinDiurno(\Carbon\Carbon::parse($jornada->fecha));
+            $heno         = $this->calcularHenoHoras($hi, $hf, $finDiurno);
 
             if ($jornada->es_festivo || $jornada->es_domingo) {
                 if ($durReal > 0) {
@@ -465,14 +467,17 @@ class OrdenesController extends Controller
                 if ($laborales > 0 && $durReal > $laborales) {
                     $tieneExtra  = true;
                     $tipoExtra[] = 'Extra';
-                    if ($ref && $this->calcularHenoHoras($ref->hora_fin, $hf) > 0) $tipoExtra[] = 'Noc';
+                    if ($ref && $this->calcularHenoHoras($ref->hora_fin, $hf, $finDiurno) > 0) $tipoExtra[] = 'Noc';
                 }
                 if ($heno > 0) $tieneRecargo = true;
             }
 
-            $jornada->tiene_extra   = $tieneExtra;
-            $jornada->tipo_extra    = $tipoExtra;
-            $jornada->tiene_recargo = $tieneRecargo;
+            $jornada->tiene_extra      = $tieneExtra;
+            $jornada->tipo_extra       = $tipoExtra;
+            $jornada->tiene_recargo    = $tieneRecargo;
+            $jornada->turno_incompleto = $laborales > 0 && $durReal < $laborales
+                ? round($laborales - $durReal, 2)
+                : 0;
         }
 
         // Filtro por tipo de concepto
@@ -724,15 +729,15 @@ class OrdenesController extends Controller
         return response()->json($evidencias);
     }
 
-    private function calcularHenoHoras($hi, $hf)
+    private function calcularHenoHoras($hi, $hf, $finDiurno = 19)
     {
         $heno = 0;
-        // Franja nocturna 1: después de las 21:00
-        if ($hi < 21 && $hf > 21) {
-            $heno = $hf - 21;
-        } elseif ($hi >= 21 && $hf > 21) {
+        // Franja nocturna 1: después del límite diurno (19:00 desde Jul 2024)
+        if ($hi < $finDiurno && $hf > $finDiurno) {
+            $heno = $hf - $finDiurno;
+        } elseif ($hi >= $finDiurno && $hf > $finDiurno) {
             $heno = abs($hf - $hi);
-        } elseif ($hi >= 21 && $hf < $hi) {
+        } elseif ($hi >= $finDiurno && $hf < $hi) {
             $heno += 24 - $hi;
         }
         // Franja nocturna 2: antes de las 6:00
@@ -742,5 +747,12 @@ class OrdenesController extends Controller
             $heno = 6 - $hi;
         }
         return $heno;
+    }
+
+    private function getFinDiurno(\Carbon\Carbon $fecha): float
+    {
+        if ($fecha->greaterThanOrEqualTo('2024-07-15')) return 19.0;
+        if ($fecha->greaterThanOrEqualTo('2023-07-15')) return 20.0;
+        return 21.0;
     }
 }

@@ -173,7 +173,7 @@
             <div class="row">
                 <div class="col-12"><button class="btn btn-warning btn-block" type="button" onclick="almdia()"><span class="spinner-grow spinner-grow-sm"></span>&nbsp;Actualizar día</button></div>
             </div>
-            <script src="{{asset('js/scripts.js')}}"></script>
+            <script src="{{vasset('js/scripts.js')}}"></script>
             <script type="text/javascript">
     $('.basicAutoComplete').autoComplete();
     $('#proyecto').on('autocomplete.select', function (evt, item) {

@@ -42,7 +42,7 @@
         <!--<p id="demo"></p>-->
     </div>
 </body>
-<script src="{{asset('js/scripts.js')}}"></script>
+<script src="{{vasset('js/scripts.js')}}"></script>
 <script>
 
 var x = document.getElementById("demo");

@@ -108,7 +108,7 @@
       </div>
     </div>
 </div>
-<script src="{{asset('js/scripts.js')}}"></script>
+<script src="{{vasset('js/scripts.js')}}"></script>
 
 @endsection
 

@@ -129,7 +129,7 @@
 
 
 @section('scripts')
-    <script src="{{ asset('js/scripts.js') }}"></script>
-    <script src="{{ asset('js/helpers/helper.js') }}"></script>
-    <script src="{{ asset('js/views/admin.js') }}"></script>
+    <script src="{{ vasset('js/scripts.js') }}"></script>
+    <script src="{{ vasset('js/helpers/helper.js') }}"></script>
+    <script src="{{ vasset('js/views/admin.js') }}"></script>
 @endsection

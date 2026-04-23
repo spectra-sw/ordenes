@@ -139,19 +139,19 @@ class DistribucionController extends Controller
             $jornadas->where('estado', $request->estado);
         }*/
         $jornadas->where('estado', 2);
-        $jornadas = $jornadas->orderBy('fecha','asc')
+        $jornadas = $jornadas->orderBy('user_id','asc')
+        ->orderBy('fecha','asc')
         ->orderBy('id', 'asc')
         ->get();
         //dd($jornadas);
         $datos = collect([]);
 
-        $inicio_diurno = 6; 
-        $fin_diurno  = 21; 
-        $inicio_nocturno = 21; 
-        $fin_nocturno  = 6; 
+        $inicio_diurno = 6;
+        // $fin_diurno se calcula por jornada con getFinDiurno()
         $tsb=array();
         $ttsb=0;
         $cont = 0;
+        $valores['user_id'] = "";
         $valores['proyecto'] = "";
         $valores['fecha'] = "";
         $valores['horas'] = 0;
@@ -171,22 +171,17 @@ class DistribucionController extends Controller
                 
             $festivo = app('App\Http\Controllers\FilesController')->consfestivo($j->fecha);
             $c = new Carbon($j->fecha);
-            if (!array_key_exists($j->fecha, $tsb) ) {
-                $tsb[$j->fecha] = 0;
+            if (!array_key_exists($j->user_id.'_'.$j->fecha, $tsb) ) {
+                $tsb[$j->user_id.'_'.$j->fecha] = 0;
             }
-            if (!array_key_exists($j->fechaf, $tsb) ) {
-                $tsb[$j->fechaf] = 0;
+            if (!array_key_exists($j->user_id.'_'.$j->fechaf, $tsb) ) {
+                $tsb[$j->user_id.'_'.$j->fechaf] = 0;
             }
             $cf = new Carbon($j->fechaf);
             $numdia = $c->dayOfWeek;
             $numdiaf = $cf->dayOfWeek;
+            $fin_diurno = $this->getFinDiurno($c);
             $sb = $hedo = $heno= $hedf = $henf = $rno = $dtc = $rnd = 0;
-
-            if ($c->greaterThanOrEqualTo('2025-12-25')) {
-                // apply new cutoff for this jornada
-                $fin_diurno = 19;
-                $inicio_nocturnos = 19;
-            }
                 
             //horario laboral
             $turno = Turno::where('user_id', $j->user_id)
@@ -256,10 +251,10 @@ class DistribucionController extends Controller
                
                 if (($numdia > 0)&&($festivo=="no")){
                     if ($valores['proyecto'] == $j->proyecto){
-                        $sb = $tsb[$j->fecha] + ($duracion - $j->almuerzo);
+                        $sb = $tsb[$j->user_id.'_'.$j->fecha] + ($duracion - $j->almuerzo);
                     }
                     else{
-                        $sb = $tsb[$j->fecha] +($duracion - $j->almuerzo);
+                        $sb = $tsb[$j->user_id.'_'.$j->fecha] +($duracion - $j->almuerzo);
                         //$sb = ($duracion - $j->almuerzo);
                     }
                     if ($laborales==0){
@@ -272,8 +267,8 @@ class DistribucionController extends Controller
                         if ($j->fecha == $j->fechaf){
                             $excede = $sb -$laborales;    
                             //dd($excede);
-                            $sb =$laborales - $tsb[$j->fecha];
-                            $heno = $this->calcularHeno($turno->hora_fin,$hf);
+                            $sb =$laborales - $tsb[$j->user_id.'_'.$j->fecha];
+                            $heno = $this->calcularHeno($turno->hora_fin,$hf,$fin_diurno);
                                 //dd($heno);
                         // dd($sb);
                             if ($heno ==0){
@@ -283,7 +278,7 @@ class DistribucionController extends Controller
                                 $hedo = $excede - $heno;
                             }
                             if ($heno ==0){
-                                $rno = $this->calcularHeno($hi,$hf);
+                                $rno = $this->calcularHeno($hi,$hf,$fin_diurno);
                             }
                             //dd($hedo);
                         }
@@ -301,13 +296,14 @@ class DistribucionController extends Controller
                             $valores['concepto']="001";
                             $valores['horas'] = $sb;
                             $valores['fecha'] = $j->fecha;
-                            $tsb[$j->fecha] = $tsb[$j->fecha] + $sb;
+                            $valores['user_id'] = $j->user_id;
+                            $tsb[$j->user_id.'_'.$j->fecha] = $tsb[$j->user_id.'_'.$j->fecha] + $sb;
                             $ttsb = $ttsb + $sb;
                             $linea = $this->addlinea($datos,$valores); 
                             $datos->push($linea); 
                             $bandlinea=true;
 
-                            $rno = $this->calcularHeno($hi,24);
+                            $rno = $this->calcularHeno($hi,24,$fin_diurno);
                             if ($rno>0){
                                 $valores = [
                                     'emp' => $j->trabajador->cc,
@@ -320,6 +316,7 @@ class DistribucionController extends Controller
                                 $valores['concepto']="012";
                                 $valores['horas'] = $rno;
                                 $valores['fecha'] = $j->fecha;
+                            $valores['user_id'] = $j->user_id;
                                 $linea = $this->addlinea($datos,$valores); 
                                 $datos->push($linea); 
                                 $bandlinea=true;
@@ -341,7 +338,8 @@ class DistribucionController extends Controller
                                     $valores['horas'] = $hf;
                                 }
                                 $valores['fecha'] = $j->fechaf;
-                                $tsb[$j->fechaf] = $tsb[$j->fechaf] + $hf-1;
+                                $valores['user_id'] = $j->user_id;
+                                $tsb[$j->user_id.'_'.$j->fechaf] = $tsb[$j->user_id.'_'.$j->fechaf] + $hf-1;
                                 $ttsb = $ttsb + $hf-1;
                                 $linea = $this->addlinea($datos,$valores); 
                                 $datos->push($linea); 
@@ -350,11 +348,11 @@ class DistribucionController extends Controller
 
                               
                                 if ($turno->hora_fin < $hf){
-                                    $rno = $this->calcularHeno(0, $turno->hora_fin);
+                                    $rno = $this->calcularHeno(0, $turno->hora_fin,$fin_diurno);
                                 }
                                 else{
                                   
-                                    $rno = $this->calcularHeno(0,$hf);
+                                    $rno = $this->calcularHeno(0,$hf,$fin_diurno);
                                 }
                                
                                 if ($rno>0){
@@ -369,12 +367,13 @@ class DistribucionController extends Controller
                                     $valores['concepto']="012";
                                     $valores['horas'] = $rno;
                                     $valores['fecha'] = $j->fechaf;
+                                $valores['user_id'] = $j->user_id;
                                     $linea = $this->addlinea($datos,$valores); 
                                     $datos->push($linea); 
                                     $bandlinea=true;
                                 }
 
-                                $heno = $this->calcularHeno($turno->hora_fin,$hf);
+                                $heno = $this->calcularHeno($turno->hora_fin,$hf,$fin_diurno);
                                 if ($heno>0){
                                     $valores = [
                                         'emp' => $j->trabajador->cc,
@@ -387,6 +386,7 @@ class DistribucionController extends Controller
                                     $valores['concepto']="007";
                                     $valores['horas'] = $heno;
                                     $valores['fecha'] = $j->fechaf;
+                                $valores['user_id'] = $j->user_id;
                                     $linea = $this->addlinea($datos,$valores); 
                                     $datos->push($linea); 
                                     $bandlinea=true;
@@ -406,7 +406,8 @@ class DistribucionController extends Controller
                                     $valores['concepto']="001";
                                     $valores['horas'] = $hf;
                                     $valores['fecha'] = $j->fechaf;
-                                    $tsb[$j->fecha] = $tsb[$j->fecha] + $sb;
+                                $valores['user_id'] = $j->user_id;
+                                    $tsb[$j->user_id.'_'.$j->fecha] = $tsb[$j->user_id.'_'.$j->fecha] + $sb;
                                     $ttsb = $ttsb + $sb;
                                     $linea = $this->addlinea($datos,$valores); 
                                     $datos->push($linea);  
@@ -414,6 +415,7 @@ class DistribucionController extends Controller
                                     $valores['concepto']="014";
                                     $valores['horas'] = $hf;
                                     $valores['fecha'] = $j->fechaf;
+                                $valores['user_id'] = $j->user_id;
                                     $linea = $this->addlinea($datos,$valores); 
                                     $datos->push($linea); 
                                     $bandlinea=true;
@@ -439,17 +441,18 @@ class DistribucionController extends Controller
                             $valores['concepto']="001";
                             $valores['horas'] = $sb;
                             $valores['fecha'] = $j->fecha;
-                            $tsb[$j->fecha] = $tsb[$j->fecha] + $sb;
+                            $valores['user_id'] = $j->user_id;
+                            $tsb[$j->user_id.'_'.$j->fecha] = $tsb[$j->user_id.'_'.$j->fecha] + $sb;
                             $ttsb = $ttsb + $sb;
                             $linea = $this->addlinea($datos,$valores); 
                             $datos->push($linea); 
                             $bandlinea=true;
                         }
                         if($hf > $hi){
-                            $rno = $this->calcularHeno($hi,$hf);
+                            $rno = $this->calcularHeno($hi,$hf,$fin_diurno);
                         }
                         else{
-                            $rno = $this->calcularHeno($hi,24);
+                            $rno = $this->calcularHeno($hi,24,$fin_diurno);
                             if ($rno>0){
                                 $valores = [
                                     'emp' => $j->trabajador->cc,
@@ -462,6 +465,7 @@ class DistribucionController extends Controller
                                 $valores['concepto']="012";
                                 $valores['horas'] = $rno;
                                 $valores['fecha'] = $j->fecha;
+                            $valores['user_id'] = $j->user_id;
                                 $linea = $this->addlinea($datos,$valores); 
                                 $datos->push($linea); 
                                 $bandlinea=true;
@@ -478,12 +482,13 @@ class DistribucionController extends Controller
                                 $valores['concepto']="001";
                                 $valores['horas'] = $hf-1;
                                 $valores['fecha'] = $j->fechaf;
-                                $tsb[$j->fechaf] = $tsb[$j->fechaf] + $hf-1;
+                                $valores['user_id'] = $j->user_id;
+                                $tsb[$j->user_id.'_'.$j->fechaf] = $tsb[$j->user_id.'_'.$j->fechaf] + $hf-1;
                                 $ttsb = $ttsb + $hf-1;
                                 $linea = $this->addlinea($datos,$valores); 
                                 $datos->push($linea); 
                                 $bandlinea=true;
-                                $rno = $this->calcularHeno(0,$hf-1);
+                                $rno = $this->calcularHeno(0,$hf-1,$fin_diurno);
                                 //dd($rno);
                                 if ($rno>0){
                                     $valores = [
@@ -497,6 +502,7 @@ class DistribucionController extends Controller
                                     $valores['concepto']="012";
                                     $valores['horas'] = $rno;
                                     $valores['fecha'] = $j->fechaf;
+                                $valores['user_id'] = $j->user_id;
                                     $linea = $this->addlinea($datos,$valores); 
                                     $datos->push($linea); 
                                     $bandlinea=true;
@@ -516,7 +522,8 @@ class DistribucionController extends Controller
                                     $valores['concepto']="001";
                                     $valores['horas'] = $hf;
                                     $valores['fecha'] = $j->fechaf;
-                                    $tsb[$j->fecha] = $tsb[$j->fecha] + $sb;
+                                $valores['user_id'] = $j->user_id;
+                                    $tsb[$j->user_id.'_'.$j->fecha] = $tsb[$j->user_id.'_'.$j->fecha] + $sb;
                                     $ttsb = $ttsb + $sb;
                                     $linea = $this->addlinea($datos,$valores); 
                                     $datos->push($linea);  
@@ -524,6 +531,7 @@ class DistribucionController extends Controller
                                     $valores['concepto']="014";
                                     $valores['horas'] = $hf;
                                     $valores['fecha'] = $j->fechaf;
+                                $valores['user_id'] = $j->user_id;
                                     $linea = $this->addlinea($datos,$valores); 
                                     $datos->push($linea); 
                                     $bandlinea=true;
@@ -546,11 +554,11 @@ class DistribucionController extends Controller
                     if ($dtc>$laborales){
                         $excede = $dtc -$laborales;
                         $dtc =$laborales;
-                        if ($hi>=21){
-                            $henf = $this->calcularHeno($hi,$hf);
+                        if ($hi >= $fin_diurno){
+                            $henf = $this->calcularHeno($hi,$hf,$fin_diurno);
                         }
                         else{
-                            $henf = $this->calcularHeno($turno->hora_fin,$hf);
+                            $henf = $this->calcularHeno($turno->hora_fin,$hf,$fin_diurno);
                         }
                        
                        
@@ -564,12 +572,12 @@ class DistribucionController extends Controller
                         }
                         if ($hedf ==0){
                             if($laborales>0){
-                                $rnd = $this->calcularHeno($hi,$hf);
+                                $rnd = $this->calcularHeno($hi,$hf,$fin_diurno);
                             }
                         }
                     }
                     else{
-                        $rnd = $this->calcularHeno($hi,$hf);
+                        $rnd = $this->calcularHeno($hi,$hf,$fin_diurno);
                         /*if ($rnd >0){
                             $sb = $rnd;
                         }*/
@@ -581,46 +589,41 @@ class DistribucionController extends Controller
                 //dd("test");
                 if (($numdia > 0)&&($festivo=="no")){
                     //if ($valores['fecha'] == $j->fecha){
-                    if ($valores['fecha'] ==  $j->fecha  ){     
+                    $mismoEmpleadoFecha = $valores['fecha'] == $j->fecha && $valores['user_id'] == $j->user_id;
+                    if ($mismoEmpleadoFecha){
                         if ($valores['proyecto'] == $j->proyecto) {
-                            $sb = $tsb[$j->fecha] + ($duracion - $j->almuerzo);
+                            $sb = $tsb[$j->user_id.'_'.$j->fecha] + ($duracion - $j->almuerzo);
                         }
                         else{
                             $sb =  ($duracion - $j->almuerzo);
                         }
-                       
+
                     }
                     else{
-                        //$sb =$tsb[$j->fecha] + ($duracion - $j->almuerzo);
                         $sb = ($duracion - $j->almuerzo);
                     }
-                    //$sb = $duracion - $j->almuerzo;
 
-                    //dd($sb);
-                    //Log::info($tsb[$j->fecha].":".$sb);
-                   
-                    if (($sb + $valores['horas']>$laborales && $valores['fecha'] ==  $j->fecha) || ($sb >$laborales && $valores['fecha'] !=  $j->fecha)){
-                        if ($sb + $valores['horas']>$laborales && $valores['fecha'] ==  $j->fecha){
+                    //Log::info($tsb[$j->user_id.'_'.$j->fecha].":".$sb);
+
+                    if (($sb + $valores['horas']>$laborales && $mismoEmpleadoFecha) || ($sb >$laborales && !$mismoEmpleadoFecha)){
+                        if ($sb + $valores['horas']>$laborales && $mismoEmpleadoFecha){
                             $excede = ($sb + $valores['horas']) -$laborales;
                         }
-                        if ($sb >$laborales && $valores['fecha'] !=  $j->fecha){
+                        if ($sb >$laborales && !$mismoEmpleadoFecha){
                             $excede = $sb -$laborales;
                         }
-                       
-                        $sb =$laborales - $tsb[$j->fecha];
-                        //$sb =$laborales;
-                        //dd($sb);
-                       
+
+                        $sb =$laborales - $tsb[$j->user_id.'_'.$j->fecha];
+
                         if ($hf == 0){
                             $hf = 24;
                         }
 
-                        $heno = $this->calcularHeno($turno->hora_fin,$hf);
-                        
-                        //dd($heno);
+                        $heno = $this->calcularHeno($turno->hora_fin,$hf,$fin_diurno);
+
                         if ($heno ==0){
-                            $hedo = $excede;  
-                            if (( $valores['horas']>0) && ($valores['fecha'] ==  $j->fecha)){
+                            $hedo = $excede;
+                            if (( $valores['horas']>0) && $mismoEmpleadoFecha){
                                 $hedo=$hedo +$j->almuerzo;
                                 $sb=$sb-$j->almuerzo;
                             }
@@ -629,11 +632,11 @@ class DistribucionController extends Controller
                             $hedo = $excede - $heno;
                         }
                         if ($heno ==0){
-                            $rno = $this->calcularHeno($hi,$hf);
+                            $rno = $this->calcularHeno($hi,$hf,$fin_diurno);
                         }
                     }
                     else{
-                        $rno = $this->calcularHeno($hi,$hf);
+                        $rno = $this->calcularHeno($hi,$hf,$fin_diurno);
                         //Log::info("RNO".$rno);
                         //dd($rno);
                         /*//dd($heno);
@@ -652,14 +655,14 @@ class DistribucionController extends Controller
                     if($festivo=="no"){
                         $dtsc=$hf - $hi -  $j->almuerzo;
                     }
-                    $henf = $this->calcularHeno($hi,$hf);
+                    $henf = $this->calcularHeno($hi,$hf,$fin_diurno);
                     $hedf = $hedf-$henf;
                     //dd($hedf);
                     //rnd
-                    if (($hi < 21)&&($hi > 6)&&($hf>21)&&($hf<=24)){
-                        $rnd = $hf - 21;
+                    if (($hi < $fin_diurno)&&($hi > 6)&&($hf>$fin_diurno)&&($hf<=24)){
+                        $rnd = $hf - $fin_diurno;
                     }
-                    if (($hi >= 21)&&($hf<=24)){
+                    if (($hi >= $fin_diurno)&&($hf<=24)){
                         $rnd = $hf - $hi;
                     }
                     if (($hi >=0 )&&($hi <=6 )&&($hf>6)){
@@ -699,6 +702,7 @@ class DistribucionController extends Controller
 
             if ($bandlinea==false){
                 $valores = [
+                    'user_id' => $j->user_id,
                     'emp' => $j->trabajador->cc,
                     'concepto' => '',
                     'centro' => $j->cdcinfo->centro_operacion,
@@ -713,7 +717,7 @@ class DistribucionController extends Controller
                     //dd($sb);
                     $valores['concepto']="001";
                     $valores['horas'] = $sb;
-                    $tsb[$j->fecha] = $tsb[$j->fecha] + $sb;
+                    $tsb[$j->user_id.'_'.$j->fecha] = $tsb[$j->user_id.'_'.$j->fecha] + $sb;
                     $ttsb = $ttsb + $sb;
                     $linea = $this->addlinea($datos,$valores); 
                     $datos->push($linea); 
@@ -835,9 +839,22 @@ class DistribucionController extends Controller
         return $linea;
 
     }
-    function calcularHeno($hi,$hf){
-        //dd($hi,$hf);
-        $l1 = 21;
+    /**
+     * Retorna el límite diurno/nocturno según la reforma laboral colombiana (Ley 2101/2021).
+     * - Antes Jul 15, 2023 : 21:00
+     * - Jul 15, 2023 – Jul 14, 2024 : 20:00
+     * - Desde Jul 15, 2024 : 19:00
+     */
+    public function getFinDiurno(Carbon $fecha): float
+    {
+        if ($fecha->greaterThanOrEqualTo('2024-07-15')) return 19.0;
+        if ($fecha->greaterThanOrEqualTo('2023-07-15')) return 20.0;
+        return 21.0;
+    }
+
+    function calcularHeno($hi, $hf, $finDiurno = 19)
+    {
+        $l1 = $finDiurno;
         $l2 = 0;
         $l3 = 6;
         $heno = 0;

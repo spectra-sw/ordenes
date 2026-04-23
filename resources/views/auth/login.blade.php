@@ -33,5 +33,5 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('js/views/auth/login.js') }}"></script>
+    <script src="{{ vasset('js/views/auth/login.js') }}"></script>
 @endsection

@@ -33,5 +33,5 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('js/views/auth/passwordRecovery.js') }}"></script>
+    <script src="{{ vasset('js/views/auth/passwordRecovery.js') }}"></script>
 @endsection

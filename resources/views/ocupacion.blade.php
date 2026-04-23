@@ -281,6 +281,6 @@
         });
     </script>
 
-    <script src="{{ asset('js/scripts.js') }}"></script>
-    <script src="{{ asset('js/scripts_jornada.js') }}"></script>
+    <script src="{{ vasset('js/scripts.js') }}"></script>
+    <script src="{{ vasset('js/scripts_jornada.js') }}"></script>
 @endsection

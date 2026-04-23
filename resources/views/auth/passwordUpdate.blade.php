@@ -36,5 +36,5 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('js/views/auth/passwordUpdate.js') }}"></script>
+    <script src="{{ vasset('js/views/auth/passwordUpdate.js') }}"></script>
 @endsection

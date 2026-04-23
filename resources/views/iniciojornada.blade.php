@@ -160,5 +160,5 @@
             reader.readAsDataURL(evt.target.files[0]);
         };
     </script>
-    <script src="{{ asset('js/scripts_jornadav11.js') }}"></script>
+    <script src="{{ vasset('js/scripts_jornadav11.js') }}"></script>
 @endsection
