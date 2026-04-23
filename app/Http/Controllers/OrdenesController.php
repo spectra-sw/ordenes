@@ -415,7 +415,7 @@ class OrdenesController extends Controller
             }
 
             $empleado    = $empleados[$jornada->user_id] ?? null;
-            $horarioBase = $empleado?->horario;
+            $horarioBase = $empleado ? $empleado->horario : null;
 
             if ($turnoActivo) {
                 $ref = $turnoActivo;
