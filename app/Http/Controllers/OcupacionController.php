@@ -105,78 +105,105 @@ class OcupacionController extends Controller
 
     public function seguimiento(Request $request)
     {
-        $area = $request->area;
-        $seguimiento  = collect([]);
+        $area        = $request->area;
+        $responsable = $request->responsable;
+        $fechaInicio = new Carbon($request->fechaInicioOcup1);
+        $fechaFin    = new Carbon($request->fechaFinalOcup1);
 
-        if ($area != "") {
-            $empleados = Empleado::where('estado', 1)->where('area', $area)->orderBy('area', 'asc')->get();
+        // Filter employees upfront — responsable takes priority over area
+        $query = Empleado::where('estado', 1)->with('narea');
+        if ($responsable != "") {
+            $query->where('cc', $responsable);
+        } elseif ($area != "") {
+            $query->where('area', $area);
+        } else {
+            $query->where('area', '>', 1);
         }
+        $empleados = $query->orderBy('area', 'asc')->get();
 
-        if ($area == "") {
-            $empleados = Empleado::where('estado', 1)->where('area', '>', 1)->orderBy('area', 'asc')->get();
-        }
+        // Pre-load festivos in the date range as a hash for O(1) lookup
+        $festivosHash = Festivo::whereBetween('fecha', [
+            $fechaInicio->toDateString(),
+            $fechaFin->toDateString(),
+        ])->pluck('fecha')->flip()->all();
+
+        // Pre-load all ocupaciones for these employees in the date range
+        $ccs = $empleados->pluck('cc');
+        $ocupacionesMap = ocupacion::whereIn('cc', $ccs)
+            ->whereBetween('dia', [$fechaInicio->toDateString(), $fechaFin->toDateString()])
+            ->get()
+            ->groupBy(function ($o) {
+                return $o->cc . '_' . Carbon::parse($o->dia)->toDateString();
+            });
+
+        $seguimiento = collect([]);
 
         foreach ($empleados as $empleado) {
-            $date_current = new Carbon($request->fechaInicioOcup1);
-            $end_date = new Carbon($request->fechaFinalOcup1);
+            $date_current = $fechaInicio->copy();
 
-            while ($date_current <= $end_date) {
+            while ($date_current <= $fechaFin) {
+                $fechaStr = $date_current->toDateString();
                 $fila = collect([]);
                 $fila->put('cc', $empleado->cc);
                 $fila->put('nombre', $empleado->nombre . " " . $empleado->apellido1);
                 $fila->put('area', $empleado->narea->area);
-                $fila->put('fecha', $date_current->toDateString());
-                $date_july_15 = Carbon::createFromDate(2023, 7, 15);
-                $friday_hours = $date_current->gte($date_july_15) ? 8.5 : 9.5;
+                $fila->put('fecha', $fechaStr);
 
                 $total_hours_worked = 0;
-                $employee_tracking = null;
+                $employee_tracking  = null;
 
-                if (Festivo::where('fecha', $date_current)->exists()) {
-                    $employee_tracking = "NH"; // NH = dia no habil
+                // Non-working day check using pre-loaded hash
+                if (isset($festivosHash[$fechaStr]) || $date_current->dayOfWeek === 0 || $date_current->dayOfWeek === 6) {
+                    $employee_tracking = "NH";
                 }
 
-                if ($date_current->dayOfWeek == 0 || $date_current->dayOfWeek == 6) {
-                    $employee_tracking = "NH"; // NH = dia no habil
+                if ($employee_tracking === null) {
+                    $key = $empleado->cc . '_' . $fechaStr;
+                    $registros = $ocupacionesMap->get($key, collect([]));
+                    $total_hours_worked = $registros->sum('horas') + ($registros->sum('minutos') / 60);
+                    $employee_tracking  = $total_hours_worked;
                 }
 
-                if (!$employee_tracking) {
-                    $user_ocupation = ocupacion::where('cc', $empleado->cc)->where('dia', '=', $date_current)->get();
+                $max_hours = $this->getMaxHorasOcupacion($date_current, $empleado->ciudad ?? '');
 
-                    $total_hours_worked = $user_ocupation->sum('horas') + ($user_ocupation->sum('minutos') / 60);
-                    $employee_tracking = $total_hours_worked;
+                // Color coding
+                if ($employee_tracking === "NH") {
+                    $clase = 'table-default';
+                } elseif ($total_hours_worked === 0) {
+                    $clase = 'table-danger';
+                } elseif ($total_hours_worked < $max_hours) {
+                    $clase = 'table-warning';
+                } else {
+                    $clase = 'table-success';
                 }
 
                 $fila->put('registro', $employee_tracking);
-                $fila->put('clase', 'table-default');
-
-                if ($employee_tracking === 0) {
-                    $fila->put('clase', 'table-danger');
-                }
-
-                if (($total_hours_worked > 0) && ($total_hours_worked < 9.5)) {
-                    $fila->put('clase', 'table-warning');
-                }
-
-                if ($total_hours_worked == $friday_hours && $date_current->dayOfWeek == 5) {
-                    $fila->put('clase', 'table-success');
-                }
-
-                if ($total_hours_worked == 9.5) {
-                    $fila->put('clase', 'table-success');
-                }
+                $fila->put('clase', $clase);
 
                 $seguimiento->push($fila);
-                $date_current = $date_current->addDay();
+                $date_current->addDay();
             }
         }
 
-        if ($request->responsable != "") {
-            $seguimiento = $seguimiento->where('cc', $request->responsable);
+        return view('seguimiento', ['seguimiento' => $seguimiento]);
+    }
+
+    private function getMaxHorasOcupacion(Carbon $fecha, string $ciudad): float
+    {
+        $dateJul2025 = Carbon::createFromDate(2025, 7, 1);
+        $dateJul2023 = Carbon::createFromDate(2023, 7, 15);
+
+        if ($fecha->gte($dateJul2025)) {
+            if (strtoupper($ciudad) === 'BOGOTA') {
+                return $fecha->dayOfWeek === 5 ? 7.5 : 9.0; // viernes corto en Bogotá
+            }
+            return $fecha->dayOfWeek === 1 ? 7.5 : 9.0; // lunes corto en otras ciudades
         }
 
-        return view('seguimiento', [
-            'seguimiento' => $seguimiento,
-        ]);
+        if ($fecha->gte($dateJul2023)) {
+            return $fecha->dayOfWeek === 5 ? 8.5 : 9.5; // viernes corto
+        }
+
+        return 9.5;
     }
 }
