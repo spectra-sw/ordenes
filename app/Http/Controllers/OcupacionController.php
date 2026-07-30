@@ -28,12 +28,15 @@ class OcupacionController extends Controller
         $friday_hours = $input_date->gte($date_july_15) ? 8.5 : 9.5;
         
         $date_july_2025 = Carbon::createFromDate(2025, 6, 30);
-    
-        // Update friday_hours calculation
-        if ($input_date->gte($date_july_2025) && $user_ciudad == 'BOGOTA') {
+        $date_july_2026 = Carbon::createFromDate(2026, 7, 1);
+
+        if ($input_date->gte($date_july_2026)) {
+            // Desde 1 Jul 2026: lunes = 8h, martes-viernes = 8.5h
+            $max_hours = $input_date->dayOfWeek == 1 ? 8.0 : 8.5;
+        } elseif ($input_date->gte($date_july_2025) && $user_ciudad == 'BOGOTA') {
             // New rules after July 1, 2025 for BOGOTA
             $max_hours = $input_date->dayOfWeek == 5 ? 7.5 : 9.0; // Friday = 7.5, Mon-Thu = 9.0
-        } else if ($input_date->gte($date_july_2025)) {
+        } elseif ($input_date->gte($date_july_2025)) {
             // New rules after July 1, 2025 for other cities
             $max_hours = $input_date->dayOfWeek == 1 ? 7.5 : 9.0; // Monday = 7.5, Tue-Fri = 9.0
         } else {
@@ -76,7 +79,13 @@ class OcupacionController extends Controller
             return "La horas que desea registrar superan las 9,5 horas";
         }*/
         if ($hours_completed > $max_hours) {
-            if ($input_date->gte($date_july_2025)) {
+            if ($input_date->gte($date_july_2026)) {
+                if ($input_date->dayOfWeek == 1) {
+                    return "Las horas que desea registrar superan las 8 horas permitidas para el lunes";
+                } else {
+                    return "Las horas que desea registrar superan las 8,5 horas permitidas";
+                }
+            } elseif ($input_date->gte($date_july_2025)) {
                 if ($input_date->dayOfWeek == 1) {
                     return "Las horas que desea registrar superan las 7,5 horas permitidas para lunes";
                 } else {
@@ -190,8 +199,13 @@ class OcupacionController extends Controller
 
     private function getMaxHorasOcupacion(Carbon $fecha, string $ciudad): float
     {
+        $dateJul2026 = Carbon::createFromDate(2026, 7, 1);
         $dateJul2025 = Carbon::createFromDate(2025, 7, 1);
         $dateJul2023 = Carbon::createFromDate(2023, 7, 15);
+
+        if ($fecha->gte($dateJul2026)) {
+            return $fecha->dayOfWeek === 1 ? 8.0 : 8.5; // lunes = 8h, mar-vie = 8.5h
+        }
 
         if ($fecha->gte($dateJul2025)) {
             if (strtoupper($ciudad) === 'BOGOTA') {
