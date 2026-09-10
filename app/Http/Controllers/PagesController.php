@@ -1824,7 +1824,7 @@ class PagesController extends Controller
             }
             //dd($lapso);
             if ($lapso!=""){
-                $hl =220;
+                $hl =210;
                 if(Novedad::where('cc',$e->cc)->where('periodo',$lapso)->exists()){
                     $hl=Novedad::where('cc',$e->cc)->where('periodo',$lapso)->first()->horas;
                 }
