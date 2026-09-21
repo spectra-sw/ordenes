@@ -13,6 +13,7 @@
         <th>C.O</th>
         <th>U.N</th>
         <th>CREACION</th>
+        <th>REGISTRO</th>
       </tr>
     </thead>
     <tbody>
@@ -36,7 +37,7 @@
         <td>{{ isset($p->cdc->centro_operacion) ? $p->cdc->centro_operacion : ''}}</td>
         <td>{{ isset($p->cdc->unidad_negocio) ? $p->cdc->unidad_negocio : ''}}</td>
         <td>{{ $p->creacion }}</td>
-        
+        <td>{{ $p->registro ? 'Si' : 'No' }}</td>
       </tr>
     @endforeach 
     </tbody>
