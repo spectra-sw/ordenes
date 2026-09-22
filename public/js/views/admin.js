@@ -431,6 +431,9 @@ const resetTablaProyectos = () => {
         type: "GET",
         data: {},
         success: (response) => {
+            if ($.fn.DataTable.isDataTable("#tablaProyectos")) {
+                $("#tablaProyectos").DataTable().destroy();
+            }
             $("#containerTablaProyectos").html(response);
             $("#tablaProyectos").DataTable();
             $("#tablaProyectos").parent()[0].classList.add("table-responsive");
