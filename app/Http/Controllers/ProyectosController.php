@@ -138,7 +138,8 @@ class ProyectosController extends Controller
         ]);
 
         return response()->json([
-            'message' => $proyecto->registro ? 'Proyecto habilitado' : 'Proyecto deshabilitado'
+            'message'  => $proyecto->registro ? 'Proyecto habilitado' : 'Proyecto deshabilitado',
+            'registro' => $proyecto->registro,
         ]);
     }
     public function tablaproy(Request $request)

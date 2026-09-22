@@ -412,13 +412,17 @@ const borrarAutorizado = (id) => {
 };
 
 const togleHabilitarProyecto = () => {
+    const proyectoId = $("#proyecto_id").val();
     restFetchForm(
         "/togle-habilitar-proyecto",
         "formPoyecto",
         ["id"],
         (response) => {
             alert(response.message);
-            resetTablaProyectos();
+            const habilitado = response.registro == 1;
+            const $select = $(`#${proyectoId}`);
+            $select.closest("tr").find("td").eq(10).text(habilitado ? "Si" : "No");
+            $select.find("option[value='3']").text(habilitado ? "Deshabilitar" : "Habilitar");
             $("#modalFeedback").modal("hide");
         }
     );
