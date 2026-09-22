@@ -430,6 +430,7 @@ const resetTablaProyectos = () => {
         url: url,
         type: "GET",
         data: {},
+        cache: false,
         success: (response) => {
             if ($.fn.DataTable.isDataTable("#tablaProyectos")) {
                 $("#tablaProyectos").DataTable().destroy();
