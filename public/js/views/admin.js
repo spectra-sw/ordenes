@@ -423,6 +423,7 @@ const togleHabilitarProyecto = () => {
             const $select = $(`#${proyectoId}`);
             $select.closest("tr").find("td").eq(10).text(habilitado ? "Si" : "No");
             $select.find("option[value='3']").text(habilitado ? "Deshabilitar" : "Habilitar");
+            $select.val("0");
             $("#modalFeedback").modal("hide");
         }
     );
